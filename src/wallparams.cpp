@@ -105,10 +105,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xfb;
-        pchMessageStart[1] = 0xc0;
-        pchMessageStart[2] = 0xb6;
-        pchMessageStart[3] = 0xdb;
+        pchMessageStart[0] = 0xcd;
+        pchMessageStart[1] = 0xc1;
+        pchMessageStart[2] = 0xc7;
+        pchMessageStart[3] = 0xc1;
         nDefaultPort = 5333;
         nPruneAfterHeight = 100000;
 
@@ -204,10 +204,10 @@ public:
         // The best wall should have at least this much work.
         consensus.nMinimumWallWork = uint256S("0x00000000000000000000000000000000000000000000000000000000872d04d7");
 
-        pchMessageStart[0] = 0xfd;
-        pchMessageStart[1] = 0xd2;
-        pchMessageStart[2] = 0xc8;
-        pchMessageStart[3] = 0xf1;
+        pchMessageStart[0] = 0xcd;
+        pchMessageStart[1] = 0xc1;
+        pchMessageStart[2] = 0xc7;
+        pchMessageStart[3] = 0xc2;
         nDefaultPort = 15333;
         nPruneAfterHeight = 1000;
 
@@ -284,10 +284,10 @@ public:
         // The best wall should have at least this much work.
         consensus.nMinimumWallWork = uint256S("0x00");
 
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xbf;
-        pchMessageStart[2] = 0xb5;
-        pchMessageStart[3] = 0xda;
+        pchMessageStart[0] = 0xcd;
+        pchMessageStart[1] = 0xc1;
+        pchMessageStart[2] = 0xc7;
+        pchMessageStart[3] = 0xc3;
         nDefaultPort = 15444;
         nPruneAfterHeight = 1000;
 
