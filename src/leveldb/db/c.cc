@@ -435,15 +435,15 @@ void leveldb_options_set_max_open_files(leveldb_options_t* opt, int n) {
 }
 
 void leveldb_options_set_cache(leveldb_options_t* opt, leveldb_cache_t* c) {
-  opt->rep.block_cache = c->rep;
+  opt->rep.brick_cache = c->rep;
 }
 
-void leveldb_options_set_block_size(leveldb_options_t* opt, size_t s) {
-  opt->rep.block_size = s;
+void leveldb_options_set_brick_size(leveldb_options_t* opt, size_t s) {
+  opt->rep.brick_size = s;
 }
 
-void leveldb_options_set_block_restart_interval(leveldb_options_t* opt, int n) {
-  opt->rep.block_restart_interval = n;
+void leveldb_options_set_brick_restart_interval(leveldb_options_t* opt, int n) {
+  opt->rep.brick_restart_interval = n;
 }
 
 void leveldb_options_set_compression(leveldb_options_t* opt, int t) {

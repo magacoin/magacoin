@@ -110,12 +110,12 @@
         <translation>&amp;Muta tesseram...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Recreans indicem frustorum in disco...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Mitte nummos ad inscriptionem Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Mitte nummos ad inscriptionem Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -138,8 +138,8 @@
         <translation>&amp;Verifica nuntium...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -166,12 +166,12 @@
         <translation>Cifra claves privatas quae cassidili tui sunt</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Signa nuntios cum tuis inscriptionibus Litecoin ut demonstres te eas possidere</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Signa nuntios cum tuis inscriptionibus Magacoin ut demonstres te eas possidere</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus Litecoin</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verifica nuntios ut certus sis eos signatos esse cum specificatis inscriptionibus Magacoin</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -194,7 +194,7 @@
         <translation>Optiones mandati initiantis</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Nulla fons frustorum absens...</translation>
     </message>
     <message>
@@ -202,7 +202,7 @@
         <translation>%1 post</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Postremum acceptum frustum generatum est %1 abhinc.</translation>
     </message>
     <message>
@@ -339,8 +339,8 @@
         <translation>Cassidile</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Aperi per se portam clientis Litecoin in itineratore.  Hoc tantum effectivum est si itineratrum tuum supportat UPnP et id activum est.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Aperi per se portam clientis Magacoin in itineratore.  Hoc tantum effectivum est si itineratrum tuum supportat UPnP et id activum est.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -418,8 +418,8 @@
         <translation>Schema</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Monstrata informatio fortasse non recentissima est.  Tuum cassidile per se synchronizat cum rete Litecoin postquam conexio constabilita est, sed hoc actio nondum perfecta est.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Monstrata informatio fortasse non recentissima est.  Tuum cassidile per se synchronizat cum rete Magacoin postquam conexio constabilita est, sed hoc actio nondum perfecta est.</translation>
     </message>
     <message>
         <source>Immature:</source>
@@ -481,15 +481,15 @@
         <translation>Numerus conexionum</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Catena frustorum</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Numerus frustorum iam nunc</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Hora postremi frusti</translation>
     </message>
     <message>
@@ -661,8 +661,8 @@
         <translation>Copia signationem in latibulum systematis</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Signa nuntium ut demonstres hanc inscriptionem Litecoin a te possessa esse</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Signa nuntium ut demonstres hanc inscriptionem Magacoin a te possessa esse</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -681,8 +681,8 @@
         <translation>&amp;Verifica Nuntium</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione Litecoin</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verifica nuntium ut cures signatum esse cum specifica inscriptione Magacoin</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -762,8 +762,8 @@
         <translation>Accipe conexiones externas (praedefinitum: 1 nisi -proxy neque -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Nucleus</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Nucleus</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
@@ -778,7 +778,7 @@
         <translation>Hoc est prae-dimittum experimentala aedes - utere eo periculo tuo proprio - nolite utere fodendo vel applicationibus mercatoriis</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Optiones creandi frustorum:</translation>
     </message>
     <message>
@@ -786,15 +786,15 @@
         <translation>Conecte sole ad nodos specificatos (vel nodum specificatum)</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Corruptum databasum frustorum invenitur</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Visne reficere databasum frustorum iam?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Error initiando databasem frustorum</translation>
     </message>
     <message>
@@ -802,11 +802,11 @@
         <translation>Error initiando systematem databasi cassidilis %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Error legendo frustorum databasem</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Error aperiendo databasum frustorum</translation>
     </message>
     <message>
@@ -822,7 +822,7 @@
         <translation>Inopia descriptorum plicarum.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Verificante frusta...</translation>
     </message>
     <message>
@@ -870,7 +870,7 @@
         <translation>Tessera pro conexionibus JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Pelle mandatum quando optissimum frustum mutat (%s in mandato substituitur ab hash frusti)</translation>
     </message>
     <message>
@@ -894,7 +894,7 @@
         <translation>Inopia nummorum</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Legens indicem frustorum...</translation>
     </message>
     <message>

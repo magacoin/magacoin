@@ -7,31 +7,31 @@
 
 namespace leveldb {
 
-static const int kBlockSize = 4096;
+static const int kBrickSize = 4096;
 
 Arena::Arena() {
-  blocks_memory_ = 0;
-  alloc_ptr_ = NULL;  // First allocation will allocate a block
+  bricks_memory_ = 0;
+  alloc_ptr_ = NULL;  // First allocation will allocate a brick
   alloc_bytes_remaining_ = 0;
 }
 
 Arena::~Arena() {
-  for (size_t i = 0; i < blocks_.size(); i++) {
-    delete[] blocks_[i];
+  for (size_t i = 0; i < bricks_.size(); i++) {
+    delete[] bricks_[i];
   }
 }
 
 char* Arena::AllocateFallback(size_t bytes) {
-  if (bytes > kBlockSize / 4) {
-    // Object is more than a quarter of our block size.  Allocate it separately
+  if (bytes > kBrickSize / 4) {
+    // Object is more than a quarter of our brick size.  Allocate it separately
     // to avoid wasting too much space in leftover bytes.
-    char* result = AllocateNewBlock(bytes);
+    char* result = AllocateNewBrick(bytes);
     return result;
   }
 
-  // We waste the remaining space in the current block.
-  alloc_ptr_ = AllocateNewBlock(kBlockSize);
-  alloc_bytes_remaining_ = kBlockSize;
+  // We waste the remaining space in the current brick.
+  alloc_ptr_ = AllocateNewBrick(kBrickSize);
+  alloc_bytes_remaining_ = kBrickSize;
 
   char* result = alloc_ptr_;
   alloc_ptr_ += bytes;
@@ -58,10 +58,10 @@ char* Arena::AllocateAligned(size_t bytes) {
   return result;
 }
 
-char* Arena::AllocateNewBlock(size_t block_bytes) {
-  char* result = new char[block_bytes];
-  blocks_memory_ += block_bytes;
-  blocks_.push_back(result);
+char* Arena::AllocateNewBrick(size_t brick_bytes) {
+  char* result = new char[brick_bytes];
+  bricks_memory_ += brick_bytes;
+  bricks_.push_back(result);
   return result;
 }
 

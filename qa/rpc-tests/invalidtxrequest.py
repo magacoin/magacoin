@@ -5,7 +5,7 @@
 
 from test_framework.test_framework import ComparisonTestFramework
 from test_framework.comptool import TestManager, TestInstance, RejectResult
-from test_framework.blocktools import *
+from test_framework.bricktools import *
 import time
 
 
@@ -26,44 +26,44 @@ class InvalidTxRequestTest(ComparisonTestFramework):
         test = TestManager(self, self.options.tmpdir)
         test.add_all_connections(self.nodes)
         self.tip = None
-        self.block_time = None
+        self.brick_time = None
         NetworkThread().start() # Start up network handling in another thread
         test.run()
 
     def get_tests(self):
         if self.tip is None:
-            self.tip = int("0x" + self.nodes[0].getbestblockhash(), 0)
-        self.block_time = int(time.time())+1
+            self.tip = int("0x" + self.nodes[0].getbestbrickhash(), 0)
+        self.brick_time = int(time.time())+1
 
         '''
-        Create a new block with an anyone-can-spend coinbase
+        Create a new brick with an anyone-can-spend coinbase
         '''
         height = 1
-        block = create_block(self.tip, create_coinbase(height), self.block_time)
-        self.block_time += 1
-        block.solve()
+        brick = create_brick(self.tip, create_coinbase(height), self.brick_time)
+        self.brick_time += 1
+        brick.solve()
         # Save the coinbase for later
-        self.block1 = block
-        self.tip = block.sha256
+        self.brick1 = brick
+        self.tip = brick.sha256
         height += 1
-        yield TestInstance([[block, True]])
+        yield TestInstance([[brick, True]])
 
         '''
-        Now we need that block to mature so we can spend the coinbase.
+        Now we need that brick to mature so we can spend the coinbase.
         '''
-        test = TestInstance(sync_every_block=False)
+        test = TestInstance(sync_every_brick=False)
         for i in range(100):
-            block = create_block(self.tip, create_coinbase(height), self.block_time)
-            block.solve()
-            self.tip = block.sha256
-            self.block_time += 1
-            test.blocks_and_transactions.append([block, True])
+            brick = create_brick(self.tip, create_coinbase(height), self.brick_time)
+            brick.solve()
+            self.tip = brick.sha256
+            self.brick_time += 1
+            test.bricks_and_transactions.append([brick, True])
             height += 1
         yield test
 
         # b'\x64' is OP_NOTIF
         # Transaction will be rejected with code 16 (REJECT_INVALID)
-        tx1 = create_transaction(self.block1.vtx[0], 0, b'\x64', 50 * COIN - 12000)
+        tx1 = create_transaction(self.brick1.vtx[0], 0, b'\x64', 50 * COIN - 12000)
         yield TestInstance([[tx1, RejectResult(16, b'mandatory-script-verify-flag-failed')]])
 
         # TODO: test further transactions...

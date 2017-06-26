@@ -142,12 +142,12 @@
         <translation>Интернет манзилни очиш</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Дискдаги блоклар қайта индексланмоқда...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Тангаларни Litecoin манзилига жўнатиш</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Тангаларни Magacoin манзилига жўнатиш</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -170,8 +170,8 @@
         <translation>Хабарни &amp;тасдиқлаш...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -198,12 +198,12 @@
         <translation>Ҳамёнингизга тегишли махфий калитларни кодлаш</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Litecoin манзилидан унинг эгаси эканлигингизни исботлаш учун хабарлар ёзинг</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Magacoin манзилидан унинг эгаси эканлигингизни исботлаш учун хабарлар ёзинг</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Хабарларни махсус Litecoin манзилларингиз билан ёзилганлигига ишонч ҳосил қилиш учун уларни тасдиқланг</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Хабарларни махсус Magacoin манзилларингиз билан ёзилганлигига ишонч ҳосил қилиш учун уларни тасдиқланг</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -222,8 +222,8 @@
         <translation>Ички ойналар асбоблар панели</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Тўловлар (QR кодлари ва litecoin ёрдамида яратишлар: URI’лар) сўраш</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Тўловлар (QR кодлари ва magacoin ёрдамида яратишлар: URI’лар) сўраш</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -234,19 +234,19 @@
         <translation>Фойдаланилган қабул қилинган манзиллар ва ёрлиқлар рўйхатини кўрсатиш</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Litecoin’ни очиш: URI ёки тўлов сўрови</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Magacoin’ни очиш: URI ёки тўлов сўрови</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Буйруқлар сатри мосламалари</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n та Litecoin тармоғига фаол уланиш мавжуд</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n та Magacoin тармоғига фаол уланиш мавжуд</numerusform></translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Блок манбалари мавжуд эмас...</translation>
     </message>
     <message numerus="yes">
@@ -274,7 +274,7 @@
         <translation>%1 орқада</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Сўнги қабул қилинган блок %1 олдин яратилган.</translation>
     </message>
     <message>
@@ -622,8 +622,8 @@
         <translation>Шакл</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Кўрсатилган маълумот эскирган бўлиши мумкин. Ҳамёнингиз алоқа ўрнатилгандан сўнг Litecoin тармоқ билан автоматик тарзда синхронланади, аммо жараён ҳалигача тугалланмади.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Кўрсатилган маълумот эскирган бўлиши мумкин. Ҳамёнингиз алоқа ўрнатилгандан сўнг Magacoin тармоқ билан автоматик тарзда синхронланади, аммо жараён ҳалигача тугалланмади.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -707,8 +707,8 @@
         <translation>Миқдори</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Litecoin манзилини киритинг (масалан.  %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Magacoin манзилини киритинг (масалан.  %1)</translation>
     </message>
     <message>
         <source>%1 m</source>
@@ -817,7 +817,7 @@
         <translation>Ping вақти</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Сўнгги блок вақти</translation>
     </message>
     <message>
@@ -1234,8 +1234,8 @@
         <translation>Демон сифатида орқа фонда ишга туширинг ва буйруқларга рози бўлинг</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>Connection options:</source>
@@ -1266,7 +1266,7 @@
         <translation>Кам миқдор</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Тўсиқ индекси юкланмоқда...</translation>
     </message>
     <message>

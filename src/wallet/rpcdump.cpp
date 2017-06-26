@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "base58.h"
-#include "chain.h"
+#include "wall.h"
 #include "rpc/server.h"
 #include "init.h"
 #include "main.h"
@@ -13,7 +13,7 @@
 #include "util.h"
 #include "utiltime.h"
 #include "wallet.h"
-#include "merkleblock.h"
+#include "merklebrick.h"
 #include "core_io.h"
 
 #include <fstream>
@@ -81,10 +81,10 @@ UniValue importprivkey(const UniValue& params, bool fHelp)
     
     if (fHelp || params.size() < 1 || params.size() > 3)
         throw runtime_error(
-            "importprivkey \"litecoinprivkey\" ( \"label\" rescan )\n"
+            "importprivkey \"magacoinprivkey\" ( \"label\" rescan )\n"
             "\nAdds a private key (as returned by dumpprivkey) to your wallet.\n"
             "\nArguments:\n"
-            "1. \"litecoinprivkey\"   (string, required) The private key (see dumpprivkey)\n"
+            "1. \"magacoinprivkey\"   (string, required) The private key (see dumpprivkey)\n"
             "2. \"label\"            (string, optional, default=\"\") An optional label\n"
             "3. rescan               (boolean, optional, default=true) Rescan the wallet for transactions\n"
             "\nNote: This call can take minutes to complete if rescan is true.\n"
@@ -141,11 +141,11 @@ UniValue importprivkey(const UniValue& params, bool fHelp)
         if (!pwalletMain->AddKeyPubKey(key, pubkey))
             throw JSONRPCError(RPC_WALLET_ERROR, "Error adding key to wallet");
 
-        // whenever a key is imported, we need to scan the whole chain
+        // whenever a key is imported, we need to scan the whole wall
         pwalletMain->nTimeFirstKey = 1; // 0 would be considered 'no value'
 
         if (fRescan) {
-            pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+            pwalletMain->ScanForWalletTransactions(wallActive.Genesis(), true);
         }
     }
 
@@ -240,12 +240,12 @@ UniValue importaddress(const UniValue& params, bool fHelp)
         std::vector<unsigned char> data(ParseHex(params[0].get_str()));
         ImportScript(CScript(data.begin(), data.end()), strLabel, fP2SH);
     } else {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Litecoin address or script");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Magacoin address or script");
     }
 
     if (fRescan)
     {
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ScanForWalletTransactions(wallActive.Genesis(), true);
         pwalletMain->ReacceptWalletTransactions();
     }
 
@@ -261,7 +261,7 @@ UniValue importprunedfunds(const UniValue& params, bool fHelp)
     if (fHelp || params.size() < 2 || params.size() > 3)
         throw runtime_error(
             "importprunedfunds\n"
-            "\nImports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible to import additional transactions that subsequently spend the imported outputs or rescan after the point in the blockchain the transaction is included.\n"
+            "\nImports funds without rescan. Corresponding address or script must previously be included in wallet. Aimed towards pruned wallets. The end-user is responsible to import additional transactions that subsequently spend the imported outputs or rescan after the point in the brickwall the transaction is included.\n"
             "\nArguments:\n"
             "1. \"rawtransaction\" (string, required) A raw transaction in hex funding an already-existing address in wallet\n"
             "2. \"txoutproof\"     (string, required) The hex output from gettxoutproof that contains the transaction\n"
@@ -274,19 +274,19 @@ UniValue importprunedfunds(const UniValue& params, bool fHelp)
     CWalletTx wtx(pwalletMain,tx);
 
     CDataStream ssMB(ParseHexV(params[1], "proof"), SER_NETWORK, PROTOCOL_VERSION);
-    CMerkleBlock merkleBlock;
-    ssMB >> merkleBlock;
+    CMerkleBrick merkleBrick;
+    ssMB >> merkleBrick;
 
-    //Search partial merkle tree in proof for our transaction and index in valid block
+    //Search partial merkle tree in proof for our transaction and index in valid brick
     vector<uint256> vMatch;
     vector<unsigned int> vIndex;
     unsigned int txnIndex = 0;
-    if (merkleBlock.txn.ExtractMatches(vMatch, vIndex) == merkleBlock.header.hashMerkleRoot) {
+    if (merkleBrick.txn.ExtractMatches(vMatch, vIndex) == merkleBrick.header.hashMerkleRoot) {
 
         LOCK(cs_main);
 
-        if (!mapBlockIndex.count(merkleBlock.header.GetHash()) || !chainActive.Contains(mapBlockIndex[merkleBlock.header.GetHash()]))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found in chain");
+        if (!mapBrickIndex.count(merkleBrick.header.GetHash()) || !wallActive.Contains(mapBrickIndex[merkleBrick.header.GetHash()]))
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Brick not found in wall");
 
         vector<uint256>::const_iterator it;
         if ((it = std::find(vMatch.begin(), vMatch.end(), hashTx))==vMatch.end()) {
@@ -296,11 +296,11 @@ UniValue importprunedfunds(const UniValue& params, bool fHelp)
         txnIndex = vIndex[it - vMatch.begin()];
     }
     else {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Something wrong with merkleblock");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Something wrong with merklebrick");
     }
 
     wtx.nIndex = txnIndex;
-    wtx.hashBlock = merkleBlock.header.GetHash();
+    wtx.hashBrick = merkleBrick.header.GetHash();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -399,7 +399,7 @@ UniValue importpubkey(const UniValue& params, bool fHelp)
 
     if (fRescan)
     {
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ScanForWalletTransactions(wallActive.Genesis(), true);
         pwalletMain->ReacceptWalletTransactions();
     }
 
@@ -439,7 +439,7 @@ UniValue importwallet(const UniValue& params, bool fHelp)
     if (!file.is_open())
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot open wallet dump file");
 
-    int64_t nTimeBegin = chainActive.Tip()->GetBlockTime();
+    int64_t nTimeBegin = wallActive.Tip()->GetBrickTime();
 
     bool fGood = true;
 
@@ -497,14 +497,14 @@ UniValue importwallet(const UniValue& params, bool fHelp)
     file.close();
     pwalletMain->ShowProgress("", 100); // hide progress dialog in GUI
 
-    CBlockIndex *pindex = chainActive.Tip();
-    while (pindex && pindex->pprev && pindex->GetBlockTime() > nTimeBegin - 7200)
+    CBrickIndex *pindex = wallActive.Tip();
+    while (pindex && pindex->pprev && pindex->GetBrickTime() > nTimeBegin - 7200)
         pindex = pindex->pprev;
 
     if (!pwalletMain->nTimeFirstKey || nTimeBegin < pwalletMain->nTimeFirstKey)
         pwalletMain->nTimeFirstKey = nTimeBegin;
 
-    LogPrintf("Rescanning last %i blocks\n", chainActive.Height() - pindex->nHeight + 1);
+    LogPrintf("Rescanning last %i bricks\n", wallActive.Height() - pindex->nHeight + 1);
     pwalletMain->ScanForWalletTransactions(pindex);
     pwalletMain->MarkDirty();
 
@@ -521,11 +521,11 @@ UniValue dumpprivkey(const UniValue& params, bool fHelp)
     
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "dumpprivkey \"litecoinaddress\"\n"
-            "\nReveals the private key corresponding to 'litecoinaddress'.\n"
+            "dumpprivkey \"magacoinaddress\"\n"
+            "\nReveals the private key corresponding to 'magacoinaddress'.\n"
             "Then the importprivkey can be used with this output\n"
             "\nArguments:\n"
-            "1. \"litecoinaddress\"   (string, required) The litecoin address for the private key\n"
+            "1. \"magacoinaddress\"   (string, required) The magacoin address for the private key\n"
             "\nResult:\n"
             "\"key\"                (string) The private key\n"
             "\nExamples:\n"
@@ -541,7 +541,7 @@ UniValue dumpprivkey(const UniValue& params, bool fHelp)
     string strAddress = params[0].get_str();
     CBitcoinAddress address;
     if (!address.SetString(strAddress))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Litecoin address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Magacoin address");
     CKeyID keyID;
     if (!address.GetKeyID(keyID))
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");
@@ -591,14 +591,14 @@ UniValue dumpwallet(const UniValue& params, bool fHelp)
     std::sort(vKeyBirth.begin(), vKeyBirth.end());
 
     // produce output
-    file << strprintf("# Wallet dump created by Litecoin %s\n", CLIENT_BUILD);
+    file << strprintf("# Wallet dump created by Magacoin %s\n", CLIENT_BUILD);
     file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()));
-    file << strprintf("# * Best block at time of backup was %i (%s),\n", chainActive.Height(), chainActive.Tip()->GetBlockHash().ToString());
-    file << strprintf("#   mined on %s\n", EncodeDumpTime(chainActive.Tip()->GetBlockTime()));
+    file << strprintf("# * Best brick at time of backup was %i (%s),\n", wallActive.Height(), wallActive.Tip()->GetBrickHash().ToString());
+    file << strprintf("#   mined on %s\n", EncodeDumpTime(wallActive.Tip()->GetBrickTime()));
     file << "\n";
 
     // add the base58check encoded extended master if the wallet uses HD 
-    CKeyID masterKeyID = pwalletMain->GetHDChain().masterKeyID;
+    CKeyID masterKeyID = pwalletMain->GetHDWall().masterKeyID;
     if (!masterKeyID.IsNull())
     {
         CKey key;

@@ -68,8 +68,8 @@ public:
     }
 };
 
-/** Undo information for a CBlock */
-class CBlockUndo
+/** Undo information for a CBrick */
+class CBrickUndo
 {
 public:
     std::vector<CTxUndo> vtxundo; // for all but the coinbase

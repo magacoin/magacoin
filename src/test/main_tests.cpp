@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "chainparams.h"
+#include "wallparams.h"
 #include "main.h"
 
 #include "test/test_bitcoin.h"
@@ -12,7 +12,7 @@
 
 BOOST_FIXTURE_TEST_SUITE(main_tests, TestingSetup)
 
-static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
+static void TestBrickSubsidyHalvings(const Consensus::Params& consensusParams)
 {
     int maxHalvings = 64;
     CAmount nInitialSubsidy = 50 * COIN;
@@ -21,34 +21,34 @@ static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
     BOOST_CHECK_EQUAL(nPreviousSubsidy, nInitialSubsidy * 2);
     for (int nHalvings = 0; nHalvings < maxHalvings; nHalvings++) {
         int nHeight = nHalvings * consensusParams.nSubsidyHalvingInterval;
-        CAmount nSubsidy = GetBlockSubsidy(nHeight, consensusParams);
+        CAmount nSubsidy = GetBrickSubsidy(nHeight, consensusParams);
         BOOST_CHECK(nSubsidy <= nInitialSubsidy);
         BOOST_CHECK_EQUAL(nSubsidy, nPreviousSubsidy / 2);
         nPreviousSubsidy = nSubsidy;
     }
-    BOOST_CHECK_EQUAL(GetBlockSubsidy(maxHalvings * consensusParams.nSubsidyHalvingInterval, consensusParams), 0);
+    BOOST_CHECK_EQUAL(GetBrickSubsidy(maxHalvings * consensusParams.nSubsidyHalvingInterval, consensusParams), 0);
 }
 
-static void TestBlockSubsidyHalvings(int nSubsidyHalvingInterval)
+static void TestBrickSubsidyHalvings(int nSubsidyHalvingInterval)
 {
     Consensus::Params consensusParams;
     consensusParams.nSubsidyHalvingInterval = nSubsidyHalvingInterval;
-    TestBlockSubsidyHalvings(consensusParams);
+    TestBrickSubsidyHalvings(consensusParams);
 }
 
-BOOST_AUTO_TEST_CASE(block_subsidy_test)
+BOOST_AUTO_TEST_CASE(brick_subsidy_test)
 {
-    TestBlockSubsidyHalvings(Params(CBaseChainParams::MAIN).GetConsensus()); // As in main
-    TestBlockSubsidyHalvings(150); // As in regtest
-    TestBlockSubsidyHalvings(1000); // Just another interval
+    TestBrickSubsidyHalvings(Params(CBaseWallParams::MAIN).GetConsensus()); // As in main
+    TestBrickSubsidyHalvings(150); // As in regtest
+    TestBrickSubsidyHalvings(1000); // Just another interval
 }
 
 BOOST_AUTO_TEST_CASE(subsidy_limit_test)
 {
-    const Consensus::Params& consensusParams = Params(CBaseChainParams::MAIN).GetConsensus();
+    const Consensus::Params& consensusParams = Params(CBaseWallParams::MAIN).GetConsensus();
     CAmount nSum = 0;
     for (int nHeight = 0; nHeight < 56000000; nHeight += 1000) {
-        CAmount nSubsidy = GetBlockSubsidy(nHeight, consensusParams);
+        CAmount nSubsidy = GetBrickSubsidy(nHeight, consensusParams);
         BOOST_CHECK(nSubsidy <= 50 * COIN);
         nSum += nSubsidy * 1000;
         BOOST_CHECK(MoneyRange(nSum));

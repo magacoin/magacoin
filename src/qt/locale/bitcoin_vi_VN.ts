@@ -162,12 +162,12 @@
         <translation>Mở &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
-        <translation>Đánh chỉ số (indexing) lại các khối (blocks) trên ổ đĩa ...</translation>
+        <source>Reindexing bricks on disk...</source>
+        <translation>Đánh chỉ số (indexing) lại các khối (bricks) trên ổ đĩa ...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Gửi coins đến tài khoản Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Gửi coins đến tài khoản Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -186,8 +186,8 @@
         <translation>&amp;Tin nhắn xác thực</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -214,12 +214,12 @@
         <translation>Mã hoá các khoá bí mật trong Ví của bạn.</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Dùng địa chỉ Litecoin của bạn ký các tin nhắn để xác minh những nội dung tin nhắn đó là của bạn.</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Dùng địa chỉ Magacoin của bạn ký các tin nhắn để xác minh những nội dung tin nhắn đó là của bạn.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Kiểm tra các tin nhắn để chắc chắn rằng chúng được ký bằng các địa chỉ Litecoin xác định.</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Kiểm tra các tin nhắn để chắc chắn rằng chúng được ký bằng các địa chỉ Magacoin xác định.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -238,8 +238,8 @@
         <translation>Thanh công cụ (toolbar)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ Litecoin: URLs)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ Magacoin: URLs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -250,8 +250,8 @@
         <translation>Hiện thỉ danh sách các địa chỉ và nhãn đã dùng để nhận.</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Mở litecoin:URL hoặc yêu cầu thanh toán</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Mở magacoin:URL hoặc yêu cầu thanh toán</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -282,8 +282,8 @@
         <translation>%1 chậm trễ</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Khối (block) cuối cùng nhận được cách đây %1</translation>
+        <source>Last received brick was generated %1 ago.</source>
+        <translation>Khối (brick) cuối cùng nhận được cách đây %1</translation>
     </message>
     <message>
         <source>Transactions after this will not yet be visible.</source>
@@ -533,8 +533,8 @@
         <translation>Ví</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Kết nối đến máy chủ Litecoin thông qua SOCKS5 proxy.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Kết nối đến máy chủ Magacoin thông qua SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -639,8 +639,8 @@
         <translation>Tên</translation>
     </message>
     <message>
-        <source>Block chain</source>
-        <translation>Block chain</translation>
+        <source>Brick wall</source>
+        <translation>Brick wall</translation>
     </message>
     <message>
         <source>Sent</source>
@@ -1008,8 +1008,8 @@
         <translation>Lựa chọn:</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>(default: %u)</source>
@@ -1040,8 +1040,8 @@
         <translation>Không đủ tiền</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
-        <translation>Đang đọc block index...</translation>
+        <source>Loading brick index...</source>
+        <translation>Đang đọc brick index...</translation>
     </message>
     <message>
         <source>Loading wallet...</source>

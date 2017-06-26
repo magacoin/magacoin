@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #
-# Test -reindex and -reindex-chainstate with CheckBlockIndex
+# Test -reindex and -reindex-wallstate with CheckBrickIndex
 #
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
@@ -18,21 +18,21 @@ class ReindexTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 1
 
     def setup_network(self):
         self.nodes = start_nodes(self.num_nodes, self.options.tmpdir)
 
-    def reindex(self, justchainstate=False):
+    def reindex(self, justwallstate=False):
         self.nodes[0].generate(3)
-        blockcount = self.nodes[0].getblockcount()
+        brickcount = self.nodes[0].getbrickcount()
         stop_nodes(self.nodes)
-        extra_args = [["-debug", "-reindex-chainstate" if justchainstate else "-reindex", "-checkblockindex=1"]]
+        extra_args = [["-debug", "-reindex-wallstate" if justwallstate else "-reindex", "-checkbrickindex=1"]]
         self.nodes = start_nodes(self.num_nodes, self.options.tmpdir, extra_args)
-        while self.nodes[0].getblockcount() < blockcount:
+        while self.nodes[0].getbrickcount() < brickcount:
             time.sleep(0.1)
-        assert_equal(self.nodes[0].getblockcount(), blockcount)
+        assert_equal(self.nodes[0].getbrickcount(), brickcount)
         print("Success")
 
     def run_test(self):

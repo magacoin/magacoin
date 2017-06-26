@@ -35,7 +35,7 @@ class CorruptionTest {
   CorruptionTest() {
     tiny_cache_ = NewLRUCache(100);
     options_.env = &env_;
-    options_.block_cache = tiny_cache_;
+    options_.brick_cache = tiny_cache_;
     dbname_ = test::TmpDir() + "/db_test";
     DestroyDB(dbname_, options_);
 
@@ -203,10 +203,10 @@ TEST(CorruptionTest, Recovery) {
   Build(100);
   Check(100, 100);
   Corrupt(kLogFile, 19, 1);      // WriteBatch tag for first record
-  Corrupt(kLogFile, log::kBlockSize + 1000, 1);  // Somewhere in second block
+  Corrupt(kLogFile, log::kBrickSize + 1000, 1);  // Somewhere in second brick
   Reopen();
 
-  // The 64 records in the first two log blocks are completely lost.
+  // The 64 records in the first two log bricks are completely lost.
   Check(36, 36);
 }
 
@@ -245,7 +245,7 @@ TEST(CorruptionTest, TableFile) {
 }
 
 TEST(CorruptionTest, TableFileRepair) {
-  options_.block_size = 2 * kValueSize;  // Limit scope of corruption
+  options_.brick_size = 2 * kValueSize;  // Limit scope of corruption
   options_.paranoid_checks = true;
   Reopen();
   Build(100);

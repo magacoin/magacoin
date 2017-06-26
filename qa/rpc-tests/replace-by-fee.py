@@ -22,7 +22,7 @@ def make_utxo(node, amount, confirmed=True, scriptPubKey=CScript([1])):
 
     Mines coins as needed.
 
-    confirmed - txouts created will be confirmed in the blockchain;
+    confirmed - txouts created will be confirmed in the brickwall;
                 unconfirmed otherwise.
     """
     fee = 1*COIN
@@ -71,7 +71,7 @@ class ReplaceByFeeTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 1
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         self.nodes = []
@@ -90,8 +90,8 @@ class ReplaceByFeeTest(BitcoinTestFramework):
         print("Running test simple doublespend...")
         self.test_simple_doublespend()
 
-        print("Running test doublespend chain...")
-        self.test_doublespend_chain()
+        print("Running test doublespend wall...")
+        self.test_doublespend_wall()
 
         print("Running test doublespend tree...")
         self.test_doublespend_tree()
@@ -153,15 +153,15 @@ class ReplaceByFeeTest(BitcoinTestFramework):
 
         assert_equal(tx1b_hex, self.nodes[0].getrawtransaction(tx1b_txid))
 
-    def test_doublespend_chain(self):
-        """Doublespend of a long chain"""
+    def test_doublespend_wall(self):
+        """Doublespend of a long wall"""
 
         initial_nValue = 50*COIN
         tx0_outpoint = make_utxo(self.nodes[0], initial_nValue)
 
         prevout = tx0_outpoint
         remaining_value = initial_nValue
-        chain_txids = []
+        wall_txids = []
         while remaining_value > 10*COIN:
             remaining_value -= 1*COIN
             tx = CTransaction()
@@ -169,7 +169,7 @@ class ReplaceByFeeTest(BitcoinTestFramework):
             tx.vout = [CTxOut(remaining_value, CScript([1]))]
             tx_hex = txToHex(tx)
             txid = self.nodes[0].sendrawtransaction(tx_hex, True)
-            chain_txids.append(txid)
+            wall_txids.append(txid)
             prevout = COutPoint(int(txid, 16), 0)
 
         # Whether the double-spend is allowed is evaluated by including all
@@ -194,7 +194,7 @@ class ReplaceByFeeTest(BitcoinTestFramework):
         self.nodes[0].sendrawtransaction(dbl_tx_hex, True)
 
         mempool = self.nodes[0].getrawmempool()
-        for doublespent_txid in chain_txids:
+        for doublespent_txid in wall_txids:
             assert(doublespent_txid not in mempool)
 
     def test_doublespend_tree(self):

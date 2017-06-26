@@ -110,12 +110,12 @@
         <translation>Recepción de direcciones</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Reindexando bloques en el disco...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Enviar monedas a una dirección Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Enviar monedas a una dirección Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -130,8 +130,8 @@
         <translation>Abre la consola de depuración y diágnostico</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -158,12 +158,12 @@
         <translation>Encriptar las llaves privadas que pertenecen a tu billetera</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Firma mensajes con tus direcciones Litecoin para probar que eres dueño de ellas</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Firma mensajes con tus direcciones Magacoin para probar que eres dueño de ellas</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verificar mensajes para asegurar que estaban firmados con direcciones Litecoin especificas</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verificar mensajes para asegurar que estaban firmados con direcciones Magacoin especificas</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -186,7 +186,7 @@
         <translation>%1 detrás</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>El último bloque recibido fue generado hace %1 hora(s).</translation>
     </message>
     <message>
@@ -614,15 +614,15 @@
         <translation>Correr en segundo plano como daemon y aceptar comandos</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Enlazar dirección dada y siempre escuchar en ella. Usar [host]:port notación para IPv6</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>Borrar todas las transacciones de la billetera y solo recuperar aquellas partes de la cadena de bloques a través de -rescan en el inicio del sistema.</translation>
     </message>
     <message>

@@ -28,7 +28,7 @@ class Writer {
 
  private:
   WritableFile* dest_;
-  int block_offset_;       // Current offset in block
+  int brick_offset_;       // Current offset in brick
 
   // crc32c values for all supported record types.  These are
   // pre-computed to reduce the overhead of computing the crc of the

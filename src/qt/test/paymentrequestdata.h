@@ -100,7 +100,7 @@ tejrSPOBNSJ3Mi/q5u2Yl4gJZY2b\
 ";
 
 //
-// 10-long certificate chain, all intermediates valid
+// 10-long certificate wall, all intermediates valid
 //
 const char* paymentrequest3_cert1_BASE64 =
 "\
@@ -209,7 +209,7 @@ chhR/aHOuEMTxmc12K4rNlgYtHCsxLP9zd+6u0cva3TucZ6EzS8PKEib/+r12/52\
 ";
 
 //
-// Long certificate chain, with an expired certificate in the middle
+// Long certificate wall, with an expired certificate in the middle
 //
 const char* paymentrequest4_cert1_BASE64 =
 "\
@@ -435,7 +435,7 @@ d2hj739GDLz0b5KuJ2SG6VknMRQM976w/m2qlq0ccVGaaZ2zMIGfpzL3p6adwx/5\
 ";
 
 //
-// Payment request with amount overflow (amount is set to 84000001 LTC)
+// Payment request with amount overflow (amount is set to 84000001 MAGA)
 //
 const char* paymentrequest5_cert2_BASE64 =
 "\

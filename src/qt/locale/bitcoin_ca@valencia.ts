@@ -142,12 +142,12 @@
         <translation>Obri un &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>S'estan reindexant els blocs al disc...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Envia monedes a una adreça Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Envia monedes a una adreça Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -170,8 +170,8 @@
         <translation>&amp;Verifica el missatge...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -198,12 +198,12 @@
         <translation>Encripta les claus privades pertanyents al moneder</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Signa el missatges amb la seua adreça de Litecoin per provar que les poseeixes</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Signa el missatges amb la seua adreça de Magacoin per provar que les poseeixes</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verifiqueu els missatges per assegurar-vos que han estat signats amb una adreça Litecoin específica.</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verifiqueu els missatges per assegurar-vos que han estat signats amb una adreça Magacoin específica.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -222,8 +222,8 @@
         <translation>Barra d'eines de les pestanyes</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Sol·licita pagaments (genera codis QR i litecoin: URI)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Sol·licita pagaments (genera codis QR i magacoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -234,23 +234,23 @@
         <translation>Mostra la llista d'adreces de recepció i etiquetes utilitzades</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Obri una litecoin: sol·licitud d'URI o pagament</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Obri una magacoin: sol·licitud d'URI o pagament</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opcions de la &amp;línia d'ordes</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n connexió activa a la xarxa Litecoin</numerusform><numerusform>%n connexions actives a la xarxa Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n connexió activa a la xarxa Magacoin</numerusform><numerusform>%n connexions actives a la xarxa Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>No hi ha cap font de bloc disponible...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Proccessats %n bloc de l'historial de transaccions.</numerusform><numerusform>Proccessats %n blocs de l'historial de transaccions.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -278,7 +278,7 @@
         <translation>%1 darrere</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>El darrer bloc rebut ha estat generat fa %1.</translation>
     </message>
     <message>
@@ -589,7 +589,7 @@
         <translation>Minimitza en comptes d'eixir de l'aplicació quan la finestra es tanca. Quan s'habilita esta opció l'aplicació es tancara només quan se selecciona Ix del menú. </translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>URL de terceres parts (p. ex. explorador de blocs) que apareix en la pestanya de transaccions com elements del menú contextual. %s en l'URL es reemplaçat pel resum de la transacció. Diferents URL estan separades per una barra vertical |.</translation>
     </message>
     <message>
@@ -637,16 +637,16 @@
         <translation>&amp;Gasta el canvi sense confirmar</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Obri el port del client de Litecoin al router de forma automàtica. Això només funciona quan el router implementa UPnP i l'opció està activada.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Obri el port del client de Magacoin al router de forma automàtica. Això només funciona quan el router implementa UPnP i l'opció està activada.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Port obert amb &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Connecta a la xarxa Litecoin a través d'un proxy SOCKS5.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Connecta a la xarxa Magacoin a través d'un proxy SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -748,8 +748,8 @@
         <translation>Formulari</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>La informació mostrada pot no estar al día. El teu moneder es sincronitza automàticament amb la xarxa Litecoin un cop s'ha establit connexió, però este proces no s'ha completat encara.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>La informació mostrada pot no estar al día. El teu moneder es sincronitza automàticament amb la xarxa Magacoin un cop s'ha establit connexió, però este proces no s'ha completat encara.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -841,8 +841,8 @@
         <translation>Import</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Introduïu una adreça de Litecoin (p. ex. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Introduïu una adreça de Magacoin (p. ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -919,11 +919,11 @@
         <translation>Nombre de connexions</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Cadena de blocs</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Nombre de blocs actuals</translation>
     </message>
     <message>
@@ -983,7 +983,7 @@
         <translation>Diferència horària</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Últim temps de bloc</translation>
     </message>
     <message>
@@ -1098,8 +1098,8 @@
         <translation>R&amp;eutilitza una adreça de recepció anterior (no recomanat)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>Un missatge opcional que s'adjuntarà a la sol·licitud de pagament, que es mostrarà quan s'òbriga la sol·licitud. Nota: El missatge no s'enviarà amb el pagament per la xarxa Litecoin.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>Un missatge opcional que s'adjuntarà a la sol·licitud de pagament, que es mostrarà quan s'òbriga la sol·licitud. Nota: El missatge no s'enviarà amb el pagament per la xarxa Magacoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1255,8 +1255,8 @@
         <translation>total com a mínim</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
-        <translation>No hi ha cap problema en pagar només la comissió mínima sempre que hi haja menys volum de transacció que espai en els blocs. Però tingueu present que això pot acabar en una transacció que mai es confirme una vegada hi haja més demanda de transaccions de litecoins que la xarxa puga processar.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
+        <translation>No hi ha cap problema en pagar només la comissió mínima sempre que hi haja menys volum de transacció que espai en els blocs. Però tingueu present que això pot acabar en una transacció que mai es confirme una vegada hi haja més demanda de transaccions de magacoins que la xarxa puga processar.</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
@@ -1271,7 +1271,7 @@
         <translation>Personalitzada:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(No s'ha inicialitzat encara la comissió intel·ligent. Normalment pren uns pocs blocs...)</translation>
     </message>
     <message>
@@ -1342,8 +1342,8 @@
         <translation>Això és un pagament normal.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>L'adreça Litecoin on enviar el pagament</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>L'adreça Magacoin on enviar el pagament</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1362,8 +1362,8 @@
         <translation>Elimina esta entrada</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>La comissió es deduirà de l'import que s'enviarà. El destinatari rebrà menys litecoins que les que introduïu al camp d'import. Si se seleccionen múltiples destinataris, la comissió es dividirà per igual.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>La comissió es deduirà de l'import que s'enviarà. El destinatari rebrà menys magacoins que les que introduïu al camp d'import. Si se seleccionen múltiples destinataris, la comissió es dividirà per igual.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -1386,8 +1386,8 @@
         <translation>Introduïu una etiqueta per a esta adreça per afegir-la a la llista d'adreces utilitzades</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>Un missatge que s'ha adjuntat al litecoin: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa Litecoin.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>Un missatge que s'ha adjuntat al magacoin: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa Magacoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1419,12 +1419,12 @@
         <translation>&amp;Signa el missatge</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Podeu signar missatges/acords amb les vostres adreces per provar que rebeu les litecoins que s'hi envien. Aneu amb compte no signar res que siga vague o aleatori, perquè en alguns atacs de suplantació es pot provar que hi signeu la vostra identitat. Només signeu aquelles declaracions completament detallades en què hi esteu d'acord. </translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Podeu signar missatges/acords amb les vostres adreces per provar que rebeu les magacoins que s'hi envien. Aneu amb compte no signar res que siga vague o aleatori, perquè en alguns atacs de suplantació es pot provar que hi signeu la vostra identitat. Només signeu aquelles declaracions completament detallades en què hi esteu d'acord. </translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>L'adreça Litecoin amb què signar el missatge</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>L'adreça Magacoin amb què signar el missatge</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1455,8 +1455,8 @@
         <translation>Copia la signatura actual al porta-retalls del sistema</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Signa el missatge per provar que ets propietari d'esta adreça Litecoin</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Signa el missatge per provar que ets propietari d'esta adreça Magacoin</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1479,12 +1479,12 @@
         <translation>Introduïu l'adreça del receptor, el missatge (assegureu-vos de copiar els salts de línia, espais, tabuladors, etc. exactament) i signatura de sota per verificar el missatge. Tingueu cura de no llegir més en la signatura del que està al missatge signat, per evitar ser enganyat per un atac d'home-en-el-mig. Tingueu en compte que això només demostra que la part que signa rep amb l'adreça, i no es pot provar l'enviament de qualsevol transacció!</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>L'adreça Litecoin amb què va ser signat el missatge</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>L'adreça Magacoin amb què va ser signat el missatge</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verificar el missatge per assegurar-se que ha estat signat amb una adreça Litecoin específica</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verificar el missatge per assegurar-se que ha estat signat amb una adreça Magacoin específica</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1572,15 +1572,15 @@
         <translation>Accepta connexions de fora (per defecte: 1 si no -proxy o -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Vincula a una adreça específica i sempre escolta-hi. Utilitza la notació [host]:port per IPv6</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>Elimina totes les transaccions del moneder i només recupera aquelles de la cadena de blocs a través de -rescan a l'inici</translation>
     </message>
     <message>
@@ -1616,7 +1616,7 @@
         <translation>&lt;category&gt; pot ser:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Opcions de la creació de blocs:</translation>
     </message>
     <message>
@@ -1628,7 +1628,7 @@
         <translation>Opcions de connexió:</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>S'ha detectat una base de dades de blocs corrupta</translation>
     </message>
     <message>
@@ -1640,11 +1640,11 @@
         <translation>No carreguis el moneder i inhabilita les crides RPC del moneder</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Voleu reconstruir la base de dades de blocs ara?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Error carregant la base de dades de blocs</translation>
     </message>
     <message>
@@ -1652,11 +1652,11 @@
         <translation>Error inicialitzant l'entorn de la base de dades del moneder %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Error carregant la base de dades del bloc</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Error en obrir la base de dades de blocs</translation>
     </message>
     <message>
@@ -1672,7 +1672,7 @@
         <translation>S'està important...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>No s'ha trobat el bloc de gènesi o és incorrecte. El directori de dades de la xarxa és incorrecte?</translation>
     </message>
     <message>
@@ -1700,7 +1700,7 @@
         <translation>Defineix la mida de la memòria cau de la base de dades en megabytes (%d a %d, per defecte: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>Defineix la mida màxim del bloc en bytes (per defecte: %d)</translation>
     </message>
     <message>
@@ -1712,7 +1712,7 @@
         <translation>Utilitza UPnP per a mapejar el port d'escolta (per defecte: %u)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>S'estan verificant els blocs...</translation>
     </message>
     <message>
@@ -1756,7 +1756,7 @@
         <translation>Executa l'orde quan es reba un avís rellevant o veiem una forquilla molt llarga (%s en cmd és reemplaçat per un missatge)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>Si no s'especifica una paytxfee (comissió de transacció de pagament), inclogueu suficient comissió per tal que les transaccions comencen a confirmar-se en una mitja de n blocs (per defecte: %u)</translation>
     </message>
     <message>
@@ -1792,7 +1792,7 @@
         <translation>Els iguals en la llista blanca no poden ser bandejats per DoS i es transmetran sempre llurs transaccions, fins i tot si ja són a la mempool. Això és útil, p. ex., per a una passarel·la</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
         <translation>Cal que torneu a construir la base de dades fent servir -reindex per tornar al mode no podat. Això tornarà a baixar la cadena de blocs sencera</translation>
     </message>
     <message>
@@ -1904,7 +1904,7 @@
         <translation>Contrasenya per a connexions JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Executa l'orde quan el millor bloc canvie (%s en cmd es reemplaça per un resum de bloc)</translation>
     </message>
     <message>
@@ -1920,8 +1920,8 @@
         <translation>(1 = manté les metadades de les tx, p. ex., propietari del compte i informació de sol·licitud del pagament, 2 = prescindeix de les metadades de les tx)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>Com d'exhaustiva és la verificació de blocs del -checkblocks (0-4, per defecte: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>Com d'exhaustiva és la verificació de blocs del -checkbricks (0-4, per defecte: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -1948,7 +1948,7 @@
         <translation>Demana sempre les adreces dels iguals a través de consultes DNS (per defecte: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>Quants blocs per comprovar a l'inici (per defecte: %u, 0 = tots)</translation>
     </message>
     <message>
@@ -2032,7 +2032,7 @@
         <translation>Balanç insuficient</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>S'està carregant l'índex de blocs...</translation>
     </message>
     <message>

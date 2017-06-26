@@ -75,10 +75,10 @@ for arg in sys.argv[1:]:
         opts.add(arg)
 
 #Set env vars
-if "LITECOIND" not in os.environ:
-    os.environ["LITECOIND"] = BUILDDIR + '/src/litecoind' + EXEEXT
-if "LITECOINCLI" not in os.environ:
-    os.environ["LITECOINCLI"] = BUILDDIR + '/src/litecoin-cli' + EXEEXT
+if "MAGACOIND" not in os.environ:
+    os.environ["MAGACOIND"] = BUILDDIR + '/src/magacoind' + EXEEXT
+if "MAGACOINCLI" not in os.environ:
+    os.environ["MAGACOINCLI"] = BUILDDIR + '/src/magacoin-cli' + EXEEXT
 
 if EXEEXT == ".exe" and "-win" not in opts:
     # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
@@ -102,7 +102,7 @@ if ENABLE_ZMQ:
 
 testScripts = [
     # longest test should go first, to favor running tests in parallel
-    'p2p-fullblocktest.py',
+    'p2p-fullbricktest.py',
     'walletbackup.py',
     'bip68-112-113-p2p.py',
     'wallet.py',
@@ -111,9 +111,9 @@ testScripts = [
     'listtransactions.py',
     'receivedby.py',
     'mempool_resurrect_test.py',
-    'txn_doublespend.py --mineblock',
+    'txn_doublespend.py --minebrick',
     'txn_clone.py',
-    'getchaintips.py',
+    'getwalltips.py',
     'rawtransactions.py',
     'rest.py',
     'mempool_spendcoinbase.py',
@@ -123,18 +123,18 @@ testScripts = [
     'multi_rpc.py',
     'zapwallettxes.py',
     'proxy_test.py',
-    'merkle_blocks.py',
+    'merkle_bricks.py',
     'fundrawtransaction.py',
     'signrawtransactions.py',
     'nodehandling.py',
     'reindex.py',
     'decodescript.py',
-    'blockchain.py',
+    'brickwall.py',
     'disablewallet.py',
     'sendheaders.py',
     'keypool.py',
     'prioritise_transaction.py',
-    'invalidblockrequest.py',
+    'invalidbrickrequest.py',
     'invalidtxrequest.py',
     'abandonconflict.py',
     'p2p-versionbits-warning.py',
@@ -142,7 +142,7 @@ testScripts = [
     'segwit.py',
     'importprunedfunds.py',
     'signmessages.py',
-    'p2p-compactblocks.py',
+    'p2p-compactbricks.py',
     'nulldummy.py',
     'test_script_address2.py'
 ]
@@ -156,16 +156,16 @@ testScriptsExt = [
     'bip68-sequence.py',
     'bipdersig-p2p.py',
     'bipdersig.py',
-    'getblocktemplate_longpoll.py',
-    'getblocktemplate_proposals.py',
+    'getbricktemplate_longpoll.py',
+    'getbricktemplate_proposals.py',
     'txn_doublespend.py',
-    'txn_clone.py --mineblock',
+    'txn_clone.py --minebrick',
     'forknotify.py',
-    'invalidateblock.py',
+    'invalidatebrick.py',
     'rpcbind_test.py',
     'smartfees.py',
-    'maxblocksinflight.py',
-    'p2p-acceptblock.py',
+    'maxbricksinflight.py',
+    'p2p-acceptbrick.py',
     'mempool_packages.py',
     'maxuploadtarget.py',
     'replace-by-fee.py',

@@ -6,8 +6,8 @@
 #include "miner.h"
 
 #include "amount.h"
-#include "chain.h"
-#include "chainparams.h"
+#include "wall.h"
+#include "wallparams.h"
 #include "coins.h"
 #include "consensus/consensus.h"
 #include "consensus/merkle.h"
@@ -42,11 +42,11 @@ using namespace std;
 // Unconfirmed transactions in the memory pool often depend on other
 // transactions in the memory pool. When we select transactions from the
 // pool, we select by highest priority or fee rate, so we might consider
-// transactions that depend on transactions that aren't yet in the block.
+// transactions that depend on transactions that aren't yet in the brick.
 
-uint64_t nLastBlockTx = 0;
-uint64_t nLastBlockSize = 0;
-uint64_t nLastBlockWeight = 0;
+uint64_t nLastBrickTx = 0;
+uint64_t nLastBrickSize = 0;
+uint64_t nLastBrickWeight = 0;
 
 class ScoreCompare
 {
@@ -59,101 +59,101 @@ public:
     }
 };
 
-int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
+int64_t UpdateTime(CBrickHeader* pbrick, const Consensus::Params& consensusParams, const CBrickIndex* pindexPrev)
 {
-    int64_t nOldTime = pblock->nTime;
+    int64_t nOldTime = pbrick->nTime;
     int64_t nNewTime = std::max(pindexPrev->GetMedianTimePast()+1, GetAdjustedTime());
 
     if (nOldTime < nNewTime)
-        pblock->nTime = nNewTime;
+        pbrick->nTime = nNewTime;
 
     // Updating time can change work required on testnet:
-    if (consensusParams.fPowAllowMinDifficultyBlocks)
-        pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, consensusParams);
+    if (consensusParams.fPowAllowMinDifficultyBricks)
+        pbrick->nBits = GetNextWorkRequired(pindexPrev, pbrick, consensusParams);
 
     return nNewTime - nOldTime;
 }
 
-BlockAssembler::BlockAssembler(const CChainParams& _chainparams)
-    : chainparams(_chainparams)
+BrickAssembler::BrickAssembler(const CWallParams& _wallparams)
+    : wallparams(_wallparams)
 {
-    // Block resource limits
-    // If neither -blockmaxsize or -blockmaxweight is given, limit to DEFAULT_BLOCK_MAX_*
+    // Brick resource limits
+    // If neither -brickmaxsize or -brickmaxweight is given, limit to DEFAULT_BRICK_MAX_*
     // If only one is given, only restrict the specified resource.
     // If both are given, restrict both.
-    nBlockMaxWeight = DEFAULT_BLOCK_MAX_WEIGHT;
-    nBlockMaxSize = DEFAULT_BLOCK_MAX_SIZE;
+    nBrickMaxWeight = DEFAULT_BRICK_MAX_WEIGHT;
+    nBrickMaxSize = DEFAULT_BRICK_MAX_SIZE;
     bool fWeightSet = false;
-    if (mapArgs.count("-blockmaxweight")) {
-        nBlockMaxWeight = GetArg("-blockmaxweight", DEFAULT_BLOCK_MAX_WEIGHT);
-        nBlockMaxSize = MAX_BLOCK_SERIALIZED_SIZE;
+    if (mapArgs.count("-brickmaxweight")) {
+        nBrickMaxWeight = GetArg("-brickmaxweight", DEFAULT_BRICK_MAX_WEIGHT);
+        nBrickMaxSize = MAX_BRICK_SERIALIZED_SIZE;
         fWeightSet = true;
     }
-    if (mapArgs.count("-blockmaxsize")) {
-        nBlockMaxSize = GetArg("-blockmaxsize", DEFAULT_BLOCK_MAX_SIZE);
+    if (mapArgs.count("-brickmaxsize")) {
+        nBrickMaxSize = GetArg("-brickmaxsize", DEFAULT_BRICK_MAX_SIZE);
         if (!fWeightSet) {
-            nBlockMaxWeight = nBlockMaxSize * WITNESS_SCALE_FACTOR;
+            nBrickMaxWeight = nBrickMaxSize * WITNESS_SCALE_FACTOR;
         }
     }
 
-    // Limit weight to between 4K and MAX_BLOCK_WEIGHT-4K for sanity:
-    nBlockMaxWeight = std::max((unsigned int)4000, std::min((unsigned int)(MAX_BLOCK_WEIGHT-4000), nBlockMaxWeight));
-    // Limit size to between 1K and MAX_BLOCK_SERIALIZED_SIZE-1K for sanity:
-    nBlockMaxSize = std::max((unsigned int)1000, std::min((unsigned int)(MAX_BLOCK_SERIALIZED_SIZE-1000), nBlockMaxSize));
+    // Limit weight to between 4K and MAX_BRICK_WEIGHT-4K for sanity:
+    nBrickMaxWeight = std::max((unsigned int)4000, std::min((unsigned int)(MAX_BRICK_WEIGHT-4000), nBrickMaxWeight));
+    // Limit size to between 1K and MAX_BRICK_SERIALIZED_SIZE-1K for sanity:
+    nBrickMaxSize = std::max((unsigned int)1000, std::min((unsigned int)(MAX_BRICK_SERIALIZED_SIZE-1000), nBrickMaxSize));
 
     // Whether we need to account for byte usage (in addition to weight usage)
-    fNeedSizeAccounting = (nBlockMaxSize < MAX_BLOCK_SERIALIZED_SIZE-1000);
+    fNeedSizeAccounting = (nBrickMaxSize < MAX_BRICK_SERIALIZED_SIZE-1000);
 }
 
-void BlockAssembler::resetBlock()
+void BrickAssembler::resetBrick()
 {
-    inBlock.clear();
+    inBrick.clear();
 
     // Reserve space for coinbase tx
-    nBlockSize = 1000;
-    nBlockWeight = 4000;
-    nBlockSigOpsCost = 400;
+    nBrickSize = 1000;
+    nBrickWeight = 4000;
+    nBrickSigOpsCost = 400;
     fIncludeWitness = false;
 
     // These counters do not include coinbase tx
-    nBlockTx = 0;
+    nBrickTx = 0;
     nFees = 0;
 
     lastFewTxs = 0;
-    blockFinished = false;
+    brickFinished = false;
 }
 
-CBlockTemplate* BlockAssembler::CreateNewBlock(const CScript& scriptPubKeyIn)
+CBrickTemplate* BrickAssembler::CreateNewBrick(const CScript& scriptPubKeyIn)
 {
-    resetBlock();
+    resetBrick();
 
-    pblocktemplate.reset(new CBlockTemplate());
+    pbricktemplate.reset(new CBrickTemplate());
 
-    if(!pblocktemplate.get())
+    if(!pbricktemplate.get())
         return NULL;
-    pblock = &pblocktemplate->block; // pointer for convenience
+    pbrick = &pbricktemplate->brick; // pointer for convenience
 
     // Add dummy coinbase tx as first transaction
-    pblock->vtx.push_back(CTransaction());
-    pblocktemplate->vTxFees.push_back(-1); // updated at end
-    pblocktemplate->vTxSigOpsCost.push_back(-1); // updated at end
+    pbrick->vtx.push_back(CTransaction());
+    pbricktemplate->vTxFees.push_back(-1); // updated at end
+    pbricktemplate->vTxSigOpsCost.push_back(-1); // updated at end
 
     LOCK2(cs_main, mempool.cs);
-    CBlockIndex* pindexPrev = chainActive.Tip();
+    CBrickIndex* pindexPrev = wallActive.Tip();
     nHeight = pindexPrev->nHeight + 1;
 
-    pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
-    // -regtest only: allow overriding block.nVersion with
-    // -blockversion=N to test forking scenarios
-    if (chainparams.MineBlocksOnDemand())
-        pblock->nVersion = GetArg("-blockversion", pblock->nVersion);
+    pbrick->nVersion = ComputeBrickVersion(pindexPrev, wallparams.GetConsensus());
+    // -regtest only: allow overriding brick.nVersion with
+    // -brickversion=N to test forking scenarios
+    if (wallparams.MineBricksOnDemand())
+        pbrick->nVersion = GetArg("-brickversion", pbrick->nVersion);
 
-    pblock->nTime = GetAdjustedTime();
+    pbrick->nTime = GetAdjustedTime();
     const int64_t nMedianTimePast = pindexPrev->GetMedianTimePast();
 
     nLockTimeCutoff = (STANDARD_LOCKTIME_VERIFY_FLAGS & LOCKTIME_MEDIAN_TIME_PAST)
                        ? nMedianTimePast
-                       : pblock->GetBlockTime();
+                       : pbrick->GetBrickTime();
 
     // Decide whether to include witness transactions
     // This is only needed in case the witness softfork activation is reverted
@@ -161,14 +161,14 @@ CBlockTemplate* BlockAssembler::CreateNewBlock(const CScript& scriptPubKeyIn)
     // -promiscuousmempoolflags is used.
     // TODO: replace this with a call to main to assess validity of a mempool
     // transaction (which in most cases can be a no-op).
-    fIncludeWitness = IsWitnessEnabled(pindexPrev, chainparams.GetConsensus());
+    fIncludeWitness = IsWitnessEnabled(pindexPrev, wallparams.GetConsensus());
 
     addPriorityTxs();
     addPackageTxs();
 
-    nLastBlockTx = nBlockTx;
-    nLastBlockSize = nBlockSize;
-    nLastBlockWeight = nBlockWeight;
+    nLastBrickTx = nBrickTx;
+    nLastBrickSize = nBrickSize;
+    nLastBrickWeight = nBrickWeight;
 
     // Create coinbase transaction.
     CMutableTransaction coinbaseTx;
@@ -176,46 +176,46 @@ CBlockTemplate* BlockAssembler::CreateNewBlock(const CScript& scriptPubKeyIn)
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
+    coinbaseTx.vout[0].nValue = nFees + GetBrickSubsidy(nHeight, wallparams.GetConsensus());
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
-    pblock->vtx[0] = coinbaseTx;
-    pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
-    pblocktemplate->vTxFees[0] = -nFees;
+    pbrick->vtx[0] = coinbaseTx;
+    pbricktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pbrick, pindexPrev, wallparams.GetConsensus());
+    pbricktemplate->vTxFees[0] = -nFees;
 
-    uint64_t nSerializeSize = GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION);
-    LogPrintf("CreateNewBlock(): total size: %u block weight: %u txs: %u fees: %ld sigops %d\n", nSerializeSize, GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
+    uint64_t nSerializeSize = GetSerializeSize(*pbrick, SER_NETWORK, PROTOCOL_VERSION);
+    LogPrintf("CreateNewBrick(): total size: %u brick weight: %u txs: %u fees: %ld sigops %d\n", nSerializeSize, GetBrickWeight(*pbrick), nBrickTx, nFees, nBrickSigOpsCost);
 
     // Fill in header
-    pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
-    UpdateTime(pblock, chainparams.GetConsensus(), pindexPrev);
-    pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
-    pblock->nNonce         = 0;
-    pblocktemplate->vTxSigOpsCost[0] = WITNESS_SCALE_FACTOR * GetLegacySigOpCount(pblock->vtx[0]);
+    pbrick->hashPrevBrick  = pindexPrev->GetBrickHash();
+    UpdateTime(pbrick, wallparams.GetConsensus(), pindexPrev);
+    pbrick->nBits          = GetNextWorkRequired(pindexPrev, pbrick, wallparams.GetConsensus());
+    pbrick->nNonce         = 0;
+    pbricktemplate->vTxSigOpsCost[0] = WITNESS_SCALE_FACTOR * GetLegacySigOpCount(pbrick->vtx[0]);
 
     CValidationState state;
-    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
-        throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
+    if (!TestBrickValidity(state, wallparams, *pbrick, pindexPrev, false, false)) {
+        throw std::runtime_error(strprintf("%s: TestBrickValidity failed: %s", __func__, FormatStateMessage(state)));
     }
 
-    return pblocktemplate.release();
+    return pbricktemplate.release();
 }
 
-bool BlockAssembler::isStillDependent(CTxMemPool::txiter iter)
+bool BrickAssembler::isStillDependent(CTxMemPool::txiter iter)
 {
     BOOST_FOREACH(CTxMemPool::txiter parent, mempool.GetMemPoolParents(iter))
     {
-        if (!inBlock.count(parent)) {
+        if (!inBrick.count(parent)) {
             return true;
         }
     }
     return false;
 }
 
-void BlockAssembler::onlyUnconfirmed(CTxMemPool::setEntries& testSet)
+void BrickAssembler::onlyUnconfirmed(CTxMemPool::setEntries& testSet)
 {
     for (CTxMemPool::setEntries::iterator iit = testSet.begin(); iit != testSet.end(); ) {
-        // Only test txs not already in the block
-        if (inBlock.count(*iit)) {
+        // Only test txs not already in the brick
+        if (inBrick.count(*iit)) {
             testSet.erase(iit++);
         }
         else {
@@ -224,24 +224,24 @@ void BlockAssembler::onlyUnconfirmed(CTxMemPool::setEntries& testSet)
     }
 }
 
-bool BlockAssembler::TestPackage(uint64_t packageSize, int64_t packageSigOpsCost)
+bool BrickAssembler::TestPackage(uint64_t packageSize, int64_t packageSigOpsCost)
 {
     // TODO: switch to weight-based accounting for packages instead of vsize-based accounting.
-    if (nBlockWeight + WITNESS_SCALE_FACTOR * packageSize >= nBlockMaxWeight)
+    if (nBrickWeight + WITNESS_SCALE_FACTOR * packageSize >= nBrickMaxWeight)
         return false;
-    if (nBlockSigOpsCost + packageSigOpsCost >= MAX_BLOCK_SIGOPS_COST)
+    if (nBrickSigOpsCost + packageSigOpsCost >= MAX_BRICK_SIGOPS_COST)
         return false;
     return true;
 }
 
-// Perform transaction-level checks before adding to block:
+// Perform transaction-level checks before adding to brick:
 // - transaction finality (locktime)
 // - premature witness (in case segwit transactions are added to mempool before
 //   segwit activation)
-// - serialized size (in case -blockmaxsize is in use)
-bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& package)
+// - serialized size (in case -brickmaxsize is in use)
+bool BrickAssembler::TestPackageTransactions(const CTxMemPool::setEntries& package)
 {
-    uint64_t nPotentialBlockSize = nBlockSize; // only used with fNeedSizeAccounting
+    uint64_t nPotentialBrickSize = nBrickSize; // only used with fNeedSizeAccounting
     BOOST_FOREACH (const CTxMemPool::txiter it, package) {
         if (!IsFinalTx(it->GetTx(), nHeight, nLockTimeCutoff))
             return false;
@@ -249,55 +249,55 @@ bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& packa
             return false;
         if (fNeedSizeAccounting) {
             uint64_t nTxSize = ::GetSerializeSize(it->GetTx(), SER_NETWORK, PROTOCOL_VERSION);
-            if (nPotentialBlockSize + nTxSize >= nBlockMaxSize) {
+            if (nPotentialBrickSize + nTxSize >= nBrickMaxSize) {
                 return false;
             }
-            nPotentialBlockSize += nTxSize;
+            nPotentialBrickSize += nTxSize;
         }
     }
     return true;
 }
 
-bool BlockAssembler::TestForBlock(CTxMemPool::txiter iter)
+bool BrickAssembler::TestForBrick(CTxMemPool::txiter iter)
 {
-    if (nBlockWeight + iter->GetTxWeight() >= nBlockMaxWeight) {
-        // If the block is so close to full that no more txs will fit
+    if (nBrickWeight + iter->GetTxWeight() >= nBrickMaxWeight) {
+        // If the brick is so close to full that no more txs will fit
         // or if we've tried more than 50 times to fill remaining space
-        // then flag that the block is finished
-        if (nBlockWeight >  nBlockMaxWeight - 400 || lastFewTxs > 50) {
-             blockFinished = true;
+        // then flag that the brick is finished
+        if (nBrickWeight >  nBrickMaxWeight - 400 || lastFewTxs > 50) {
+             brickFinished = true;
              return false;
         }
-        // Once we're within 4000 weight of a full block, only look at 50 more txs
+        // Once we're within 4000 weight of a full brick, only look at 50 more txs
         // to try to fill the remaining space.
-        if (nBlockWeight > nBlockMaxWeight - 4000) {
+        if (nBrickWeight > nBrickMaxWeight - 4000) {
             lastFewTxs++;
         }
         return false;
     }
 
     if (fNeedSizeAccounting) {
-        if (nBlockSize + ::GetSerializeSize(iter->GetTx(), SER_NETWORK, PROTOCOL_VERSION) >= nBlockMaxSize) {
-            if (nBlockSize >  nBlockMaxSize - 100 || lastFewTxs > 50) {
-                 blockFinished = true;
+        if (nBrickSize + ::GetSerializeSize(iter->GetTx(), SER_NETWORK, PROTOCOL_VERSION) >= nBrickMaxSize) {
+            if (nBrickSize >  nBrickMaxSize - 100 || lastFewTxs > 50) {
+                 brickFinished = true;
                  return false;
             }
-            if (nBlockSize > nBlockMaxSize - 1000) {
+            if (nBrickSize > nBrickMaxSize - 1000) {
                 lastFewTxs++;
             }
             return false;
         }
     }
 
-    if (nBlockSigOpsCost + iter->GetSigOpCost() >= MAX_BLOCK_SIGOPS_COST) {
-        // If the block has room for no more sig ops then
-        // flag that the block is finished
-        if (nBlockSigOpsCost > MAX_BLOCK_SIGOPS_COST - 8) {
-            blockFinished = true;
+    if (nBrickSigOpsCost + iter->GetSigOpCost() >= MAX_BRICK_SIGOPS_COST) {
+        // If the brick has room for no more sig ops then
+        // flag that the brick is finished
+        if (nBrickSigOpsCost > MAX_BRICK_SIGOPS_COST - 8) {
+            brickFinished = true;
             return false;
         }
         // Otherwise attempt to find another tx with fewer sigops
-        // to put in the block.
+        // to put in the brick.
         return false;
     }
 
@@ -310,19 +310,19 @@ bool BlockAssembler::TestForBlock(CTxMemPool::txiter iter)
     return true;
 }
 
-void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
+void BrickAssembler::AddToBrick(CTxMemPool::txiter iter)
 {
-    pblock->vtx.push_back(iter->GetTx());
-    pblocktemplate->vTxFees.push_back(iter->GetFee());
-    pblocktemplate->vTxSigOpsCost.push_back(iter->GetSigOpCost());
+    pbrick->vtx.push_back(iter->GetTx());
+    pbricktemplate->vTxFees.push_back(iter->GetFee());
+    pbricktemplate->vTxSigOpsCost.push_back(iter->GetSigOpCost());
     if (fNeedSizeAccounting) {
-        nBlockSize += ::GetSerializeSize(iter->GetTx(), SER_NETWORK, PROTOCOL_VERSION);
+        nBrickSize += ::GetSerializeSize(iter->GetTx(), SER_NETWORK, PROTOCOL_VERSION);
     }
-    nBlockWeight += iter->GetTxWeight();
-    ++nBlockTx;
-    nBlockSigOpsCost += iter->GetSigOpCost();
+    nBrickWeight += iter->GetTxWeight();
+    ++nBrickTx;
+    nBrickSigOpsCost += iter->GetSigOpCost();
     nFees += iter->GetFee();
-    inBlock.insert(iter);
+    inBrick.insert(iter);
 
     bool fPrintPriority = GetBoolArg("-printpriority", DEFAULT_PRINTPRIORITY);
     if (fPrintPriority) {
@@ -336,13 +336,13 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
     }
 }
 
-void BlockAssembler::UpdatePackagesForAdded(const CTxMemPool::setEntries& alreadyAdded,
+void BrickAssembler::UpdatePackagesForAdded(const CTxMemPool::setEntries& alreadyAdded,
         indexed_modified_transaction_set &mapModifiedTx)
 {
     BOOST_FOREACH(const CTxMemPool::txiter it, alreadyAdded) {
         CTxMemPool::setEntries descendants;
         mempool.CalculateDescendants(it, descendants);
-        // Insert all descendants (not yet in block) into the modified set
+        // Insert all descendants (not yet in brick) into the modified set
         BOOST_FOREACH(CTxMemPool::txiter desc, descendants) {
             if (alreadyAdded.count(desc))
                 continue;
@@ -360,29 +360,29 @@ void BlockAssembler::UpdatePackagesForAdded(const CTxMemPool::setEntries& alread
     }
 }
 
-// Skip entries in mapTx that are already in a block or are present
+// Skip entries in mapTx that are already in a brick or are present
 // in mapModifiedTx (which implies that the mapTx ancestor state is
-// stale due to ancestor inclusion in the block)
+// stale due to ancestor inclusion in the brick)
 // Also skip transactions that we've already failed to add. This can happen if
 // we consider a transaction in mapModifiedTx and it fails: we can then
 // potentially consider it again while walking mapTx.  It's currently
 // guaranteed to fail again, but as a belt-and-suspenders check we put it in
 // failedTx and avoid re-evaluation, since the re-evaluation would be using
 // cached size/sigops/fee values that are not actually correct.
-bool BlockAssembler::SkipMapTxEntry(CTxMemPool::txiter it, indexed_modified_transaction_set &mapModifiedTx, CTxMemPool::setEntries &failedTx)
+bool BrickAssembler::SkipMapTxEntry(CTxMemPool::txiter it, indexed_modified_transaction_set &mapModifiedTx, CTxMemPool::setEntries &failedTx)
 {
     assert (it != mempool.mapTx.end());
-    if (mapModifiedTx.count(it) || inBlock.count(it) || failedTx.count(it))
+    if (mapModifiedTx.count(it) || inBrick.count(it) || failedTx.count(it))
         return true;
     return false;
 }
 
-void BlockAssembler::SortForBlock(const CTxMemPool::setEntries& package, CTxMemPool::txiter entry, std::vector<CTxMemPool::txiter>& sortedEntries)
+void BrickAssembler::SortForBrick(const CTxMemPool::setEntries& package, CTxMemPool::txiter entry, std::vector<CTxMemPool::txiter>& sortedEntries)
 {
     // Sort package by ancestor count
     // If a transaction A depends on transaction B, then A's ancestor count
     // must be greater than B's.  So this is sufficient to validly order the
-    // transactions for block inclusion.
+    // transactions for brick inclusion.
     sortedEntries.clear();
     sortedEntries.insert(sortedEntries.begin(), package.begin(), package.end());
     std::sort(sortedEntries.begin(), sortedEntries.end(), CompareTxIterByAncestorCount());
@@ -391,24 +391,24 @@ void BlockAssembler::SortForBlock(const CTxMemPool::setEntries& package, CTxMemP
 // This transaction selection algorithm orders the mempool based
 // on feerate of a transaction including all unconfirmed ancestors.
 // Since we don't remove transactions from the mempool as we select them
-// for block inclusion, we need an alternate method of updating the feerate
+// for brick inclusion, we need an alternate method of updating the feerate
 // of a transaction with its not-yet-selected ancestors as we go.
 // This is accomplished by walking the in-mempool descendants of selected
 // transactions and storing a temporary modified state in mapModifiedTxs.
 // Each time through the loop, we compare the best transaction in
 // mapModifiedTxs with the next transaction in the mempool to decide what
 // transaction package to work on next.
-void BlockAssembler::addPackageTxs()
+void BrickAssembler::addPackageTxs()
 {
     // mapModifiedTx will store sorted packages after they are modified
-    // because some of their txs are already in the block
+    // because some of their txs are already in the brick
     indexed_modified_transaction_set mapModifiedTx;
     // Keep track of entries that failed inclusion, to avoid duplicate work
     CTxMemPool::setEntries failedTx;
 
     // Start by adding all descendants of previously added txs to mapModifiedTx
     // and modifying them for their already included ancestors
-    UpdatePackagesForAdded(inBlock, mapModifiedTx);
+    UpdatePackagesForAdded(inBrick, mapModifiedTx);
 
     CTxMemPool::indexed_transaction_set::index<ancestor_score>::type::iterator mi = mempool.mapTx.get<ancestor_score>().begin();
     CTxMemPool::txiter iter;
@@ -447,9 +447,9 @@ void BlockAssembler::addPackageTxs()
             }
         }
 
-        // We skip mapTx entries that are inBlock, and mapModifiedTx shouldn't
-        // contain anything that is inBlock.
-        assert(!inBlock.count(iter));
+        // We skip mapTx entries that are inBrick, and mapModifiedTx shouldn't
+        // contain anything that is inBrick.
+        assert(!inBrick.count(iter));
 
         uint64_t packageSize = iter->GetSizeWithAncestors();
         CAmount packageFees = iter->GetModFeesWithAncestors();
@@ -495,10 +495,10 @@ void BlockAssembler::addPackageTxs()
 
         // Package can be added. Sort the entries in a valid order.
         vector<CTxMemPool::txiter> sortedEntries;
-        SortForBlock(ancestors, iter, sortedEntries);
+        SortForBrick(ancestors, iter, sortedEntries);
 
         for (size_t i=0; i<sortedEntries.size(); ++i) {
-            AddToBlock(sortedEntries[i]);
+            AddToBrick(sortedEntries[i]);
             // Erase from the modified set, if present
             mapModifiedTx.erase(sortedEntries[i]);
         }
@@ -508,14 +508,14 @@ void BlockAssembler::addPackageTxs()
     }
 }
 
-void BlockAssembler::addPriorityTxs()
+void BrickAssembler::addPriorityTxs()
 {
-    // How much of the block should be dedicated to high-priority transactions,
+    // How much of the brick should be dedicated to high-priority transactions,
     // included regardless of the fees they pay
-    unsigned int nBlockPrioritySize = GetArg("-blockprioritysize", DEFAULT_BLOCK_PRIORITY_SIZE);
-    nBlockPrioritySize = std::min(nBlockMaxSize, nBlockPrioritySize);
+    unsigned int nBrickPrioritySize = GetArg("-brickprioritysize", DEFAULT_BRICK_PRIORITY_SIZE);
+    nBrickPrioritySize = std::min(nBrickMaxSize, nBrickPrioritySize);
 
-    if (nBlockPrioritySize == 0) {
+    if (nBrickPrioritySize == 0) {
         return;
     }
 
@@ -541,19 +541,19 @@ void BlockAssembler::addPriorityTxs()
     std::make_heap(vecPriority.begin(), vecPriority.end(), pricomparer);
 
     CTxMemPool::txiter iter;
-    while (!vecPriority.empty() && !blockFinished) { // add a tx from priority queue to fill the blockprioritysize
+    while (!vecPriority.empty() && !brickFinished) { // add a tx from priority queue to fill the brickprioritysize
         iter = vecPriority.front().second;
         actualPriority = vecPriority.front().first;
         std::pop_heap(vecPriority.begin(), vecPriority.end(), pricomparer);
         vecPriority.pop_back();
 
-        // If tx already in block, skip
-        if (inBlock.count(iter)) {
+        // If tx already in brick, skip
+        if (inBrick.count(iter)) {
             assert(false); // shouldn't happen for priority txs
             continue;
         }
 
-        // cannot accept witness transactions into a non-witness block
+        // cannot accept witness transactions into a non-witness brick
         if (!fIncludeWitness && !iter->GetTx().wit.IsNull())
             continue;
 
@@ -564,13 +564,13 @@ void BlockAssembler::addPriorityTxs()
             continue;
         }
 
-        // If this tx fits in the block add it, otherwise keep looping
-        if (TestForBlock(iter)) {
-            AddToBlock(iter);
+        // If this tx fits in the brick add it, otherwise keep looping
+        if (TestForBrick(iter)) {
+            AddToBrick(iter);
 
             // If now that this txs is added we've surpassed our desired priority size
             // or have dropped below the AllowFreeThreshold, then we're done adding priority txs
-            if (nBlockSize >= nBlockPrioritySize || !AllowFree(actualPriority)) {
+            if (nBrickSize >= nBrickPrioritySize || !AllowFree(actualPriority)) {
                 break;
             }
 
@@ -590,21 +590,21 @@ void BlockAssembler::addPriorityTxs()
     fNeedSizeAccounting = fSizeAccounting;
 }
 
-void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce)
+void IncrementExtraNonce(CBrick* pbrick, const CBrickIndex* pindexPrev, unsigned int& nExtraNonce)
 {
     // Update nExtraNonce
-    static uint256 hashPrevBlock;
-    if (hashPrevBlock != pblock->hashPrevBlock)
+    static uint256 hashPrevBrick;
+    if (hashPrevBrick != pbrick->hashPrevBrick)
     {
         nExtraNonce = 0;
-        hashPrevBlock = pblock->hashPrevBlock;
+        hashPrevBrick = pbrick->hashPrevBrick;
     }
     ++nExtraNonce;
-    unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
-    CMutableTransaction txCoinbase(pblock->vtx[0]);
+    unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for brick.version=2
+    CMutableTransaction txCoinbase(pbrick->vtx[0]);
     txCoinbase.vin[0].scriptSig = (CScript() << nHeight << CScriptNum(nExtraNonce)) + COINBASE_FLAGS;
     assert(txCoinbase.vin[0].scriptSig.size() <= 100);
 
-    pblock->vtx[0] = txCoinbase;
-    pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
+    pbrick->vtx[0] = txCoinbase;
+    pbrick->hashMerkleRoot = BrickMerkleRoot(*pbrick);
 }

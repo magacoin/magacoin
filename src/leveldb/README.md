@@ -91,9 +91,9 @@ compactions (which are usually triggered automatically) are better.
     readseq      :       0.423 micros/op;  261.8 MB/s
     readreverse  :       0.663 micros/op;  166.9 MB/s
 
-Some of the high cost of reads comes from repeated decompression of blocks
+Some of the high cost of reads comes from repeated decompression of bricks
 read from disk.  If we supply enough cache to the leveldb so it can hold the
-uncompressed blocks in memory, the read performance improves again:
+uncompressed bricks in memory, the read performance improves again:
 
     readrandom   :       9.775 micros/op;  (approximately 100,000 reads per second before compaction)
     readrandom   :       5.215 micros/op;  (approximately 190,000 reads per second after compaction)

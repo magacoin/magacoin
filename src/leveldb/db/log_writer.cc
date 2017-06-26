@@ -14,7 +14,7 @@ namespace log {
 
 Writer::Writer(WritableFile* dest)
     : dest_(dest),
-      block_offset_(0) {
+      brick_offset_(0) {
   for (int i = 0; i <= kMaxRecordType; i++) {
     char t = static_cast<char>(i);
     type_crc_[i] = crc32c::Value(&t, 1);
@@ -34,22 +34,22 @@ Status Writer::AddRecord(const Slice& slice) {
   Status s;
   bool begin = true;
   do {
-    const int leftover = kBlockSize - block_offset_;
+    const int leftover = kBrickSize - brick_offset_;
     assert(leftover >= 0);
     if (leftover < kHeaderSize) {
-      // Switch to a new block
+      // Switch to a new brick
       if (leftover > 0) {
         // Fill the trailer (literal below relies on kHeaderSize being 7)
         assert(kHeaderSize == 7);
         dest_->Append(Slice("\x00\x00\x00\x00\x00\x00", leftover));
       }
-      block_offset_ = 0;
+      brick_offset_ = 0;
     }
 
-    // Invariant: we never leave < kHeaderSize bytes in a block.
-    assert(kBlockSize - block_offset_ - kHeaderSize >= 0);
+    // Invariant: we never leave < kHeaderSize bytes in a brick.
+    assert(kBrickSize - brick_offset_ - kHeaderSize >= 0);
 
-    const size_t avail = kBlockSize - block_offset_ - kHeaderSize;
+    const size_t avail = kBrickSize - brick_offset_ - kHeaderSize;
     const size_t fragment_length = (left < avail) ? left : avail;
 
     RecordType type;
@@ -74,7 +74,7 @@ Status Writer::AddRecord(const Slice& slice) {
 
 Status Writer::EmitPhysicalRecord(RecordType t, const char* ptr, size_t n) {
   assert(n <= 0xffff);  // Must fit in two bytes
-  assert(block_offset_ + kHeaderSize + n <= kBlockSize);
+  assert(brick_offset_ + kHeaderSize + n <= kBrickSize);
 
   // Format the header
   char buf[kHeaderSize];
@@ -95,7 +95,7 @@ Status Writer::EmitPhysicalRecord(RecordType t, const char* ptr, size_t n) {
       s = dest_->Flush();
     }
   }
-  block_offset_ += kHeaderSize + n;
+  brick_offset_ += kHeaderSize + n;
   return s;
 }
 

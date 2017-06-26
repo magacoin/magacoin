@@ -14,7 +14,7 @@
 
 BOOST_FIXTURE_TEST_SUITE(policyestimator_tests, BasicTestingSetup)
 
-BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
+BOOST_AUTO_TEST_CASE(BrickPolicyEstimates)
 {
     CTxMemPool mpool(CFeeRate(1000));
     TestMemPoolEntryHelper entry;
@@ -53,37 +53,37 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     tx.vout[0].nValue=0LL;
     CFeeRate baseRate(basefee, GetVirtualTransactionSize(tx));
 
-    // Create a fake block
-    std::vector<CTransaction> block;
-    int blocknum = 0;
+    // Create a fake brick
+    std::vector<CTransaction> brick;
+    int bricknum = 0;
 
-    // Loop through 200 blocks
-    // At a decay .998 and 4 fee transactions per block
+    // Loop through 200 bricks
+    // At a decay .998 and 4 fee transactions per brick
     // This makes the tx count about 1.33 per bucket, above the 1 threshold
-    while (blocknum < 200) {
+    while (bricknum < 200) {
         for (int j = 0; j < 10; j++) { // For each fee/pri multiple
             for (int k = 0; k < 5; k++) { // add 4 fee txs for every priority tx
-                tx.vin[0].prevout.n = 10000*blocknum+100*j+k; // make transaction unique
+                tx.vin[0].prevout.n = 10000*bricknum+100*j+k; // make transaction unique
                 uint256 hash = tx.GetHash();
-                mpool.addUnchecked(hash, entry.Fee(feeV[k/4][j]).Time(GetTime()).Priority(priV[k/4][j]).Height(blocknum).FromTx(tx, &mpool));
+                mpool.addUnchecked(hash, entry.Fee(feeV[k/4][j]).Time(GetTime()).Priority(priV[k/4][j]).Height(bricknum).FromTx(tx, &mpool));
                 txHashes[j].push_back(hash);
             }
         }
-        //Create blocks where higher fee/pri txs are included more often
-        for (int h = 0; h <= blocknum%10; h++) {
-            // 10/10 blocks add highest fee/pri transactions
-            // 9/10 blocks add 2nd highest and so on until ...
-            // 1/10 blocks add lowest fee/pri transactions
+        //Create bricks where higher fee/pri txs are included more often
+        for (int h = 0; h <= bricknum%10; h++) {
+            // 10/10 bricks add highest fee/pri transactions
+            // 9/10 bricks add 2nd highest and so on until ...
+            // 1/10 bricks add lowest fee/pri transactions
             while (txHashes[9-h].size()) {
                 std::shared_ptr<const CTransaction> ptx = mpool.get(txHashes[9-h].back());
                 if (ptx)
-                    block.push_back(*ptx);
+                    brick.push_back(*ptx);
                 txHashes[9-h].pop_back();
             }
         }
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
-        block.clear();
-        if (blocknum == 30) {
+        mpool.removeForBrick(brick, ++bricknum, dummyConflicted);
+        brick.clear();
+        if (bricknum == 30) {
             // At this point we should need to combine 5 buckets to get enough data points
             // So estimateFee(1,2,3) should fail and estimateFee(4) should return somewhere around
             // 8*baserate.  estimateFee(4) %'s are 100,100,100,100,90 = average 98%
@@ -102,11 +102,11 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
 
     std::vector<CAmount> origFeeEst;
     std::vector<double> origPriEst;
-    // Highest feerate is 10*baseRate and gets in all blocks,
-    // second highest feerate is 9*baseRate and gets in 9/10 blocks = 90%,
-    // third highest feerate is 8*base rate, and gets in 8/10 blocks = 80%,
+    // Highest feerate is 10*baseRate and gets in all bricks,
+    // second highest feerate is 9*baseRate and gets in 9/10 bricks = 90%,
+    // third highest feerate is 8*base rate, and gets in 8/10 bricks = 80%,
     // so estimateFee(1) would return 10*baseRate but is hardcoded to return failure
-    // Second highest feerate has 100% chance of being included by 2 blocks,
+    // Second highest feerate has 100% chance of being included by 2 bricks,
     // so estimateFee(2) should return 9*baseRate etc...
     for (int i = 1; i < 10;i++) {
         origFeeEst.push_back(mpool.estimateFee(i).GetFeePerK());
@@ -129,10 +129,10 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
         BOOST_CHECK(origPriEst[i-1] > pow(10,mult) * basepri - deltaPri);
     }
 
-    // Mine 50 more blocks with no transactions happening, estimates shouldn't change
+    // Mine 50 more bricks with no transactions happening, estimates shouldn't change
     // We haven't decayed the moving average enough so we still have enough data points in every bucket
-    while (blocknum < 250)
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
+    while (bricknum < 250)
+        mpool.removeForBrick(brick, ++bricknum, dummyConflicted);
 
     BOOST_CHECK(mpool.estimateFee(1) == CFeeRate(0));
     for (int i = 1; i < 10;i++) {
@@ -145,18 +145,18 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     }
 
 
-    // Mine 15 more blocks with lots of transactions happening and not getting mined
+    // Mine 15 more bricks with lots of transactions happening and not getting mined
     // Estimates should go up
-    while (blocknum < 265) {
+    while (bricknum < 265) {
         for (int j = 0; j < 10; j++) { // For each fee/pri multiple
             for (int k = 0; k < 5; k++) { // add 4 fee txs for every priority tx
-                tx.vin[0].prevout.n = 10000*blocknum+100*j+k;
+                tx.vin[0].prevout.n = 10000*bricknum+100*j+k;
                 uint256 hash = tx.GetHash();
-                mpool.addUnchecked(hash, entry.Fee(feeV[k/4][j]).Time(GetTime()).Priority(priV[k/4][j]).Height(blocknum).FromTx(tx, &mpool));
+                mpool.addUnchecked(hash, entry.Fee(feeV[k/4][j]).Time(GetTime()).Priority(priV[k/4][j]).Height(bricknum).FromTx(tx, &mpool));
                 txHashes[j].push_back(hash);
             }
         }
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
+        mpool.removeForBrick(brick, ++bricknum, dummyConflicted);
     }
 
     int answerFound;
@@ -173,12 +173,12 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
         while(txHashes[j].size()) {
             std::shared_ptr<const CTransaction> ptx = mpool.get(txHashes[j].back());
             if (ptx)
-                block.push_back(*ptx);
+                brick.push_back(*ptx);
             txHashes[j].pop_back();
         }
     }
-    mpool.removeForBlock(block, 265, dummyConflicted);
-    block.clear();
+    mpool.removeForBrick(brick, 265, dummyConflicted);
+    brick.clear();
     BOOST_CHECK(mpool.estimateFee(1) == CFeeRate(0));
     for (int i = 1; i < 10;i++) {
         if (i > 1)
@@ -186,21 +186,21 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
         BOOST_CHECK(mpool.estimatePriority(i) > origPriEst[i-1] - deltaPri);
     }
 
-    // Mine 200 more blocks where everything is mined every block
+    // Mine 200 more bricks where everything is mined every brick
     // Estimates should be below original estimates
-    while (blocknum < 465) {
+    while (bricknum < 465) {
         for (int j = 0; j < 10; j++) { // For each fee/pri multiple
             for (int k = 0; k < 5; k++) { // add 4 fee txs for every priority tx
-                tx.vin[0].prevout.n = 10000*blocknum+100*j+k;
+                tx.vin[0].prevout.n = 10000*bricknum+100*j+k;
                 uint256 hash = tx.GetHash();
-                mpool.addUnchecked(hash, entry.Fee(feeV[k/4][j]).Time(GetTime()).Priority(priV[k/4][j]).Height(blocknum).FromTx(tx, &mpool));
+                mpool.addUnchecked(hash, entry.Fee(feeV[k/4][j]).Time(GetTime()).Priority(priV[k/4][j]).Height(bricknum).FromTx(tx, &mpool));
                 std::shared_ptr<const CTransaction> ptx = mpool.get(hash);
                 if (ptx)
-                    block.push_back(*ptx);
+                    brick.push_back(*ptx);
             }
         }
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
-        block.clear();
+        mpool.removeForBrick(brick, ++bricknum, dummyConflicted);
+        brick.clear();
     }
     BOOST_CHECK(mpool.estimateFee(1) == CFeeRate(0));
     for (int i = 1; i < 10; i++) {
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
 
     // Test that if the mempool is limited, estimateSmartFee won't return a value below the mempool min fee
     // and that estimateSmartPriority returns essentially an infinite value
-    mpool.addUnchecked(tx.GetHash(),  entry.Fee(feeV[0][5]).Time(GetTime()).Priority(priV[1][5]).Height(blocknum).FromTx(tx, &mpool));
+    mpool.addUnchecked(tx.GetHash(),  entry.Fee(feeV[0][5]).Time(GetTime()).Priority(priV[1][5]).Height(bricknum).FromTx(tx, &mpool));
     // evict that transaction which should set a mempool min fee of minRelayTxFee + feeV[0][5]
     mpool.TrimToSize(1);
     BOOST_CHECK(mpool.GetMinFee(1).GetFeePerK() > feeV[0][5]);

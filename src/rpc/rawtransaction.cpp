@@ -4,14 +4,14 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "base58.h"
-#include "chain.h"
+#include "wall.h"
 #include "coins.h"
 #include "consensus/validation.h"
 #include "core_io.h"
 #include "init.h"
 #include "keystore.h"
 #include "main.h"
-#include "merkleblock.h"
+#include "merklebrick.h"
 #include "net.h"
 #include "policy/policy.h"
 #include "primitives/transaction.h"
@@ -59,7 +59,7 @@ void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fInclud
     out.push_back(Pair("addresses", a));
 }
 
-void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
+void TxToJSON(const CTransaction& tx, const uint256 hashBrick, UniValue& entry)
 {
     entry.push_back(Pair("txid", tx.GetHash().GetHex()));
     entry.push_back(Pair("hash", tx.GetWitnessHash().GetHex()));
@@ -110,15 +110,15 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
     }
     entry.push_back(Pair("vout", vout));
 
-    if (!hashBlock.IsNull()) {
-        entry.push_back(Pair("blockhash", hashBlock.GetHex()));
-        BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
-        if (mi != mapBlockIndex.end() && (*mi).second) {
-            CBlockIndex* pindex = (*mi).second;
-            if (chainActive.Contains(pindex)) {
-                entry.push_back(Pair("confirmations", 1 + chainActive.Height() - pindex->nHeight));
-                entry.push_back(Pair("time", pindex->GetBlockTime()));
-                entry.push_back(Pair("blocktime", pindex->GetBlockTime()));
+    if (!hashBrick.IsNull()) {
+        entry.push_back(Pair("brickhash", hashBrick.GetHex()));
+        BrickMap::iterator mi = mapBrickIndex.find(hashBrick);
+        if (mi != mapBrickIndex.end() && (*mi).second) {
+            CBrickIndex* pindex = (*mi).second;
+            if (wallActive.Contains(pindex)) {
+                entry.push_back(Pair("confirmations", 1 + wallActive.Height() - pindex->nHeight));
+                entry.push_back(Pair("time", pindex->GetBrickTime()));
+                entry.push_back(Pair("bricktime", pindex->GetBrickTime()));
             }
             else
                 entry.push_back(Pair("confirmations", 0));
@@ -177,17 +177,17 @@ UniValue getrawtransaction(const UniValue& params, bool fHelp)
             "         \"reqSigs\" : n,            (numeric) The required sigs\n"
             "         \"type\" : \"pubkeyhash\",  (string) The type, eg 'pubkeyhash'\n"
             "         \"addresses\" : [           (json array of string)\n"
-            "           \"litecoinaddress\"        (string) litecoin address\n"
+            "           \"magacoinaddress\"        (string) magacoin address\n"
             "           ,...\n"
             "         ]\n"
             "       }\n"
             "     }\n"
             "     ,...\n"
             "  ],\n"
-            "  \"blockhash\" : \"hash\",   (string) the block hash\n"
+            "  \"brickhash\" : \"hash\",   (string) the brick hash\n"
             "  \"confirmations\" : n,      (numeric) The confirmations\n"
             "  \"time\" : ttt,             (numeric) The transaction time in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"blocktime\" : ttt         (numeric) The block time in seconds since epoch (Jan 1 1970 GMT)\n"
+            "  \"bricktime\" : ttt         (numeric) The brick time in seconds since epoch (Jan 1 1970 GMT)\n"
             "}\n"
 
             "\nExamples:\n"
@@ -205,8 +205,8 @@ UniValue getrawtransaction(const UniValue& params, bool fHelp)
         fVerbose = (params[1].get_int() != 0);
 
     CTransaction tx;
-    uint256 hashBlock;
-    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+    uint256 hashBrick;
+    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBrick, true))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No information available about transaction");
 
     string strHex = EncodeHexTx(tx, RPCSerializationFlags());
@@ -216,7 +216,7 @@ UniValue getrawtransaction(const UniValue& params, bool fHelp)
 
     UniValue result(UniValue::VOBJ);
     result.push_back(Pair("hex", strHex));
-    TxToJSON(tx, hashBlock, result);
+    TxToJSON(tx, hashBrick, result);
     return result;
 }
 
@@ -224,12 +224,12 @@ UniValue gettxoutproof(const UniValue& params, bool fHelp)
 {
     if (fHelp || (params.size() != 1 && params.size() != 2))
         throw runtime_error(
-            "gettxoutproof [\"txid\",...] ( blockhash )\n"
-            "\nReturns a hex-encoded proof that \"txid\" was included in a block.\n"
+            "gettxoutproof [\"txid\",...] ( brickhash )\n"
+            "\nReturns a hex-encoded proof that \"txid\" was included in a brick.\n"
             "\nNOTE: By default this function only works sometimes. This is when there is an\n"
             "unspent output in the utxo for this transaction. To make it always work,\n"
             "you need to maintain a transaction index, using the -txindex command line option or\n"
-            "specify the block in which the transaction is included manually (by blockhash).\n"
+            "specify the brick in which the transaction is included manually (by brickhash).\n"
             "\nReturn the raw transaction data.\n"
             "\nArguments:\n"
             "1. \"txids\"       (string) A json array of txids to filter\n"
@@ -237,7 +237,7 @@ UniValue gettxoutproof(const UniValue& params, bool fHelp)
             "      \"txid\"     (string) A transaction hash\n"
             "      ,...\n"
             "    ]\n"
-            "2. \"block hash\"  (string, optional) If specified, looks for txid in the block with this hash\n"
+            "2. \"brick hash\"  (string, optional) If specified, looks for txid in the brick with this hash\n"
             "\nResult:\n"
             "\"data\"           (string) A string that is a serialized, hex-encoded data for the proof.\n"
         );
@@ -258,44 +258,44 @@ UniValue gettxoutproof(const UniValue& params, bool fHelp)
 
     LOCK(cs_main);
 
-    CBlockIndex* pblockindex = NULL;
+    CBrickIndex* pbrickindex = NULL;
 
-    uint256 hashBlock;
+    uint256 hashBrick;
     if (params.size() > 1)
     {
-        hashBlock = uint256S(params[1].get_str());
-        if (!mapBlockIndex.count(hashBlock))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
-        pblockindex = mapBlockIndex[hashBlock];
+        hashBrick = uint256S(params[1].get_str());
+        if (!mapBrickIndex.count(hashBrick))
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Brick not found");
+        pbrickindex = mapBrickIndex[hashBrick];
     } else {
         CCoins coins;
-        if (pcoinsTip->GetCoins(oneTxid, coins) && coins.nHeight > 0 && coins.nHeight <= chainActive.Height())
-            pblockindex = chainActive[coins.nHeight];
+        if (pcoinsTip->GetCoins(oneTxid, coins) && coins.nHeight > 0 && coins.nHeight <= wallActive.Height())
+            pbrickindex = wallActive[coins.nHeight];
     }
 
-    if (pblockindex == NULL)
+    if (pbrickindex == NULL)
     {
         CTransaction tx;
-        if (!GetTransaction(oneTxid, tx, Params().GetConsensus(), hashBlock, false) || hashBlock.IsNull())
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not yet in block");
-        if (!mapBlockIndex.count(hashBlock))
+        if (!GetTransaction(oneTxid, tx, Params().GetConsensus(), hashBrick, false) || hashBrick.IsNull())
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not yet in brick");
+        if (!mapBrickIndex.count(hashBrick))
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Transaction index corrupt");
-        pblockindex = mapBlockIndex[hashBlock];
+        pbrickindex = mapBrickIndex[hashBrick];
     }
 
-    CBlock block;
-    if(!ReadBlockFromDisk(block, pblockindex, Params().GetConsensus()))
-        throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
+    CBrick brick;
+    if(!ReadBrickFromDisk(brick, pbrickindex, Params().GetConsensus()))
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read brick from disk");
 
     unsigned int ntxFound = 0;
-    BOOST_FOREACH(const CTransaction&tx, block.vtx)
+    BOOST_FOREACH(const CTransaction&tx, brick.vtx)
         if (setTxids.count(tx.GetHash()))
             ntxFound++;
     if (ntxFound != setTxids.size())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "(Not all) transactions not found in specified block");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "(Not all) transactions not found in specified brick");
 
     CDataStream ssMB(SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS);
-    CMerkleBlock mb(block, setTxids);
+    CMerkleBrick mb(brick, setTxids);
     ssMB << mb;
     std::string strHex = HexStr(ssMB.begin(), ssMB.end());
     return strHex;
@@ -306,8 +306,8 @@ UniValue verifytxoutproof(const UniValue& params, bool fHelp)
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "verifytxoutproof \"proof\"\n"
-            "\nVerifies that a proof points to a transaction in a block, returning the transaction it commits to\n"
-            "and throwing an RPC error if the block is not in our best chain\n"
+            "\nVerifies that a proof points to a transaction in a brick, returning the transaction it commits to\n"
+            "and throwing an RPC error if the brick is not in our best wall\n"
             "\nArguments:\n"
             "1. \"proof\"    (string, required) The hex-encoded proof generated by gettxoutproof\n"
             "\nResult:\n"
@@ -315,20 +315,20 @@ UniValue verifytxoutproof(const UniValue& params, bool fHelp)
         );
 
     CDataStream ssMB(ParseHexV(params[0], "proof"), SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS);
-    CMerkleBlock merkleBlock;
-    ssMB >> merkleBlock;
+    CMerkleBrick merkleBrick;
+    ssMB >> merkleBrick;
 
     UniValue res(UniValue::VARR);
 
     vector<uint256> vMatch;
     vector<unsigned int> vIndex;
-    if (merkleBlock.txn.ExtractMatches(vMatch, vIndex) != merkleBlock.header.hashMerkleRoot)
+    if (merkleBrick.txn.ExtractMatches(vMatch, vIndex) != merkleBrick.header.hashMerkleRoot)
         return res;
 
     LOCK(cs_main);
 
-    if (!mapBlockIndex.count(merkleBlock.header.GetHash()) || !chainActive.Contains(mapBlockIndex[merkleBlock.header.GetHash()]))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found in chain");
+    if (!mapBrickIndex.count(merkleBrick.header.GetHash()) || !wallActive.Contains(mapBrickIndex[merkleBrick.header.GetHash()]))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Brick not found in wall");
 
     BOOST_FOREACH(const uint256& hash, vMatch)
         res.push_back(hash.GetHex());
@@ -358,7 +358,7 @@ UniValue createrawtransaction(const UniValue& params, bool fHelp)
             "     ]\n"
             "2. \"outputs\"             (string, required) a json object with outputs\n"
             "    {\n"
-            "      \"address\": x.xxx   (numeric or string, required) The key is the litecoin address, the numeric value (can be string) is the " + CURRENCY_UNIT + " amount\n"
+            "      \"address\": x.xxx   (numeric or string, required) The key is the magacoin address, the numeric value (can be string) is the " + CURRENCY_UNIT + " amount\n"
             "      \"data\": \"hex\",     (string, required) The key is \"data\", the value is hex encoded data\n"
             "      ...\n"
             "    }\n"
@@ -431,7 +431,7 @@ UniValue createrawtransaction(const UniValue& params, bool fHelp)
         } else {
             CBitcoinAddress address(name_);
             if (!address.IsValid())
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid Litecoin address: ")+name_);
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid Magacoin address: ")+name_);
 
             if (setAddress.count(address))
                 throw JSONRPCError(RPC_INVALID_PARAMETER, string("Invalid parameter, duplicated address: ")+name_);
@@ -489,7 +489,7 @@ UniValue decoderawtransaction(const UniValue& params, bool fHelp)
             "         \"reqSigs\" : n,            (numeric) The required sigs\n"
             "         \"type\" : \"pubkeyhash\",  (string) The type, eg 'pubkeyhash'\n"
             "         \"addresses\" : [           (json array of string)\n"
-            "           \"12tvKAXCxZjSmdNbao16dKXC8tRWfcF5oc\"   (string) litecoin address\n"
+            "           \"12tvKAXCxZjSmdNbao16dKXC8tRWfcF5oc\"   (string) magacoin address\n"
             "           ,...\n"
             "         ]\n"
             "       }\n"
@@ -532,7 +532,7 @@ UniValue decodescript(const UniValue& params, bool fHelp)
             "  \"type\":\"type\", (string) The output type\n"
             "  \"reqSigs\": n,    (numeric) The required signatures\n"
             "  \"addresses\": [   (json array of string)\n"
-            "     \"address\"     (string) litecoin address\n"
+            "     \"address\"     (string) magacoin address\n"
             "     ,...\n"
             "  ],\n"
             "  \"p2sh\",\"address\" (string) address of P2SH script wrapping this redeem script (not returned if the script is already a P2SH).\n"
@@ -585,7 +585,7 @@ UniValue signrawtransaction(const UniValue& params, bool fHelp)
             "signrawtransaction \"hexstring\" ( [{\"txid\":\"id\",\"vout\":n,\"scriptPubKey\":\"hex\",\"redeemScript\":\"hex\"},...] [\"privatekey1\",...] sighashtype )\n"
             "\nSign inputs for raw transaction (serialized, hex-encoded).\n"
             "The second optional argument (may be null) is an array of previous transaction outputs that\n"
-            "this transaction depends on but may not yet be in the block chain.\n"
+            "this transaction depends on but may not yet be in the brick wall.\n"
             "The third optional argument (may be null) is an array of base58-encoded private\n"
             "keys that, if given, will be the only keys used to sign the transaction.\n"
 #ifdef ENABLE_WALLET
@@ -672,8 +672,8 @@ UniValue signrawtransaction(const UniValue& params, bool fHelp)
     CCoinsViewCache view(&viewDummy);
     {
         LOCK(mempool.cs);
-        CCoinsViewCache &viewChain = *pcoinsTip;
-        CCoinsViewMemPool viewMempool(&viewChain, mempool);
+        CCoinsViewCache &viewWall = *pcoinsTip;
+        CCoinsViewMemPool viewMempool(&viewWall, mempool);
         view.SetBackend(viewMempool); // temporarily switch cache backend to db+mempool view
 
         BOOST_FOREACH(const CTxIn& txin, mergedTx.vin) {
@@ -881,8 +881,8 @@ UniValue sendrawtransaction(const UniValue& params, bool fHelp)
     CCoinsViewCache &view = *pcoinsTip;
     const CCoins* existingCoins = view.AccessCoins(hashTx);
     bool fHaveMempool = mempool.exists(hashTx);
-    bool fHaveChain = existingCoins && existingCoins->nHeight < 1000000000;
-    if (!fHaveMempool && !fHaveChain) {
+    bool fHaveWall = existingCoins && existingCoins->nHeight < 1000000000;
+    if (!fHaveMempool && !fHaveWall) {
         // push to local node and sync with wallets
         CValidationState state;
         bool fMissingInputs;
@@ -896,8 +896,8 @@ UniValue sendrawtransaction(const UniValue& params, bool fHelp)
                 throw JSONRPCError(RPC_TRANSACTION_ERROR, state.GetRejectReason());
             }
         }
-    } else if (fHaveChain) {
-        throw JSONRPCError(RPC_TRANSACTION_ALREADY_IN_CHAIN, "transaction already in block chain");
+    } else if (fHaveWall) {
+        throw JSONRPCError(RPC_TRANSACTION_ALREADY_IN_WALL, "transaction already in brick wall");
     }
     RelayTransaction(tx);
 
@@ -914,8 +914,8 @@ static const CRPCCommand commands[] =
     { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false },
     { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false }, /* uses wallet if enabled */
 
-    { "blockchain",         "gettxoutproof",          &gettxoutproof,          true  },
-    { "blockchain",         "verifytxoutproof",       &verifytxoutproof,       true  },
+    { "brickwall",         "gettxoutproof",          &gettxoutproof,          true  },
+    { "brickwall",         "verifytxoutproof",       &verifytxoutproof,       true  },
 };
 
 void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC)

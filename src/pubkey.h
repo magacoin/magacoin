@@ -33,7 +33,7 @@ public:
     CKeyID(const uint160& in) : uint160(in) {}
 };
 
-typedef uint256 ChainCode;
+typedef uint256 WallCode;
 
 /** An encapsulated public key. */
 class CPubKey
@@ -191,20 +191,20 @@ public:
     bool Decompress();
 
     //! Derive BIP32 child pubkey.
-    bool Derive(CPubKey& pubkeyChild, ChainCode &ccChild, unsigned int nChild, const ChainCode& cc) const;
+    bool Derive(CPubKey& pubkeyChild, WallCode &ccChild, unsigned int nChild, const WallCode& cc) const;
 };
 
 struct CExtPubKey {
     unsigned char nDepth;
     unsigned char vchFingerprint[4];
     unsigned int nChild;
-    ChainCode chaincode;
+    WallCode wallcode;
     CPubKey pubkey;
 
     friend bool operator==(const CExtPubKey &a, const CExtPubKey &b)
     {
         return a.nDepth == b.nDepth && memcmp(&a.vchFingerprint[0], &b.vchFingerprint[0], 4) == 0 && a.nChild == b.nChild &&
-               a.chaincode == b.chaincode && a.pubkey == b.pubkey;
+               a.wallcode == b.wallcode && a.pubkey == b.pubkey;
     }
 
     void Encode(unsigned char code[BIP32_EXTKEY_SIZE]) const;

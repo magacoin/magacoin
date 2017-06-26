@@ -162,12 +162,12 @@
         <translation>URI &amp;amp;खोल्नुहोस्...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>डिस्कमा ब्लकलाई पुनः सूचीकरण गरिँदै...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Litecoin ठेगानामा सिक्का पठाउनुहोस्</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Magacoin ठेगानामा सिक्का पठाउनुहोस्</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -214,8 +214,8 @@
 <context>
     <name>OverviewPage</name>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>देखाइएको सूचना पूरानो हुन सक्छ । कनेक्सन स्थापित भएपछि, तपाईंको वालेट Litecoin नेटवर्कमा स्वचालित रूपमा समिकरण हुन्छ , तर यो प्रक्रिया अहिले सम्म पूरा भएको छैन ।</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>देखाइएको सूचना पूरानो हुन सक्छ । कनेक्सन स्थापित भएपछि, तपाईंको वालेट Magacoin नेटवर्कमा स्वचालित रूपमा समिकरण हुन्छ , तर यो प्रक्रिया अहिले सम्म पूरा भएको छैन ।</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -312,12 +312,12 @@
 <context>
     <name>SendCoinsEntry</name>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>पठाइँदै गरेको रकमबाट शुल्क कटौती गरिनेछ । प्राप्तकर्ताले तपाईंले रकम क्षेत्रमा प्रवेष गरेको भन्दा थोरै Litecoin प्राप्त गर्ने छन् । धेरै प्राप्तकर्ता चयन गरिएको छ भने समान रूपमा शुल्क विभाजित गरिनेछ ।</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>पठाइँदै गरेको रकमबाट शुल्क कटौती गरिनेछ । प्राप्तकर्ताले तपाईंले रकम क्षेत्रमा प्रवेष गरेको भन्दा थोरै Magacoin प्राप्त गर्ने छन् । धेरै प्राप्तकर्ता चयन गरिएको छ भने समान रूपमा शुल्क विभाजित गरिनेछ ।</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>Litecoinमा संलग्न गरिएको सन्देश: तपाईंको मध्यस्थको लागि कारोबारको साथमा भण्डारण गरिने URI । नोट: यो सन्देश Litecoin नेटवर्क मार्फत पठाइने छैन ।</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>Magacoinमा संलग्न गरिएको सन्देश: तपाईंको मध्यस्थको लागि कारोबारको साथमा भण्डारण गरिने URI । नोट: यो सन्देश Magacoin नेटवर्क मार्फत पठाइने छैन ।</translation>
     </message>
     </context>
 <context>
@@ -329,8 +329,8 @@
 <context>
     <name>SignVerifyMessageDialog</name>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>आफ्नो ठेगानामा पठाइएको Litecoin प्राप्त गर्न सकिन्छ भनेर प्रमाणित गर्न तपाईंले ती ठेगानाले सन्देश/सम्झौताहरूमा हस्ताक्षर गर्न सक्नुहुन्छ । फिसिङ आक्रमणले तपाईंलाई छक्याएर अरूका लागि तपाईंको परिचयमा हस्ताक्षर गराउने प्रयास गर्न सक्ने भएकाले अस्पष्ट वा जथाभावीमा हस्ताक्षर गर्दा ध्यान दिनुहोस् । आफू सहमत भएको पूर्ण विस्तृत-कथनमा मात्र हस्ताक्षर गर्नुहोस् ।</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>आफ्नो ठेगानामा पठाइएको Magacoin प्राप्त गर्न सकिन्छ भनेर प्रमाणित गर्न तपाईंले ती ठेगानाले सन्देश/सम्झौताहरूमा हस्ताक्षर गर्न सक्नुहुन्छ । फिसिङ आक्रमणले तपाईंलाई छक्याएर अरूका लागि तपाईंको परिचयमा हस्ताक्षर गराउने प्रयास गर्न सक्ने भएकाले अस्पष्ट वा जथाभावीमा हस्ताक्षर गर्दा ध्यान दिनुहोस् । आफू सहमत भएको पूर्ण विस्तृत-कथनमा मात्र हस्ताक्षर गर्नुहोस् ।</translation>
     </message>
     </context>
 <context>
@@ -366,7 +366,7 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>ब्लक डाटाबेसमा भविष्यबाट आए जस्तो देखिने एउटा ब्लक हुन्छ । तपाईंको कम्प्युटरको मिति र समय गलत तरिकाले सेट गरिएकाले यस्तो हुन सक्छ । तपाईं आफ्नो कम्प्युटरको मिति र समय सही छ भनेर पक्का हुनुहुन्छ भने मात्र ब्लक डाटाबेस पुनर्निर्माण गर्नुहोस् ।</translation>
     </message>
     <message>
@@ -374,7 +374,7 @@
         <translation>यो जारी गर्नु पूर्वको परीक्षण संस्करण हो - आफ्नै जोखिममा प्रयोग गर्नुहोस् - खनन वा व्यापारीक प्रयोगको लागि प्रयोग नगर्नुहोस</translation>
     </message>
     <message>
-        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the brickwall</source>
         <translation>प्रि-फर्क अवस्थामा डाटाबेस रिवाइन्ड गर्न सकिएन । तपाईंले फेरि ब्लकचेन डाउनलोड गर्नु पर्ने हुन्छ</translation>
     </message>
     <message>
@@ -394,7 +394,7 @@
         <translation>दिइएको नेटमास्क वा ठेगानाबाट कनेक्ट भइरहेका श्वेतसूचीका सहकर्मी ।</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
+        <source>You need to rebuild the database using -reindex-wallstate to change -txindex</source>
         <translation>तपाईंले -चेनस्टेट-पुनः सूचकांकबाट -txindex परिवर्तन प्रयोग गरेर डाटाबेस पुनर्निर्माण गर्नु आवश्यक छ</translation>
     </message>
     <message>
@@ -418,7 +418,7 @@
         <translation>स्टार्टअपमा क्षति पूगेको वालेटबाट निजी की प्राप्त गर्न प्रयास गर्नुहोस्</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>ब्लक सिर्जनाको बिकल्प:</translation>
     </message>
     <message>
@@ -442,7 +442,7 @@
         <translation>सर्वाधिकार (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>क्षति पुगेको ब्लक डाटाबेस फेला पर</translation>
     </message>
     <message>
@@ -454,7 +454,7 @@
         <translation>वालेट लोड नगर्नुहोस् र वालेट RPC कलहरू अक्षम गर्नुहोस्</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>तपाईं अहिले ब्लक डेटाबेस पुनर्निर्माण गर्न चाहनुहुन्छ ?</translation>
     </message>
     <message>
@@ -478,7 +478,7 @@
         <translation>UPnP प्रयोग गरेर सुन्ने पोर्ट म्याप गर्नुहोस् (डिफल्ट: %u) </translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>ब्लक प्रमाणित गरिँदै...</translation>
     </message>
     <message>
@@ -534,7 +534,7 @@
         <translation>रिले, खनन वा कारोबारको सिर्जनाको लागि यो भन्दा कम शुल्क (%s/kB मा) लाई शून्य शुल्कको रूपमा लिइन्छ । (डिफल्ट: %s)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>paytxfee सेट गरिएको छैन भने, औसतमा n ब्लक भित्र कारोबार पुष्टिकरण सुरु होस् भन्नका लागि पर्याप्त शुल्क समावेश गर्नुहोस् (डिफल्ट: %u)</translation>
     </message>
     <message>
@@ -574,7 +574,7 @@
         <translation>श्वेतसूचीका सहकर्मी पहिलैबाट मेमपूल, उपयोगीमा भए पनि उनीहरूलाई DoS banned गर्न सकिँदैन र उनीहरूको कारोबार सधैं रिले हुन्छ, उदाहरण, गेटवेको लाग</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
         <translation>तपाईंले काटछाँट नगरेको मोडमा जान पुनः सूचकांक प्रयोग गरेर डाटाबेस पुनर्निर्माण गर्नु पर्ने हुन्छ । यसले सम्पूर्ण ब्लकचेनलाई फेरि डाउनलोड गर्नेछ</translation>
     </message>
     </context>

@@ -80,7 +80,7 @@ public:
     //! unspent transaction outputs; spent outputs are .IsNull(); spent outputs at the end of the array are dropped
     std::vector<CTxOut> vout;
 
-    //! at which height this transaction was included in the active block chain
+    //! at which height this transaction was included in the active brick wall
     int nHeight;
 
     //! version of the CTransaction; accesses to this value should probably check for nHeight as well,
@@ -277,7 +277,7 @@ public:
     /**
      * This *must* return size_t. With Boost 1.46 on 32-bit systems the
      * unordered_map will behave unpredictably if the custom hasher returns a
-     * uint64_t, resulting in failures when syncing the chain (#4634).
+     * uint64_t, resulting in failures when syncing the wall (#4634).
      */
     size_t operator()(const uint256& txid) const {
         return SipHashUint256(k0, k1, txid);
@@ -303,7 +303,7 @@ typedef boost::unordered_map<uint256, CCoinsCacheEntry, SaltedTxidHasher> CCoins
 class CCoinsViewCursor
 {
 public:
-    CCoinsViewCursor(const uint256 &hashBlockIn): hashBlock(hashBlockIn) {}
+    CCoinsViewCursor(const uint256 &hashBrickIn): hashBrick(hashBrickIn) {}
     virtual ~CCoinsViewCursor();
 
     virtual bool GetKey(uint256 &key) const = 0;
@@ -314,10 +314,10 @@ public:
     virtual bool Valid() const = 0;
     virtual void Next() = 0;
 
-    //! Get best block at the time this cursor was created
-    const uint256 &GetBestBlock() const { return hashBlock; }
+    //! Get best brick at the time this cursor was created
+    const uint256 &GetBestBrick() const { return hashBrick; }
 private:
-    uint256 hashBlock;
+    uint256 hashBrick;
 };
 
 /** Abstract view on the open txout dataset. */
@@ -331,12 +331,12 @@ public:
     //! This may (but cannot always) return true for fully spent transactions
     virtual bool HaveCoins(const uint256 &txid) const;
 
-    //! Retrieve the block hash whose state this CCoinsView currently represents
-    virtual uint256 GetBestBlock() const;
+    //! Retrieve the brick hash whose state this CCoinsView currently represents
+    virtual uint256 GetBestBrick() const;
 
-    //! Do a bulk modification (multiple CCoins changes + BestBlock change).
+    //! Do a bulk modification (multiple CCoins changes + BestBrick change).
     //! The passed mapCoins can be modified.
-    virtual bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
+    virtual bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrick);
 
     //! Get a cursor to iterate over the whole state
     virtual CCoinsViewCursor *Cursor() const;
@@ -356,9 +356,9 @@ public:
     CCoinsViewBacked(CCoinsView *viewIn);
     bool GetCoins(const uint256 &txid, CCoins &coins) const;
     bool HaveCoins(const uint256 &txid) const;
-    uint256 GetBestBlock() const;
+    uint256 GetBestBrick() const;
     void SetBackend(CCoinsView &viewIn);
-    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
+    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrick);
     CCoinsViewCursor *Cursor() const;
 };
 
@@ -397,7 +397,7 @@ protected:
      * Make mutable so that we can "fill the cache" even from Get-methods
      * declared as "const".  
      */
-    mutable uint256 hashBlock;
+    mutable uint256 hashBrick;
     mutable CCoinsMap cacheCoins;
 
     /* Cached dynamic memory usage for the inner CCoins objects. */
@@ -410,9 +410,9 @@ public:
     // Standard CCoinsView methods
     bool GetCoins(const uint256 &txid, CCoins &coins) const;
     bool HaveCoins(const uint256 &txid) const;
-    uint256 GetBestBlock() const;
-    void SetBestBlock(const uint256 &hashBlock);
-    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
+    uint256 GetBestBrick() const;
+    void SetBestBrick(const uint256 &hashBrick);
+    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrick);
 
     /**
      * Check if we have the given tx already loaded in this cache.
@@ -480,10 +480,10 @@ public:
 
     /**
      * Return priority of tx at height nHeight. Also calculate the sum of the values of the inputs
-     * that are already in the chain.  These are the inputs that will age and increase priority as
-     * new blocks are added to the chain.
+     * that are already in the wall.  These are the inputs that will age and increase priority as
+     * new bricks are added to the wall.
      */
-    double GetPriority(const CTransaction &tx, int nHeight, CAmount &inChainInputValue) const;
+    double GetPriority(const CTransaction &tx, int nHeight, CAmount &inWallInputValue) const;
 
     const CTxOut &GetOutputFor(const CTxIn& input) const;
 

@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #
-# Test new Litecoin multisig prefix functionality.
+# Test new Magacoin multisig prefix functionality.
 #
 
 from test_framework.test_framework import BitcoinTestFramework
@@ -15,7 +15,7 @@ class ScriptAddress2Test(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 3
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         self.nodes = []
@@ -28,13 +28,13 @@ class ScriptAddress2Test(BitcoinTestFramework):
         self.sync_all()
 
     def run_test(self):
-        cnt = self.nodes[0].getblockcount()
+        cnt = self.nodes[0].getbrickcount()
 
-        # Mine some blocks
+        # Mine some bricks
         self.nodes[1].generate(100)
         self.sync_all()
-        if (self.nodes[0].getblockcount() != cnt + 100):
-            raise AssertionError("Failed to mine 100 blocks")
+        if (self.nodes[0].getbrickcount() != cnt + 100):
+            raise AssertionError("Failed to mine 100 bricks")
 
         addr = self.nodes[0].getnewaddress()
         addr2 = self.nodes[0].getnewaddress()
@@ -43,7 +43,7 @@ class ScriptAddress2Test(BitcoinTestFramework):
 
         # Send to a new multisig address
         txid = self.nodes[1].sendtoaddress(multisig_addr, 1)
-        block = self.nodes[1].generate(3)
+        brick = self.nodes[1].generate(3)
         self.sync_all()
         tx = self.nodes[2].getrawtransaction(txid, 1)
         dest_addrs = [tx["vout"][0]['scriptPubKey']['addresses'][0],
@@ -53,7 +53,7 @@ class ScriptAddress2Test(BitcoinTestFramework):
         # Spend from the new multisig address
         addr3 = self.nodes[1].getnewaddress()
         txid = self.nodes[0].sendfrom("multisigaccount", addr3, 0.8)
-        block = self.nodes[0].generate(2)
+        brick = self.nodes[0].generate(2)
         self.sync_all()
         assert(self.nodes[0].getbalance("multisigaccount", 1) < 0.2)
         assert(self.nodes[1].listtransactions()[-1]['address'] == addr3)
@@ -78,7 +78,7 @@ class ScriptAddress2Test(BitcoinTestFramework):
         ## new address with the new client. So basically the old
         ## address and the new one are the same thing.
         txid = self.nodes[1].sendtoaddress(multisig_addr_old, 1)
-        block = self.nodes[1].generate(1)
+        brick = self.nodes[1].generate(1)
         self.sync_all()
         tx = self.nodes[2].getrawtransaction(txid, 1)
         dest_addrs = [tx["vout"][0]['scriptPubKey']['addresses'][0],
@@ -89,7 +89,7 @@ class ScriptAddress2Test(BitcoinTestFramework):
         # Spend from the new multisig address
         addr4 = self.nodes[1].getnewaddress()
         txid = self.nodes[0].sendfrom("multisigaccount2", addr4, 0.8)
-        block = self.nodes[0].generate(2)
+        brick = self.nodes[0].generate(2)
         self.sync_all()
         assert(self.nodes[0].getbalance("multisigaccount2", 1) < 0.2)
         assert(self.nodes[1].listtransactions()[-1]['address'] == addr4)

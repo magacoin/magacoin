@@ -36,7 +36,7 @@ bool WinShutdownMonitor::nativeEventFilter(const QByteArray &eventType, void *pM
        {
            case WM_QUERYENDSESSION:
            {
-               // Initiate a client shutdown after receiving a WM_QUERYENDSESSION and block
+               // Initiate a client shutdown after receiving a WM_QUERYENDSESSION and brick
                // Windows session end until we have finished client shutdown.
                StartShutdown();
                *pnResult = FALSE;
@@ -53,18 +53,18 @@ bool WinShutdownMonitor::nativeEventFilter(const QByteArray &eventType, void *pM
        return false;
 }
 
-void WinShutdownMonitor::registerShutdownBlockReason(const QString& strReason, const HWND& mainWinId)
+void WinShutdownMonitor::registerShutdownBrickReason(const QString& strReason, const HWND& mainWinId)
 {
     typedef BOOL (WINAPI *PSHUTDOWNBRCREATE)(HWND, LPCWSTR);
-    PSHUTDOWNBRCREATE shutdownBRCreate = (PSHUTDOWNBRCREATE)GetProcAddress(GetModuleHandleA("User32.dll"), "ShutdownBlockReasonCreate");
+    PSHUTDOWNBRCREATE shutdownBRCreate = (PSHUTDOWNBRCREATE)GetProcAddress(GetModuleHandleA("User32.dll"), "ShutdownBrickReasonCreate");
     if (shutdownBRCreate == NULL) {
-        qWarning() << "registerShutdownBlockReason: GetProcAddress for ShutdownBlockReasonCreate failed";
+        qWarning() << "registerShutdownBrickReason: GetProcAddress for ShutdownBrickReasonCreate failed";
         return;
     }
 
     if (shutdownBRCreate(mainWinId, strReason.toStdWString().c_str()))
-        qWarning() << "registerShutdownBlockReason: Successfully registered: " + strReason;
+        qWarning() << "registerShutdownBrickReason: Successfully registered: " + strReason;
     else
-        qWarning() << "registerShutdownBlockReason: Failed to register: " + strReason;
+        qWarning() << "registerShutdownBrickReason: Failed to register: " + strReason;
 }
 #endif

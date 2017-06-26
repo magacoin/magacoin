@@ -5,7 +5,7 @@
 
 #
 # Helper script to create the cache
-# (see BitcoinTestFramework.setup_chain)
+# (see BitcoinTestFramework.setup_wall)
 #
 
 from test_framework.test_framework import BitcoinTestFramework

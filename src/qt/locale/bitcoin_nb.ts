@@ -162,12 +162,12 @@
         <translation>Åpne &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Reindekserer blokker på harddisk...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Send til en Litecoin-adresse</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Send til en Magacoin-adresse</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -190,8 +190,8 @@
         <translation>&amp;Verifiser melding...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -218,12 +218,12 @@
         <translation>Krypter de private nøklene som tilhører lommeboken din</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Signer en melding med Litecoin-adressene dine for å bevise at du eier dem</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Signer en melding med Magacoin-adressene dine for å bevise at du eier dem</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Bekreft meldinger for å være sikker på at de ble signert av en angitt Litecoin-adresse</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Bekreft meldinger for å være sikker på at de ble signert av en angitt Magacoin-adresse</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -242,8 +242,8 @@
         <translation>Verktøylinje for faner</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Forespør betalinger (genererer QR-koder og litecoin: URIer)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Forespør betalinger (genererer QR-koder og magacoin: URIer)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -254,23 +254,23 @@
         <translation>Vis listen over bruke mottaksadresser og merkelapper</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Åpne en Litecoin: URI eller betalingsetterspørring</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Åpne en Magacoin: URI eller betalingsetterspørring</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Kommandolinjevalg</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n aktiv forbindelse til Litecoin-nettverket</numerusform><numerusform>%n aktive forbindelser til Litecoin-nettverket</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n aktiv forbindelse til Magacoin-nettverket</numerusform><numerusform>%n aktive forbindelser til Magacoin-nettverket</numerusform></translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Ingen kilde for blokker tilgjengelig...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Lastet %n blokk med transaksjonshistorikk.</numerusform><numerusform>Lastet %n blokker med transaksjonshistorikk.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -298,7 +298,7 @@
         <translation>%1 bak</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Siste mottatte blokk ble generert for %1 siden.</translation>
     </message>
     <message>
@@ -645,7 +645,7 @@
         <translation>Minimer i stedet for å avslutte applikasjonen når vinduet lukkes. Når dette er valgt, vil applikasjonen avsluttes kun etter at Avslutte er valgt i menyen.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>Tredjepart URLer (f. eks. en blokkutforsker) som dukker opp i transaksjonsfanen som kontekst meny elementer. %s i URLen er erstattet med transaksjonen sin hash. Flere URLer er separert av en vertikal linje |.</translation>
     </message>
     <message>
@@ -693,16 +693,16 @@
         <translation>&amp;Bruk ubekreftet veksel</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Åpne automatisk Litecoin klientporten på ruteren. Dette virker kun om din ruter støtter UPnP og dette er påslått.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Åpne automatisk Magacoin klientporten på ruteren. Dette virker kun om din ruter støtter UPnP og dette er påslått.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Sett opp port ved hjelp av &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Koble til Litecoin-nettverket gjennom en SOCKS5 proxy.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Koble til Magacoin-nettverket gjennom en SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -741,8 +741,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Koble til Litecoin-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Koble til Magacoin-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -782,7 +782,7 @@
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Velg standard delt enhet for visning i grensesnittet og for sending av litecoins.</translation>
+        <translation>Velg standard delt enhet for visning i grensesnittet og for sending av magacoins.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -832,8 +832,8 @@
         <translation>Skjema</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Litecoin-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Magacoin-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -925,8 +925,8 @@
         <translation>Beløp</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Oppgi en Litecoin-adresse (f.eks. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Oppgi en Magacoin-adresse (f.eks. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1003,11 +1003,11 @@
         <translation>Antall tilkoblinger</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Blokkjeden</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Nåværende antall blokker</translation>
     </message>
     <message>
@@ -1055,7 +1055,7 @@
         <translation>Versjon</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>Startblokk</translation>
     </message>
     <message>
@@ -1063,7 +1063,7 @@
         <translation>Synkroniserte Blokkhoder</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Synkroniserte Blokker</translation>
     </message>
     <message>
@@ -1115,7 +1115,7 @@
         <translation>Tidsforskyvning</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Tidspunkt for siste blokk</translation>
     </message>
     <message>
@@ -1262,8 +1262,8 @@
         <translation>Gj&amp;enbruk en eksisterende mottaksadresse (ikke anbefalt)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Litecoin-nettverket.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Magacoin-nettverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1336,7 +1336,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Send Litecoins</translation>
+        <translation>Send Magacoins</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -1419,8 +1419,8 @@
         <translation>minstebeløp</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
-        <translation>Betaling av bare minimumsavgiften går helt fint så lenge det er mindre transaksjonsvolum enn plass i blokkene. Men vær klar over at dette kan ende opp i en transaksjon som aldri blir bekreftet når det er mer etterspørsel etter Litecoin-transaksjoner enn nettverket kan behandle.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
+        <translation>Betaling av bare minimumsavgiften går helt fint så lenge det er mindre transaksjonsvolum enn plass i blokkene. Men vær klar over at dette kan ende opp i en transaksjon som aldri blir bekreftet når det er mer etterspørsel etter Magacoin-transaksjoner enn nettverket kan behandle.</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
@@ -1435,7 +1435,7 @@
         <translation>Egendefinert:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(Smartgebyr ikke innført ennå. Dette tar vanligvis noen blokker...)</translation>
     </message>
     <message>
@@ -1506,8 +1506,8 @@
         <translation>Dette er en normal betaling.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>Litecoin-adressen betalingen skal sendes til</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>Magacoin-adressen betalingen skal sendes til</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1526,8 +1526,8 @@
         <translation>Fjern denne oppføringen</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Gebyret vil bli trukket fra beløpet som blir sendt. Mottakeren vil motta mindre litecoins enn det du skriver inn i beløpsfeltet. Hvis det er valgt flere mottakere, deles gebyret likt.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Gebyret vil bli trukket fra beløpet som blir sendt. Mottakeren vil motta mindre magacoins enn det du skriver inn i beløpsfeltet. Hvis det er valgt flere mottakere, deles gebyret likt.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -1550,8 +1550,8 @@
         <translation>Skriv inn en merkelapp for denne adressen for å legge den til listen av brukte adresser</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>En melding som var tilknyttet litecoinen: URI vil bli lagret med transaksjonen for din oversikt. Denne meldingen vil ikke bli sendt over Litecoin-nettverket.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>En melding som var tilknyttet magacoinen: URI vil bli lagret med transaksjonen for din oversikt. Denne meldingen vil ikke bli sendt over Magacoin-nettverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1583,12 +1583,12 @@
         <translation>&amp;Signer Melding</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Du kan signere meldinger/avtaler med adresser for å bevise at du kan motta litecoins sendt til dem. Vær forsiktig med å signere noe vagt eller tilfeldig, siden phishing-angrep kan prøve å lure deg til å signere din identitet over til dem. Bare signer fullt detaljerte utsagn som du er enig i.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Du kan signere meldinger/avtaler med adresser for å bevise at du kan motta magacoins sendt til dem. Vær forsiktig med å signere noe vagt eller tilfeldig, siden phishing-angrep kan prøve å lure deg til å signere din identitet over til dem. Bare signer fullt detaljerte utsagn som du er enig i.</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>Litecoin-adressen meldingen skal signeres med</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>Magacoin-adressen meldingen skal signeres med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1619,8 +1619,8 @@
         <translation>Kopier valgt signatur til utklippstavle</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Signer meldingen for å bevise at du eier denne Litecoin-adressen</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Signer meldingen for å bevise at du eier denne Magacoin-adressen</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1643,12 +1643,12 @@
         <translation>Skriv inn mottakerens adresse, melding (forsikre deg om at du kopier linjeskift, mellomrom, faner osv. nøyaktig) og underskrift nedenfor for å bekrefte meldingen. Vær forsiktig så du ikke leser mer ut av signaturen enn hva som er i den signerte meldingen i seg selv, for å unngå å bli lurt av et man-in-the-middle-angrep. Merk at dette bare beviser at den som signerer kan motta med adressen, dette beviser ikke hvem som har sendt transaksjoner!</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Litecoin-adressen meldingen ble signert med</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Magacoin-adressen meldingen ble signert med</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verifiser meldingen for å være sikker på at den ble signert av den angitte Litecoin-adressen</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verifiser meldingen for å være sikker på at den ble signert av den angitte Magacoin-adressen</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1736,15 +1736,15 @@
         <translation>Beskjæringsmodus er konfigurert under minimum på %d MiB. Vennligst bruk et høyere nummer.</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
         <translation>Beskjæring: siste lommeboksynkronisering går utenfor beskjærte data. Du må bruke -reindex (laster ned hele blokkjeden igjen for beskjærte noder)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
         <translation>Reduser lagringsbehovet ved beskjæring (sletting) av gamle blokker. Denne modusen er ikke kompatibel med -txindex og -rescan. Advarsel: Tilbakestilling av denne innstillingen krever at hele blokkjeden må lastes ned på nytt. (Standardverdi: 0 = deaktiver beskjæring av blokker, &gt;%u = mål for størrelse i MiB å bruke for blokkfiler)</translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
         <translation>Omsøk er ikke mulig i beskjært modus. Du vil måtte bruke -reindex som vil laste nede hele blokkjeden på nytt.</translation>
     </message>
     <message>
@@ -1756,7 +1756,7 @@
         <translation>Gebyr (i %s/kB) for å legge til i transaksjoner du sender (standardverdi: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
+        <source>Pruning brickstore...</source>
         <translation>Beskjærer blokklageret...</translation>
     </message>
     <message>
@@ -1772,15 +1772,15 @@
         <translation>Ta imot tilkoblinger fra utsiden (standardverdi: 1 hvis uten -proxy eller -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Bind til angitt adresse. Bruk [vertsmaskin]:port notasjon for IPv6</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>Slett alle transaksjoner i lommeboken og gjenopprett kun de delene av blokkjeden gjennom -rescan ved oppstart</translation>
     </message>
     <message>
@@ -1796,7 +1796,7 @@
         <translation>Angi antall tråder for skriptverifisering (%u til %d, 0 = auto, &lt;0 = la det antallet kjerner være ledig, standard: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>Blokkdatabasen inneholder en blokk som ser ut til å være fra fremtiden. Dette kan være fordi dato og tid på din datamaskin er satt feil. Gjenopprett kun blokkdatabasen når du er sikker på at dato og tid er satt riktig.</translation>
     </message>
     <message>
@@ -1828,7 +1828,7 @@
         <translation>&lt;category&gt; kan være:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Valg for opprettelse av blokker:</translation>
     </message>
     <message>
@@ -1840,7 +1840,7 @@
         <translation>Innstillinger for tilkobling:</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Oppdaget korrupt blokkdatabase</translation>
     </message>
     <message>
@@ -1852,19 +1852,19 @@
         <translation>Ikke last inn lommeboken og deaktiver RPC-kall</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Ønsker du å gjenopprette blokkdatabasen nå?</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
-        <translation>Slå på publish hash block i &lt;address&gt;</translation>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
+        <translation>Slå på publish hash brick i &lt;address&gt;</translation>
     </message>
     <message>
         <source>Enable publish hash transaction in &lt;address&gt;</source>
         <translation>Slå på publish hash transaction i &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
         <translation>Slå på publisering av råblokk i &lt;address&gt;</translation>
     </message>
     <message>
@@ -1872,7 +1872,7 @@
         <translation>Slå på publisering av råtransaksjon i &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Feil under initialisering av blokkdatabase</translation>
     </message>
     <message>
@@ -1884,11 +1884,11 @@
         <translation>Feil ved lasting av %s</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Feil ved lasting av blokkdatabase</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Feil under åpning av blokkdatabase</translation>
     </message>
     <message>
@@ -1904,7 +1904,7 @@
         <translation>Importerer...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Ugyldig eller ingen skaperblokk funnet. Feil datamappe for nettverk?</translation>
     </message>
     <message>
@@ -1944,7 +1944,7 @@
         <translation>Sett databasen sin størrelse på hurtigbufferen i megabytes (%d til %d, standardverdi: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>Sett maks blokkstørrelse i bytes (standardverdi: %d)</translation>
     </message>
     <message>
@@ -1976,7 +1976,7 @@
         <translation>User Agent kommentar (%s) inneholder utrygge tegn.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Verifiserer blokker...</translation>
     </message>
     <message>
@@ -2024,7 +2024,7 @@
         <translation>Gebyrer (i %s/kB) mindre enn dette anses som null gebyr for videresending, graving og laging av transaksjoner (standardverdi: %s)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>Hvis paytxfee ikke er angitt, inkluderer da nok i gebyr til at transaksjoner gjennomsnittligt bekreftes innen n blokker (standardverdi: %u)</translation>
     </message>
     <message>
@@ -2060,7 +2060,7 @@
         <translation>Hvitlistede noder kan ikke DoS-blokkeres, og deres transaksjoner videresendes alltid, selv om de allerede er i minnelageret. Nyttig f.eks. for en gateway.</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
         <translation>Du må gjenoppbygge databasen ved hjelp av -reindex for å gå tilbake til ubeskåret modus. Dette vil laste ned hele blokkjeden på nytt.</translation>
     </message>
     <message>
@@ -2084,7 +2084,7 @@
         <translation>Feil ved lesing fra database, stenger ned.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
         <translation>Importerer blokker fra ekstern fil blk000??.dat ved oppstart</translation>
     </message>
     <message>
@@ -2120,7 +2120,7 @@
         <translation>Reduserer -maxconnections fra %d til %d, pga. systembegrensninger.</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
         <translation>Se gjennom blokkjeden etter manglende lommeboktransaksjoner ved oppstart</translation>
     </message>
     <message>
@@ -2192,7 +2192,7 @@
         <translation>Advarsel</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
         <translation>Hvorvidt å operere i modus med kun blokker (standardverdi: %u)</translation>
     </message>
     <message>
@@ -2208,7 +2208,7 @@
         <translation>Passord for JSON-RPC forbindelser</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Utfør kommando når beste blokk endrer seg (%s i kommandoen erstattes med blokkens hash)</translation>
     </message>
     <message>
@@ -2240,8 +2240,8 @@
         <translation>Gebyrer (i %s/Kb) mindre enn dette anses som null gebyr for laging av transaksjoner (standardverdi: %s)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>Hvor grundig blokkverifiseringen til -checkblocks er (0-4, standardverdi: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>Hvor grundig blokkverifiseringen til -checkbricks er (0-4, standardverdi: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -2256,7 +2256,7 @@
         <translation>Ta ut feilsøkingsinformasjon (standardverdi: %u, bruk av &lt;category&gt; er valgfritt)</translation>
     </message>
     <message>
-        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <source>Support filtering of bricks and transaction with bloom filters (default: %u)</source>
         <translation>Støtte filtrering av blokker og transaksjoner med bloomfiltre (standardverdi: %u)</translation>
     </message>
     <message>
@@ -2288,7 +2288,7 @@
         <translation>Alltid søk etter nodeadresser via DNS-oppslag (standardverdi: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>Hvor mange blokker skal sjekkes ved oppstart (standardverdi: %u, 0 = alle)</translation>
     </message>
     <message>
@@ -2372,7 +2372,7 @@
         <translation>Utilstrekkelige midler</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Laster blokkindeks...</translation>
     </message>
     <message>

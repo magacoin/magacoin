@@ -134,8 +134,8 @@
         <translation>رمز مربوط به رمزگذاریِ wallet را تغییر دهید</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>litecoin</translation>
+        <source>Magacoin</source>
+        <translation>magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -286,8 +286,8 @@
         <translation>فرم</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>اطلاعات نمایش داده شده ممکن است روزآمد نباشد. wallet شما به صورت خودکار بعد از برقراری اتصال با شبکه litecoin به روز می شود اما این فرایند هنوز تکمیل نشده است.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>اطلاعات نمایش داده شده ممکن است روزآمد نباشد. wallet شما به صورت خودکار بعد از برقراری اتصال با شبکه magacoin به روز می شود اما این فرایند هنوز تکمیل نشده است.</translation>
     </message>
     </context>
 <context>
@@ -321,11 +321,11 @@
         <translation>تعداد اتصال</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>زنجیره مجموعه تراکنش ها</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>تعداد زنجیره های حاضر</translation>
     </message>
     </context>
@@ -538,8 +538,8 @@
         <translation>رمز برای ارتباطاتِ JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>دستور را وقتی بهترین بلاک تغییر کرد اجرا کن (%s در دستور توسط block hash جایگزین شده است)</translation>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
+        <translation>دستور را وقتی بهترین بلاک تغییر کرد اجرا کن (%s در دستور توسط brick hash جایگزین شده است)</translation>
     </message>
     <message>
         <source>Loading addresses...</source>
@@ -562,7 +562,7 @@
         <translation>وجوه ناکافی</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>لود شدن نمایه بلاکها..</translation>
     </message>
     <message>

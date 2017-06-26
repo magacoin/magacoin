@@ -174,11 +174,11 @@
         <translation>&amp;URI 열기...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>디스크에서 블록 다시 색인중...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
+        <source>Send coins to a Magacoin address</source>
         <translation>라이트코인을 주소로 코인 전송</translation>
     </message>
     <message>
@@ -202,7 +202,7 @@
         <translation>메시지 확인(&amp;V)...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
+        <source>Magacoin</source>
         <translation>라이트코인을</translation>
     </message>
     <message>
@@ -230,11 +230,11 @@
         <translation>지갑에 포함된 개인키 암호화하기</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
         <translation>지갑 주소가 본인 소유인지 증명하기 위해 라이트코인을 주소에 서명할 수 있습니다.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
         <translation>라이트코인을 주소의 전자 서명 확인을 위해 첨부된 메시지가 있을 경우 이를 검증할 수 있습니다.</translation>
     </message>
     <message>
@@ -254,7 +254,7 @@
         <translation>툴바 색인표</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
         <translation>지불 요청하기 (QR코드와 라이트코인을이 생성됩니다: URIs)</translation>
     </message>
     <message>
@@ -266,31 +266,31 @@
         <translation>한번 이상 사용된 받는 주소와 주소 제목의 목록을 보여줍니다.</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>litecoin: URI 또는 지불요청 열기</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>magacoin: URI 또는 지불요청 열기</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>명령줄 옵션(&amp;C)</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
+        <source>%n active connection(s) to Magacoin network</source>
         <translation><numerusform>라이트코인을 네트워크에 %n개의 연결이 활성화되어 있습니다.</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>디스크에서 블록 색인중...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>디스크에서 블록 처리중...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>사용 가능한 블록이 없습니다...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>%n 블럭 만큼의 거래 기록이 처리됨.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -318,7 +318,7 @@
         <translation>%1 뒤에</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>최근에 받은 블록은 %1 전에 생성되었습니다.</translation>
     </message>
     <message>
@@ -342,7 +342,7 @@
         <translation>현재까지</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
         <translation>사용할 수 있는 라이트코인을 명령줄 옵션 목록을 가져오기 위해 %1 도움말 메시지를 표시합니다.</translation>
     </message>
     <message>
@@ -599,7 +599,7 @@
         <translation>프로그램이 처음으로 실행되고 있습니다. %1가 어디에 데이터를 저장할지 선택할 수 있습니다. </translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <source>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
         <translation>%1가 블럭체인의 복사본을 다운로드 저장합니다. 적어도 %2GB의 데이터가 이 폴더에 저장되며 시간이 경과할수록 점차 증가합니다. 그리고 지갑 또한 이 폴더에 저장됩니다. </translation>
     </message>
     <message>
@@ -693,7 +693,7 @@
         <translation>창을 닫으면 종료 대신 트레이로 보내기. 이 옵션을 활성화하면 메뉴에서 종료를 선택한 후에만 어플리케이션이 종료됩니다.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>서드-파티 URLs (예. 블록 탐색기)는 거래 탭의 컨텍스트 메뉴에 나타납니다. URL의 %s는 트랜잭션 해시값으로 대체됩니다. 여러 URLs는 수직 바 | 에서 나누어 집니다.</translation>
     </message>
     <message>
@@ -741,15 +741,15 @@
         <translation>검증되지 않은 잔돈 쓰기 (&amp;S)</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>라우터에서 Litecoin 클라이언트 포트를 자동적으로 엽니다. 라우터에서 UPnP를 지원하고 활성화 했을 경우에만 동작합니다.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>라우터에서 Magacoin 클라이언트 포트를 자동적으로 엽니다. 라우터에서 UPnP를 지원하고 활성화 했을 경우에만 동작합니다.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>사용중인 &amp;UPnP 포트 매핑</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
         <translation>SOCKS5 프록시를 통해 라이트코인을 네트워크 연결</translation>
     </message>
     <message>
@@ -789,7 +789,7 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation>Tor 서비스를 경유하여 라이트코인을 네트워크에 연결하기 위해 분리된 SOCKS5 프록시를 사용.</translation>
     </message>
     <message>
@@ -888,7 +888,7 @@
         <translation>유형</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
         <translation>표시된 정보가 오래된 것 같습니다. 라이트코인을 네트워크에 연결하고 난 다음에 지갑을 자동으로 동기화 하지만, 아직 과정이 끝나지는 않았습니다.</translation>
     </message>
     <message>
@@ -981,7 +981,7 @@
         <translation>거래액</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
+        <source>Enter a Magacoin address (e.g. %1)</source>
         <translation>라이트코인을 주소를 입력하기 (예. %1)</translation>
     </message>
     <message>
@@ -1063,11 +1063,11 @@
         <translation>연결 수</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>블럭 체인</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>현재 블럭 수</translation>
     </message>
     <message>
@@ -1115,7 +1115,7 @@
         <translation>버전</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>시작된 블록</translation>
     </message>
     <message>
@@ -1123,7 +1123,7 @@
         <translation>동기화된 헤더</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>동기화된 블록</translation>
     </message>
     <message>
@@ -1179,7 +1179,7 @@
         <translation>시간 오프셋</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>최종 블럭 시각</translation>
     </message>
     <message>
@@ -1330,7 +1330,7 @@
         <translation>현재의 수취용 주소를 재사용하기(&amp;E) (권장하지 않습니다)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
         <translation>지불 요청에 첨부되는 선택가능한 메시지 입니다. 이 메세지는 요청이 열릴 때 표시될 것 입니다. 메모: 이 메시지는 라이트코인을 네트워크로 전송되지 않습니다.</translation>
     </message>
     <message>
@@ -1491,7 +1491,7 @@
         <translation>최소 수수료</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
         <translation>블록의 용량보다 트랜잭션의 용량이 작은 경우에는 최소한의 수수료만으로도 충분합니다. 그러나 라이트코인을 네트워크의 처리량보다 더 많은 트랜잭션 요구는 영원히 검증이 안 될 수도 있습니다.</translation>
     </message>
     <message>
@@ -1507,7 +1507,7 @@
         <translation>사용자 정의:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(Smart fee가 아직 초기화되지 않았습니다. 블록 분석이 완료될 때 까지 기다려주십시오...)</translation>
     </message>
     <message>
@@ -1578,7 +1578,7 @@
         <translation>이것은 정상적인 지불입니다.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
+        <source>The Magacoin address to send the payment to</source>
         <translation>이 라이트코인을 주소로 송금됩니다</translation>
     </message>
     <message>
@@ -1598,7 +1598,7 @@
         <translation>항목을 지웁니다</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>수수료가 송금되는 금액에서 공제됩니다. 수령자는 금액 필드에서 입력한 금액보다 적은 금액을 전송받게 됩니다. 받는 사람이 여러 명인 경우 수수료는 균등하게 나누어집니다.</translation>
     </message>
     <message>
@@ -1622,7 +1622,7 @@
         <translation>사용된 주소 목록에 새 주소를 추가하기 위해 라벨 이름을 입력해 주세요. </translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
         <translation>라이트코인을에 첨부된 메시지: 참고용으로 거래와 함께 저장될 URI. 메모: 이 메시지는 라이트코인을 네트워크로 전송되지 않습니다.</translation>
     </message>
     <message>
@@ -1659,11 +1659,11 @@
         <translation>메시지 서명(&amp;S)</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>여러분 자신을 증명하기 위해 주소를 첨가하고 서명할 수 있습니다. 피싱 공격으로 말미암아 여러분의 서명을 통해 속아 넘어가게 할 수 있으므로, 서명하지 않은 모든 모호한 요소를 주의하십시오. 조항들이 완전 무결한지 확인 후 동의하는 경우에만 서명하십시오.</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
+        <source>The Magacoin address to sign the message with</source>
         <translation>메세지를 서명한 라이트코인을 주소</translation>
     </message>
     <message>
@@ -1695,7 +1695,7 @@
         <translation>현재 서명을 시스템 클립보드에 복사</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>여러분의 라이트코인을 주소를 증명하려면 메시지 서명하십시오</translation>
     </message>
     <message>
@@ -1719,11 +1719,11 @@
         <translation>메시지를 검증하기 위해 아래 칸에 각각 지갑 주소와 메시지, 전자서명을 입력하세요. (메시지 원본의 띄어쓰기, 들여쓰기, 행 나눔 등이 정확하게 입력되어야 하므로 원본을 복사해서 입력하세요) 이 기능은 메시지 검증이 주 목적이며, 네트워크 침입자에 의해 변조되지 않도록 전자서명 해독에 불필요한 시간을 소모하지 마세요. </translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
+        <source>The Magacoin address the message was signed with</source>
         <translation>메세지의 서명에 사용된 라이트코인을 주소</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
         <translation>정확한 라이트코인을주소가 입력됬는지 메시지를 확인하시오</translation>
     </message>
     <message>
@@ -1820,15 +1820,15 @@
         <translation>블록 축소가 최소치의 %d MiB 밑으로 설정되어 있습니다. 더 높은 값을 사용해 보세요.</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
         <translation>블록 축소: 마지막 지갑 동기화 지점이 축소된 데이터보다 과거의 것 입니다. -reindex가 필요합니다 (정지된 노드의 경우 모든 블록체인을 재다운로드합니다)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
         <translation>오래된 블록을 제거(축소)하여 디스크 용량을 줄입니다. 이 모드는 -txindex 와 -rescan 과 호환되지 않습니다. 경고: 이 모드를 취소하면 모든 블록체인을 다시 다운로드 받아야 합니다. (기본값:0 = 블록 축소 비활성화, &gt;%u = 블록파일에 사용할 용량을 MiB단위로 지정)</translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
         <translation>블록 축소 모드에서는 재검색이 불가능 합니다. -reindex 명령을 사용해서 모든 블록체인을 다시 다운로드 해야 합니다.</translation>
     </message>
     <message>
@@ -1840,7 +1840,7 @@
         <translation>송금 거래시 추가되는 수수료 (%s/kB) (기본값: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
+        <source>Pruning brickstore...</source>
         <translation>블록 데이터를 축소 중입니다..</translation>
     </message>
     <message>
@@ -1856,7 +1856,7 @@
         <translation>외부 접속을 승인합니다</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
+        <source>Magacoin Core</source>
         <translation>라이트코인을 코어</translation>
     </message>
     <message>
@@ -1884,7 +1884,7 @@
         <translation>%s 데이터 디렉토리에 락을 걸 수 없었습니다. %s가 이미 실행 중인 것으로 보입니다.</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>시작시 모든 지갑 트랜잭션을 삭제하고 -rescan을 통하여 블록체인만 복구합니다.</translation>
     </message>
     <message>
@@ -1920,7 +1920,7 @@
         <translation>스크립트 인증 스레드의 갯수 설정 (%u-%d, 0 = 자동, &lt;0 = 지정된 코어 개수만큼 사용 안함, 기본값: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>블록 데이터베이스에 미래의 블록이 포함되어 있습니다. 이것은 사용자의 컴퓨터의 날짜와 시간이 올바르게 설정되어 있지 않을때 나타날 수 있습니다. 만약 사용자의 컴퓨터의 날짜와 시간이 올바르다고 확신할 때에만 블록 데이터 베이스의 재구성을 하십시오</translation>
     </message>
     <message>
@@ -1928,7 +1928,7 @@
         <translation>이 빌드 버전은 정식 출시 전 테스트의 목적이며, 예기치 않은 위험과 오류가 발생할 수 있습니다. 채굴과 상점용 소프트웨어로 사용하는 것을 권하지 않습니다.</translation>
     </message>
     <message>
-        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the brickwall</source>
         <translation>데이터베이스를 포크 전 상태로 돌리지 못했습니다. 블록체인을 다시 다운로드 해주십시오.</translation>
     </message>
     <message>
@@ -1948,8 +1948,8 @@
         <translation>설정된 넷마스크 혹은 IP 주소로 화이트리스트에 포함된 피어에 접속합니다. 이 설정은 복수로 지정 할 수 있습니다.</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
-        <translation>-txindex를 바꾸기 위해서는 -reindex-chainstate를 사용해서 데이터베이스를 재구성해야 합니다. </translation>
+        <source>You need to rebuild the database using -reindex-wallstate to change -txindex</source>
+        <translation>-txindex를 바꾸기 위해서는 -reindex-wallstate를 사용해서 데이터베이스를 재구성해야 합니다. </translation>
     </message>
     <message>
         <source>%s corrupt, salvage failed</source>
@@ -1972,7 +1972,7 @@
         <translation>시작시 망가진 wallet.dat에서 개인키 복원을 시도합니다</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>블록 생성 옵션:</translation>
     </message>
     <message>
@@ -1992,7 +1992,7 @@
         <translation>Copyright (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>손상된 블록 데이터베이스가 감지되었습니다</translation>
     </message>
     <message>
@@ -2004,11 +2004,11 @@
         <translation>지갑 불러오기를 하지마시오 또한 지갑 RPC 연결을 차단하십시오</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>블락 데이터베이스를 다시 생성하시겠습니까?</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
         <translation>&lt;address&gt;에 대한 해시 블록 공개 활성화</translation>
     </message>
     <message>
@@ -2016,7 +2016,7 @@
         <translation>&lt;address&gt;에 대한 해시 트랙잭션 공개 활성화</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
         <translation>&lt;address&gt;에 대한 로우 블록 공개 활성화</translation>
     </message>
     <message>
@@ -2028,7 +2028,7 @@
         <translation>메모리 풀(pool) 내의 트랜잭션 치환(replacement) 활성화 (기본값: %u)</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>블록 데이터베이스를 초기화하는데 오류</translation>
     </message>
     <message>
@@ -2052,11 +2052,11 @@
         <translation>%s 불러오기 오류: 이미 HD 지갑이 존재하는 상태에서 HD 지갑을 비활성화 할 수 없습니다</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>블록 데이터베이스를 불러오는데 오류</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>블록 데이터베이스를 여는데 오류</translation>
     </message>
     <message>
@@ -2072,7 +2072,7 @@
         <translation>들여오기 중...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>올바르지 않거나 생성된 블록을 찾을 수 없습니다. 잘못된 네트워크 자료 디렉토리?</translation>
     </message>
     <message>
@@ -2128,15 +2128,15 @@
         <translation>블록 축소 모드는 -txindex와 호환되지 않습니다.</translation>
     </message>
     <message>
-        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <source>Rebuild wall state and brick index from the blk*.dat files on disk</source>
         <translation>현재의 blk*.dat 파일들로부터 블록체인 색인을 재구성합니다.</translation>
     </message>
     <message>
-        <source>Rebuild chain state from the currently indexed blocks</source>
+        <source>Rebuild wall state from the currently indexed bricks</source>
         <translation>현재 색인 된 블록들로부터 블록체인을 재구성합니다.</translation>
     </message>
     <message>
-        <source>Rewinding blocks...</source>
+        <source>Rewinding bricks...</source>
         <translation>블록 되감는중...</translation>
     </message>
     <message>
@@ -2144,7 +2144,7 @@
         <translation>데이터베이스 케시 크기를 메가바이트로 설정(%d 부터 %d, 기본값: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>최대 블락 크기를 Bytes로 지정하세요 (기본: %d)</translation>
     </message>
     <message>
@@ -2180,7 +2180,7 @@
         <translation>사용자 정의 코멘트 (%s)에 안전하지 못한 글자가 포함되어 있습니다.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>블록 검증중...</translation>
     </message>
     <message>
@@ -2236,7 +2236,7 @@
         <translation>해당 금액(%s/kB) 보다 적은 수수료는 중계, 채굴, 트랜잭션 생성에서 수수료 면제로 간주됩니다 (기본값: %s)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>paytxfee가 설정되어 있지 않다면 평균 n 블록안에 승인이 이루어지도록 충분한 수수료가 포함됩니다 (기본값: %u)</translation>
     </message>
     <message>
@@ -2272,7 +2272,7 @@
         <translation>화이트리스트에 포함된 피어는 이미 메모리풀에 포함되어 있어도 DoS 추방이 되지 않으며 그들의 트랜잭션이 항상 중계됩니다, 이는 예를 들면 게이트웨이에서 유용합니다.</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
         <translation>축소 모드를 해제하고 데이터베이스를 재구성 하기 위해 -reindex를 사용해야 합니다. 이 명령은 모든 블록체인을 다시 다운로드 할 것 입니다.</translation>
     </message>
     <message>
@@ -2296,7 +2296,7 @@
         <translation>블록 데이터베이스를 불러오는데 오류가 발생하였습니다, 종료됩니다.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
         <translation>외부 blk000??.dat 파일에서 블록을 가져오기</translation>
     </message>
     <message>
@@ -2332,7 +2332,7 @@
         <translation>시스템 한계로 인하여 -maxconnections를 %d 에서 %d로 줄였습니다.</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
         <translation>시작시 누락된 지갑 트랜잭션에 대해 블록 체인을 다시 검색 합니다</translation>
     </message>
     <message>
@@ -2404,7 +2404,7 @@
         <translation>경고: 알려지지 않은 새로운 규칙이 활성화되었습니다. (버전비트 %i)</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
         <translation>블록 전용 모드로 동작할지 여부 (기본값: %u)</translation>
     </message>
     <message>
@@ -2420,7 +2420,7 @@
         <translation>JSON-RPC 연결에 사용할 암호</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>최고의 블럭이 변하면 명령을 실행(cmd 에 있는 %s 는 블럭 해시에 의해 대체되어 짐)</translation>
     </message>
     <message>
@@ -2452,8 +2452,8 @@
         <translation>해당 금액(%s/kB) 보다 적은 수수료는 수수료 면제로 간주됩니다.(기본값: %s)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>-checkblocks을 통한 블록 점검 (0-4, 기본값: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>-checkbricks을 통한 블록 점검 (0-4, 기본값: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -2468,7 +2468,7 @@
         <translation>디버그 정보 출력 (기본값: %u, &lt;category&gt; 제공은 선택입니다)</translation>
     </message>
     <message>
-        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <source>Support filtering of bricks and transaction with bloom filters (default: %u)</source>
         <translation>블룸필터를 통해 블록과 트랜잭션 필터링 지원 (기본값: %u)</translation>
     </message>
     <message>
@@ -2496,7 +2496,7 @@
         <translation>JSON-RPC 연결시 사용자 이름과 해시화된 암호문. &lt;userpw&gt; 필드는 &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt; 포멧으로 구성되어 있습니다. 전형적 파이썬 스크립트에선 share/rpcuser가 포함되어 있습니다. 이 옵션은 여러번 지정할 수 있습니다.</translation>
     </message>
     <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
+        <source>Warning: Unknown brick versions being mined! It's possible unknown rules are in effect</source>
         <translation>경고: 알려지지 않은 버전의 블록이 채굴되었습니다. 알려지지 않은 규칙이 적용되었을 가능성이 있습니다.</translation>
     </message>
     <message>
@@ -2508,7 +2508,7 @@
         <translation>DNS lookup을 통해 항상 피어주소에 대한 쿼리 보내기 (기본값: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>시작시 점검할 블록 갯수 (기본값: %u, 0 = 모두)</translation>
     </message>
     <message>
@@ -2592,7 +2592,7 @@
         <translation>자금 부족</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>블럭 인덱스를 불러오는 중...</translation>
     </message>
     <message>

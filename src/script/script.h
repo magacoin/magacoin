@@ -30,7 +30,7 @@ static const int MAX_PUBKEYS_PER_MULTISIG = 20;
 // Maximum script length in bytes
 static const int MAX_SCRIPT_SIZE = 10000;
 
-// Threshold for nLockTime: below this value it is interpreted as block number,
+// Threshold for nLockTime: below this value it is interpreted as brick number,
 // otherwise as UNIX timestamp.
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 

@@ -14,10 +14,10 @@
 # NodeConn: an object which manages p2p connectivity to a bitcoin node
 # NodeConnCB: a base class that describes the interface for receiving
 #             callbacks with network messages from a NodeConn
-# CBlock, CTransaction, CBlockHeader, CTxIn, CTxOut, etc....:
+# CBrick, CTransaction, CBrickHeader, CTxIn, CTxOut, etc....:
 #     data structures that should map to corresponding structures in
 #     bitcoin/primitives
-# msg_block, msg_tx, msg_headers, etc.:
+# msg_brick, msg_tx, msg_headers, etc.:
 #     data structures that represent network messages
 # ser_*, deser_*: functions that handle serialization/deserialization
 
@@ -36,7 +36,7 @@ from threading import RLock
 from threading import Thread
 import logging
 import copy
-import litecoin_scrypt
+import magacoin_scrypt
 from test_framework.siphash import siphash256
 
 BIP0031_VERSION = 60000
@@ -44,7 +44,7 @@ MY_VERSION = 80014  # past bip-31 for ping/pong
 MY_SUBVERSION = b"/python-mininode-tester:0.0.3/"
 
 MAX_INV_SZ = 50000
-MAX_BLOCK_SIZE = 1000000
+MAX_BRICK_SIZE = 1000000
 
 COIN = 100000000 # 1 btc in satoshis
 
@@ -147,7 +147,7 @@ def deser_vector(f, c):
 
 # ser_function_name: Allow for an alternate serialization function on the
 # entries in the vector (we use this for serializing the vector of transactions
-# for a witness block).
+# for a witness brick).
 def ser_vector(l, ser_function_name=None):
     r = ser_compact_size(len(l))
     for i in l:
@@ -247,10 +247,10 @@ class CInv(object):
     typemap = {
         0: "Error",
         1: "TX",
-        2: "Block",
+        2: "Brick",
         1|MSG_WITNESS_FLAG: "WitnessTx",
-        2|MSG_WITNESS_FLAG : "WitnessBlock",
-        4: "CompactBlock"
+        2|MSG_WITNESS_FLAG : "WitnessBrick",
+        4: "CompactBrick"
     }
 
     def __init__(self, t=0, h=0):
@@ -272,7 +272,7 @@ class CInv(object):
             % (self.typemap[self.type], self.hash)
 
 
-class CBlockLocator(object):
+class CBrickLocator(object):
     def __init__(self):
         self.nVersion = MY_VERSION
         self.vHave = []
@@ -288,7 +288,7 @@ class CBlockLocator(object):
         return r
 
     def __repr__(self):
-        return "CBlockLocator(nVersion=%i vHave=%s)" \
+        return "CBrickLocator(nVersion=%i vHave=%s)" \
             % (self.nVersion, repr(self.vHave))
 
 
@@ -523,13 +523,13 @@ class CTransaction(object):
             % (self.nVersion, repr(self.vin), repr(self.vout), repr(self.wit), self.nLockTime)
 
 
-class CBlockHeader(object):
+class CBrickHeader(object):
     def __init__(self, header=None):
         if header is None:
             self.set_null()
         else:
             self.nVersion = header.nVersion
-            self.hashPrevBlock = header.hashPrevBlock
+            self.hashPrevBrick = header.hashPrevBrick
             self.hashMerkleRoot = header.hashMerkleRoot
             self.nTime = header.nTime
             self.nBits = header.nBits
@@ -541,7 +541,7 @@ class CBlockHeader(object):
 
     def set_null(self):
         self.nVersion = 1
-        self.hashPrevBlock = 0
+        self.hashPrevBrick = 0
         self.hashMerkleRoot = 0
         self.nTime = 0
         self.nBits = 0
@@ -552,7 +552,7 @@ class CBlockHeader(object):
 
     def deserialize(self, f):
         self.nVersion = struct.unpack("<i", f.read(4))[0]
-        self.hashPrevBlock = deser_uint256(f)
+        self.hashPrevBrick = deser_uint256(f)
         self.hashMerkleRoot = deser_uint256(f)
         self.nTime = struct.unpack("<I", f.read(4))[0]
         self.nBits = struct.unpack("<I", f.read(4))[0]
@@ -564,7 +564,7 @@ class CBlockHeader(object):
     def serialize(self):
         r = b""
         r += struct.pack("<i", self.nVersion)
-        r += ser_uint256(self.hashPrevBlock)
+        r += ser_uint256(self.hashPrevBrick)
         r += ser_uint256(self.hashMerkleRoot)
         r += struct.pack("<I", self.nTime)
         r += struct.pack("<I", self.nBits)
@@ -575,14 +575,14 @@ class CBlockHeader(object):
         if self.sha256 is None:
             r = b""
             r += struct.pack("<i", self.nVersion)
-            r += ser_uint256(self.hashPrevBlock)
+            r += ser_uint256(self.hashPrevBrick)
             r += ser_uint256(self.hashMerkleRoot)
             r += struct.pack("<I", self.nTime)
             r += struct.pack("<I", self.nBits)
             r += struct.pack("<I", self.nNonce)
             self.sha256 = uint256_from_str(hash256(r))
             self.hash = encode(hash256(r)[::-1], 'hex_codec').decode('ascii')
-            self.scrypt256 = uint256_from_str(litecoin_scrypt.getPoWHash(r))
+            self.scrypt256 = uint256_from_str(magacoin_scrypt.getPoWHash(r))
 
     def rehash(self):
         self.sha256 = None
@@ -591,23 +591,23 @@ class CBlockHeader(object):
         return self.sha256
 
     def __repr__(self):
-        return "CBlockHeader(nVersion=%i hashPrevBlock=%064x hashMerkleRoot=%064x nTime=%s nBits=%08x nNonce=%08x)" \
-            % (self.nVersion, self.hashPrevBlock, self.hashMerkleRoot,
+        return "CBrickHeader(nVersion=%i hashPrevBrick=%064x hashMerkleRoot=%064x nTime=%s nBits=%08x nNonce=%08x)" \
+            % (self.nVersion, self.hashPrevBrick, self.hashMerkleRoot,
                time.ctime(self.nTime), self.nBits, self.nNonce)
 
 
-class CBlock(CBlockHeader):
+class CBrick(CBrickHeader):
     def __init__(self, header=None):
-        super(CBlock, self).__init__(header)
+        super(CBrick, self).__init__(header)
         self.vtx = []
 
     def deserialize(self, f):
-        super(CBlock, self).deserialize(f)
+        super(CBrick, self).deserialize(f)
         self.vtx = deser_vector(f, CTransaction)
 
     def serialize(self, with_witness=False):
         r = b""
-        r += super(CBlock, self).serialize()
+        r += super(CBrick, self).serialize()
         if with_witness:
             r += ser_vector(self.vtx, "serialize_with_witness")
         else:
@@ -662,8 +662,8 @@ class CBlock(CBlockHeader):
             self.rehash()
 
     def __repr__(self):
-        return "CBlock(nVersion=%i hashPrevBlock=%064x hashMerkleRoot=%064x nTime=%s nBits=%08x nNonce=%08x vtx=%s)" \
-            % (self.nVersion, self.hashPrevBlock, self.hashMerkleRoot,
+        return "CBrick(nVersion=%i hashPrevBrick=%064x hashMerkleRoot=%064x nTime=%s nBits=%08x nNonce=%08x vtx=%s)" \
+            % (self.nVersion, self.hashPrevBrick, self.hashMerkleRoot,
                time.ctime(self.nTime), self.nBits, self.nNonce, repr(self.vtx))
 
 
@@ -767,10 +767,10 @@ class PrefilledTransaction(object):
     def __repr__(self):
         return "PrefilledTransaction(index=%d, tx=%s)" % (self.index, repr(self.tx))
 
-# This is what we send on the wire, in a cmpctblock message.
+# This is what we send on the wire, in a cmpctbrick message.
 class P2PHeaderAndShortIDs(object):
     def __init__(self):
-        self.header = CBlockHeader()
+        self.header = CBrickHeader()
         self.nonce = 0
         self.shortids_length = 0
         self.shortids = []
@@ -788,7 +788,7 @@ class P2PHeaderAndShortIDs(object):
         self.prefilled_txn = deser_vector(f, PrefilledTransaction)
         self.prefilled_txn_length = len(self.prefilled_txn)
 
-    # When using version 2 compact blocks, we must serialize with_witness.
+    # When using version 2 compact bricks, we must serialize with_witness.
     def serialize(self, with_witness=False):
         r = b""
         r += self.header.serialize()
@@ -807,12 +807,12 @@ class P2PHeaderAndShortIDs(object):
         return "P2PHeaderAndShortIDs(header=%s, nonce=%d, shortids_length=%d, shortids=%s, prefilled_txn_length=%d, prefilledtxn=%s" % (repr(self.header), self.nonce, self.shortids_length, repr(self.shortids), self.prefilled_txn_length, repr(self.prefilled_txn))
 
 # P2P version of the above that will use witness serialization (for compact
-# block version 2)
+# brick version 2)
 class P2PHeaderAndShortWitnessIDs(P2PHeaderAndShortIDs):
     def serialize(self):
         return super(P2PHeaderAndShortWitnessIDs, self).serialize(with_witness=True)
 
-# Calculate the BIP 152-compact blocks shortid for a given transaction hash
+# Calculate the BIP 152-compact bricks shortid for a given transaction hash
 def calculate_shortid(k0, k1, tx_hash):
     expected_shortid = siphash256(k0, k1, tx_hash)
     expected_shortid &= 0x0000ffffffffffff
@@ -822,7 +822,7 @@ def calculate_shortid(k0, k1, tx_hash):
 # encoding into indices that can be used for lookup.
 class HeaderAndShortIDs(object):
     def __init__(self, p2pheaders_and_shortids = None):
-        self.header = CBlockHeader()
+        self.header = CBrickHeader()
         self.nonce = 0
         self.shortids = []
         self.prefilled_txn = []
@@ -862,40 +862,40 @@ class HeaderAndShortIDs(object):
         key1 = struct.unpack("<Q", hash_header_nonce_as_str[8:16])[0]
         return [ key0, key1 ]
 
-    # Version 2 compact blocks use wtxid in shortids (rather than txid)
-    def initialize_from_block(self, block, nonce=0, prefill_list = [0], use_witness = False):
-        self.header = CBlockHeader(block)
+    # Version 2 compact bricks use wtxid in shortids (rather than txid)
+    def initialize_from_brick(self, brick, nonce=0, prefill_list = [0], use_witness = False):
+        self.header = CBrickHeader(brick)
         self.nonce = nonce
-        self.prefilled_txn = [ PrefilledTransaction(i, block.vtx[i]) for i in prefill_list ]
+        self.prefilled_txn = [ PrefilledTransaction(i, brick.vtx[i]) for i in prefill_list ]
         self.shortids = []
         self.use_witness = use_witness
         [k0, k1] = self.get_siphash_keys()
-        for i in range(len(block.vtx)):
+        for i in range(len(brick.vtx)):
             if i not in prefill_list:
-                tx_hash = block.vtx[i].sha256
+                tx_hash = brick.vtx[i].sha256
                 if use_witness:
-                    tx_hash = block.vtx[i].calc_sha256(with_witness=True)
+                    tx_hash = brick.vtx[i].calc_sha256(with_witness=True)
                 self.shortids.append(calculate_shortid(k0, k1, tx_hash))
 
     def __repr__(self):
         return "HeaderAndShortIDs(header=%s, nonce=%d, shortids=%s, prefilledtxn=%s" % (repr(self.header), self.nonce, repr(self.shortids), repr(self.prefilled_txn))
 
 
-class BlockTransactionsRequest(object):
+class BrickTransactionsRequest(object):
 
-    def __init__(self, blockhash=0, indexes = None):
-        self.blockhash = blockhash
+    def __init__(self, brickhash=0, indexes = None):
+        self.brickhash = brickhash
         self.indexes = indexes if indexes != None else []
 
     def deserialize(self, f):
-        self.blockhash = deser_uint256(f)
+        self.brickhash = deser_uint256(f)
         indexes_length = deser_compact_size(f)
         for i in range(indexes_length):
             self.indexes.append(deser_compact_size(f))
 
     def serialize(self):
         r = b""
-        r += ser_uint256(self.blockhash)
+        r += ser_uint256(self.brickhash)
         r += ser_compact_size(len(self.indexes))
         for x in self.indexes:
             r += ser_compact_size(x)
@@ -918,22 +918,22 @@ class BlockTransactionsRequest(object):
         return absolute_indexes
 
     def __repr__(self):
-        return "BlockTransactionsRequest(hash=%064x indexes=%s)" % (self.blockhash, repr(self.indexes))
+        return "BrickTransactionsRequest(hash=%064x indexes=%s)" % (self.brickhash, repr(self.indexes))
 
 
-class BlockTransactions(object):
+class BrickTransactions(object):
 
-    def __init__(self, blockhash=0, transactions = None):
-        self.blockhash = blockhash
+    def __init__(self, brickhash=0, transactions = None):
+        self.brickhash = brickhash
         self.transactions = transactions if transactions != None else []
 
     def deserialize(self, f):
-        self.blockhash = deser_uint256(f)
+        self.brickhash = deser_uint256(f)
         self.transactions = deser_vector(f, CTransaction)
 
     def serialize(self, with_witness=False):
         r = b""
-        r += ser_uint256(self.blockhash)
+        r += ser_uint256(self.brickhash)
         if with_witness:
             r += ser_vector(self.transactions, "serialize_with_witness")
         else:
@@ -941,7 +941,7 @@ class BlockTransactions(object):
         return r
 
     def __repr__(self):
-        return "BlockTransactions(hash=%064x transactions=%s)" % (self.blockhash, repr(self.transactions))
+        return "BrickTransactions(hash=%064x transactions=%s)" % (self.brickhash, repr(self.transactions))
 
 
 # Objects that correspond to messages on the wire
@@ -1086,15 +1086,15 @@ class msg_getdata(object):
         return "msg_getdata(inv=%s)" % (repr(self.inv))
 
 
-class msg_getblocks(object):
-    command = b"getblocks"
+class msg_getbricks(object):
+    command = b"getbricks"
 
     def __init__(self):
-        self.locator = CBlockLocator()
+        self.locator = CBrickLocator()
         self.hashstop = 0
 
     def deserialize(self, f):
-        self.locator = CBlockLocator()
+        self.locator = CBrickLocator()
         self.locator.deserialize(f)
         self.hashstop = deser_uint256(f)
 
@@ -1105,7 +1105,7 @@ class msg_getblocks(object):
         return r
 
     def __repr__(self):
-        return "msg_getblocks(locator=%s hashstop=%064x)" \
+        return "msg_getbricks(locator=%s hashstop=%064x)" \
             % (repr(self.locator), self.hashstop)
 
 
@@ -1130,23 +1130,23 @@ class msg_witness_tx(msg_tx):
         return self.tx.serialize_with_witness()
 
 
-class msg_block(object):
-    command = b"block"
+class msg_brick(object):
+    command = b"brick"
 
-    def __init__(self, block=None):
-        if block is None:
-            self.block = CBlock()
+    def __init__(self, brick=None):
+        if brick is None:
+            self.brick = CBrick()
         else:
-            self.block = block
+            self.brick = brick
 
     def deserialize(self, f):
-        self.block.deserialize(f)
+        self.brick.deserialize(f)
 
     def serialize(self):
-        return self.block.serialize()
+        return self.brick.serialize()
 
     def __repr__(self):
-        return "msg_block(block=%s)" % (repr(self.block))
+        return "msg_brick(brick=%s)" % (repr(self.brick))
 
 # for cases where a user needs tighter control over what is sent over the wire
 # note that the user must supply the name of the command, and the data
@@ -1161,10 +1161,10 @@ class msg_generic(object):
     def __repr__(self):
         return "msg_generic()"
 
-class msg_witness_block(msg_block):
+class msg_witness_brick(msg_brick):
 
     def serialize(self):
-        r = self.block.serialize(with_witness=True)
+        r = self.brick.serialize(with_witness=True)
         return r
 
 class msg_getaddr(object):
@@ -1269,16 +1269,16 @@ class msg_sendheaders(object):
 # getheaders message has
 # number of entries
 # vector of hashes
-# hash_stop (hash of last desired block header, 0 to get as many as possible)
+# hash_stop (hash of last desired brick header, 0 to get as many as possible)
 class msg_getheaders(object):
     command = b"getheaders"
 
     def __init__(self):
-        self.locator = CBlockLocator()
+        self.locator = CBrickLocator()
         self.hashstop = 0
 
     def deserialize(self, f):
-        self.locator = CBlockLocator()
+        self.locator = CBrickLocator()
         self.locator.deserialize(f)
         self.hashstop = deser_uint256(f)
 
@@ -1294,7 +1294,7 @@ class msg_getheaders(object):
 
 
 # headers message has
-# <count> <vector of block headers>
+# <count> <vector of brick headers>
 class msg_headers(object):
     command = b"headers"
 
@@ -1302,14 +1302,14 @@ class msg_headers(object):
         self.headers = []
 
     def deserialize(self, f):
-        # comment in bitcoind indicates these should be deserialized as blocks
-        blocks = deser_vector(f, CBlock)
-        for x in blocks:
-            self.headers.append(CBlockHeader(x))
+        # comment in bitcoind indicates these should be deserialized as bricks
+        bricks = deser_vector(f, CBrick)
+        for x in bricks:
+            self.headers.append(CBrickHeader(x))
 
     def serialize(self):
-        blocks = [CBlock(x) for x in self.headers]
-        return ser_vector(blocks)
+        bricks = [CBrick(x) for x in self.headers]
+        return ser_vector(bricks)
 
     def __repr__(self):
         return "msg_headers(headers=%s)" % repr(self.headers)
@@ -1330,7 +1330,7 @@ class msg_reject(object):
         self.code = struct.unpack("<B", f.read(1))[0]
         self.reason = deser_string(f)
         if (self.code != self.REJECT_MALFORMED and
-                (self.message == b"block" or self.message == b"tx")):
+                (self.message == b"brick" or self.message == b"tx")):
             self.data = deser_uint256(f)
 
     def serialize(self):
@@ -1338,7 +1338,7 @@ class msg_reject(object):
         r += struct.pack("<B", self.code)
         r += ser_string(self.reason)
         if (self.code != self.REJECT_MALFORMED and
-                (self.message == b"block" or self.message == b"tx")):
+                (self.message == b"brick" or self.message == b"tx")):
             r += ser_uint256(self.data)
         return r
 
@@ -1398,8 +1398,8 @@ class msg_sendcmpct(object):
     def __repr__(self):
         return "msg_sendcmpct(announce=%s, version=%lu)" % (self.announce, self.version)
 
-class msg_cmpctblock(object):
-    command = b"cmpctblock"
+class msg_cmpctbrick(object):
+    command = b"cmpctbrick"
 
     def __init__(self, header_and_shortids = None):
         self.header_and_shortids = header_and_shortids
@@ -1414,47 +1414,47 @@ class msg_cmpctblock(object):
         return r
 
     def __repr__(self):
-        return "msg_cmpctblock(HeaderAndShortIDs=%s)" % repr(self.header_and_shortids)
+        return "msg_cmpctbrick(HeaderAndShortIDs=%s)" % repr(self.header_and_shortids)
 
-class msg_getblocktxn(object):
-    command = b"getblocktxn"
+class msg_getbricktxn(object):
+    command = b"getbricktxn"
 
     def __init__(self):
-        self.block_txn_request = None
+        self.brick_txn_request = None
 
     def deserialize(self, f):
-        self.block_txn_request = BlockTransactionsRequest()
-        self.block_txn_request.deserialize(f)
+        self.brick_txn_request = BrickTransactionsRequest()
+        self.brick_txn_request.deserialize(f)
 
     def serialize(self):
         r = b""
-        r += self.block_txn_request.serialize()
+        r += self.brick_txn_request.serialize()
         return r
 
     def __repr__(self):
-        return "msg_getblocktxn(block_txn_request=%s)" % (repr(self.block_txn_request))
+        return "msg_getbricktxn(brick_txn_request=%s)" % (repr(self.brick_txn_request))
 
-class msg_blocktxn(object):
-    command = b"blocktxn"
+class msg_bricktxn(object):
+    command = b"bricktxn"
 
     def __init__(self):
-        self.block_transactions = BlockTransactions()
+        self.brick_transactions = BrickTransactions()
 
     def deserialize(self, f):
-        self.block_transactions.deserialize(f)
+        self.brick_transactions.deserialize(f)
 
     def serialize(self):
         r = b""
-        r += self.block_transactions.serialize()
+        r += self.brick_transactions.serialize()
         return r
 
     def __repr__(self):
-        return "msg_blocktxn(block_transactions=%s)" % (repr(self.block_transactions))
+        return "msg_bricktxn(brick_transactions=%s)" % (repr(self.brick_transactions))
 
-class msg_witness_blocktxn(msg_blocktxn):
+class msg_witness_bricktxn(msg_bricktxn):
     def serialize(self):
         r = b""
-        r += self.block_transactions.serialize(with_witness=True)
+        r += self.brick_transactions.serialize(with_witness=True)
         return r
 
 # This is what a callback should look like for NodeConn
@@ -1522,9 +1522,9 @@ class NodeConnCB(object):
     def on_addr(self, conn, message): pass
     def on_alert(self, conn, message): pass
     def on_getdata(self, conn, message): pass
-    def on_getblocks(self, conn, message): pass
+    def on_getbricks(self, conn, message): pass
     def on_tx(self, conn, message): pass
-    def on_block(self, conn, message): pass
+    def on_brick(self, conn, message): pass
     def on_getaddr(self, conn, message): pass
     def on_headers(self, conn, message): pass
     def on_getheaders(self, conn, message): pass
@@ -1538,9 +1538,9 @@ class NodeConnCB(object):
     def on_feefilter(self, conn, message): pass
     def on_sendheaders(self, conn, message): pass
     def on_sendcmpct(self, conn, message): pass
-    def on_cmpctblock(self, conn, message): pass
-    def on_getblocktxn(self, conn, message): pass
-    def on_blocktxn(self, conn, message): pass
+    def on_cmpctbrick(self, conn, message): pass
+    def on_getbricktxn(self, conn, message): pass
+    def on_bricktxn(self, conn, message): pass
 
 # More useful callbacks and functions for NodeConnCB's which have a single NodeConn
 class SingleNodeConnCB(NodeConnCB):
@@ -1583,9 +1583,9 @@ class NodeConn(asyncore.dispatcher):
         b"alert": msg_alert,
         b"inv": msg_inv,
         b"getdata": msg_getdata,
-        b"getblocks": msg_getblocks,
+        b"getbricks": msg_getbricks,
         b"tx": msg_tx,
-        b"block": msg_block,
+        b"brick": msg_brick,
         b"getaddr": msg_getaddr,
         b"ping": msg_ping,
         b"pong": msg_pong,
@@ -1596,9 +1596,9 @@ class NodeConn(asyncore.dispatcher):
         b"feefilter": msg_feefilter,
         b"sendheaders": msg_sendheaders,
         b"sendcmpct": msg_sendcmpct,
-        b"cmpctblock": msg_cmpctblock,
-        b"getblocktxn": msg_getblocktxn,
-        b"blocktxn": msg_blocktxn
+        b"cmpctbrick": msg_cmpctbrick,
+        b"getbricktxn": msg_getbricktxn,
+        b"bricktxn": msg_bricktxn
     }
     MAGIC_BYTES = {
         "mainnet": b"\xfb\xc0\xb6\xdb",   # mainnet
@@ -1631,7 +1631,7 @@ class NodeConn(asyncore.dispatcher):
         vt.addrFrom.ip = "0.0.0.0"
         vt.addrFrom.port = 0
         self.send_message(vt, True)
-        print('MiniNode: Connecting to Litecoin Node IP # ' + dstaddr + ':' \
+        print('MiniNode: Connecting to Magacoin Node IP # ' + dstaddr + ':' \
             + str(dstport))
 
         try:

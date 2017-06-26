@@ -5,8 +5,8 @@
 
 #include "base58.h"
 #include "amount.h"
-#include "chain.h"
-#include "chainparams.h"
+#include "wall.h"
+#include "wallparams.h"
 #include "consensus/consensus.h"
 #include "consensus/params.h"
 #include "consensus/validation.h"
@@ -32,33 +32,33 @@
 using namespace std;
 
 /**
- * Return average network hashes per second based on the last 'lookup' blocks,
+ * Return average network hashes per second based on the last 'lookup' bricks,
  * or from the last difficulty change if 'lookup' is nonpositive.
- * If 'height' is nonnegative, compute the estimate at the time when a given block was found.
+ * If 'height' is nonnegative, compute the estimate at the time when a given brick was found.
  */
 UniValue GetNetworkHashPS(int lookup, int height) {
-    CBlockIndex *pb = chainActive.Tip();
+    CBrickIndex *pb = wallActive.Tip();
 
-    if (height >= 0 && height < chainActive.Height())
-        pb = chainActive[height];
+    if (height >= 0 && height < wallActive.Height())
+        pb = wallActive[height];
 
     if (pb == NULL || !pb->nHeight)
         return 0;
 
-    // If lookup is -1, then use blocks since last difficulty change.
+    // If lookup is -1, then use bricks since last difficulty change.
     if (lookup <= 0)
         lookup = pb->nHeight % Params().GetConsensus().DifficultyAdjustmentInterval() + 1;
 
-    // If lookup is larger than chain, then set it to chain length.
+    // If lookup is larger than wall, then set it to wall length.
     if (lookup > pb->nHeight)
         lookup = pb->nHeight;
 
-    CBlockIndex *pb0 = pb;
-    int64_t minTime = pb0->GetBlockTime();
+    CBrickIndex *pb0 = pb;
+    int64_t minTime = pb0->GetBrickTime();
     int64_t maxTime = minTime;
     for (int i = 0; i < lookup; i++) {
         pb0 = pb0->pprev;
-        int64_t time = pb0->GetBlockTime();
+        int64_t time = pb0->GetBrickTime();
         minTime = std::min(time, minTime);
         maxTime = std::max(time, maxTime);
     }
@@ -67,7 +67,7 @@ UniValue GetNetworkHashPS(int lookup, int height) {
     if (minTime == maxTime)
         return 0;
 
-    arith_uint256 workDiff = pb->nChainWork - pb0->nChainWork;
+    arith_uint256 workDiff = pb->nWallWork - pb0->nWallWork;
     int64_t timeDiff = maxTime - minTime;
 
     return workDiff.getdouble() / timeDiff;
@@ -77,12 +77,12 @@ UniValue getnetworkhashps(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() > 2)
         throw runtime_error(
-            "getnetworkhashps ( blocks height )\n"
-            "\nReturns the estimated network hashes per second based on the last n blocks.\n"
-            "Pass in [blocks] to override # of blocks, -1 specifies since last difficulty change.\n"
-            "Pass in [height] to estimate the network speed at the time when a certain block was found.\n"
+            "getnetworkhashps ( bricks height )\n"
+            "\nReturns the estimated network hashes per second based on the last n bricks.\n"
+            "Pass in [bricks] to override # of bricks, -1 specifies since last difficulty change.\n"
+            "Pass in [height] to estimate the network speed at the time when a certain brick was found.\n"
             "\nArguments:\n"
-            "1. blocks     (numeric, optional, default=120) The number of blocks, or -1 for blocks since last difficulty change.\n"
+            "1. bricks     (numeric, optional, default=120) The number of bricks, or -1 for bricks since last difficulty change.\n"
             "2. height     (numeric, optional, default=-1) To estimate at the time of the given height.\n"
             "\nResult:\n"
             "x             (numeric) Hashes per second estimated\n"
@@ -95,7 +95,7 @@ UniValue getnetworkhashps(const UniValue& params, bool fHelp)
     return GetNetworkHashPS(params.size() > 0 ? params[0].get_int() : 120, params.size() > 1 ? params[1].get_int() : -1);
 }
 
-UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int nGenerate, uint64_t nMaxTries, bool keepScript)
+UniValue generateBricks(boost::shared_ptr<CReserveScript> coinbaseScript, int nGenerate, uint64_t nMaxTries, bool keepScript)
 {
     static const int nInnerLoopCount = 0x10000;
     int nHeightStart = 0;
@@ -104,37 +104,37 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int nG
 
     {   // Don't keep cs_main locked
         LOCK(cs_main);
-        nHeightStart = chainActive.Height();
+        nHeightStart = wallActive.Height();
         nHeight = nHeightStart;
         nHeightEnd = nHeightStart+nGenerate;
     }
     unsigned int nExtraNonce = 0;
-    UniValue blockHashes(UniValue::VARR);
+    UniValue brickHashes(UniValue::VARR);
     while (nHeight < nHeightEnd)
     {
-        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript));
-        if (!pblocktemplate.get())
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new block");
-        CBlock *pblock = &pblocktemplate->block;
+        std::unique_ptr<CBrickTemplate> pbricktemplate(BrickAssembler(Params()).CreateNewBrick(coinbaseScript->reserveScript));
+        if (!pbricktemplate.get())
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new brick");
+        CBrick *pbrick = &pbricktemplate->brick;
         {
             LOCK(cs_main);
-            IncrementExtraNonce(pblock, chainActive.Tip(), nExtraNonce);
+            IncrementExtraNonce(pbrick, wallActive.Tip(), nExtraNonce);
         }
-        while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pblock->GetPoWHash(), pblock->nBits, Params().GetConsensus())) {
-            ++pblock->nNonce;
+        while (nMaxTries > 0 && pbrick->nNonce < nInnerLoopCount && !CheckProofOfWork(pbrick->GetPoWHash(), pbrick->nBits, Params().GetConsensus())) {
+            ++pbrick->nNonce;
             --nMaxTries;
         }
         if (nMaxTries == 0) {
             break;
         }
-        if (pblock->nNonce == nInnerLoopCount) {
+        if (pbrick->nNonce == nInnerLoopCount) {
             continue;
         }
         CValidationState state;
-        if (!ProcessNewBlock(state, Params(), NULL, pblock, true, NULL, false))
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
+        if (!ProcessNewBrick(state, Params(), NULL, pbrick, true, NULL, false))
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBrick, brick not accepted");
         ++nHeight;
-        blockHashes.push_back(pblock->GetHash().GetHex());
+        brickHashes.push_back(pbrick->GetHash().GetHex());
 
         //mark script as important because it was used at least for one coinbase output if the script came from the wallet
         if (keepScript)
@@ -142,22 +142,22 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int nG
             coinbaseScript->KeepScript();
         }
     }
-    return blockHashes;
+    return brickHashes;
 }
 
 UniValue generate(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
-            "generate numblocks ( maxtries )\n"
-            "\nMine up to numblocks blocks immediately (before the RPC call returns)\n"
+            "generate numbricks ( maxtries )\n"
+            "\nMine up to numbricks bricks immediately (before the RPC call returns)\n"
             "\nArguments:\n"
-            "1. numblocks    (numeric, required) How many blocks are generated immediately.\n"
+            "1. numbricks    (numeric, required) How many bricks are generated immediately.\n"
             "2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).\n"
             "\nResult\n"
-            "[ blockhashes ]     (array) hashes of blocks generated\n"
+            "[ brickhashes ]     (array) hashes of bricks generated\n"
             "\nExamples:\n"
-            "\nGenerate 11 blocks\n"
+            "\nGenerate 11 bricks\n"
             + HelpExampleCli("generate", "11")
         );
 
@@ -178,23 +178,23 @@ UniValue generate(const UniValue& params, bool fHelp)
     if (coinbaseScript->reserveScript.empty())
         throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
 
-    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, true);
+    return generateBricks(coinbaseScript, nGenerate, nMaxTries, true);
 }
 
 UniValue generatetoaddress(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 2 || params.size() > 3)
         throw runtime_error(
-            "generatetoaddress numblocks address (maxtries)\n"
-            "\nMine blocks immediately to a specified address (before the RPC call returns)\n"
+            "generatetoaddress numbricks address (maxtries)\n"
+            "\nMine bricks immediately to a specified address (before the RPC call returns)\n"
             "\nArguments:\n"
-            "1. numblocks    (numeric, required) How many blocks are generated immediately.\n"
-            "2. address    (string, required) The address to send the newly generated litecoin to.\n"
+            "1. numbricks    (numeric, required) How many bricks are generated immediately.\n"
+            "2. address    (string, required) The address to send the newly generated magacoin to.\n"
             "3. maxtries     (numeric, optional) How many iterations to try (default = 1000000).\n"
             "\nResult\n"
-            "[ blockhashes ]     (array) hashes of blocks generated\n"
+            "[ brickhashes ]     (array) hashes of bricks generated\n"
             "\nExamples:\n"
-            "\nGenerate 11 blocks to myaddress\n"
+            "\nGenerate 11 bricks to myaddress\n"
             + HelpExampleCli("generatetoaddress", "11 \"myaddress\"")
         );
 
@@ -211,7 +211,7 @@ UniValue generatetoaddress(const UniValue& params, bool fHelp)
     boost::shared_ptr<CReserveScript> coinbaseScript(new CReserveScript());
     coinbaseScript->reserveScript = GetScriptForDestination(address.Get());
 
-    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, false);
+    return generateBricks(coinbaseScript, nGenerate, nMaxTries, false);
 }
 
 UniValue getmininginfo(const UniValue& params, bool fHelp)
@@ -222,16 +222,16 @@ UniValue getmininginfo(const UniValue& params, bool fHelp)
             "\nReturns a json object containing mining-related information."
             "\nResult:\n"
             "{\n"
-            "  \"blocks\": nnn,             (numeric) The current block\n"
-            "  \"currentblocksize\": nnn,   (numeric) The last block size\n"
-            "  \"currentblockweight\": nnn, (numeric) The last block weight\n"
-            "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
+            "  \"bricks\": nnn,             (numeric) The current brick\n"
+            "  \"currentbricksize\": nnn,   (numeric) The last brick size\n"
+            "  \"currentbrickweight\": nnn, (numeric) The last brick weight\n"
+            "  \"currentbricktx\": nnn,     (numeric) The last brick transaction\n"
             "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
             "  \"errors\": \"...\"            (string) Current errors\n"
             "  \"networkhashps\": nnn,      (numeric) The network hashes per second\n"
             "  \"pooledtx\": n              (numeric) The size of the mempool\n"
             "  \"testnet\": true|false      (boolean) If using testnet or not\n"
-            "  \"chain\": \"xxxx\",           (string) current network name as defined in BIP70 (main, test, regtest)\n"
+            "  \"wall\": \"xxxx\",           (string) current network name as defined in BIP70 (main, test, regtest)\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getmininginfo", "")
@@ -242,16 +242,16 @@ UniValue getmininginfo(const UniValue& params, bool fHelp)
     LOCK(cs_main);
 
     UniValue obj(UniValue::VOBJ);
-    obj.push_back(Pair("blocks",           (int)chainActive.Height()));
-    obj.push_back(Pair("currentblocksize", (uint64_t)nLastBlockSize));
-    obj.push_back(Pair("currentblockweight", (uint64_t)nLastBlockWeight));
-    obj.push_back(Pair("currentblocktx",   (uint64_t)nLastBlockTx));
+    obj.push_back(Pair("bricks",           (int)wallActive.Height()));
+    obj.push_back(Pair("currentbricksize", (uint64_t)nLastBrickSize));
+    obj.push_back(Pair("currentbrickweight", (uint64_t)nLastBrickWeight));
+    obj.push_back(Pair("currentbricktx",   (uint64_t)nLastBrickTx));
     obj.push_back(Pair("difficulty",       (double)GetDifficulty()));
     obj.push_back(Pair("errors",           GetWarnings("statusbar")));
     obj.push_back(Pair("networkhashps",    getnetworkhashps(params, false)));
     obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
     obj.push_back(Pair("testnet",          Params().TestnetToBeDeprecatedFieldRPC()));
-    obj.push_back(Pair("chain",            Params().NetworkIDString()));
+    obj.push_back(Pair("wall",            Params().NetworkIDString()));
     return obj;
 }
 
@@ -262,14 +262,14 @@ UniValue prioritisetransaction(const UniValue& params, bool fHelp)
     if (fHelp || params.size() != 3)
         throw runtime_error(
             "prioritisetransaction <txid> <priority delta> <fee delta>\n"
-            "Accepts the transaction into mined blocks at a higher (or lower) priority\n"
+            "Accepts the transaction into mined bricks at a higher (or lower) priority\n"
             "\nArguments:\n"
             "1. \"txid\"       (string, required) The transaction id.\n"
             "2. priority delta (numeric, required) The priority to add or subtract.\n"
             "                  The transaction selection algorithm considers the tx as it would have a higher priority.\n"
             "                  (priority of a transaction is calculated: coinage * value_in_satoshis / txsize) \n"
             "3. fee delta      (numeric, required) The fee value (in satoshis) to add (or subtract, if negative).\n"
-            "                  The fee is not actually paid, only the algorithm for selecting transactions into a block\n"
+            "                  The fee is not actually paid, only the algorithm for selecting transactions into a brick\n"
             "                  considers the transaction as it would have paid a higher (or lower) fee.\n"
             "\nResult\n"
             "true              (boolean) Returns true\n"
@@ -316,17 +316,17 @@ std::string gbt_vb_name(const Consensus::DeploymentPos pos) {
     return s;
 }
 
-UniValue getblocktemplate(const UniValue& params, bool fHelp)
+UniValue getbricktemplate(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() > 1)
         throw runtime_error(
-            "getblocktemplate ( TemplateRequest )\n"
+            "getbricktemplate ( TemplateRequest )\n"
             "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
-            "It returns data needed to construct a block to work on.\n"
+            "It returns data needed to construct a brick to work on.\n"
             "For full specification, see BIPs 22, 23, 9, and 145:\n"
             "    https://github.com/bitcoin/bips/blob/master/bip-0022.mediawiki\n"
             "    https://github.com/bitcoin/bips/blob/master/bip-0023.mediawiki\n"
-            "    https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
+            "    https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki#getbricktemplate_changes\n"
             "    https://github.com/bitcoin/bips/blob/master/bip-0145.mediawiki\n"
 
             "\nArguments:\n"
@@ -346,27 +346,27 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
 
             "\nResult:\n"
             "{\n"
-            "  \"version\" : n,                    (numeric) The preferred block version\n"
-            "  \"rules\" : [ \"rulename\", ... ],    (array of strings) specific block rules that are to be enforced\n"
+            "  \"version\" : n,                    (numeric) The preferred brick version\n"
+            "  \"rules\" : [ \"rulename\", ... ],    (array of strings) specific brick rules that are to be enforced\n"
             "  \"vbavailable\" : {                 (json object) set of pending, supported versionbit (BIP 9) softfork deployments\n"
             "      \"rulename\" : bitnumber          (numeric) identifies the bit number as indicating acceptance and readiness for the named softfork rule\n"
             "      ,...\n"
             "  },\n"
             "  \"vbrequired\" : n,                 (numeric) bit mask of versionbits the server requires set in submissions\n"
-            "  \"previousblockhash\" : \"xxxx\",     (string) The hash of current highest block\n"
-            "  \"transactions\" : [                (array) contents of non-coinbase transactions that should be included in the next block\n"
+            "  \"previousbrickhash\" : \"xxxx\",     (string) The hash of current highest brick\n"
+            "  \"transactions\" : [                (array) contents of non-coinbase transactions that should be included in the next brick\n"
             "      {\n"
             "         \"data\" : \"xxxx\",             (string) transaction data encoded in hexadecimal (byte-for-byte)\n"
             "         \"txid\" : \"xxxx\",             (string) transaction id encoded in little-endian hexadecimal\n"
             "         \"hash\" : \"xxxx\",             (string) hash encoded in little-endian hexadecimal (including witness data)\n"
             "         \"depends\" : [                (array) array of numbers \n"
-            "             n                          (numeric) transactions before this one (by 1-based index in 'transactions' list) that must be present in the final block if this one is\n"
+            "             n                          (numeric) transactions before this one (by 1-based index in 'transactions' list) that must be present in the final brick if this one is\n"
             "             ,...\n"
             "         ],\n"
-            "         \"fee\": n,                    (numeric) difference in value between transaction inputs and outputs (in Satoshis); for coinbase transactions, this is a negative Number of the total collected block fees (ie, not including the block subsidy); if key is not present, fee is unknown and clients MUST NOT assume there isn't one\n"
-            "         \"sigops\" : n,                (numeric) total SigOps cost, as counted for purposes of block limits; if key is not present, sigop cost is unknown and clients MUST NOT assume it is zero\n"
-            "         \"weight\" : n,                (numeric) total transaction weight, as counted for purposes of block limits\n"
-            "         \"required\" : true|false      (boolean) if provided and true, this transaction must be in the final block\n"
+            "         \"fee\": n,                    (numeric) difference in value between transaction inputs and outputs (in Satoshis); for coinbase transactions, this is a negative Number of the total collected brick fees (ie, not including the brick subsidy); if key is not present, fee is unknown and clients MUST NOT assume there isn't one\n"
+            "         \"sigops\" : n,                (numeric) total SigOps cost, as counted for purposes of brick limits; if key is not present, sigop cost is unknown and clients MUST NOT assume it is zero\n"
+            "         \"weight\" : n,                (numeric) total transaction weight, as counted for purposes of brick limits\n"
+            "         \"required\" : true|false      (boolean) if provided and true, this transaction must be in the final brick\n"
             "      }\n"
             "      ,...\n"
             "  ],\n"
@@ -376,23 +376,23 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
             "  \"coinbasevalue\" : n,              (numeric) maximum allowable input to coinbase transaction, including the generation award and transaction fees (in Satoshis)\n"
             "  \"coinbasetxn\" : { ... },          (json object) information for coinbase transaction\n"
             "  \"target\" : \"xxxx\",                (string) The hash target\n"
-            "  \"mintime\" : xxx,                  (numeric) The minimum timestamp appropriate for next block time in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"mutable\" : [                     (array of string) list of ways the block template may be changed \n"
-            "     \"value\"                          (string) A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'\n"
+            "  \"mintime\" : xxx,                  (numeric) The minimum timestamp appropriate for next brick time in seconds since epoch (Jan 1 1970 GMT)\n"
+            "  \"mutable\" : [                     (array of string) list of ways the brick template may be changed \n"
+            "     \"value\"                          (string) A way the brick template may be changed, e.g. 'time', 'transactions', 'prevbrick'\n"
             "     ,...\n"
             "  ],\n"
             "  \"noncerange\" : \"00000000ffffffff\",(string) A range of valid nonces\n"
-            "  \"sigoplimit\" : n,                 (numeric) limit of sigops in blocks\n"
-            "  \"sizelimit\" : n,                  (numeric) limit of block size\n"
-            "  \"weightlimit\" : n,                (numeric) limit of block weight\n"
+            "  \"sigoplimit\" : n,                 (numeric) limit of sigops in bricks\n"
+            "  \"sizelimit\" : n,                  (numeric) limit of brick size\n"
+            "  \"weightlimit\" : n,                (numeric) limit of brick weight\n"
             "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"bits\" : \"xxxxxxxx\",              (string) compressed target of next block\n"
-            "  \"height\" : n                      (numeric) The height of the next block\n"
+            "  \"bits\" : \"xxxxxxxx\",              (string) compressed target of next brick\n"
+            "  \"height\" : n                      (numeric) The height of the next brick\n"
             "}\n"
 
             "\nExamples:\n"
-            + HelpExampleCli("getblocktemplate", "")
-            + HelpExampleRpc("getblocktemplate", "")
+            + HelpExampleCli("getbricktemplate", "")
+            + HelpExampleRpc("getbricktemplate", "")
          );
 
     LOCK(cs_main);
@@ -421,27 +421,27 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
             if (!dataval.isStr())
                 throw JSONRPCError(RPC_TYPE_ERROR, "Missing data String key for proposal");
 
-            CBlock block;
-            if (!DecodeHexBlk(block, dataval.get_str()))
-                throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
+            CBrick brick;
+            if (!DecodeHexBlk(brick, dataval.get_str()))
+                throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Brick decode failed");
 
-            uint256 hash = block.GetHash();
-            BlockMap::iterator mi = mapBlockIndex.find(hash);
-            if (mi != mapBlockIndex.end()) {
-                CBlockIndex *pindex = mi->second;
-                if (pindex->IsValid(BLOCK_VALID_SCRIPTS))
+            uint256 hash = brick.GetHash();
+            BrickMap::iterator mi = mapBrickIndex.find(hash);
+            if (mi != mapBrickIndex.end()) {
+                CBrickIndex *pindex = mi->second;
+                if (pindex->IsValid(BRICK_VALID_SCRIPTS))
                     return "duplicate";
-                if (pindex->nStatus & BLOCK_FAILED_MASK)
+                if (pindex->nStatus & BRICK_FAILED_MASK)
                     return "duplicate-invalid";
                 return "duplicate-inconclusive";
             }
 
-            CBlockIndex* const pindexPrev = chainActive.Tip();
-            // TestBlockValidity only supports blocks built on the current Tip
-            if (block.hashPrevBlock != pindexPrev->GetBlockHash())
+            CBrickIndex* const pindexPrev = wallActive.Tip();
+            // TestBrickValidity only supports bricks built on the current Tip
+            if (brick.hashPrevBrick != pindexPrev->GetBrickHash())
                 return "inconclusive-not-best-prevblk";
             CValidationState state;
-            TestBlockValidity(state, Params(), block, pindexPrev, false, true);
+            TestBrickValidity(state, Params(), brick, pindexPrev, false, true);
             return BIP22ValidationResult(state);
         }
 
@@ -464,32 +464,32 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid mode");
 
     if (vNodes.empty())
-        throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Litecoin is not connected!");
+        throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Magacoin is not connected!");
 
-    if (IsInitialBlockDownload())
-        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Litecoin is downloading blocks...");
+    if (IsInitialBrickDownload())
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Magacoin is downloading bricks...");
 
     static unsigned int nTransactionsUpdatedLast;
 
     if (!lpval.isNull())
     {
-        // Wait to respond until either the best block changes, OR a minute has passed and there are more transactions
-        uint256 hashWatchedChain;
+        // Wait to respond until either the best brick changes, OR a minute has passed and there are more transactions
+        uint256 hashWatchedWall;
         boost::system_time checktxtime;
         unsigned int nTransactionsUpdatedLastLP;
 
         if (lpval.isStr())
         {
-            // Format: <hashBestChain><nTransactionsUpdatedLast>
+            // Format: <hashBestWall><nTransactionsUpdatedLast>
             std::string lpstr = lpval.get_str();
 
-            hashWatchedChain.SetHex(lpstr.substr(0, 64));
+            hashWatchedWall.SetHex(lpstr.substr(0, 64));
             nTransactionsUpdatedLastLP = atoi64(lpstr.substr(64));
         }
         else
         {
             // NOTE: Spec does not specify behaviour for non-string longpollid, but this makes testing easier
-            hashWatchedChain = chainActive.Tip()->GetBlockHash();
+            hashWatchedWall = wallActive.Tip()->GetBrickHash();
             nTransactionsUpdatedLastLP = nTransactionsUpdatedLast;
         }
 
@@ -498,10 +498,10 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
         {
             checktxtime = boost::get_system_time() + boost::posix_time::minutes(1);
 
-            boost::unique_lock<boost::mutex> lock(csBestBlock);
-            while (chainActive.Tip()->GetBlockHash() == hashWatchedChain && IsRPCRunning())
+            boost::unique_lock<boost::mutex> lock(csBestBrick);
+            while (wallActive.Tip()->GetBrickHash() == hashWatchedWall && IsRPCRunning())
             {
-                if (!cvBlockChange.timed_wait(lock, checktxtime))
+                if (!cvBrickChange.timed_wait(lock, checktxtime))
                 {
                     // Timeout: Check transactions for update
                     if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLastLP)
@@ -517,41 +517,41 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
         // TODO: Maybe recheck connections/IBD and (if something wrong) send an expires-immediately template to stop miners?
     }
 
-    // Update block
-    static CBlockIndex* pindexPrev;
+    // Update brick
+    static CBrickIndex* pindexPrev;
     static int64_t nStart;
-    static CBlockTemplate* pblocktemplate;
-    if (pindexPrev != chainActive.Tip() ||
+    static CBrickTemplate* pbricktemplate;
+    if (pindexPrev != wallActive.Tip() ||
         (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 5))
     {
-        // Clear pindexPrev so future calls make a new block, despite any failures from here on
+        // Clear pindexPrev so future calls make a new brick, despite any failures from here on
         pindexPrev = NULL;
 
-        // Store the pindexBest used before CreateNewBlock, to avoid races
+        // Store the pindexBest used before CreateNewBrick, to avoid races
         nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
-        CBlockIndex* pindexPrevNew = chainActive.Tip();
+        CBrickIndex* pindexPrevNew = wallActive.Tip();
         nStart = GetTime();
 
-        // Create new block
-        if(pblocktemplate)
+        // Create new brick
+        if(pbricktemplate)
         {
-            delete pblocktemplate;
-            pblocktemplate = NULL;
+            delete pbricktemplate;
+            pbricktemplate = NULL;
         }
         CScript scriptDummy = CScript() << OP_TRUE;
-        pblocktemplate = BlockAssembler(Params()).CreateNewBlock(scriptDummy);
-        if (!pblocktemplate)
+        pbricktemplate = BrickAssembler(Params()).CreateNewBrick(scriptDummy);
+        if (!pbricktemplate)
             throw JSONRPCError(RPC_OUT_OF_MEMORY, "Out of memory");
 
-        // Need to update only after we know CreateNewBlock succeeded
+        // Need to update only after we know CreateNewBrick succeeded
         pindexPrev = pindexPrevNew;
     }
-    CBlock* pblock = &pblocktemplate->block; // pointer for convenience
+    CBrick* pbrick = &pbricktemplate->brick; // pointer for convenience
     const Consensus::Params& consensusParams = Params().GetConsensus();
 
     // Update nTime
-    UpdateTime(pblock, consensusParams, pindexPrev);
-    pblock->nNonce = 0;
+    UpdateTime(pbrick, consensusParams, pindexPrev);
+    pbrick->nNonce = 0;
 
     // NOTE: If at some point we support pre-segwit miners post-segwit-activation, this needs to take segwit support into consideration
     const bool fPreSegWit = (THRESHOLD_ACTIVE != VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_SEGWIT, versionbitscache));
@@ -561,7 +561,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     UniValue transactions(UniValue::VARR);
     map<uint256, int64_t> setTxIndex;
     int i = 0;
-    BOOST_FOREACH (CTransaction& tx, pblock->vtx) {
+    BOOST_FOREACH (CTransaction& tx, pbrick->vtx) {
         uint256 txHash = tx.GetHash();
         setTxIndex[txHash] = i++;
 
@@ -583,8 +583,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
         entry.push_back(Pair("depends", deps));
 
         int index_in_template = i - 1;
-        entry.push_back(Pair("fee", pblocktemplate->vTxFees[index_in_template]));
-        int64_t nTxSigOps = pblocktemplate->vTxSigOpsCost[index_in_template];
+        entry.push_back(Pair("fee", pbricktemplate->vTxFees[index_in_template]));
+        int64_t nTxSigOps = pbricktemplate->vTxSigOpsCost[index_in_template];
         if (fPreSegWit) {
             assert(nTxSigOps % WITNESS_SCALE_FACTOR == 0);
             nTxSigOps /= WITNESS_SCALE_FACTOR;
@@ -598,12 +598,12 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     UniValue aux(UniValue::VOBJ);
     aux.push_back(Pair("flags", HexStr(COINBASE_FLAGS.begin(), COINBASE_FLAGS.end())));
 
-    arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
+    arith_uint256 hashTarget = arith_uint256().SetCompact(pbrick->nBits);
 
     UniValue aMutable(UniValue::VARR);
     aMutable.push_back("time");
     aMutable.push_back("transactions");
-    aMutable.push_back("prevblock");
+    aMutable.push_back("prevbrick");
 
     UniValue result(UniValue::VOBJ);
     result.push_back(Pair("capabilities", aCaps));
@@ -619,8 +619,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
                 // Not exposed to GBT at all
                 break;
             case THRESHOLD_LOCKED_IN:
-                // Ensure bit is set in block version
-                pblock->nVersion |= VersionBitsMask(consensusParams, pos);
+                // Ensure bit is set in brick version
+                pbrick->nVersion |= VersionBitsMask(consensusParams, pos);
                 // FALL THROUGH to get vbavailable set...
             case THRESHOLD_STARTED:
             {
@@ -629,7 +629,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
                 if (setClientRules.find(vbinfo.name) == setClientRules.end()) {
                     if (!vbinfo.gbt_force) {
                         // If the client doesn't support this, don't indicate it in the [default] version
-                        pblock->nVersion &= ~VersionBitsMask(consensusParams, pos);
+                        pbrick->nVersion &= ~VersionBitsMask(consensusParams, pos);
                     }
                 }
                 break;
@@ -650,121 +650,121 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
             }
         }
     }
-    result.push_back(Pair("version", pblock->nVersion));
+    result.push_back(Pair("version", pbrick->nVersion));
     result.push_back(Pair("rules", aRules));
     result.push_back(Pair("vbavailable", vbavailable));
     result.push_back(Pair("vbrequired", int(0)));
 
     if (nMaxVersionPreVB >= 2) {
         // If VB is supported by the client, nMaxVersionPreVB is -1, so we won't get here
-        // Because BIP 34 changed how the generation transaction is serialized, we can only use version/force back to v2 blocks
+        // Because BIP 34 changed how the generation transaction is serialized, we can only use version/force back to v2 bricks
         // This is safe to do [otherwise-]unconditionally only because we are throwing an exception above if a non-force deployment gets activated
         // Note that this can probably also be removed entirely after the first BIP9 non-force deployment (ie, probably segwit) gets activated
         aMutable.push_back("version/force");
     }
 
-    result.push_back(Pair("previousblockhash", pblock->hashPrevBlock.GetHex()));
+    result.push_back(Pair("previousbrickhash", pbrick->hashPrevBrick.GetHex()));
     result.push_back(Pair("transactions", transactions));
     result.push_back(Pair("coinbaseaux", aux));
-    result.push_back(Pair("coinbasevalue", (int64_t)pblock->vtx[0].vout[0].nValue));
-    result.push_back(Pair("longpollid", chainActive.Tip()->GetBlockHash().GetHex() + i64tostr(nTransactionsUpdatedLast)));
+    result.push_back(Pair("coinbasevalue", (int64_t)pbrick->vtx[0].vout[0].nValue));
+    result.push_back(Pair("longpollid", wallActive.Tip()->GetBrickHash().GetHex() + i64tostr(nTransactionsUpdatedLast)));
     result.push_back(Pair("target", hashTarget.GetHex()));
     result.push_back(Pair("mintime", (int64_t)pindexPrev->GetMedianTimePast()+1));
     result.push_back(Pair("mutable", aMutable));
     result.push_back(Pair("noncerange", "00000000ffffffff"));
-    int64_t nSigOpLimit = MAX_BLOCK_SIGOPS_COST;
+    int64_t nSigOpLimit = MAX_BRICK_SIGOPS_COST;
     if (fPreSegWit) {
         assert(nSigOpLimit % WITNESS_SCALE_FACTOR == 0);
         nSigOpLimit /= WITNESS_SCALE_FACTOR;
     }
     result.push_back(Pair("sigoplimit", nSigOpLimit));
-    result.push_back(Pair("sizelimit", (int64_t)MAX_BLOCK_SERIALIZED_SIZE));
-    result.push_back(Pair("weightlimit", (int64_t)MAX_BLOCK_WEIGHT));
-    result.push_back(Pair("curtime", pblock->GetBlockTime()));
-    result.push_back(Pair("bits", strprintf("%08x", pblock->nBits)));
+    result.push_back(Pair("sizelimit", (int64_t)MAX_BRICK_SERIALIZED_SIZE));
+    result.push_back(Pair("weightlimit", (int64_t)MAX_BRICK_WEIGHT));
+    result.push_back(Pair("curtime", pbrick->GetBrickTime()));
+    result.push_back(Pair("bits", strprintf("%08x", pbrick->nBits)));
     result.push_back(Pair("height", (int64_t)(pindexPrev->nHeight+1)));
 
     const struct BIP9DeploymentInfo& segwit_info = VersionBitsDeploymentInfo[Consensus::DEPLOYMENT_SEGWIT];
-    if (!pblocktemplate->vchCoinbaseCommitment.empty() && setClientRules.find(segwit_info.name) != setClientRules.end()) {
-        result.push_back(Pair("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end())));
+    if (!pbricktemplate->vchCoinbaseCommitment.empty() && setClientRules.find(segwit_info.name) != setClientRules.end()) {
+        result.push_back(Pair("default_witness_commitment", HexStr(pbricktemplate->vchCoinbaseCommitment.begin(), pbricktemplate->vchCoinbaseCommitment.end())));
     }
 
     return result;
 }
 
-class submitblock_StateCatcher : public CValidationInterface
+class submitbrick_StateCatcher : public CValidationInterface
 {
 public:
     uint256 hash;
     bool found;
     CValidationState state;
 
-    submitblock_StateCatcher(const uint256 &hashIn) : hash(hashIn), found(false), state() {};
+    submitbrick_StateCatcher(const uint256 &hashIn) : hash(hashIn), found(false), state() {};
 
 protected:
-    virtual void BlockChecked(const CBlock& block, const CValidationState& stateIn) {
-        if (block.GetHash() != hash)
+    virtual void BrickChecked(const CBrick& brick, const CValidationState& stateIn) {
+        if (brick.GetHash() != hash)
             return;
         found = true;
         state = stateIn;
     };
 };
 
-UniValue submitblock(const UniValue& params, bool fHelp)
+UniValue submitbrick(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
-            "submitblock \"hexdata\" ( \"jsonparametersobject\" )\n"
-            "\nAttempts to submit new block to network.\n"
+            "submitbrick \"hexdata\" ( \"jsonparametersobject\" )\n"
+            "\nAttempts to submit new brick to network.\n"
             "The 'jsonparametersobject' parameter is currently ignored.\n"
             "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n"
 
             "\nArguments\n"
-            "1. \"hexdata\"    (string, required) the hex-encoded block data to submit\n"
+            "1. \"hexdata\"    (string, required) the hex-encoded brick data to submit\n"
             "2. \"jsonparametersobject\"     (string, optional) object of optional parameters\n"
             "    {\n"
             "      \"workid\" : \"id\"    (string, optional) if the server provided a workid, it MUST be included with submissions\n"
             "    }\n"
             "\nResult:\n"
             "\nExamples:\n"
-            + HelpExampleCli("submitblock", "\"mydata\"")
-            + HelpExampleRpc("submitblock", "\"mydata\"")
+            + HelpExampleCli("submitbrick", "\"mydata\"")
+            + HelpExampleRpc("submitbrick", "\"mydata\"")
         );
 
-    CBlock block;
-    if (!DecodeHexBlk(block, params[0].get_str()))
-        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
+    CBrick brick;
+    if (!DecodeHexBlk(brick, params[0].get_str()))
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Brick decode failed");
 
-    uint256 hash = block.GetHash();
-    bool fBlockPresent = false;
+    uint256 hash = brick.GetHash();
+    bool fBrickPresent = false;
     {
         LOCK(cs_main);
-        BlockMap::iterator mi = mapBlockIndex.find(hash);
-        if (mi != mapBlockIndex.end()) {
-            CBlockIndex *pindex = mi->second;
-            if (pindex->IsValid(BLOCK_VALID_SCRIPTS))
+        BrickMap::iterator mi = mapBrickIndex.find(hash);
+        if (mi != mapBrickIndex.end()) {
+            CBrickIndex *pindex = mi->second;
+            if (pindex->IsValid(BRICK_VALID_SCRIPTS))
                 return "duplicate";
-            if (pindex->nStatus & BLOCK_FAILED_MASK)
+            if (pindex->nStatus & BRICK_FAILED_MASK)
                 return "duplicate-invalid";
-            // Otherwise, we might only have the header - process the block before returning
-            fBlockPresent = true;
+            // Otherwise, we might only have the header - process the brick before returning
+            fBrickPresent = true;
         }
     }
 
     {
         LOCK(cs_main);
-        BlockMap::iterator mi = mapBlockIndex.find(block.hashPrevBlock);
-        if (mi != mapBlockIndex.end()) {
-            UpdateUncommittedBlockStructures(block, mi->second, Params().GetConsensus());
+        BrickMap::iterator mi = mapBrickIndex.find(brick.hashPrevBrick);
+        if (mi != mapBrickIndex.end()) {
+            UpdateUncommittedBrickStructures(brick, mi->second, Params().GetConsensus());
         }
     }
 
     CValidationState state;
-    submitblock_StateCatcher sc(block.GetHash());
+    submitbrick_StateCatcher sc(brick.GetHash());
     RegisterValidationInterface(&sc);
-    bool fAccepted = ProcessNewBlock(state, Params(), NULL, &block, true, NULL, false);
+    bool fAccepted = ProcessNewBrick(state, Params(), NULL, &brick, true, NULL, false);
     UnregisterValidationInterface(&sc);
-    if (fBlockPresent)
+    if (fBrickPresent)
     {
         if (fAccepted && !sc.found)
             return "duplicate-inconclusive";
@@ -783,29 +783,29 @@ UniValue estimatefee(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatefee nblocks\n"
+            "estimatefee nbricks\n"
             "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
-            "confirmation within nblocks blocks.\n"
+            "confirmation within nbricks bricks.\n"
             "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
+            "1. nbricks     (numeric)\n"
             "\nResult:\n"
             "n              (numeric) estimated fee-per-kilobyte\n"
             "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
+            "A negative value is returned if not enough transactions and bricks\n"
             "have been observed to make an estimate.\n"
-            "-1 is always returned for nblocks == 1 as it is impossible to calculate\n"
-            "a fee that is high enough to get reliably included in the next block.\n"
+            "-1 is always returned for nbricks == 1 as it is impossible to calculate\n"
+            "a fee that is high enough to get reliably included in the next brick.\n"
             "\nExample:\n"
             + HelpExampleCli("estimatefee", "6")
             );
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
-    int nBlocks = params[0].get_int();
-    if (nBlocks < 1)
-        nBlocks = 1;
+    int nBricks = params[0].get_int();
+    if (nBricks < 1)
+        nBricks = 1;
 
-    CFeeRate feeRate = mempool.estimateFee(nBlocks);
+    CFeeRate feeRate = mempool.estimateFee(nBricks);
     if (feeRate == CFeeRate(0))
         return -1.0;
 
@@ -816,15 +816,15 @@ UniValue estimatepriority(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatepriority nblocks\n"
+            "estimatepriority nbricks\n"
             "\nEstimates the approximate priority a zero-fee transaction needs to begin\n"
-            "confirmation within nblocks blocks.\n"
+            "confirmation within nbricks bricks.\n"
             "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
+            "1. nbricks     (numeric)\n"
             "\nResult:\n"
             "n              (numeric) estimated priority\n"
             "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
+            "A negative value is returned if not enough transactions and bricks\n"
             "have been observed to make an estimate.\n"
             "\nExample:\n"
             + HelpExampleCli("estimatepriority", "6")
@@ -832,32 +832,32 @@ UniValue estimatepriority(const UniValue& params, bool fHelp)
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
-    int nBlocks = params[0].get_int();
-    if (nBlocks < 1)
-        nBlocks = 1;
+    int nBricks = params[0].get_int();
+    if (nBricks < 1)
+        nBricks = 1;
 
-    return mempool.estimatePriority(nBlocks);
+    return mempool.estimatePriority(nBricks);
 }
 
 UniValue estimatesmartfee(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatesmartfee nblocks\n"
+            "estimatesmartfee nbricks\n"
             "\nWARNING: This interface is unstable and may disappear or change!\n"
             "\nEstimates the approximate fee per kilobyte needed for a transaction to begin\n"
-            "confirmation within nblocks blocks if possible and return the number of blocks\n"
+            "confirmation within nbricks bricks if possible and return the number of bricks\n"
             "for which the estimate is valid.\n"
             "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
+            "1. nbricks     (numeric)\n"
             "\nResult:\n"
             "{\n"
-            "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in LTC)\n"
-            "  \"blocks\" : n         (numeric) block number where estimate was found\n"
+            "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in MAGA)\n"
+            "  \"bricks\" : n         (numeric) brick number where estimate was found\n"
             "}\n"
             "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
-            "have been observed to make an estimate for any number of blocks.\n"
+            "A negative value is returned if not enough transactions and bricks\n"
+            "have been observed to make an estimate for any number of bricks.\n"
             "However it will not return a value below the mempool reject fee.\n"
             "\nExample:\n"
             + HelpExampleCli("estimatesmartfee", "6")
@@ -865,13 +865,13 @@ UniValue estimatesmartfee(const UniValue& params, bool fHelp)
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
-    int nBlocks = params[0].get_int();
+    int nBricks = params[0].get_int();
 
     UniValue result(UniValue::VOBJ);
     int answerFound;
-    CFeeRate feeRate = mempool.estimateSmartFee(nBlocks, &answerFound);
+    CFeeRate feeRate = mempool.estimateSmartFee(nBricks, &answerFound);
     result.push_back(Pair("feerate", feeRate == CFeeRate(0) ? -1.0 : ValueFromAmount(feeRate.GetFeePerK())));
-    result.push_back(Pair("blocks", answerFound));
+    result.push_back(Pair("bricks", answerFound));
     return result;
 }
 
@@ -879,21 +879,21 @@ UniValue estimatesmartpriority(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "estimatesmartpriority nblocks\n"
+            "estimatesmartpriority nbricks\n"
             "\nWARNING: This interface is unstable and may disappear or change!\n"
             "\nEstimates the approximate priority a zero-fee transaction needs to begin\n"
-            "confirmation within nblocks blocks if possible and return the number of blocks\n"
+            "confirmation within nbricks bricks if possible and return the number of bricks\n"
             "for which the estimate is valid.\n"
             "\nArguments:\n"
-            "1. nblocks     (numeric)\n"
+            "1. nbricks     (numeric)\n"
             "\nResult:\n"
             "{\n"
             "  \"priority\" : x.x,    (numeric) estimated priority\n"
-            "  \"blocks\" : n         (numeric) block number where estimate was found\n"
+            "  \"bricks\" : n         (numeric) brick number where estimate was found\n"
             "}\n"
             "\n"
-            "A negative value is returned if not enough transactions and blocks\n"
-            "have been observed to make an estimate for any number of blocks.\n"
+            "A negative value is returned if not enough transactions and bricks\n"
+            "have been observed to make an estimate for any number of bricks.\n"
             "However if the mempool reject fee is set it will return 1e9 * MAX_MONEY.\n"
             "\nExample:\n"
             + HelpExampleCli("estimatesmartpriority", "6")
@@ -901,13 +901,13 @@ UniValue estimatesmartpriority(const UniValue& params, bool fHelp)
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM));
 
-    int nBlocks = params[0].get_int();
+    int nBricks = params[0].get_int();
 
     UniValue result(UniValue::VOBJ);
     int answerFound;
-    double priority = mempool.estimateSmartPriority(nBlocks, &answerFound);
+    double priority = mempool.estimateSmartPriority(nBricks, &answerFound);
     result.push_back(Pair("priority", priority));
-    result.push_back(Pair("blocks", answerFound));
+    result.push_back(Pair("bricks", answerFound));
     return result;
 }
 
@@ -917,8 +917,8 @@ static const CRPCCommand commands[] =
     { "mining",             "getnetworkhashps",       &getnetworkhashps,       true  },
     { "mining",             "getmininginfo",          &getmininginfo,          true  },
     { "mining",             "prioritisetransaction",  &prioritisetransaction,  true  },
-    { "mining",             "getblocktemplate",       &getblocktemplate,       true  },
-    { "mining",             "submitblock",            &submitblock,            true  },
+    { "mining",             "getbricktemplate",       &getbricktemplate,       true  },
+    { "mining",             "submitbrick",            &submitbrick,            true  },
 
     { "generating",         "generate",               &generate,               true  },
     { "generating",         "generatetoaddress",      &generatetoaddress,      true  },

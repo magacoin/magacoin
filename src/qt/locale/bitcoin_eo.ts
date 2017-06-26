@@ -142,12 +142,12 @@
         <translation>Malfermi &amp;URI-on...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Reindeksado de blokoj sur disko...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Sendi monon al Litecoin-adreso</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Sendi monon al Magacoin-adreso</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -170,8 +170,8 @@
         <translation>&amp;Kontroli mesaĝon...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -198,12 +198,12 @@
         <translation>Ĉifri la privatajn ŝlosilojn de via monujo</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Subskribi mesaĝojn per via Litecoin-adresoj por pravigi, ke vi estas la posedanto</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Subskribi mesaĝojn per via Magacoin-adresoj por pravigi, ke vi estas la posedanto</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Kontroli mesaĝojn por kontroli ĉu ili estas subskribitaj per specifaj Litecoin-adresoj</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Kontroli mesaĝojn por kontroli ĉu ili estas subskribitaj per specifaj Magacoin-adresoj</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -222,8 +222,8 @@
         <translation>Langeto-breto</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Peti pagon (kreas QR-kodojn kaj URI-ojn kun prefikso litecoin:)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Peti pagon (kreas QR-kodojn kaj URI-ojn kun prefikso magacoin:)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -234,15 +234,15 @@
         <translation>Vidigi la liston de uzitaj ricevaj adresoj kaj etikedoj</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Malfermi litecoin:-URI-on aŭ pagpeton</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Malfermi magacoin:-URI-on aŭ pagpeton</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Komandliniaj agordaĵoj</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Neniu fonto de blokoj trovebla...</translation>
     </message>
     <message numerus="yes">
@@ -270,7 +270,7 @@
         <translation>mankas %1</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Lasta ricevita bloko kreiĝis antaŭ %1.</translation>
     </message>
     <message>
@@ -577,8 +577,8 @@
         <translation>Fakulo</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Aŭtomate malfermi la kursilan pordon por Litecoin. Tio funkcias nur se via kursilo havas la UPnP-funkcion, kaj se tiu ĉi estas ŝaltita.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Aŭtomate malfermi la kursilan pordon por Magacoin. Tio funkcias nur se via kursilo havas la UPnP-funkcion, kaj se tiu ĉi estas ŝaltita.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -634,7 +634,7 @@
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Elekti la defaŭltan manieron por montri litecoin sumojn en la interfaco, kaj kiam vi sendos litecoin.</translation>
+        <translation>Elekti la defaŭltan manieron por montri magacoin sumojn en la interfaco, kaj kiam vi sendos magacoin.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -672,8 +672,8 @@
         <translation>Formularo</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Eblas, ke la informoj videblaj ĉi tie estas eksdataj. Via monujo aŭtomate sinkoniĝas kun la litecoin reto kiam ili konektiĝas, sed tiu procezo ankoraŭ ne finfariĝis.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Eblas, ke la informoj videblaj ĉi tie estas eksdataj. Via monujo aŭtomate sinkoniĝas kun la magacoin reto kiam ili konektiĝas, sed tiu procezo ankoraŭ ne finfariĝis.</translation>
     </message>
     <message>
         <source>Your current spendable balance</source>
@@ -787,11 +787,11 @@
         <translation>Nombro de konektoj</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Blokĉeno</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Aktuala nombro de blokoj</translation>
     </message>
     <message>
@@ -823,7 +823,7 @@
         <translation>Servoj</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Horo de la lasta bloko</translation>
     </message>
     <message>
@@ -956,7 +956,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Sendi Litecoin</translation>
+        <translation>Sendi Magacoin</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -1139,8 +1139,8 @@
         <translation>Kopii la aktualan subskribon al la tondejo</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Subskribi la mesaĝon por pravigi, ke vi estas la posedanto de tiu Litecoin-adreso</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Subskribi la mesaĝon por pravigi, ke vi estas la posedanto de tiu Magacoin-adreso</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1159,8 +1159,8 @@
         <translation>&amp;Kontroli Mesaĝon</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Kontroli la mesaĝon por pravigi, ke ĝi ja estas subskribita per la specifa Litecoin-adreso</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Kontroli la mesaĝon por pravigi, ke ĝi ja estas subskribita per la specifa Magacoin-adreso</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1244,8 +1244,8 @@
         <translation>Akcepti konektojn el ekstere (defaŭlte: 1 se ne estas -proxy nek -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Kerno de Litecoin</translation>
+        <source>Magacoin Core</source>
+        <translation>Kerno de Magacoin</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
@@ -1272,7 +1272,7 @@
         <translation>&lt;category&gt; povas esti:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Blok-kreaj agordaĵoj:</translation>
     </message>
     <message>
@@ -1280,15 +1280,15 @@
         <translation>Konekti nur al specifita(j) nodo(j)</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Difektita blokdatumbazo trovita</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Ĉu vi volas rekonstrui la blokdatumbazon nun?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Eraro dum pravalorizado de blokdatumbazo</translation>
     </message>
     <message>
@@ -1296,11 +1296,11 @@
         <translation>Eraro dum pravalorizado de monuj-datumbaza ĉirkaŭaĵo %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Eraro dum ŝargado de blokdatumbazo</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Eraro dum malfermado de blokdatumbazo</translation>
     </message>
     <message>
@@ -1312,7 +1312,7 @@
         <translation>Ne sukcesis aŭskulti ajnan pordon. Uzu -listen=0 se tion vi volas.</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Geneza bloko aŭ netrovita aŭ neĝusta. Ĉu eble la datadir de la reto malĝustas?</translation>
     </message>
     <message>
@@ -1328,7 +1328,7 @@
         <translation>Specifi monujan dosieron (ene de dosierujo por datumoj)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Kontrolado de blokoj...</translation>
     </message>
     <message>
@@ -1392,7 +1392,7 @@
         <translation>Pasvorto por konektoj JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Plenumi komandon kiam plej bona bloko ŝanĝiĝas (%s en cmd anstataŭiĝas per bloka haketaĵo)</translation>
     </message>
     <message>
@@ -1416,7 +1416,7 @@
         <translation>Nesufiĉa mono</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Ŝarĝante blok-indekson...</translation>
     </message>
     <message>

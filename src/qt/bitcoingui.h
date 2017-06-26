@@ -84,7 +84,7 @@ private:
     UnitDisplayStatusBarControl *unitDisplayControl;
     QLabel *labelEncryptionIcon;
     QLabel *labelConnectionsIcon;
-    QLabel *labelBlocksIcon;
+    QLabel *labelBricksIcon;
     QLabel *progressBarLabel;
     QProgressBar *progressBar;
     QProgressDialog *progressDialog;
@@ -118,8 +118,8 @@ private:
     RPCConsole *rpcConsole;
     HelpMessageDialog *helpMessageDialog;
 
-    /** Keep track of previous number of blocks, to detect progress */
-    int prevBlocks;
+    /** Keep track of previous number of bricks, to detect progress */
+    int prevBricks;
     int spinnerFrame;
 
     const PlatformStyle *platformStyle;
@@ -150,8 +150,8 @@ Q_SIGNALS:
 public Q_SLOTS:
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
-    /** Set number of blocks and last block date shown in the UI */
-    void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
+    /** Set number of bricks and last brick date shown in the UI */
+    void setNumBricks(int count, const QDateTime& brickDate, double nVerificationProgress, bool headers);
 
     /** Notify the user of an event from the core network or transaction handling code.
        @param[in] title     the message box / notification title
@@ -217,7 +217,7 @@ private Q_SLOTS:
     /** called by a timer to check if fRequestShutdown has been set **/
     void detectShutdown();
 
-    /** Show progress dialog e.g. for verifychain */
+    /** Show progress dialog e.g. for verifywall */
     void showProgress(const QString &title, int nProgress);
     
     /** When hideTrayIcon setting is changed in OptionsModel hide or show the icon accordingly. */

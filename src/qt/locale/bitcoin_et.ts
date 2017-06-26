@@ -62,12 +62,12 @@
         <translation>Vastuvõtvad aadressid</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Need on sinu Litecoin aadressid maksete saatmiseks. Ennem müntide saatmist kontrolli alati summat ja makse saaja aadressi.</translation>
+        <source>These are your Magacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Need on sinu Magacoin aadressid maksete saatmiseks. Ennem müntide saatmist kontrolli alati summat ja makse saaja aadressi.</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Need on sinu Litecoin aadressid sisenevate maksete vastu võtmiseks. Soovitav on iga tehingu tarbeks kasutada uut aadressi.</translation>
+        <source>These are your Magacoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Need on sinu Magacoin aadressid sisenevate maksete vastu võtmiseks. Soovitav on iga tehingu tarbeks kasutada uut aadressi.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -168,8 +168,8 @@
         <translation>Kinnita rahakoti krüpteerimine.</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR LITECOINS&lt;/b&gt;!</source>
-        <translation>Hoiatus:Kui sa krüpteerid oma rahakoti ja kaotad salafraasi, siis sa&lt;b&gt;KAOTAD OMA LITECOINID&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR MAGACOINS&lt;/b&gt;!</source>
+        <translation>Hoiatus:Kui sa krüpteerid oma rahakoti ja kaotad salafraasi, siis sa&lt;b&gt;KAOTAD OMA MAGACOINID&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -282,12 +282,12 @@
         <translation>Ava &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Kettal olevate blokkide re-indekseerimine...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Saada münte Litecoini aadressile</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Saada münte Magacoini aadressile</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -310,8 +310,8 @@
         <translation>&amp;Kontrolli sõnumit...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -338,12 +338,12 @@
         <translation>Krüpteeri oma rahakoti privaatvõtmed</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Litecoini aadressiga</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Magacoini aadressiga</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Litecoini aadressiga</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Magacoini aadressiga</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -362,35 +362,35 @@
         <translation>Vahelehe tööriistariba</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Loo maksepäring (genereerib QR koodid ja litecoini: URId)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Loo maksepäring (genereerib QR koodid ja magacoini: URId)</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Ava litecoini: URI või maksepäring</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Ava magacoini: URI või maksepäring</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Käsurea valikud</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n aktiivne ühendus Litecoini võrku</numerusform><numerusform>%n aktiivset ühendust Litecoini võrku</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n aktiivne ühendus Magacoini võrku</numerusform><numerusform>%n aktiivset ühendust Magacoini võrku</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>Kõvakettal olevate plokkide indekseerimine...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>Kõvakettal olevate plokkide töötlemine...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Plokkide allikas pole saadaval...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Töödeldud %n plokk transaktsioonide ajaloost.</numerusform><numerusform>Töödeldud %n plokki transaktsioonide ajaloost.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -418,7 +418,7 @@
         <translation>%1 maas</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Viimane saabunud blokk loodi %1 tagasi.</translation>
     </message>
     <message>
@@ -710,8 +710,8 @@
         <translation>Muuda saatvat aadressi</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Litecoin address.</source>
-        <translation>Sisestatud aadress "%1" ei ole korrektne Litecoin aadress.</translation>
+        <source>The entered address "%1" is not a valid Magacoin address.</source>
+        <translation>Sisestatud aadress "%1" ei ole korrektne Magacoin aadress.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -825,8 +825,8 @@
         <translation>Ekspert</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Litecoini kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Magacoini kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -908,7 +908,7 @@
         <translation>Vorm</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
         <translation>Kuvatav info ei pruugi olla ajakohane. Ühenduse loomisel süngitakse sinu rahakott automaatselt Bitconi võrgustikuga, kuid see toiming on hetkel lõpetamata.</translation>
     </message>
     <message>
@@ -1015,11 +1015,11 @@
         <translation>Ühenduste arv</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Ploki jada</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Plokkide hetkearv</translation>
     </message>
     <message>
@@ -1047,7 +1047,7 @@
         <translation>Sünkroniseeritud Päised</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Sünkroniseeritud Plokid</translation>
     </message>
     <message>
@@ -1055,7 +1055,7 @@
         <translation>Teenused</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Viimane ploki aeg</translation>
     </message>
     <message>
@@ -1375,8 +1375,8 @@
         <translation>Maksepäring aegunud.</translation>
     </message>
     <message>
-        <source>Warning: Invalid Litecoin address</source>
-        <translation>Hoiatus: Ebakorrektne Litecoin aadress</translation>
+        <source>Warning: Invalid Magacoin address</source>
+        <translation>Hoiatus: Ebakorrektne Magacoin aadress</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -1455,8 +1455,8 @@
         <translation>&amp;Allkirjastamise teade</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>Litecoin aadress millega sõnum allkirjastada</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>Magacoin aadress millega sõnum allkirjastada</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1487,8 +1487,8 @@
         <translation>Kopeeri praegune signatuur vahemällu</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Allkirjasta sõnum Litecoini aadressi sulle kuulumise tõestamiseks</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Allkirjasta sõnum Magacoini aadressi sulle kuulumise tõestamiseks</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1507,12 +1507,12 @@
         <translation>&amp;Kinnita Sõnum</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Litecoin aadress millega sõnum on allkirjastatud</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Magacoin aadress millega sõnum on allkirjastatud</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Litecoin aadressiga.</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Magacoin aadressiga.</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1800,8 +1800,8 @@
         <translation>Luba välisühendusi (vaikeväärtus: 1 kui puudub -proxy või -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoini tuumik</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoini tuumik</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
@@ -1816,7 +1816,7 @@
         <translation>See on test-versioon - kasutamine omal riisikol - ära kasuta mining'uks ega kaupmeeste programmides</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Blokeeri loomise valikud:</translation>
     </message>
     <message>
@@ -1824,15 +1824,15 @@
         <translation>Ühendu ainult määratud node'i(de)ga</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Tuvastati vigane bloki andmebaas</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Kas soovid bloki andmebaasi taastada?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Tõrge bloki andmebaasi käivitamisel</translation>
     </message>
     <message>
@@ -1840,11 +1840,11 @@
         <translation>Tõrge rahakoti keskkonna %s käivitamisel!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Tõrge bloki baasi lugemisel</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Tõrge bloki andmebaasi avamisel</translation>
     </message>
     <message>
@@ -1856,7 +1856,7 @@
         <translation>Pordi kuulamine nurjus. Soovikorral kasuta -listen=0.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Kontrollin blokke...</translation>
     </message>
     <message>
@@ -1916,7 +1916,7 @@
         <translation>JSON-RPC ühenduste salasõna</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Käivita käsklus, kui parim plokk muutub (käskluse %s asendatakse ploki hash'iga)</translation>
     </message>
     <message>
@@ -1944,7 +1944,7 @@
         <translation>Liiga suur summa</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Klotside indeksi laadimine...</translation>
     </message>
     <message>

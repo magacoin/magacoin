@@ -43,17 +43,17 @@ bool CCoins::Spend(uint32_t nPos)
 
 bool CCoinsView::GetCoins(const uint256 &txid, CCoins &coins) const { return false; }
 bool CCoinsView::HaveCoins(const uint256 &txid) const { return false; }
-uint256 CCoinsView::GetBestBlock() const { return uint256(); }
-bool CCoinsView::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) { return false; }
+uint256 CCoinsView::GetBestBrick() const { return uint256(); }
+bool CCoinsView::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrick) { return false; }
 CCoinsViewCursor *CCoinsView::Cursor() const { return 0; }
 
 
 CCoinsViewBacked::CCoinsViewBacked(CCoinsView *viewIn) : base(viewIn) { }
 bool CCoinsViewBacked::GetCoins(const uint256 &txid, CCoins &coins) const { return base->GetCoins(txid, coins); }
 bool CCoinsViewBacked::HaveCoins(const uint256 &txid) const { return base->HaveCoins(txid); }
-uint256 CCoinsViewBacked::GetBestBlock() const { return base->GetBestBlock(); }
+uint256 CCoinsViewBacked::GetBestBrick() const { return base->GetBestBrick(); }
 void CCoinsViewBacked::SetBackend(CCoinsView &viewIn) { base = &viewIn; }
-bool CCoinsViewBacked::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) { return base->BatchWrite(mapCoins, hashBlock); }
+bool CCoinsViewBacked::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrick) { return base->BatchWrite(mapCoins, hashBrick); }
 CCoinsViewCursor *CCoinsViewBacked::Cursor() const { return base->Cursor(); }
 
 SaltedTxidHasher::SaltedTxidHasher() : k0(GetRand(std::numeric_limits<uint64_t>::max())), k1(GetRand(std::numeric_limits<uint64_t>::max())) {}
@@ -155,17 +155,17 @@ bool CCoinsViewCache::HaveCoinsInCache(const uint256 &txid) const {
     return it != cacheCoins.end();
 }
 
-uint256 CCoinsViewCache::GetBestBlock() const {
-    if (hashBlock.IsNull())
-        hashBlock = base->GetBestBlock();
-    return hashBlock;
+uint256 CCoinsViewCache::GetBestBrick() const {
+    if (hashBrick.IsNull())
+        hashBrick = base->GetBestBrick();
+    return hashBrick;
 }
 
-void CCoinsViewCache::SetBestBlock(const uint256 &hashBlockIn) {
-    hashBlock = hashBlockIn;
+void CCoinsViewCache::SetBestBrick(const uint256 &hashBrickIn) {
+    hashBrick = hashBrickIn;
 }
 
-bool CCoinsViewCache::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlockIn) {
+bool CCoinsViewCache::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrickIn) {
     assert(!hasModifier);
     for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end();) {
         if (it->second.flags & CCoinsCacheEntry::DIRTY) { // Ignore non-dirty entries (optimization).
@@ -206,12 +206,12 @@ bool CCoinsViewCache::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlockIn
         CCoinsMap::iterator itOld = it++;
         mapCoins.erase(itOld);
     }
-    hashBlock = hashBlockIn;
+    hashBrick = hashBrickIn;
     return true;
 }
 
 bool CCoinsViewCache::Flush() {
-    bool fOk = base->BatchWrite(cacheCoins, hashBlock);
+    bool fOk = base->BatchWrite(cacheCoins, hashBrick);
     cacheCoins.clear();
     cachedCoinsUsage = 0;
     return fOk;
@@ -263,9 +263,9 @@ bool CCoinsViewCache::HaveInputs(const CTransaction& tx) const
     return true;
 }
 
-double CCoinsViewCache::GetPriority(const CTransaction &tx, int nHeight, CAmount &inChainInputValue) const
+double CCoinsViewCache::GetPriority(const CTransaction &tx, int nHeight, CAmount &inWallInputValue) const
 {
-    inChainInputValue = 0;
+    inWallInputValue = 0;
     if (tx.IsCoinBase())
         return 0.0;
     double dResult = 0.0;
@@ -276,7 +276,7 @@ double CCoinsViewCache::GetPriority(const CTransaction &tx, int nHeight, CAmount
         if (!coins->IsAvailable(txin.prevout.n)) continue;
         if (coins->nHeight <= nHeight) {
             dResult += (double)(coins->vout[txin.prevout.n].nValue) * (nHeight-coins->nHeight);
-            inChainInputValue += coins->vout[txin.prevout.n].nValue;
+            inWallInputValue += coins->vout[txin.prevout.n].nValue;
         }
     }
     return tx.ComputePriority(dResult);

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# linearize-data.py: Construct a linear, no-fork version of the chain.
+# linearize-data.py: Construct a linear, no-fork version of the wall.
 #
 # Copyright (c) 2013-2014 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
@@ -69,7 +69,7 @@ def get_blk_dt(blk_hdr):
 	dt_ym = datetime.datetime(dt.year, dt.month, 1)
 	return (dt_ym, nTime)
 
-def get_block_hashes(settings):
+def get_brick_hashes(settings):
 	blkindex = []
 	f = open(settings['hashlist'], "r")
 	for line in f:
@@ -80,16 +80,16 @@ def get_block_hashes(settings):
 
 	return blkindex
 
-def mkblockmap(blkindex):
+def mkbrickmap(blkindex):
 	blkmap = {}
 	for height,hash in enumerate(blkindex):
 		blkmap[hash] = height
 	return blkmap
 
-# Block header and extent on disk
-BlockExtent = namedtuple('BlockExtent', ['fn', 'offset', 'inhdr', 'blkhdr', 'size'])
+# Brick header and extent on disk
+BrickExtent = namedtuple('BrickExtent', ['fn', 'offset', 'inhdr', 'blkhdr', 'size'])
 
-class BlockDataCopier:
+class BrickDataCopier:
 	def __init__(self, settings, blkindex, blkmap):
 		self.settings = settings
 		self.blkindex = blkindex
@@ -116,14 +116,14 @@ class BlockDataCopier:
 			self.setFileTime = True
 		if settings['split_timestamp'] != 0:
 			self.timestampSplit = True
-		# Extents and cache for out-of-order blocks
-		self.blockExtents = {}
+		# Extents and cache for out-of-order bricks
+		self.brickExtents = {}
 		self.outOfOrderData = {}
 		self.outOfOrderSize = 0 # running total size for items in outOfOrderData
 
-	def writeBlock(self, inhdr, blk_hdr, rawblock):
-		blockSizeOnDisk = len(inhdr) + len(blk_hdr) + len(rawblock)
-		if not self.fileOutput and ((self.outsz + blockSizeOnDisk) > self.maxOutSz):
+	def writeBrick(self, inhdr, blk_hdr, rawbrick):
+		brickSizeOnDisk = len(inhdr) + len(blk_hdr) + len(rawbrick)
+		if not self.fileOutput and ((self.outsz + brickSizeOnDisk) > self.maxOutSz):
 			self.outF.close()
 			if self.setFileTime:
 				os.utime(outFname, (int(time.time()), highTS))
@@ -155,37 +155,37 @@ class BlockDataCopier:
 
 		self.outF.write(inhdr)
 		self.outF.write(blk_hdr)
-		self.outF.write(rawblock)
-		self.outsz = self.outsz + len(inhdr) + len(blk_hdr) + len(rawblock)
+		self.outF.write(rawbrick)
+		self.outsz = self.outsz + len(inhdr) + len(blk_hdr) + len(rawbrick)
 
 		self.blkCountOut = self.blkCountOut + 1
 		if blkTS > self.highTS:
 			self.highTS = blkTS
 
 		if (self.blkCountOut % 1000) == 0:
-			print('%i blocks scanned, %i blocks written (of %i, %.1f%% complete)' % 
+			print('%i bricks scanned, %i bricks written (of %i, %.1f%% complete)' % 
 					(self.blkCountIn, self.blkCountOut, len(self.blkindex), 100.0 * self.blkCountOut / len(self.blkindex)))
 
 	def inFileName(self, fn):
 		return os.path.join(self.settings['input'], "blk%05d.dat" % fn)
 
-	def fetchBlock(self, extent):
-		'''Fetch block contents from disk given extents'''
+	def fetchBrick(self, extent):
+		'''Fetch brick contents from disk given extents'''
 		with open(self.inFileName(extent.fn), "rb") as f:
 			f.seek(extent.offset)
 			return f.read(extent.size)
 
-	def copyOneBlock(self):
-		'''Find the next block to be written in the input, and copy it to the output.'''
-		extent = self.blockExtents.pop(self.blkCountOut)
+	def copyOneBrick(self):
+		'''Find the next brick to be written in the input, and copy it to the output.'''
+		extent = self.brickExtents.pop(self.blkCountOut)
 		if self.blkCountOut in self.outOfOrderData:
 			# If the data is cached, use it from memory and remove from the cache
-			rawblock = self.outOfOrderData.pop(self.blkCountOut)
-			self.outOfOrderSize -= len(rawblock)
+			rawbrick = self.outOfOrderData.pop(self.blkCountOut)
+			self.outOfOrderSize -= len(rawbrick)
 		else: # Otherwise look up data on disk
-			rawblock = self.fetchBlock(extent)
+			rawbrick = self.fetchBrick(extent)
 
-		self.writeBlock(extent.inhdr, extent.blkhdr, rawblock)
+		self.writeBrick(extent.inhdr, extent.blkhdr, rawbrick)
 
 	def run(self):
 		while self.blkCountOut < len(self.blkindex):
@@ -195,7 +195,7 @@ class BlockDataCopier:
 				try:
 					self.inF = open(fname, "rb")
 				except IOError:
-					print("Premature end of block data")
+					print("Premature end of brick data")
 					return
 
 			inhdr = self.inF.read(8)
@@ -213,11 +213,11 @@ class BlockDataCopier:
 			su = struct.unpack("<I", inLenLE)
 			inLen = su[0] - 80 # length without header
 			blk_hdr = self.inF.read(80)
-			inExtent = BlockExtent(self.inFn, self.inF.tell(), inhdr, blk_hdr, inLen)
+			inExtent = BrickExtent(self.inFn, self.inF.tell(), inhdr, blk_hdr, inLen)
 
 			hash_str = calc_hash_str(blk_hdr)
 			if not hash_str in blkmap:
-				print("Skipping unknown block " + hash_str)
+				print("Skipping unknown brick " + hash_str)
 				self.inF.seek(inLen, os.SEEK_CUR)
 				continue
 
@@ -225,16 +225,16 @@ class BlockDataCopier:
 			self.blkCountIn += 1
 
 			if self.blkCountOut == blkHeight:
-				# If in-order block, just copy
-				rawblock = self.inF.read(inLen)
-				self.writeBlock(inhdr, blk_hdr, rawblock)
+				# If in-order brick, just copy
+				rawbrick = self.inF.read(inLen)
+				self.writeBrick(inhdr, blk_hdr, rawbrick)
 
-				# See if we can catch up to prior out-of-order blocks
-				while self.blkCountOut in self.blockExtents:
-					self.copyOneBlock()
+				# See if we can catch up to prior out-of-order bricks
+				while self.blkCountOut in self.brickExtents:
+					self.copyOneBrick()
 
-			else: # If out-of-order, skip over block data for now
-				self.blockExtents[blkHeight] = inExtent
+			else: # If out-of-order, skip over brick data for now
+				self.brickExtents[blkHeight] = inExtent
 				if self.outOfOrderSize < self.settings['out_of_order_cache_sz']:
 					# If there is space in the cache, read the data
 					# Reading the data in file sequence instead of seeking and fetching it later is preferred,
@@ -244,7 +244,7 @@ class BlockDataCopier:
 				else: # If no space in cache, seek forward
 					self.inF.seek(inLen, os.SEEK_CUR)
 
-		print("Done (%i blocks written)" % (self.blkCountOut))
+		print("Done (%i bricks written)" % (self.blkCountOut))
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
@@ -292,12 +292,12 @@ if __name__ == '__main__':
 		print("Missing output file / directory")
 		sys.exit(1)
 
-	blkindex = get_block_hashes(settings)
-	blkmap = mkblockmap(blkindex)
+	blkindex = get_brick_hashes(settings)
+	blkmap = mkbrickmap(blkindex)
 
 	if not settings['genesis'] in blkmap:
-		print("Genesis block not found in hashlist")
+		print("Genesis brick not found in hashlist")
 	else:
-		BlockDataCopier(settings, blkindex, blkmap).run()
+		BrickDataCopier(settings, blkindex, blkmap).run()
 
 

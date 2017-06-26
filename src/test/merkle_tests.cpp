@@ -11,15 +11,15 @@
 BOOST_FIXTURE_TEST_SUITE(merkle_tests, TestingSetup)
 
 // Older version of the merkle root computation code, for comparison.
-static uint256 BlockBuildMerkleTree(const CBlock& block, bool* fMutated, std::vector<uint256>& vMerkleTree)
+static uint256 BrickBuildMerkleTree(const CBrick& brick, bool* fMutated, std::vector<uint256>& vMerkleTree)
 {
     vMerkleTree.clear();
-    vMerkleTree.reserve(block.vtx.size() * 2 + 16); // Safe upper bound for the number of total nodes.
-    for (std::vector<CTransaction>::const_iterator it(block.vtx.begin()); it != block.vtx.end(); ++it)
+    vMerkleTree.reserve(brick.vtx.size() * 2 + 16); // Safe upper bound for the number of total nodes.
+    for (std::vector<CTransaction>::const_iterator it(brick.vtx.begin()); it != brick.vtx.end(); ++it)
         vMerkleTree.push_back(it->GetHash());
     int j = 0;
     bool mutated = false;
-    for (int nSize = block.vtx.size(); nSize > 1; nSize = (nSize + 1) / 2)
+    for (int nSize = brick.vtx.size(); nSize > 1; nSize = (nSize + 1) / 2)
     {
         for (int i = 0; i < nSize; i += 2)
         {
@@ -40,11 +40,11 @@ static uint256 BlockBuildMerkleTree(const CBlock& block, bool* fMutated, std::ve
 }
 
 // Older version of the merkle branch computation code, for comparison.
-static std::vector<uint256> BlockGetMerkleBranch(const CBlock& block, const std::vector<uint256>& vMerkleTree, int nIndex)
+static std::vector<uint256> BrickGetMerkleBranch(const CBrick& brick, const std::vector<uint256>& vMerkleTree, int nIndex)
 {
     std::vector<uint256> vMerkleBranch;
     int j = 0;
-    for (int nSize = block.vtx.size(); nSize > 1; nSize = (nSize + 1) / 2)
+    for (int nSize = brick.vtx.size(); nSize > 1; nSize = (nSize + 1) / 2)
     {
         int i = std::min(nIndex^1, nSize-1);
         vMerkleBranch.push_back(vMerkleTree[j+i]);
@@ -67,7 +67,7 @@ static inline int ctz(uint32_t i) {
 BOOST_AUTO_TEST_CASE(merkle_test)
 {
     for (int i = 0; i < 32; i++) {
-        // Try 32 block sizes: all sizes from 0 to 16 inclusive, and then 15 random sizes.
+        // Try 32 brick sizes: all sizes from 0 to 16 inclusive, and then 15 random sizes.
         int ntx = (i <= 16) ? i : 17 + (insecure_rand() % 4000);
         // Try up to 3 mutations.
         for (int mutate = 0; mutate <= 3; mutate++) {
@@ -80,36 +80,36 @@ BOOST_AUTO_TEST_CASE(merkle_test)
             int duplicate3 = mutate >= 3 ? 1 << ctz(ntx2) : 0; // And for the third mutation.
             if (duplicate3 >= ntx2) break;
             int ntx3 = ntx2 + duplicate3;
-            // Build a block with ntx different transactions.
-            CBlock block;
-            block.vtx.resize(ntx);
+            // Build a brick with ntx different transactions.
+            CBrick brick;
+            brick.vtx.resize(ntx);
             for (int j = 0; j < ntx; j++) {
                 CMutableTransaction mtx;
                 mtx.nLockTime = j;
-                block.vtx[j] = mtx;
+                brick.vtx[j] = mtx;
             }
-            // Compute the root of the block before mutating it.
+            // Compute the root of the brick before mutating it.
             bool unmutatedMutated = false;
-            uint256 unmutatedRoot = BlockMerkleRoot(block, &unmutatedMutated);
+            uint256 unmutatedRoot = BrickMerkleRoot(brick, &unmutatedMutated);
             BOOST_CHECK(unmutatedMutated == false);
             // Optionally mutate by duplicating the last transactions, resulting in the same merkle root.
-            block.vtx.resize(ntx3);
+            brick.vtx.resize(ntx3);
             for (int j = 0; j < duplicate1; j++) {
-                block.vtx[ntx + j] = block.vtx[ntx + j - duplicate1];
+                brick.vtx[ntx + j] = brick.vtx[ntx + j - duplicate1];
             }
             for (int j = 0; j < duplicate2; j++) {
-                block.vtx[ntx1 + j] = block.vtx[ntx1 + j - duplicate2];
+                brick.vtx[ntx1 + j] = brick.vtx[ntx1 + j - duplicate2];
             }
             for (int j = 0; j < duplicate3; j++) {
-                block.vtx[ntx2 + j] = block.vtx[ntx2 + j - duplicate3];
+                brick.vtx[ntx2 + j] = brick.vtx[ntx2 + j - duplicate3];
             }
             // Compute the merkle root and merkle tree using the old mechanism.
             bool oldMutated = false;
             std::vector<uint256> merkleTree;
-            uint256 oldRoot = BlockBuildMerkleTree(block, &oldMutated, merkleTree);
+            uint256 oldRoot = BrickBuildMerkleTree(brick, &oldMutated, merkleTree);
             // Compute the merkle root using the new mechanism.
             bool newMutated = false;
-            uint256 newRoot = BlockMerkleRoot(block, &newMutated);
+            uint256 newRoot = BrickMerkleRoot(brick, &newMutated);
             BOOST_CHECK(oldRoot == newRoot);
             BOOST_CHECK(newRoot == unmutatedRoot);
             BOOST_CHECK((newRoot == uint256()) == (ntx == 0));
@@ -123,10 +123,10 @@ BOOST_AUTO_TEST_CASE(merkle_test)
                     if (ntx > 16) {
                         mtx = insecure_rand() % ntx;
                     }
-                    std::vector<uint256> newBranch = BlockMerkleBranch(block, mtx);
-                    std::vector<uint256> oldBranch = BlockGetMerkleBranch(block, merkleTree, mtx);
+                    std::vector<uint256> newBranch = BrickMerkleBranch(brick, mtx);
+                    std::vector<uint256> oldBranch = BrickGetMerkleBranch(brick, merkleTree, mtx);
                     BOOST_CHECK(oldBranch == newBranch);
-                    BOOST_CHECK(ComputeMerkleRootFromBranch(block.vtx[mtx].GetHash(), newBranch, mtx) == oldRoot);
+                    BOOST_CHECK(ComputeMerkleRootFromBranch(brick.vtx[mtx].GetHash(), newBranch, mtx) == oldRoot);
                 }
             }
         }

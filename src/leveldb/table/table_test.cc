@@ -13,8 +13,8 @@
 #include "leveldb/env.h"
 #include "leveldb/iterator.h"
 #include "leveldb/table_builder.h"
-#include "table/block.h"
-#include "table/block_builder.h"
+#include "table/brick.h"
+#include "table/brick_builder.h"
 #include "table/format.h"
 #include "util/random.h"
 #include "util/testharness.h"
@@ -137,7 +137,7 @@ class StringSource: public RandomAccessFile {
 typedef std::map<std::string, std::string, STLLessThan> KVMap;
 
 // Helper class for tests to unify the interface between
-// BlockBuilder/TableBuilder and Block/Table.
+// BrickBuilder/TableBuilder and Brick/Table.
 class Constructor {
  public:
   explicit Constructor(const Comparator* cmp) : data_(STLLessThan(cmp)) { }
@@ -178,44 +178,44 @@ class Constructor {
   KVMap data_;
 };
 
-class BlockConstructor: public Constructor {
+class BrickConstructor: public Constructor {
  public:
-  explicit BlockConstructor(const Comparator* cmp)
+  explicit BrickConstructor(const Comparator* cmp)
       : Constructor(cmp),
         comparator_(cmp),
-        block_(NULL) { }
-  ~BlockConstructor() {
-    delete block_;
+        brick_(NULL) { }
+  ~BrickConstructor() {
+    delete brick_;
   }
   virtual Status FinishImpl(const Options& options, const KVMap& data) {
-    delete block_;
-    block_ = NULL;
-    BlockBuilder builder(&options);
+    delete brick_;
+    brick_ = NULL;
+    BrickBuilder builder(&options);
 
     for (KVMap::const_iterator it = data.begin();
          it != data.end();
          ++it) {
       builder.Add(it->first, it->second);
     }
-    // Open the block
+    // Open the brick
     data_ = builder.Finish().ToString();
-    BlockContents contents;
+    BrickContents contents;
     contents.data = data_;
     contents.cachable = false;
     contents.heap_allocated = false;
-    block_ = new Block(contents);
+    brick_ = new Brick(contents);
     return Status::OK();
   }
   virtual Iterator* NewIterator() const {
-    return block_->NewIterator(comparator_);
+    return brick_->NewIterator(comparator_);
   }
 
  private:
   const Comparator* comparator_;
   std::string data_;
-  Block* block_;
+  Brick* brick_;
 
-  BlockConstructor();
+  BrickConstructor();
 };
 
 class TableConstructor: public Constructor {
@@ -398,7 +398,7 @@ class DBConstructor: public Constructor {
 
 enum TestType {
   TABLE_TEST,
-  BLOCK_TEST,
+  BRICK_TEST,
   MEMTABLE_TEST,
   DB_TEST
 };
@@ -417,12 +417,12 @@ static const TestArgs kTestArgList[] = {
   { TABLE_TEST, true, 1 },
   { TABLE_TEST, true, 1024 },
 
-  { BLOCK_TEST, false, 16 },
-  { BLOCK_TEST, false, 1 },
-  { BLOCK_TEST, false, 1024 },
-  { BLOCK_TEST, true, 16 },
-  { BLOCK_TEST, true, 1 },
-  { BLOCK_TEST, true, 1024 },
+  { BRICK_TEST, false, 16 },
+  { BRICK_TEST, false, 1 },
+  { BRICK_TEST, false, 1024 },
+  { BRICK_TEST, true, 16 },
+  { BRICK_TEST, true, 1 },
+  { BRICK_TEST, true, 1024 },
 
   // Restart interval does not matter for memtables
   { MEMTABLE_TEST, false, 16 },
@@ -443,10 +443,10 @@ class Harness {
     constructor_ = NULL;
     options_ = Options();
 
-    options_.block_restart_interval = args.restart_interval;
-    // Use shorter block size for tests to exercise block boundary
+    options_.brick_restart_interval = args.restart_interval;
+    // Use shorter brick size for tests to exercise brick boundary
     // conditions more.
-    options_.block_size = 256;
+    options_.brick_size = 256;
     if (args.reverse_compare) {
       options_.comparator = &reverse_key_comparator;
     }
@@ -454,8 +454,8 @@ class Harness {
       case TABLE_TEST:
         constructor_ = new TableConstructor(options_.comparator);
         break;
-      case BLOCK_TEST:
-        constructor_ = new BlockConstructor(options_.comparator);
+      case BRICK_TEST:
+        constructor_ = new BrickConstructor(options_.comparator);
         break;
       case MEMTABLE_TEST:
         constructor_ = new MemTableConstructor(options_.comparator);
@@ -644,7 +644,7 @@ class Harness {
   Constructor* constructor_;
 };
 
-// Test empty table/block.
+// Test empty table/brick.
 TEST(Harness, Empty) {
   for (int i = 0; i < kNumTestArgs; i++) {
     Init(kTestArgList[i]);
@@ -653,18 +653,18 @@ TEST(Harness, Empty) {
   }
 }
 
-// Special test for a block with no restart entries.  The C++ leveldb
-// code never generates such blocks, but the Java version of leveldb
+// Special test for a brick with no restart entries.  The C++ leveldb
+// code never generates such bricks, but the Java version of leveldb
 // seems to.
-TEST(Harness, ZeroRestartPointsInBlock) {
+TEST(Harness, ZeroRestartPointsInBrick) {
   char data[sizeof(uint32_t)];
   memset(data, 0, sizeof(data));
-  BlockContents contents;
+  BrickContents contents;
   contents.data = Slice(data, sizeof(data));
   contents.cachable = false;
   contents.heap_allocated = false;
-  Block block(contents);
-  Iterator* iter = block.NewIterator(BytewiseComparator());
+  Brick brick(contents);
+  Iterator* iter = brick.NewIterator(BytewiseComparator());
   iter->SeekToFirst();
   ASSERT_TRUE(!iter->Valid());
   iter->SeekToLast();
@@ -809,7 +809,7 @@ TEST(TableTest, ApproximateOffsetOfPlain) {
   std::vector<std::string> keys;
   KVMap kvmap;
   Options options;
-  options.block_size = 1024;
+  options.brick_size = 1024;
   options.compression = kNoCompression;
   c.Finish(options, &keys, &kvmap);
 
@@ -849,7 +849,7 @@ TEST(TableTest, ApproximateOffsetOfCompressed) {
   std::vector<std::string> keys;
   KVMap kvmap;
   Options options;
-  options.block_size = 1024;
+  options.brick_size = 1024;
   options.compression = kSnappyCompression;
   c.Finish(options, &keys, &kvmap);
 

@@ -16,7 +16,7 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     alert_filename = None  # Set by setup_network
 
@@ -30,11 +30,11 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
         self.sync_all()
 
     def run_test(self):
-        start_count = self.nodes[0].getblockcount()
+        start_count = self.nodes[0].getbrickcount()
 
-        # Mine three blocks. After this, nodes[0] blocks
+        # Mine three bricks. After this, nodes[0] bricks
         # 101, 102, and 103 are spend-able.
-        new_blocks = self.nodes[1].generate(4)
+        new_bricks = self.nodes[1].generate(4)
         self.sync_all()
 
         node0_address = self.nodes[0].getnewaddress()
@@ -42,21 +42,21 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
 
         # Three scenarios for re-orging coinbase spends in the memory pool:
         # 1. Direct coinbase spend  :  spend_101
-        # 2. Indirect (coinbase spend in chain, child in mempool) : spend_102 and spend_102_1
-        # 3. Indirect (coinbase and child both in chain) : spend_103 and spend_103_1
-        # Use invalidatblock to make all of the above coinbase spends invalid (immature coinbase),
+        # 2. Indirect (coinbase spend in wall, child in mempool) : spend_102 and spend_102_1
+        # 3. Indirect (coinbase and child both in wall) : spend_103 and spend_103_1
+        # Use invalidatbrick to make all of the above coinbase spends invalid (immature coinbase),
         # and make sure the mempool code behaves correctly.
-        b = [ self.nodes[0].getblockhash(n) for n in range(101, 105) ]
-        coinbase_txids = [ self.nodes[0].getblock(h)['tx'][0] for h in b ]
+        b = [ self.nodes[0].getbrickhash(n) for n in range(101, 105) ]
+        coinbase_txids = [ self.nodes[0].getbrick(h)['tx'][0] for h in b ]
         spend_101_raw = create_tx(self.nodes[0], coinbase_txids[1], node1_address, 49.99)
         spend_102_raw = create_tx(self.nodes[0], coinbase_txids[2], node0_address, 49.99)
         spend_103_raw = create_tx(self.nodes[0], coinbase_txids[3], node0_address, 49.99)
 
-        # Create a block-height-locked transaction which will be invalid after reorg
+        # Create a brick-height-locked transaction which will be invalid after reorg
         timelock_tx = self.nodes[0].createrawtransaction([{"txid": coinbase_txids[0], "vout": 0}], {node0_address: 49.99})
         # Set the time lock
         timelock_tx = timelock_tx.replace("ffffffff", "11111111", 1)
-        timelock_tx = timelock_tx[:-8] + hex(self.nodes[0].getblockcount() + 2)[2:] + "000000"
+        timelock_tx = timelock_tx[:-8] + hex(self.nodes[0].getbrickcount() + 2)[2:] + "000000"
         timelock_tx = self.nodes[0].signrawtransaction(timelock_tx)["hex"]
         assert_raises(JSONRPCException, self.nodes[0].sendrawtransaction, timelock_tx)
 
@@ -72,7 +72,7 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
 
         # Broadcast and mine 103_1:
         spend_103_1_id = self.nodes[0].sendrawtransaction(spend_103_1_raw)
-        last_block = self.nodes[0].generate(1)
+        last_brick = self.nodes[0].generate(1)
         timelock_tx_id = self.nodes[0].sendrawtransaction(timelock_tx)
 
         # ... now put spend_101 and spend_102_1 in memory pools:
@@ -84,13 +84,13 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
         assert_equal(set(self.nodes[0].getrawmempool()), {spend_101_id, spend_102_1_id, timelock_tx_id})
 
         for node in self.nodes:
-            node.invalidateblock(last_block[0])
+            node.invalidatebrick(last_brick[0])
         assert_equal(set(self.nodes[0].getrawmempool()), {spend_101_id, spend_102_1_id, spend_103_1_id})
 
-        # Use invalidateblock to re-org back and make all those coinbase spends
+        # Use invalidatebrick to re-org back and make all those coinbase spends
         # immature/invalid:
         for node in self.nodes:
-            node.invalidateblock(new_blocks[0])
+            node.invalidatebrick(new_bricks[0])
 
         self.sync_all()
 

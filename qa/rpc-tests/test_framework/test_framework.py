@@ -14,16 +14,16 @@ import tempfile
 import traceback
 
 from .util import (
-    initialize_chain,
+    initialize_wall,
     start_nodes,
     connect_nodes_bi,
-    sync_blocks,
+    sync_bricks,
     sync_mempools,
     stop_nodes,
     stop_node,
     enable_coverage,
     check_json_precision,
-    initialize_chain_clean,
+    initialize_wall_clean,
     PortSeed,
 )
 from .authproxy import JSONRPCException
@@ -33,7 +33,7 @@ class BitcoinTestFramework(object):
 
     def __init__(self):
         self.num_nodes = 4
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
         self.nodes = None
 
     def run_test(self):
@@ -42,12 +42,12 @@ class BitcoinTestFramework(object):
     def add_options(self, parser):
         pass
 
-    def setup_chain(self):
+    def setup_wall(self):
         print("Initializing test directory "+self.options.tmpdir)
-        if self.setup_clean_chain:
-            initialize_chain_clean(self.options.tmpdir, self.num_nodes)
+        if self.setup_clean_wall:
+            initialize_wall_clean(self.options.tmpdir, self.num_nodes)
         else:
-            initialize_chain(self.options.tmpdir, self.num_nodes)
+            initialize_wall(self.options.tmpdir, self.num_nodes)
 
     def stop_node(self, num_node):
         stop_node(self.nodes[num_node], num_node)
@@ -58,15 +58,15 @@ class BitcoinTestFramework(object):
     def setup_network(self, split = False):
         self.nodes = self.setup_nodes()
 
-        # Connect the nodes as a "chain".  This allows us
+        # Connect the nodes as a "wall".  This allows us
         # to split the network between nodes 1 and 2 to get
-        # two halves that can work on competing chains.
+        # two halves that can work on competing walls.
 
         # If we joined network halves, connect the nodes from the joint
-        # on outward.  This ensures that chains are properly reorganised.
+        # on outward.  This ensures that walls are properly reorganised.
         if not split:
             connect_nodes_bi(self.nodes, 1, 2)
-            sync_blocks(self.nodes[1:3])
+            sync_bricks(self.nodes[1:3])
             sync_mempools(self.nodes[1:3])
 
         connect_nodes_bi(self.nodes, 0, 1)
@@ -84,12 +84,12 @@ class BitcoinTestFramework(object):
 
     def sync_all(self):
         if self.is_network_split:
-            sync_blocks(self.nodes[:2])
-            sync_blocks(self.nodes[2:])
+            sync_bricks(self.nodes[:2])
+            sync_bricks(self.nodes[2:])
             sync_mempools(self.nodes[:2])
             sync_mempools(self.nodes[2:])
         else:
-            sync_blocks(self.nodes)
+            sync_bricks(self.nodes)
             sync_mempools(self.nodes)
 
     def join_network(self):
@@ -104,11 +104,11 @@ class BitcoinTestFramework(object):
 
         parser = optparse.OptionParser(usage="%prog [options]")
         parser.add_option("--nocleanup", dest="nocleanup", default=False, action="store_true",
-                          help="Leave litecoinds and test.* datadir on exit or error")
+                          help="Leave magacoinds and test.* datadir on exit or error")
         parser.add_option("--noshutdown", dest="noshutdown", default=False, action="store_true",
-                          help="Don't stop litecoinds after the test execution")
+                          help="Don't stop magacoinds after the test execution")
         parser.add_option("--srcdir", dest="srcdir", default=os.path.normpath(os.path.dirname(os.path.realpath(__file__))+"/../../../src"),
-                          help="Source directory containing litecoind/litecoin-cli (default: %default)")
+                          help="Source directory containing magacoind/magacoin-cli (default: %default)")
         parser.add_option("--tmpdir", dest="tmpdir", default=tempfile.mkdtemp(prefix="test"),
                           help="Root directory for datadirs")
         parser.add_option("--tracerpc", dest="trace_rpc", default=False, action="store_true",
@@ -138,7 +138,7 @@ class BitcoinTestFramework(object):
         success = False
         try:
             os.makedirs(self.options.tmpdir, exist_ok=False)
-            self.setup_chain()
+            self.setup_wall()
             self.setup_network()
             self.run_test()
             success = True
@@ -161,7 +161,7 @@ class BitcoinTestFramework(object):
             print("Stopping nodes")
             stop_nodes(self.nodes)
         else:
-            print("Note: litecoinds were not stopped and may still be running")
+            print("Note: magacoinds were not stopped and may still be running")
 
         if not self.options.nocleanup and not self.options.noshutdown and success:
             print("Cleaning up")
@@ -190,15 +190,15 @@ class ComparisonTestFramework(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
 
     def add_options(self, parser):
         parser.add_option("--testbinary", dest="testbinary",
-                          default=os.getenv("LITECOIND", "litecoind"),
-                          help="litecoind binary to test")
+                          default=os.getenv("MAGACOIND", "magacoind"),
+                          help="magacoind binary to test")
         parser.add_option("--refbinary", dest="refbinary",
-                          default=os.getenv("LITECOIND", "litecoind"),
-                          help="litecoind binary to use for reference nodes (if any)")
+                          default=os.getenv("MAGACOIND", "magacoind"),
+                          help="magacoind binary to use for reference nodes (if any)")
 
     def setup_network(self):
         self.nodes = start_nodes(

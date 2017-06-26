@@ -63,7 +63,7 @@ class Reader {
   bool const checksum_;
   char* const backing_store_;
   Slice buffer_;
-  bool eof_;   // Last Read() indicated EOF by returning < kBlockSize
+  bool eof_;   // Last Read() indicated EOF by returning < kBrickSize
 
   // Offset of the last record returned by ReadRecord.
   uint64_t last_record_offset_;
@@ -84,10 +84,10 @@ class Reader {
     kBadRecord = kMaxRecordType + 2
   };
 
-  // Skips all blocks that are completely before "initial_offset_".
+  // Skips all bricks that are completely before "initial_offset_".
   //
   // Returns true on success. Handles reporting.
-  bool SkipToInitialBlock();
+  bool SkipToInitialBrick();
 
   // Return type, or one of the preceding special values
   unsigned int ReadPhysicalRecord(Slice* result);

@@ -9,7 +9,7 @@
 #include "guiutil.h"
 #include "peertablemodel.h"
 
-#include "chainparams.h"
+#include "wallparams.h"
 #include "checkpoints.h"
 #include "clientversion.h"
 #include "net.h"
@@ -22,11 +22,11 @@
 #include <QDebug>
 #include <QTimer>
 
-class CBlockIndex;
+class CBrickIndex;
 
 static const int64_t nClientStartupTime = GetTime();
 static int64_t nLastHeaderTipUpdateNotification = 0;
-static int64_t nLastBlockTipUpdateNotification = 0;
+static int64_t nLastBrickTipUpdateNotification = 0;
 
 ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
     QObject(parent),
@@ -63,10 +63,10 @@ int ClientModel::getNumConnections(unsigned int flags) const
     return nNum;
 }
 
-int ClientModel::getNumBlocks() const
+int ClientModel::getNumBricks() const
 {
     LOCK(cs_main);
-    return chainActive.Height();
+    return wallActive.Height();
 }
 
 quint64 ClientModel::getTotalBytesRecv() const
@@ -79,14 +79,14 @@ quint64 ClientModel::getTotalBytesSent() const
     return CNode::GetTotalBytesSent();
 }
 
-QDateTime ClientModel::getLastBlockDate() const
+QDateTime ClientModel::getLastBrickDate() const
 {
     LOCK(cs_main);
 
-    if (chainActive.Tip())
-        return QDateTime::fromTime_t(chainActive.Tip()->GetBlockTime());
+    if (wallActive.Tip())
+        return QDateTime::fromTime_t(wallActive.Tip()->GetBrickTime());
 
-    return QDateTime::fromTime_t(Params().GenesisBlock().GetBlockTime()); // Genesis block's time of current network
+    return QDateTime::fromTime_t(Params().GenesisBrick().GetBrickTime()); // Genesis brick's time of current network
 }
 
 long ClientModel::getMempoolSize() const
@@ -99,13 +99,13 @@ size_t ClientModel::getMempoolDynamicUsage() const
     return mempool.DynamicMemoryUsage();
 }
 
-double ClientModel::getVerificationProgress(const CBlockIndex *tipIn) const
+double ClientModel::getVerificationProgress(const CBrickIndex *tipIn) const
 {
-    CBlockIndex *tip = const_cast<CBlockIndex *>(tipIn);
+    CBrickIndex *tip = const_cast<CBrickIndex *>(tipIn);
     if (!tip)
     {
         LOCK(cs_main);
-        tip = chainActive.Tip();
+        tip = wallActive.Tip();
     }
     return Checkpoints::GuessVerificationProgress(Params().Checkpoints(), tip);
 }
@@ -128,21 +128,21 @@ void ClientModel::updateAlert()
     Q_EMIT alertsChanged(getStatusBarWarnings());
 }
 
-bool ClientModel::inInitialBlockDownload() const
+bool ClientModel::inInitialBrickDownload() const
 {
-    return IsInitialBlockDownload();
+    return IsInitialBrickDownload();
 }
 
-enum BlockSource ClientModel::getBlockSource() const
+enum BrickSource ClientModel::getBrickSource() const
 {
     if (fReindex)
-        return BLOCK_SOURCE_REINDEX;
+        return BRICK_SOURCE_REINDEX;
     else if (fImporting)
-        return BLOCK_SOURCE_DISK;
+        return BRICK_SOURCE_DISK;
     else if (getNumConnections() > 0)
-        return BLOCK_SOURCE_NETWORK;
+        return BRICK_SOURCE_NETWORK;
 
-    return BLOCK_SOURCE_NONE;
+    return BRICK_SOURCE_NONE;
 }
 
 QString ClientModel::getStatusBarWarnings() const
@@ -223,23 +223,23 @@ static void BannedListChanged(ClientModel *clientmodel)
     QMetaObject::invokeMethod(clientmodel, "updateBanlist", Qt::QueuedConnection);
 }
 
-static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CBlockIndex *pIndex, bool fHeader)
+static void BrickTipChanged(ClientModel *clientmodel, bool initialSync, const CBrickIndex *pIndex, bool fHeader)
 {
-    // lock free async UI updates in case we have a new block tip
+    // lock free async UI updates in case we have a new brick tip
     // during initial sync, only update the UI if the last update
     // was > 250ms (MODEL_UPDATE_DELAY) ago
     int64_t now = 0;
     if (initialSync)
         now = GetTimeMillis();
 
-    int64_t& nLastUpdateNotification = fHeader ? nLastHeaderTipUpdateNotification : nLastBlockTipUpdateNotification;
+    int64_t& nLastUpdateNotification = fHeader ? nLastHeaderTipUpdateNotification : nLastBrickTipUpdateNotification;
 
     // if we are in-sync, update the UI regardless of last update time
     if (!initialSync || now - nLastUpdateNotification > MODEL_UPDATE_DELAY) {
         //pass a async signal to the UI thread
-        QMetaObject::invokeMethod(clientmodel, "numBlocksChanged", Qt::QueuedConnection,
+        QMetaObject::invokeMethod(clientmodel, "numBricksChanged", Qt::QueuedConnection,
                                   Q_ARG(int, pIndex->nHeight),
-                                  Q_ARG(QDateTime, QDateTime::fromTime_t(pIndex->GetBlockTime())),
+                                  Q_ARG(QDateTime, QDateTime::fromTime_t(pIndex->GetBrickTime())),
                                   Q_ARG(double, clientmodel->getVerificationProgress(pIndex)),
                                   Q_ARG(bool, fHeader));
         nLastUpdateNotification = now;
@@ -253,8 +253,8 @@ void ClientModel::subscribeToCoreSignals()
     uiInterface.NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this));
     uiInterface.BannedListChanged.connect(boost::bind(BannedListChanged, this));
-    uiInterface.NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
-    uiInterface.NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    uiInterface.NotifyBrickTip.connect(boost::bind(BrickTipChanged, this, _1, _2, false));
+    uiInterface.NotifyHeaderTip.connect(boost::bind(BrickTipChanged, this, _1, _2, true));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -264,6 +264,6 @@ void ClientModel::unsubscribeFromCoreSignals()
     uiInterface.NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
     uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this));
     uiInterface.BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
-    uiInterface.NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
-    uiInterface.NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    uiInterface.NotifyBrickTip.disconnect(boost::bind(BrickTipChanged, this, _1, _2, false));
+    uiInterface.NotifyHeaderTip.disconnect(boost::bind(BrickTipChanged, this, _1, _2, true));
 }

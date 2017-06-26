@@ -154,11 +154,11 @@
         <translation>Відкрити &amp;URI</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Переіндексація блоків на диску ...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
+        <source>Send coins to a Magacoin address</source>
         <translation>Відправити монети на вказану адресу</translation>
     </message>
     <message>
@@ -182,8 +182,8 @@
         <translation>П&amp;еревірити повідомлення...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -210,12 +210,12 @@
         <translation>Зашифрувати закриті ключі, що знаходяться у вашому гаманці</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Підтвердіть, що Ви є власником повідомлення підписавши його Вашою Litecoin-адресою </translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Підтвердіть, що Ви є власником повідомлення підписавши його Вашою Magacoin-адресою </translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Перевірте повідомлення для впевненості, що воно підписано вказаною Litecoin-адресою</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Перевірте повідомлення для впевненості, що воно підписано вказаною Magacoin-адресою</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -234,8 +234,8 @@
         <translation>Панель вкладок</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Створити запит платежу (генерує QR-код та litecoin: URI)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Створити запит платежу (генерує QR-код та magacoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -246,23 +246,23 @@
         <translation>Показати список адрес і міток, що були використані для отримання</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Відкрити litecoin: URI чи запит платежу</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Відкрити magacoin: URI чи запит платежу</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>П&amp;араметри командного рядка</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n активне з'єднання з мережею Litecoin</numerusform><numerusform>%n активні з'єднання з мережею Litecoin</numerusform><numerusform>%n активних з'єднань з мережею Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n активне з'єднання з мережею Magacoin</numerusform><numerusform>%n активні з'єднання з мережею Magacoin</numerusform><numerusform>%n активних з'єднань з мережею Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Недоступно жодного джерела блоків...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Оброблено %n блок історії транзакцій.</numerusform><numerusform>Оброблено %n блоки історії транзакцій.</numerusform><numerusform>Оброблено %n блоків історії транзакцій.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -290,7 +290,7 @@
         <translation>%1 тому</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Останній отриманий блок було згенеровано %1 тому.</translation>
     </message>
     <message>
@@ -625,8 +625,8 @@
         <translation>Згортати замість закриття. Якщо ця опція включена, програма закриється лише після вибору відповідного пункту в меню.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>Сторонні URL (наприклад, block explorer), що з'являться на вкладці транзакцій у вигляді пункту контекстного меню. %s в URL буде замінено на хеш транзакції. Для відокремлення URLів використовуйте вертикальну риску |.</translation>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>Сторонні URL (наприклад, brick explorer), що з'являться на вкладці транзакцій у вигляді пункту контекстного меню. %s в URL буде замінено на хеш транзакції. Для відокремлення URLів використовуйте вертикальну риску |.</translation>
     </message>
     <message>
         <source>Third party transaction URLs</source>
@@ -673,7 +673,7 @@
         <translation>&amp;Витрачати непідтверджену решту</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation>Автоматично відкривати порт для клієнту біткоін на роутері. Працює лише якщо ваш роутер підтримує UPnP і ця функція увімкнена.</translation>
     </message>
     <message>
@@ -681,8 +681,8 @@
         <translation>Відображення порту через &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Підключення до мережі Litecoin через SOCKS5 проксі.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Підключення до мережі Magacoin через SOCKS5 проксі.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -721,8 +721,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Підключатися до мережі Litecoin через окремий SOCKS5 проксі для прихованих сервісів Tor.</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Підключатися до мережі Magacoin через окремий SOCKS5 проксі для прихованих сервісів Tor.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -808,8 +808,8 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Показана інформація вже може бути застарілою. Ваш гаманець буде автоматично синхронізовано з мережею Litecoin після встановлення підключення, але цей процес ще не завершено.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Показана інформація вже може бути застарілою. Ваш гаманець буде автоматично синхронізовано з мережею Magacoin після встановлення підключення, але цей процес ще не завершено.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -901,8 +901,8 @@
         <translation>Кількість</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Введіть адресу Litecoin (наприклад %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Введіть адресу Magacoin (наприклад %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -979,11 +979,11 @@
         <translation>Кількість підключень</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Ланцюг блоків</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Поточне число блоків</translation>
     </message>
     <message>
@@ -1031,7 +1031,7 @@
         <translation>Версія</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>Початковий Блок</translation>
     </message>
     <message>
@@ -1039,7 +1039,7 @@
         <translation>Синхронізовані Заголовки</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Синхронізовані Блоки</translation>
     </message>
     <message>
@@ -1083,7 +1083,7 @@
         <translation>Різниця часу</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Час останнього блоку</translation>
     </message>
     <message>
@@ -1230,8 +1230,8 @@
         <translation>По&amp;вторно використати адресу для отримання (не рекомендується)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>Необов'язкове повідомлення на додаток до запиту платежу, котре буде показане під час відкриття запиту. Примітка: Це повідомлення не буде відправлено з платежем через мережу Litecoin.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>Необов'язкове повідомлення на додаток до запиту платежу, котре буде показане під час відкриття запиту. Примітка: Це повідомлення не буде відправлено з платежем через мережу Magacoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1387,8 +1387,8 @@
         <translation>всього щонайменше</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
-        <translation>Оплата тільки мінімальної комісії є прийнятною, допоки обсяг транзакцій є меншим простору в блоках. Але майте на увазі, що це може анулювати транзакцію, якщо попит на Litecoin транзакції стане більшим, ніж мережа зможе обробити.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
+        <translation>Оплата тільки мінімальної комісії є прийнятною, допоки обсяг транзакцій є меншим простору в блоках. Але майте на увазі, що це може анулювати транзакцію, якщо попит на Magacoin транзакції стане більшим, ніж мережа зможе обробити.</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
@@ -1403,7 +1403,7 @@
         <translation>Змінено:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(Розумну оплату ще не ініціалізовано. Це, зазвичай, триває кілька блоків...)</translation>
     </message>
     <message>
@@ -1474,8 +1474,8 @@
         <translation>Це звичайний платіж.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>Адреса Litecoin для відправлення платежу</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>Адреса Magacoin для відправлення платежу</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1494,7 +1494,7 @@
         <translation>Видалити цей запис</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>Комісію буде знято зі вказаної суми. До отримувача надійде менше біткоінів, ніж було вказано в полі кількості. Якщо ж отримувачів декілька - комісію буде розподілено між ними.</translation>
     </message>
     <message>
@@ -1518,8 +1518,8 @@
         <translation>Введіть мітку для цієї адреси для додавання її в список використаних адрес</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>Повідомлення, що було додане до litecoin:URI та буде збережено разом з транзакцією для довідки. Примітка: Це повідомлення не буде відправлено в мережу Litecoin.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>Повідомлення, що було додане до magacoin:URI та буде збережено разом з транзакцією для довідки. Примітка: Це повідомлення не буде відправлено в мережу Magacoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1551,12 +1551,12 @@
         <translation>&amp;Підписати повідомлення</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>Ви можете підписувати повідомлення/угоди своїми адресами, щоб довести можливість отримання біткоінів, що будуть надіслані на них. Остерігайтеся підписувати будь-що нечітке чи неочікуване, так як за допомогою фішинг-атаки вас можуть спробувати ввести в оману для отримання вашого підпису під чужими словами. Підписуйте лише чіткі твердження, з якими ви повністю згодні.</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>Адреса Litecoin для підпису цього повідомлення</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>Адреса Magacoin для підпису цього повідомлення</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1587,7 +1587,7 @@
         <translation>Копіювати поточну сигнатуру до системного буферу обміну</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>Підпишіть повідомлення щоб довести, що ви є власником цієї адреси</translation>
     </message>
     <message>
@@ -1611,12 +1611,12 @@
         <translation>Введіть нижче адресу отримувача, повідомлення (впевніться, що ви точно скопіювали символи завершення рядка, табуляцію, пробіли тощо) та підпис для перевірки повідомлення. Впевніться, що в підпис не було додано зайвих символів: це допоможе уникнути атак типу «людина посередині». Зауважте, що це лише засвідчує можливість отримання транзакцій підписувачем, але не в стані підтвердити джерело жодної транзакції!</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Адреса Litecoin, якою було підписано це повідомлення</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Адреса Magacoin, якою було підписано це повідомлення</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Перевірте повідомлення для впевненості, що воно підписано вказаною Litecoin-адресою</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Перевірте повідомлення для впевненості, що воно підписано вказаною Magacoin-адресою</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1704,15 +1704,15 @@
         <translation>Встановлений розмір ланцюжка блоків є замалим (меншим за %d МіБ). Будь ласка, виберіть більше число.</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
         <translation>Операція відсікання: остання синхронізація вмісту гаманцю не обмежується діями над скороченими данними. Вам необхідно зробити переіндексацію -reindex (заново завантажити веcь ланцюжок блоків в разі появи скороченого ланцюга)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
         <translation>Зменшити вимоги до наявного простору на носії даних за допомогою скорочення ланцюжка (видалення старих блоків). Цей режим несумісний з параметрами -txindex та -rescan. Увага: при поверненні до типового значення видалені частини ланцюжка буде повторно завантажено. (типово: 0 = вимкнути скорочення ланцюжка, &gt;%u = очікуваний розмір файлів блоків в МіБ)</translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
         <translation>Неможливо провести повторне сканування зі скороченим ланцюжком. Вам необхідно використати -reindex для завантаження повного ланцюжка блоків.</translation>
     </message>
     <message>
@@ -1724,7 +1724,7 @@
         <translation>Комісія (в %s/КБ), що додаватиметься до вихідних транзакцій (типово: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
+        <source>Pruning brickstore...</source>
         <translation>Скорочення кількості блоків...</translation>
     </message>
     <message>
@@ -1740,15 +1740,15 @@
         <translation>Приймати підключення ззовні (типово: 1 за відсутності -proxy чи -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Прив'язатися до даної адреси та прослуховувати її. Використовуйте запис виду [хост]:порт для IPv6</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>Видалити всі транзакції гаманця та відновити ті, що будуть знайдені під час запуску за допомогою -rescan</translation>
     </message>
     <message>
@@ -1764,7 +1764,7 @@
         <translation>Встановити кількість потоків скрипту перевірки (від %u до %d, 0 = автоматично, &lt;0 = вказує кількість вільних ядер, типово: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>Схоже, що база даних блоків містить блок з майбутнього. Це може статися із-за некоректно встановленої дати та/або часу. Перебудовуйте базу даних блоків лише тоді, коли ви переконані, що встановлено правильну дату і час</translation>
     </message>
     <message>
@@ -1796,7 +1796,7 @@
         <translation>&lt;category&gt; може бути:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Опції створення блоку:</translation>
     </message>
     <message>
@@ -1808,7 +1808,7 @@
         <translation>Параметри з'єднання:</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Виявлено пошкоджений блок бази даних</translation>
     </message>
     <message>
@@ -1820,11 +1820,11 @@
         <translation>Не завантажувати гаманець та вимкнути звернення до нього через RPC</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Ви хочете перебудувати базу даних блоків зараз?</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
         <translation>Дозволено введення хеш блоку в рядок &lt;address&gt;</translation>
     </message>
     <message>
@@ -1832,7 +1832,7 @@
         <translation>Дозволено введення хеш транзакції в рядок &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
         <translation>Дозволено введення RAW блоку в рядок &lt;address&gt;</translation>
     </message>
     <message>
@@ -1840,7 +1840,7 @@
         <translation>Дозволено введення RAW транзакції в рядок &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Помилка ініціалізації бази даних блоків</translation>
     </message>
     <message>
@@ -1848,11 +1848,11 @@
         <translation>Помилка ініціалізації середовища бази даних гаманця %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Помилка завантаження бази даних блоків</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Помилка відкриття блоку бази даних </translation>
     </message>
     <message>
@@ -1868,7 +1868,7 @@
         <translation>Імпорт...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Початковий блок некоректний/відсутній. Чи правильно вказано каталог даних для обраної мережі?</translation>
     </message>
     <message>
@@ -1904,7 +1904,7 @@
         <translation>Встановити розмір кешу бази даних в мегабайтах (від %d до %d, типово: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>Встановити максимальний розмір блоку у байтах (типово: %d)</translation>
     </message>
     <message>
@@ -1932,7 +1932,7 @@
         <translation>Коментар до Клієнта Користувача (%s) містить небезпечні символи.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Перевірка блоків...</translation>
     </message>
     <message>
@@ -1980,7 +1980,7 @@
         <translation>Комісії (в %s/kB), що менші за вказану, вважатимуться нульовими для зміни, аналізу та створення транзакцій (типово: %s)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>Якщо параметр paytxfee не встановлено, включити комісію для отримання перших підтверджень транзакцій протягом n блоків (типово: %u)</translation>
     </message>
     <message>
@@ -2016,7 +2016,7 @@
         <translation>Учасники, що знаходяться в білому списку, не можуть бути заблоковані за DoS та їхні транзакції завжди ретранслюватимуться (навіть якщо вони є в пам'яті), що може бути корисним, наприклад, для шлюзу</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
         <translation>Вам необхідно перебудувати базу даних з використанням -reindex для завантаження повного ланцюжка блоків.</translation>
     </message>
     <message>
@@ -2040,7 +2040,7 @@
         <translation>Помилка читання бази даних, припиняю роботу.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
         <translation>Спочатку імпортує блоки з зовнішнього файлу blk000??.dat </translation>
     </message>
     <message>
@@ -2076,7 +2076,7 @@
         <translation>Зменшення значення -maxconnections з %d до %d із-за обмежень системи.</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
         <translation>Спочатку переглянте ланцюжок блоків на наявність втрачених транзакцій гаманця</translation>
     </message>
     <message>
@@ -2148,7 +2148,7 @@
         <translation>Попередження</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
         <translation>Чи слід працювати в режимі тільки блоки (типово: %u)</translation>
     </message>
     <message>
@@ -2164,7 +2164,7 @@
         <translation>Пароль для JSON-RPC-з'єднань</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Виконати команду, коли з'явиться новий блок (%s в команді змінюється на хеш блоку)</translation>
     </message>
     <message>
@@ -2196,7 +2196,7 @@
         <translation>Комісії (в %s/kB), що менші за вказану, вважатимуться нульовими для створення транзакцій (типово: %s)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
         <translation>Рівень ретельності перевірки блоків (0-4, типово: %u)</translation>
     </message>
     <message>
@@ -2212,7 +2212,7 @@
         <translation>Виводити налагоджувальну інформацію (типово: %u, вказання &lt;category&gt; необов'язкове)</translation>
     </message>
     <message>
-        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <source>Support filtering of bricks and transaction with bloom filters (default: %u)</source>
         <translation>Фільтрація блоків та транзакцій з допомогою фільтрів Блума (типово: %u)</translation>
     </message>
     <message>
@@ -2244,7 +2244,7 @@
         <translation>Завжди дізнаватися адреси учасників через DNS (типово: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>Скільки блоків перевіряти під час запуску (типово: %u, 0 = всі)</translation>
     </message>
     <message>
@@ -2328,7 +2328,7 @@
         <translation>Недостатньо коштів</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Завантаження індексу блоків...</translation>
     </message>
     <message>

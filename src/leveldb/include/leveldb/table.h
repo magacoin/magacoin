@@ -10,8 +10,8 @@
 
 namespace leveldb {
 
-class Block;
-class BlockHandle;
+class Brick;
+class BrickHandle;
 class Footer;
 struct Options;
 class RandomAccessFile;
@@ -60,7 +60,7 @@ class Table {
   Rep* rep_;
 
   explicit Table(Rep* rep) { rep_ = rep; }
-  static Iterator* BlockReader(void*, const ReadOptions&, const Slice&);
+  static Iterator* BrickReader(void*, const ReadOptions&, const Slice&);
 
   // Calls (*handle_result)(arg, ...) with the entry found after a call
   // to Seek(key).  May not make such a call if filter policy says

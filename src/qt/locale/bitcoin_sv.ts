@@ -62,12 +62,12 @@
         <translation>Mottagaradresser</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Detta är dina Litecoin adresser för att skicka betalningar. Kolla alltid summan och den mottagande adressen innan du skickar Litecoins.</translation>
+        <source>These are your Magacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Detta är dina Magacoin adresser för att skicka betalningar. Kolla alltid summan och den mottagande adressen innan du skickar Magacoins.</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Detta är dina Litecoin adresser för att ta emot betalningar. Det rekommenderas att använda en ny mottagningsadress för varje transaktion.</translation>
+        <source>These are your Magacoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Detta är dina Magacoin adresser för att ta emot betalningar. Det rekommenderas att använda en ny mottagningsadress för varje transaktion.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -169,8 +169,8 @@ Var vänlig och försök igen.</translation>
         <translation>Bekräfta kryptering av plånbok</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR LITECOINS&lt;/b&gt;!</source>
-        <translation>VARNING: Om du krypterar din plånbok och glömmer ditt lösenord, kommer du att &lt;b&gt;FÖRLORA ALLA DINA LITECOIN&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR MAGACOINS&lt;/b&gt;!</source>
+        <translation>VARNING: Om du krypterar din plånbok och glömmer ditt lösenord, kommer du att &lt;b&gt;FÖRLORA ALLA DINA MAGACOIN&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -181,7 +181,7 @@ Var vänlig och försök igen.</translation>
         <translation>Plånbok krypterad</translation>
     </message>
     <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your litecoins from being stolen by malware infecting your computer.</source>
+        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your magacoins from being stolen by malware infecting your computer.</source>
         <translation>%1 kommer nu att stänga ner för att färdigställa krypteringen. Tänk på att en krypterad plånbok inte skyddar mot stöld om din dator är infekterad med en keylogger.</translation>
     </message>
     <message>
@@ -319,12 +319,12 @@ Var vänlig och försök igen.</translation>
         <translation>Öppna &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
-        <translation>Återindexerar block på disken...</translation>
+        <source>Reindexing bricks on disk...</source>
+        <translation>Återindexerar brick på disken...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Skicka litecoins till en Litecoin-adress</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Skicka magacoins till en Magacoin-adress</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -347,8 +347,8 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Verifiera meddelande...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -375,12 +375,12 @@ Var vänlig och försök igen.</translation>
         <translation>Kryptera de privata nycklar som tillhör din plånbok</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Signera meddelanden med din Litecoin-adress för att bevisa att du äger dem</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Signera meddelanden med din Magacoin-adress för att bevisa att du äger dem</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verifiera meddelanden för att vara säker på att de var signerade med specificerade Litecoin-adresser</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verifiera meddelanden för att vara säker på att de var signerade med specificerade Magacoin-adresser</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -399,8 +399,8 @@ Var vänlig och försök igen.</translation>
         <translation>Verktygsfält för tabbar</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Begär betalning (genererar QR-koder och litecoin-URI)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Begär betalning (genererar QR-koder och magacoin-URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -411,32 +411,32 @@ Var vänlig och försök igen.</translation>
         <translation>Visa listan av använda mottagningsadresser och etiketter</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Öppna en litecoin: URI eller betalningsbegäran</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Öppna en magacoin: URI eller betalningsbegäran</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Kommandoradsalternativ</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n aktiva anslutningar till Litecoin-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Litecoin-nätverket.</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n aktiva anslutningar till Magacoin-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Magacoin-nätverket.</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
-        <translation>Indexerar block på disken...</translation>
+        <source>Indexing bricks on disk...</source>
+        <translation>Indexerar brick på disken...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
-        <translation>Bearbetar block på disken...</translation>
+        <source>Processing bricks on disk...</source>
+        <translation>Bearbetar brick på disken...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
-        <translation>Ingen block-källa tillgänglig...</translation>
+        <source>No brick source available...</source>
+        <translation>Ingen brick-källa tillgänglig...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation><numerusform>Bearbetade %n block av transaktionshistoriken.</numerusform><numerusform>Bearbetade %n block av transaktionshistoriken.</numerusform></translation>
+        <source>Processed %n brick(s) of transaction history.</source>
+        <translation><numerusform>Bearbetade %n brick av transaktionshistoriken.</numerusform><numerusform>Bearbetade %n brick av transaktionshistoriken.</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
@@ -463,8 +463,8 @@ Var vänlig och försök igen.</translation>
         <translation>%1 efter</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Senast mottagna block genererades för %1 sen.</translation>
+        <source>Last received brick was generated %1 ago.</source>
+        <translation>Senast mottagna brick genererades för %1 sen.</translation>
     </message>
     <message>
         <source>Transactions after this will not yet be visible.</source>
@@ -487,8 +487,8 @@ Var vänlig och försök igen.</translation>
         <translation>Uppdaterad</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
-        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga Litecoin kommandoradsalternativ.</translation>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
+        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga Magacoin kommandoradsalternativ.</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -756,8 +756,8 @@ Var vänlig och försök igen.</translation>
         <translation>Eftersom detta är första gången programmet startas får du välja var %1 skall lagra sitt data.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>%1 kommer att ladda ner och spara en kopia av Litecoin blockkedjan. Åtminstone %2GB av data kommer att sparas i denna katalog, och den kommer att växa över tiden. Plånboken kommer också att sparas i denna katalog.</translation>
+        <source>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>%1 kommer att ladda ner och spara en kopia av Magacoin brickkedjan. Åtminstone %2GB av data kommer att sparas i denna katalog, och den kommer att växa över tiden. Plånboken kommer också att sparas i denna katalog.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -850,8 +850,8 @@ Var vänlig och försök igen.</translation>
         <translation>Minimera istället för att stänga programmet när fönstret stängs. När detta alternativ är aktiverat stängs programmet endast genom att välja Stäng i menyn.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>Tredjeparts URL:er (t.ex. en blockutforskare) som finns i transaktionstabben som ett menyval i sammanhanget. %s i URL:en ersätts med tansaktionshashen. Flera URL:er är separerade med vertikala streck |.</translation>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>Tredjeparts URL:er (t.ex. en brickutforskare) som finns i transaktionstabben som ett menyval i sammanhanget. %s i URL:en ersätts med tansaktionshashen. Flera URL:er är separerade med vertikala streck |.</translation>
     </message>
     <message>
         <source>Third party transaction URLs</source>
@@ -898,16 +898,16 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Spendera obekräftad växel</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Öppna automatiskt Litecoin-klientens port på routern. Detta fungerar endast om din router har UPnP aktiverat.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Öppna automatiskt Magacoin-klientens port på routern. Detta fungerar endast om din router har UPnP aktiverat.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Tilldela port med hjälp av &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Anslut till Litecoin-nätverket genom en SOCKS5-proxy.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Anslut till Magacoin-nätverket genom en SOCKS5-proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -946,8 +946,8 @@ Var vänlig och försök igen.</translation>
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Anslut till Litecoin-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Anslut till Magacoin-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -1045,8 +1045,8 @@ Var vänlig och försök igen.</translation>
         <translation>Formulär</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Litecoin-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Magacoin-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1138,8 +1138,8 @@ Var vänlig och försök igen.</translation>
         <translation>Mängd</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Ange en Litecoin-adress (t.ex. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Ange en Magacoin-adress (t.ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1220,12 +1220,12 @@ Var vänlig och försök igen.</translation>
         <translation>Antalet anslutningar</translation>
     </message>
     <message>
-        <source>Block chain</source>
-        <translation>Blockkedja</translation>
+        <source>Brick wall</source>
+        <translation>Brickkedja</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
-        <translation>Aktuellt antal block</translation>
+        <source>Current number of bricks</source>
+        <translation>Aktuellt antal brick</translation>
     </message>
     <message>
         <source>Memory Pool</source>
@@ -1272,16 +1272,16 @@ Var vänlig och försök igen.</translation>
         <translation>Version</translation>
     </message>
     <message>
-        <source>Starting Block</source>
-        <translation>Startblock</translation>
+        <source>Starting Brick</source>
+        <translation>Startbrick</translation>
     </message>
     <message>
         <source>Synced Headers</source>
         <translation>Synkade huvuden</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
-        <translation>Synkade block</translation>
+        <source>Synced Bricks</source>
+        <translation>Synkade brick</translation>
     </message>
     <message>
         <source>User Agent</source>
@@ -1336,8 +1336,8 @@ Var vänlig och försök igen.</translation>
         <translation>Tidsförskjutning</translation>
     </message>
     <message>
-        <source>Last block time</source>
-        <translation>Sista blocktid</translation>
+        <source>Last brick time</source>
+        <translation>Sista bricktid</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1487,8 +1487,8 @@ Var vänlig och försök igen.</translation>
         <translation>Åt&amp;eranvänd en existerande mottagningsadress (rekommenderas inte)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>Ett frivilligt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. NB: Meddelandet kommer inte att sändas med betalningen över Litecoinnätverket.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>Ett frivilligt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. NB: Meddelandet kommer inte att sändas med betalningen över Magacoinnätverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1668,8 +1668,8 @@ Var vänlig och försök igen.</translation>
         <translation>totalt minst</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
-        <translation>Att betala endast den minsta avgiften är bara bra så länge det är mindre transaktionsvolym än utrymme i blocken. Men tänk på att det kan hamna i en aldrig bekräftar transaktion när det finns mer efterfrågan på litecoin transaktioner än nätverket kan bearbeta.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
+        <translation>Att betala endast den minsta avgiften är bara bra så länge det är mindre transaktionsvolym än utrymme i bricken. Men tänk på att det kan hamna i en aldrig bekräftar transaktion när det finns mer efterfrågan på magacoin transaktioner än nätverket kan bearbeta.</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
@@ -1684,8 +1684,8 @@ Var vänlig och försök igen.</translation>
         <translation>Anpassad:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
-        <translation>(Smartavgiften är inte initierad än. Detta tar vanligen några block...)</translation>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
+        <translation>(Smartavgiften är inte initierad än. Detta tar vanligen några brick...)</translation>
     </message>
     <message>
         <source>Confirmation time:</source>
@@ -1763,8 +1763,8 @@ Var vänlig och försök igen.</translation>
         <translation>Detta är en normal betalning.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>Litecoinadress att sända betalning till</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>Magacoinadress att sända betalning till</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1783,8 +1783,8 @@ Var vänlig och försök igen.</translation>
         <translation>Radera denna post</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Avgiften dras från beloppet som skickas. Mottagaren kommer att få mindre litecoins än du angivit i belopp-fältet. Om flera mottagare valts kommer avgiften delas jämt.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Avgiften dras från beloppet som skickas. Mottagaren kommer att få mindre magacoins än du angivit i belopp-fältet. Om flera mottagare valts kommer avgiften delas jämt.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -1807,8 +1807,8 @@ Var vänlig och försök igen.</translation>
         <translation>Ange en etikett för denna adress att adderas till listan över använda adresser</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>Ett meddelande som bifogades litecoin-URI, vilket lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över Litecoinnätverket.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>Ett meddelande som bifogades magacoin-URI, vilket lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över Magacoinnätverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1844,12 +1844,12 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Signera Meddelande</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Du kan underteckna meddelanden/avtal med dina adresser för att bevisa att du kan ta emot litecoins som skickats till dem. Var försiktig så du inte undertecknar något oklart eller konstigt, eftersom phishing-angrepp kan försöka få dig att underteckna din identitet till dem. Underteckna endast väldetaljerade meddelanden som du godkänner.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Du kan underteckna meddelanden/avtal med dina adresser för att bevisa att du kan ta emot magacoins som skickats till dem. Var försiktig så du inte undertecknar något oklart eller konstigt, eftersom phishing-angrepp kan försöka få dig att underteckna din identitet till dem. Underteckna endast väldetaljerade meddelanden som du godkänner.</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>Litecoinadress att signera meddelandet med</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>Magacoinadress att signera meddelandet med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1880,7 +1880,7 @@ Var vänlig och försök igen.</translation>
         <translation>Kopiera signaturen till systemets Urklipp</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>Signera meddelandet för att bevisa att du äger denna adress</translation>
     </message>
     <message>
@@ -1904,12 +1904,12 @@ Var vänlig och försök igen.</translation>
         <translation>Ange mottagarens adress, meddelande (kopiera radbrytningar, mellanrum, flikar, etc. exakt) och signatur nedan för att verifiera meddelandet. Undvik att läsa in mera information i signaturen än vad som stod i själva undertecknade meddelandet, för att undvika ett man-in-the-middle-angrepp. Notera att detta endast bevisar att undertecknad tar emot med adressen, det bevisar inte vem som skickat transaktionen!</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Litecoinadressen som meddelandet signerades med</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Magacoinadressen som meddelandet signerades med</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verifiera meddelandet för att vara säker på att den var signerad med den angivna Litecoin-adressen</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verifiera meddelandet för att vara säker på att den var signerad med den angivna Magacoin-adressen</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2033,16 +2033,16 @@ Var vänlig och försök igen.</translation>
         <translation>Beskärning konfigurerad under miniminivån %d MiB. Vänligen använd ett högre värde.</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
-        <translation>Beskärning: sista plånbokssynkroniseringen ligger utanför beskuren data. Du måste använda -reindex (ladda ner hela blockkedjan igen eftersom noden beskurits)</translation>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
+        <translation>Beskärning: sista plånbokssynkroniseringen ligger utanför beskuren data. Du måste använda -reindex (ladda ner hela brickkedjan igen eftersom noden beskurits)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
-        <translation>Minska lagringsbehovet genom att beskära (ta bort) gamla block. Detta läge är inkompatibelt med -txindex och -rescan. Varning: Ändras denna inställning måste hela blockkedjan laddas ner igen. (förvalt: 0 = inaktivera beskärning av block, &gt;%u = målstorlek i MiB att använda för blockfiler)</translation>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
+        <translation>Minska lagringsbehovet genom att beskära (ta bort) gamla brick. Detta läge är inkompatibelt med -txindex och -rescan. Varning: Ändras denna inställning måste hela brickkedjan laddas ner igen. (förvalt: 0 = inaktivera beskärning av brick, &gt;%u = målstorlek i MiB att använda för brickfiler)</translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
-        <translation>Omskanningar kan inte göras i beskuret läge. Du måste använda -reindex vilket kommer ladda ner hela blockkedjan igen.</translation>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
+        <translation>Omskanningar kan inte göras i beskuret läge. Du måste använda -reindex vilket kommer ladda ner hela brickkedjan igen.</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
@@ -2053,8 +2053,8 @@ Var vänlig och försök igen.</translation>
         <translation>Avgift (i %s/kB) att lägga till på transaktioner du skickar (förvalt: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
-        <translation>Rensar blockstore...</translation>
+        <source>Pruning brickstore...</source>
+        <translation>Rensar brickstore...</translation>
     </message>
     <message>
         <source>Run in the background as a daemon and accept commands</source>
@@ -2069,8 +2069,8 @@ Var vänlig och försök igen.</translation>
         <translation>Acceptera anslutningar utifrån (förvalt: 1 om ingen -proxy eller -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>-fallbackfee is set very high! This is the transaction fee you may pay when fee estimates are not available.</source>
@@ -2093,8 +2093,8 @@ Var vänlig och försök igen.</translation>
         <translation>Kan inte låsa data-mappen %s. %s körs förmodligen redan.</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
-        <translation>Ta bort alla plånbokstransaktioner och återskapa bara dom som är en del av blockkedjan genom att ange -rescan vid uppstart</translation>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
+        <translation>Ta bort alla plånbokstransaktioner och återskapa bara dom som är en del av brickkedjan genom att ange -rescan vid uppstart</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
@@ -2137,16 +2137,16 @@ Var vänlig och försök igen.</translation>
         <translation>Ange antalet skriptkontrolltrådar (%u till %d, 0 = auto, &lt;0 = lämna så många kärnor lediga, förval: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
-        <translation>Blockdatabasen innehåller ett block som verkar vara från framtiden. Detta kan vara på grund av att din dators datum och tid är felaktiga. Bygg bara om blockdatabasen om du är säker på att datorns datum och tid är korrekt</translation>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
+        <translation>Brickdatabasen innehåller ett brick som verkar vara från framtiden. Detta kan vara på grund av att din dators datum och tid är felaktiga. Bygg bara om brickdatabasen om du är säker på att datorns datum och tid är korrekt</translation>
     </message>
     <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>Detta är ett förhands testbygge - använd på egen risk - använd inte för mining eller handels applikationer</translation>
     </message>
     <message>
-        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
-        <translation>Kan inte spola tillbaka databasen till obeskärt läge. Du måste ladda ner blockkedjan igen</translation>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the brickwall</source>
+        <translation>Kan inte spola tillbaka databasen till obeskärt läge. Du måste ladda ner brickkedjan igen</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
@@ -2165,8 +2165,8 @@ Var vänlig och försök igen.</translation>
         <translation>Vitlista klienter som ansluter från angivna nätmasker eller IP-adresser. Kan specificeras flera gånger.</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
-        <translation>Du måste återskapa databasen med -reindex-chainstate för att ändra -txindex</translation>
+        <source>You need to rebuild the database using -reindex-wallstate to change -txindex</source>
+        <translation>Du måste återskapa databasen med -reindex-wallstate för att ändra -txindex</translation>
     </message>
     <message>
         <source>%s corrupt, salvage failed</source>
@@ -2189,8 +2189,8 @@ Var vänlig och försök igen.</translation>
         <translation>Försök att rädda privata nycklar från en korrupt plånbok vid uppstart</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
-        <translation>Block skapande inställningar:</translation>
+        <source>Brick creation options:</source>
+        <translation>Brick skapande inställningar:</translation>
     </message>
     <message>
         <source>Cannot resolve -%s address: '%s'</source>
@@ -2213,8 +2213,8 @@ Var vänlig och försök igen.</translation>
         <translation>Copyright (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
-        <translation>Korrupt blockdatabas har upptäckts</translation>
+        <source>Corrupted brick database detected</source>
+        <translation>Korrupt brickdatabas har upptäckts</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -2225,20 +2225,20 @@ Var vänlig och försök igen.</translation>
         <translation>Ladda inte plånboken och stäng av RPC-anrop till plånboken</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
-        <translation>Vill du bygga om blockdatabasen nu?</translation>
+        <source>Do you want to rebuild the brick database now?</source>
+        <translation>Vill du bygga om brickdatabasen nu?</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
-        <translation>Aktivera publicering av hashblock i &lt;adress&gt;</translation>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
+        <translation>Aktivera publicering av hashbrick i &lt;adress&gt;</translation>
     </message>
     <message>
         <source>Enable publish hash transaction in &lt;address&gt;</source>
         <translation>Aktivera publicering av hashtransaktion i &lt;adress&gt;</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
-        <translation>Aktivera publicering av råa block i &lt;adress&gt;</translation>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
+        <translation>Aktivera publicering av råa brick i &lt;adress&gt;</translation>
     </message>
     <message>
         <source>Enable publish raw transaction in &lt;address&gt;</source>
@@ -2249,8 +2249,8 @@ Var vänlig och försök igen.</translation>
         <translation>Aktivera byte av transaktioner i minnespoolen (förvalt: %u)</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
-        <translation>Fel vid initiering av blockdatabasen</translation>
+        <source>Error initializing brick database</source>
+        <translation>Fel vid initiering av brickdatabasen</translation>
     </message>
     <message>
         <source>Error initializing wallet database environment %s!</source>
@@ -2273,12 +2273,12 @@ Var vänlig och försök igen.</translation>
         <translation>Fel vid laddning av %s: Du kan inte avaktivera HD på en redan existerande HD plånbok</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
-        <translation>Fel vid inläsning av blockdatabasen</translation>
+        <source>Error loading brick database</source>
+        <translation>Fel vid inläsning av brickdatabasen</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
-        <translation>Fel vid öppning av blockdatabasen</translation>
+        <source>Error opening brick database</source>
+        <translation>Fel vid öppning av brickdatabasen</translation>
     </message>
     <message>
         <source>Error: Disk space is low!</source>
@@ -2293,8 +2293,8 @@ Var vänlig och försök igen.</translation>
         <translation>Importerar...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
-        <translation>Felaktig eller inget genesisblock hittades. Fel datadir för nätverket?</translation>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
+        <translation>Felaktig eller inget genesisbrick hittades. Fel datadir för nätverket?</translation>
     </message>
     <message>
         <source>Initialization sanity check failed. %s is shutting down.</source>
@@ -2349,28 +2349,28 @@ Var vänlig och försök igen.</translation>
         <translation>Beskärningsläge är inkompatibel med -txindex.</translation>
     </message>
     <message>
-        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
-        <translation>Återskapa blockkedjans status och index från blk*.dat filer på disken</translation>
+        <source>Rebuild wall state and brick index from the blk*.dat files on disk</source>
+        <translation>Återskapa brickkedjans status och index från blk*.dat filer på disken</translation>
     </message>
     <message>
-        <source>Rebuild chain state from the currently indexed blocks</source>
-        <translation>Återskapa blockkedjans status från aktuella indexerade block</translation>
+        <source>Rebuild wall state from the currently indexed bricks</source>
+        <translation>Återskapa brickkedjans status från aktuella indexerade brick</translation>
     </message>
     <message>
-        <source>Rewinding blocks...</source>
-        <translation>Spolar tillbaka blocken...</translation>
+        <source>Rewinding bricks...</source>
+        <translation>Spolar tillbaka bricken...</translation>
     </message>
     <message>
         <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
         <translation>Sätt databasens cachestorlek i megabyte (%d till %d, förvalt: %d)</translation>
     </message>
     <message>
-        <source>Set maximum BIP141 block weight (default: %d)</source>
-        <translation>Sätt maximal BIP141 blockvikt (förvalt: %d)</translation>
+        <source>Set maximum BIP141 brick weight (default: %d)</source>
+        <translation>Sätt maximal BIP141 brickvikt (förvalt: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
-        <translation>Sätt maximal blockstorlek i byte (förvalt: %d)</translation>
+        <source>Set maximum brick size in bytes (default: %d)</source>
+        <translation>Sätt maximal brickstorlek i byte (förvalt: %d)</translation>
     </message>
     <message>
         <source>Specify wallet file (within data directory)</source>
@@ -2405,8 +2405,8 @@ Var vänlig och försök igen.</translation>
         <translation>Kommentaren i användaragent (%s) innehåller osäkra tecken.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
-        <translation>Verifierar block...</translation>
+        <source>Verifying bricks...</source>
+        <translation>Verifierar brick...</translation>
     </message>
     <message>
         <source>Verifying wallet...</source>
@@ -2461,8 +2461,8 @@ Var vänlig och försök igen.</translation>
         <translation>Avgifter (i %s/kB) mindre än detta betraktas som nollavgift för vidarebefordran, mining och transaktionsskapande (förvalt: %s)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
-        <translation>Om paytxfee inte är satt, inkludera tillräcklig avgift så att transaktionen börjar att konfirmeras inom n blocks (förvalt: %u)</translation>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
+        <translation>Om paytxfee inte är satt, inkludera tillräcklig avgift så att transaktionen börjar att konfirmeras inom n bricks (förvalt: %u)</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
@@ -2501,8 +2501,8 @@ Var vänlig och försök igen.</translation>
         <translation>Vitlistade klienter kan inte bli DoS-bannade och deras transaktioner reläas alltid, även om dom redan är i mempoolen, användbart för t.ex en gateway  </translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
-        <translation>Du måste bygga om databasen genom att använda -reindex för att återgå till obeskärt läge. Detta kommer att ladda ner hela blockkedjan.</translation>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
+        <translation>Du måste bygga om databasen genom att använda -reindex för att återgå till obeskärt läge. Detta kommer att ladda ner hela brickkedjan.</translation>
     </message>
     <message>
         <source>(default: %u)</source>
@@ -2525,8 +2525,8 @@ Var vänlig och försök igen.</translation>
         <translation>Fel vid läsning från databas, avslutar.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
-        <translation>Importera block från extern blk000??.dat-fil vid uppstart</translation>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
+        <translation>Importera brick från extern blk000??.dat-fil vid uppstart</translation>
     </message>
     <message>
         <source>Information</source>
@@ -2561,8 +2561,8 @@ Var vänlig och försök igen.</translation>
         <translation>Minskar -maxconnections från %d till %d, på grund av systembegränsningar.</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
-        <translation>Sök i blockkedjan efter saknade plånbokstransaktioner vid uppstart</translation>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
+        <translation>Sök i brickkedjan efter saknade plånbokstransaktioner vid uppstart</translation>
     </message>
     <message>
         <source>Send trace/debug info to console instead of debug.log file</source>
@@ -2637,8 +2637,8 @@ Var vänlig och försök igen.</translation>
         <translation>Varning: okända nya regler aktiverade (versionsbit %i)</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
-        <translation>Ska allt göras i endast block-läge (förval: %u)</translation>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
+        <translation>Ska allt göras i endast brick-läge (förval: %u)</translation>
     </message>
     <message>
         <source>Zapping all transactions from wallet...</source>
@@ -2653,8 +2653,8 @@ Var vänlig och försök igen.</translation>
         <translation>Lösenord för JSON-RPC-anslutningar</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>Exekvera kommando när det bästa blocket ändras (%s i cmd är utbytt av blockhash)</translation>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
+        <translation>Exekvera kommando när det bästa bricket ändras (%s i cmd är utbytt av brickhash)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -2685,8 +2685,8 @@ Var vänlig och försök igen.</translation>
         <translation>Avgifter (i %s/kB) mindre än detta anses vara nollavgifter vid skapande av transaktion (standard: %s)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>Hur grundlig blockverifikationen vid -checkblocks är (0-4, förvalt: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>Hur grundlig brickverifikationen vid -checkbricks är (0-4, förvalt: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -2701,8 +2701,8 @@ Var vänlig och försök igen.</translation>
         <translation>Skriv ut avlusningsinformation (förvalt: %u, att ange &lt;category&gt; är frivilligt)</translation>
     </message>
     <message>
-        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
-        <translation>Stöd filtrering av block och transaktioner med bloomfilter (standard: %u)</translation>
+        <source>Support filtering of bricks and transaction with bloom filters (default: %u)</source>
+        <translation>Stöd filtrering av brick och transaktioner med bloomfilter (standard: %u)</translation>
     </message>
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
@@ -2729,8 +2729,8 @@ Var vänlig och försök igen.</translation>
         <translation>Användarnamn och hashat lösenord för JSON-RPC-anslutningar. Fältet &lt;userpw&gt; kommer i formatet: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. Ett kanoniskt pythonskript finns inkluderat i share/rpcuser. Detta alternativ kan anges flera gånger</translation>
     </message>
     <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>Varning: Okända blockversioner bryts! Det är möjligt att okända regler används</translation>
+        <source>Warning: Unknown brick versions being mined! It's possible unknown rules are in effect</source>
+        <translation>Varning: Okända brickversioner bryts! Det är möjligt att okända regler används</translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
@@ -2745,8 +2745,8 @@ Var vänlig och försök igen.</translation>
         <translation>Sök alltid efter klientadresser med DNS sökningen (förvalt: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
-        <translation>Hur många block att kontrollera vid uppstart (förvalt: %u, 0 = alla)</translation>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
+        <translation>Hur många brick att kontrollera vid uppstart (förvalt: %u, 0 = alla)</translation>
     </message>
     <message>
         <source>Include IP addresses in debug output (default: %u)</source>
@@ -2826,11 +2826,11 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Insufficient funds</source>
-        <translation>Otillräckligt med litecoins</translation>
+        <translation>Otillräckligt med magacoins</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
-        <translation>Laddar blockindex...</translation>
+        <source>Loading brick index...</source>
+        <translation>Laddar brickindex...</translation>
     </message>
     <message>
         <source>Add a node to connect to and attempt to keep the connection open</source>

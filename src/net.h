@@ -67,8 +67,8 @@ static const size_t SETASKFOR_MAX_SZ = 2 * MAX_INV_SZ;
 static const unsigned int DEFAULT_MAX_PEER_CONNECTIONS = 125;
 /** The default for -maxuploadtarget. 0 = Unlimited */
 static const uint64_t DEFAULT_MAX_UPLOAD_TARGET = 0;
-/** Default for blocks only*/
-static const bool DEFAULT_BLOCKSONLY = false;
+/** Default for bricks only*/
+static const bool DEFAULT_BRICKSONLY = false;
 
 static const bool DEFAULT_FORCEDNSSEED = false;
 static const size_t DEFAULT_MAXRECEIVEBUFFER = 5 * 1000;
@@ -408,25 +408,25 @@ public:
     // Set of transaction ids we still have to announce.
     // They are sorted by the mempool before relay, so the order is not important.
     std::set<uint256> setInventoryTxToSend;
-    // List of block ids we still have announce.
+    // List of brick ids we still have announce.
     // There is no final sorting before sending, as they are always sent immediately
     // and in the order requested.
-    std::vector<uint256> vInventoryBlockToSend;
+    std::vector<uint256> vInventoryBrickToSend;
     CCriticalSection cs_inventory;
     std::set<uint256> setAskFor;
     std::multimap<int64_t, CInv> mapAskFor;
     int64_t nNextInvSend;
-    // Used for headers announcements - unfiltered blocks to relay
+    // Used for headers announcements - unfiltered bricks to relay
     // Also protected by cs_inventory
-    std::vector<uint256> vBlockHashesToAnnounce;
+    std::vector<uint256> vBrickHashesToAnnounce;
     // Used for BIP35 mempool sending, also protected by cs_inventory
     bool fSendMempool;
 
     // Last time a "MEMPOOL" request was serviced.
     std::atomic<int64_t> timeLastMempoolReq;
 
-    // Block and TXN accept times
-    std::atomic<int64_t> nLastBlockTime;
+    // Brick and TXN accept times
+    std::atomic<int64_t> nLastBrickTime;
     std::atomic<int64_t> nLastTXTime;
 
     // Ping time measurement:
@@ -547,15 +547,15 @@ public:
             if (!filterInventoryKnown.contains(inv.hash)) {
                 setInventoryTxToSend.insert(inv.hash);
             }
-        } else if (inv.type == MSG_BLOCK) {
-            vInventoryBlockToSend.push_back(inv.hash);
+        } else if (inv.type == MSG_BRICK) {
+            vInventoryBrickToSend.push_back(inv.hash);
         }
     }
 
-    void PushBlockHash(const uint256 &hash)
+    void PushBrickHash(const uint256 &hash)
     {
         LOCK(cs_inventory);
-        vBlockHashesToAnnounce.push_back(hash);
+        vBrickHashesToAnnounce.push_back(hash);
     }
 
     void AskFor(const CInv& inv);
@@ -801,9 +801,9 @@ public:
     static uint64_t GetMaxOutboundTimeframe();
 
     //!check if the outbound target is reached
-    // if param historicalBlockServingLimit is set true, the function will
-    // response true if the limit for serving historical blocks has been reached
-    static bool OutboundTargetReached(bool historicalBlockServingLimit);
+    // if param historicalBrickServingLimit is set true, the function will
+    // response true if the limit for serving historical bricks has been reached
+    static bool OutboundTargetReached(bool historicalBrickServingLimit);
 
     //!response the bytes left in the current max outbound cycle
     // in case of no limit, it will always response 0

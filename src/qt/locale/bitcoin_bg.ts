@@ -162,12 +162,12 @@
         <translation>Отвори &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Повторно индексиране на блоковете на диска...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Изпращане към Litecoin адрес</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Изпращане към Magacoin адрес</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>Bitcoin</source>
-        <translation>Litecoin</translation>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -218,12 +218,12 @@
         <translation>Шифроване на личните ключове,които принадлежат на портфейла Ви.</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Пишете съобщения със своя Litecoin адрес за да докажете,че е ваш.</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Пишете съобщения със своя Magacoin адрес за да докажете,че е ваш.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Потвърждаване на съобщения  за да се знае,че са написани с дадените Litecoin адреси.</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Потвърждаване на съобщения  за да се знае,че са написани с дадените Magacoin адреси.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -242,8 +242,8 @@
         <translation>Раздели</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Изискване на плащания(генерира QR кодове и Litecoin: URIs)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Изискване на плащания(генерира QR кодове и Magacoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -254,31 +254,31 @@
         <translation>Покажи списък с използваните адреси и имена.</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Отворете Litecoin: URI  или заявка за плащане</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Отворете Magacoin: URI  или заявка за плащане</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Налични команди</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n активна връзка към Litecoin мрежата</numerusform><numerusform>%n активни връзки към Litecoin мрежата</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n активна връзка към Magacoin мрежата</numerusform><numerusform>%n активни връзки към Magacoin мрежата</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>Индексиране на блокове на диска...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>Обработване на блокове на диска...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Липсва източник на блоковете...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Преработен %n блок от историята с транзакции.</numerusform><numerusform>Преработени %n блокове от историята с транзакции.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -306,7 +306,7 @@
         <translation>%1 зад</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Последния получен блок е генериран преди %1.</translation>
     </message>
     <message>
@@ -330,8 +330,8 @@
         <translation>Синхронизиран</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
-        <translation>Покажи %1 помощно съобщение за да получиш лист с възможни Litecoin команди</translation>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
+        <translation>Покажи %1 помощно съобщение за да получиш лист с възможни Magacoin команди</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -681,16 +681,16 @@
         <translation>&amp;Похарчете непотвърденото ресто</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматично отваряне на входящия Litecoin порт. Работи само с рутери поддържащи UPnP.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Автоматично отваряне на входящия Magacoin порт. Работи само с рутери поддържащи UPnP.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Отваряне на входящия порт чрез &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Свързване с Litecoin мрежата чрез SOCKS5  прокси.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Свързване с Magacoin мрежата чрез SOCKS5  прокси.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -784,8 +784,8 @@
         <translation>Формуляр</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Текущата информация на екрана може да не е актуална. Вашият портфейл ще се синхронизира автоматично с мрежата на Litecoin, щом поне една връзката с нея се установи; този процес все още не е приключил.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Текущата информация на екрана може да не е актуална. Вашият портфейл ще се синхронизира автоматично с мрежата на Magacoin, щом поне една връзката с нея се установи; този процес все още не е приключил.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -853,8 +853,8 @@
         <translation>Сума</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Въведете Litecoin адрес (например: %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Въведете Magacoin адрес (например: %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -931,7 +931,7 @@
         <translation>Брой връзки</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Текущ брой блокове</translation>
     </message>
     <message>
@@ -983,7 +983,7 @@
         <translation>Време за отговор</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Време на последния блок</translation>
     </message>
     <message>
@@ -1367,7 +1367,7 @@
         <translation>Копиране на текущия подпис</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>Подпишете съобщение като доказателство, че притежавате определен адрес</translation>
     </message>
     <message>
@@ -1383,8 +1383,8 @@
         <translation>&amp;Провери</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Проверете съобщение, за да сте сигурни че е подписано с определен Litecoin адрес</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Проверете съобщение, за да сте сигурни че е подписано с определен Magacoin адрес</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1434,7 +1434,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>litecoin-core</name>
+    <name>magacoin-core</name>
     <message>
         <source>Options:</source>
         <translation>Опции:</translation>
@@ -1457,7 +1457,7 @@
     </message>
     <message>
         <source>Bitcoin Core</source>
-        <translation>Litecoin ядро</translation>
+        <translation>Magacoin ядро</translation>
     </message>
     <message>
         <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
@@ -1472,11 +1472,11 @@
         <translation>Настройки на връзката:</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Желаете ли да пресъздадете базата данни с блокове сега?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Грешка в пускането на базата данни с блокове</translation>
     </message>
     <message>
@@ -1492,7 +1492,7 @@
         <translation>Внасяне...</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Проверка на блоковете...</translation>
     </message>
     <message>
@@ -1568,7 +1568,7 @@
         <translation>Недостатъчно средства</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Зареждане на блок индекса...</translation>
     </message>
     <message>

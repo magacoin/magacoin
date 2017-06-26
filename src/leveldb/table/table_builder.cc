@@ -9,8 +9,8 @@
 #include "leveldb/env.h"
 #include "leveldb/filter_policy.h"
 #include "leveldb/options.h"
-#include "table/block_builder.h"
-#include "table/filter_block.h"
+#include "table/brick_builder.h"
+#include "table/filter_brick.h"
 #include "table/format.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
@@ -19,57 +19,57 @@ namespace leveldb {
 
 struct TableBuilder::Rep {
   Options options;
-  Options index_block_options;
+  Options index_brick_options;
   WritableFile* file;
   uint64_t offset;
   Status status;
-  BlockBuilder data_block;
-  BlockBuilder index_block;
+  BrickBuilder data_brick;
+  BrickBuilder index_brick;
   std::string last_key;
   int64_t num_entries;
   bool closed;          // Either Finish() or Abandon() has been called.
-  FilterBlockBuilder* filter_block;
+  FilterBrickBuilder* filter_brick;
 
-  // We do not emit the index entry for a block until we have seen the
-  // first key for the next data block.  This allows us to use shorter
-  // keys in the index block.  For example, consider a block boundary
+  // We do not emit the index entry for a brick until we have seen the
+  // first key for the next data brick.  This allows us to use shorter
+  // keys in the index brick.  For example, consider a brick boundary
   // between the keys "the quick brown fox" and "the who".  We can use
-  // "the r" as the key for the index block entry since it is >= all
-  // entries in the first block and < all entries in subsequent
-  // blocks.
+  // "the r" as the key for the index brick entry since it is >= all
+  // entries in the first brick and < all entries in subsequent
+  // bricks.
   //
-  // Invariant: r->pending_index_entry is true only if data_block is empty.
+  // Invariant: r->pending_index_entry is true only if data_brick is empty.
   bool pending_index_entry;
-  BlockHandle pending_handle;  // Handle to add to index block
+  BrickHandle pending_handle;  // Handle to add to index brick
 
   std::string compressed_output;
 
   Rep(const Options& opt, WritableFile* f)
       : options(opt),
-        index_block_options(opt),
+        index_brick_options(opt),
         file(f),
         offset(0),
-        data_block(&options),
-        index_block(&index_block_options),
+        data_brick(&options),
+        index_brick(&index_brick_options),
         num_entries(0),
         closed(false),
-        filter_block(opt.filter_policy == NULL ? NULL
-                     : new FilterBlockBuilder(opt.filter_policy)),
+        filter_brick(opt.filter_policy == NULL ? NULL
+                     : new FilterBrickBuilder(opt.filter_policy)),
         pending_index_entry(false) {
-    index_block_options.block_restart_interval = 1;
+    index_brick_options.brick_restart_interval = 1;
   }
 };
 
 TableBuilder::TableBuilder(const Options& options, WritableFile* file)
     : rep_(new Rep(options, file)) {
-  if (rep_->filter_block != NULL) {
-    rep_->filter_block->StartBlock(0);
+  if (rep_->filter_brick != NULL) {
+    rep_->filter_brick->StartBrick(0);
   }
 }
 
 TableBuilder::~TableBuilder() {
   assert(rep_->closed);  // Catch errors where caller forgot to call Finish()
-  delete rep_->filter_block;
+  delete rep_->filter_brick;
   delete rep_;
 }
 
@@ -81,11 +81,11 @@ Status TableBuilder::ChangeOptions(const Options& options) {
     return Status::InvalidArgument("changing comparator while building table");
   }
 
-  // Note that any live BlockBuilders point to rep_->options and therefore
+  // Note that any live BrickBuilders point to rep_->options and therefore
   // will automatically pick up the updated options.
   rep_->options = options;
-  rep_->index_block_options = options;
-  rep_->index_block_options.block_restart_interval = 1;
+  rep_->index_brick_options = options;
+  rep_->index_brick_options.brick_restart_interval = 1;
   return Status::OK();
 }
 
@@ -98,24 +98,24 @@ void TableBuilder::Add(const Slice& key, const Slice& value) {
   }
 
   if (r->pending_index_entry) {
-    assert(r->data_block.empty());
+    assert(r->data_brick.empty());
     r->options.comparator->FindShortestSeparator(&r->last_key, key);
     std::string handle_encoding;
     r->pending_handle.EncodeTo(&handle_encoding);
-    r->index_block.Add(r->last_key, Slice(handle_encoding));
+    r->index_brick.Add(r->last_key, Slice(handle_encoding));
     r->pending_index_entry = false;
   }
 
-  if (r->filter_block != NULL) {
-    r->filter_block->AddKey(key);
+  if (r->filter_brick != NULL) {
+    r->filter_brick->AddKey(key);
   }
 
   r->last_key.assign(key.data(), key.size());
   r->num_entries++;
-  r->data_block.Add(key, value);
+  r->data_brick.Add(key, value);
 
-  const size_t estimated_block_size = r->data_block.CurrentSizeEstimate();
-  if (estimated_block_size >= r->options.block_size) {
+  const size_t estimated_brick_size = r->data_brick.CurrentSizeEstimate();
+  if (estimated_brick_size >= r->options.brick_size) {
     Flush();
   }
 }
@@ -124,70 +124,70 @@ void TableBuilder::Flush() {
   Rep* r = rep_;
   assert(!r->closed);
   if (!ok()) return;
-  if (r->data_block.empty()) return;
+  if (r->data_brick.empty()) return;
   assert(!r->pending_index_entry);
-  WriteBlock(&r->data_block, &r->pending_handle);
+  WriteBrick(&r->data_brick, &r->pending_handle);
   if (ok()) {
     r->pending_index_entry = true;
     r->status = r->file->Flush();
   }
-  if (r->filter_block != NULL) {
-    r->filter_block->StartBlock(r->offset);
+  if (r->filter_brick != NULL) {
+    r->filter_brick->StartBrick(r->offset);
   }
 }
 
-void TableBuilder::WriteBlock(BlockBuilder* block, BlockHandle* handle) {
-  // File format contains a sequence of blocks where each block has:
-  //    block_data: uint8[n]
+void TableBuilder::WriteBrick(BrickBuilder* brick, BrickHandle* handle) {
+  // File format contains a sequence of bricks where each brick has:
+  //    brick_data: uint8[n]
   //    type: uint8
   //    crc: uint32
   assert(ok());
   Rep* r = rep_;
-  Slice raw = block->Finish();
+  Slice raw = brick->Finish();
 
-  Slice block_contents;
+  Slice brick_contents;
   CompressionType type = r->options.compression;
   // TODO(postrelease): Support more compression options: zlib?
   switch (type) {
     case kNoCompression:
-      block_contents = raw;
+      brick_contents = raw;
       break;
 
     case kSnappyCompression: {
       std::string* compressed = &r->compressed_output;
       if (port::Snappy_Compress(raw.data(), raw.size(), compressed) &&
           compressed->size() < raw.size() - (raw.size() / 8u)) {
-        block_contents = *compressed;
+        brick_contents = *compressed;
       } else {
         // Snappy not supported, or compressed less than 12.5%, so just
         // store uncompressed form
-        block_contents = raw;
+        brick_contents = raw;
         type = kNoCompression;
       }
       break;
     }
   }
-  WriteRawBlock(block_contents, type, handle);
+  WriteRawBrick(brick_contents, type, handle);
   r->compressed_output.clear();
-  block->Reset();
+  brick->Reset();
 }
 
-void TableBuilder::WriteRawBlock(const Slice& block_contents,
+void TableBuilder::WriteRawBrick(const Slice& brick_contents,
                                  CompressionType type,
-                                 BlockHandle* handle) {
+                                 BrickHandle* handle) {
   Rep* r = rep_;
   handle->set_offset(r->offset);
-  handle->set_size(block_contents.size());
-  r->status = r->file->Append(block_contents);
+  handle->set_size(brick_contents.size());
+  r->status = r->file->Append(brick_contents);
   if (r->status.ok()) {
-    char trailer[kBlockTrailerSize];
+    char trailer[kBrickTrailerSize];
     trailer[0] = type;
-    uint32_t crc = crc32c::Value(block_contents.data(), block_contents.size());
-    crc = crc32c::Extend(crc, trailer, 1);  // Extend crc to cover block type
+    uint32_t crc = crc32c::Value(brick_contents.data(), brick_contents.size());
+    crc = crc32c::Extend(crc, trailer, 1);  // Extend crc to cover brick type
     EncodeFixed32(trailer+1, crc32c::Mask(crc));
-    r->status = r->file->Append(Slice(trailer, kBlockTrailerSize));
+    r->status = r->file->Append(Slice(trailer, kBrickTrailerSize));
     if (r->status.ok()) {
-      r->offset += block_contents.size() + kBlockTrailerSize;
+      r->offset += brick_contents.size() + kBrickTrailerSize;
     }
   }
 }
@@ -202,47 +202,47 @@ Status TableBuilder::Finish() {
   assert(!r->closed);
   r->closed = true;
 
-  BlockHandle filter_block_handle, metaindex_block_handle, index_block_handle;
+  BrickHandle filter_brick_handle, metaindex_brick_handle, index_brick_handle;
 
-  // Write filter block
-  if (ok() && r->filter_block != NULL) {
-    WriteRawBlock(r->filter_block->Finish(), kNoCompression,
-                  &filter_block_handle);
+  // Write filter brick
+  if (ok() && r->filter_brick != NULL) {
+    WriteRawBrick(r->filter_brick->Finish(), kNoCompression,
+                  &filter_brick_handle);
   }
 
-  // Write metaindex block
+  // Write metaindex brick
   if (ok()) {
-    BlockBuilder meta_index_block(&r->options);
-    if (r->filter_block != NULL) {
+    BrickBuilder meta_index_brick(&r->options);
+    if (r->filter_brick != NULL) {
       // Add mapping from "filter.Name" to location of filter data
       std::string key = "filter.";
       key.append(r->options.filter_policy->Name());
       std::string handle_encoding;
-      filter_block_handle.EncodeTo(&handle_encoding);
-      meta_index_block.Add(key, handle_encoding);
+      filter_brick_handle.EncodeTo(&handle_encoding);
+      meta_index_brick.Add(key, handle_encoding);
     }
 
-    // TODO(postrelease): Add stats and other meta blocks
-    WriteBlock(&meta_index_block, &metaindex_block_handle);
+    // TODO(postrelease): Add stats and other meta bricks
+    WriteBrick(&meta_index_brick, &metaindex_brick_handle);
   }
 
-  // Write index block
+  // Write index brick
   if (ok()) {
     if (r->pending_index_entry) {
       r->options.comparator->FindShortSuccessor(&r->last_key);
       std::string handle_encoding;
       r->pending_handle.EncodeTo(&handle_encoding);
-      r->index_block.Add(r->last_key, Slice(handle_encoding));
+      r->index_brick.Add(r->last_key, Slice(handle_encoding));
       r->pending_index_entry = false;
     }
-    WriteBlock(&r->index_block, &index_block_handle);
+    WriteBrick(&r->index_brick, &index_brick_handle);
   }
 
   // Write footer
   if (ok()) {
     Footer footer;
-    footer.set_metaindex_handle(metaindex_block_handle);
-    footer.set_index_handle(index_block_handle);
+    footer.set_metaindex_handle(metaindex_brick_handle);
+    footer.set_index_handle(index_brick_handle);
     std::string footer_encoding;
     footer.EncodeTo(&footer_encoding);
     r->status = r->file->Append(footer_encoding);

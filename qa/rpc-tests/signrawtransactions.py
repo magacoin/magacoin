@@ -12,7 +12,7 @@ class SignRawTransactionsTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 1
 
     def setup_network(self, split=False):

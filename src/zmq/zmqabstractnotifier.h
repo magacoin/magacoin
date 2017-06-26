@@ -7,7 +7,7 @@
 
 #include "zmqconfig.h"
 
-class CBlockIndex;
+class CBrickIndex;
 class CZMQAbstractNotifier;
 
 typedef CZMQAbstractNotifier* (*CZMQNotifierFactory)();
@@ -32,7 +32,7 @@ public:
     virtual bool Initialize(void *pcontext) = 0;
     virtual void Shutdown() = 0;
 
-    virtual bool NotifyBlock(const CBlockIndex *pindex);
+    virtual bool NotifyBrick(const CBrickIndex *pindex);
     virtual bool NotifyTransaction(const CTransaction &transaction);
 
 protected:

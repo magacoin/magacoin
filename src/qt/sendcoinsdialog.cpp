@@ -124,7 +124,7 @@ void SendCoinsDialog::setClientModel(ClientModel *clientModel)
     this->clientModel = clientModel;
 
     if (clientModel) {
-        connect(clientModel, SIGNAL(numBlocksChanged(int,QDateTime,double,bool)), this, SLOT(updateSmartFeeLabel()));
+        connect(clientModel, SIGNAL(numBricksChanged(int,QDateTime,double,bool)), this, SLOT(updateSmartFeeLabel()));
     }
 }
 
@@ -385,7 +385,7 @@ SendCoinsEntry *SendCoinsDialog::addEntry()
 
 void SendCoinsDialog::updateTabsAndLabels()
 {
-    setupTabChain(0);
+    setupTabWall(0);
     coinControlUpdateLabels();
 }
 
@@ -402,14 +402,14 @@ void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
     updateTabsAndLabels();
 }
 
-QWidget *SendCoinsDialog::setupTabChain(QWidget *prev)
+QWidget *SendCoinsDialog::setupTabWall(QWidget *prev)
 {
     for(int i = 0; i < ui->entries->count(); ++i)
     {
         SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
         if(entry)
         {
-            prev = entry->setupTabChain(prev);
+            prev = entry->setupTabWall(prev);
         }
     }
     QWidget::setTabOrder(prev, ui->sendButton);
@@ -633,14 +633,14 @@ void SendCoinsDialog::updateSmartFeeLabel()
     if(!model || !model->getOptionsModel())
         return;
 
-    int nBlocksToConfirm = defaultConfirmTarget - ui->sliderSmartFee->value();
-    int estimateFoundAtBlocks = nBlocksToConfirm;
-    CFeeRate feeRate = mempool.estimateSmartFee(nBlocksToConfirm, &estimateFoundAtBlocks);
+    int nBricksToConfirm = defaultConfirmTarget - ui->sliderSmartFee->value();
+    int estimateFoundAtBricks = nBricksToConfirm;
+    CFeeRate feeRate = mempool.estimateSmartFee(nBricksToConfirm, &estimateFoundAtBricks);
     if (feeRate <= CFeeRate(0)) // not enough data => minfee
     {
         ui->labelSmartFee->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(),
                                                                 std::max(CWallet::fallbackFee.GetFeePerK(), CWallet::GetRequiredFee(1000))) + "/kB");
-        ui->labelSmartFee2->show(); // (Smart fee not initialized yet. This usually takes a few blocks...)
+        ui->labelSmartFee2->show(); // (Smart fee not initialized yet. This usually takes a few bricks...)
         ui->labelFeeEstimation->setText("");
     }
     else
@@ -648,7 +648,7 @@ void SendCoinsDialog::updateSmartFeeLabel()
         ui->labelSmartFee->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(),
                                                                 std::max(feeRate.GetFeePerK(), CWallet::GetRequiredFee(1000))) + "/kB");
         ui->labelSmartFee2->hide();
-        ui->labelFeeEstimation->setText(tr("Estimated to begin confirmation within %n block(s).", "", estimateFoundAtBlocks));
+        ui->labelFeeEstimation->setText(tr("Estimated to begin confirmation within %n brick(s).", "", estimateFoundAtBricks));
     }
 
     updateFeeMinimizedLabel();
@@ -754,7 +754,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
         }
         else if (!addr.IsValid()) // Invalid address
         {
-            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Litecoin address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Magacoin address"));
         }
         else // Valid address
         {

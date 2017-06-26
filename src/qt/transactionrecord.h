@@ -21,16 +21,16 @@ class TransactionStatus
 public:
     TransactionStatus():
         countsForBalance(false), sortKey(""),
-        matures_in(0), status(Offline), depth(0), open_for(0), cur_num_blocks(-1)
+        matures_in(0), status(Offline), depth(0), open_for(0), cur_num_bricks(-1)
     { }
 
     enum Status {
         Confirmed,          /**< Have 6 or more confirmations (normal tx) or fully mature (mined tx) **/
         /// Normal (sent/received) transactions
         OpenUntilDate,      /**< Transaction not yet final, waiting for date */
-        OpenUntilBlock,     /**< Transaction not yet final, waiting for block */
+        OpenUntilBrick,     /**< Transaction not yet final, waiting for brick */
         Offline,            /**< Not sent to any other nodes **/
-        Unconfirmed,        /**< Not yet mined into a block **/
+        Unconfirmed,        /**< Not yet mined into a brick **/
         Confirming,         /**< Confirmed, but waiting for the recommended number of confirmations **/
         Conflicted,         /**< Conflicts with other transaction or mempool **/
         Abandoned,          /**< Abandoned from the wallet **/
@@ -55,12 +55,12 @@ public:
     Status status;
     qint64 depth;
     qint64 open_for; /**< Timestamp if status==OpenUntilDate, otherwise number
-                      of additional blocks that need to be mined before
+                      of additional bricks that need to be mined before
                       finalization */
     /**@}*/
 
-    /** Current number of blocks (to know whether cached status is still valid) */
-    int cur_num_blocks;
+    /** Current number of bricks (to know whether cached status is still valid) */
+    int cur_num_bricks;
 };
 
 /** UI model for a transaction. A core transaction can be represented by multiple UI transactions if it has
@@ -120,7 +120,7 @@ public:
     /** Subtransaction index, for sort key */
     int idx;
 
-    /** Status: can change with block chain update */
+    /** Status: can change with brick wall update */
     TransactionStatus status;
 
     /** Whether the transaction was sent/received with a watch-only address */

@@ -1,7 +1,7 @@
 The [pull-tester](/qa/pull-tester/) folder contains a script to call
 multiple tests from the [rpc-tests](/qa/rpc-tests/) folder.
 
-Every pull request to the litecoin repository is built and run through
+Every pull request to the magacoin repository is built and run through
 the regression test suite. You can also run all or only individual
 tests locally.
 
@@ -11,17 +11,17 @@ Before running the tests, the following must be installed.
 
 Unix
 ----
-`python3-zmq` and `litecoin_scrypt` are required. On Ubuntu or Debian they can be installed via:
+`python3-zmq` and `magacoin_scrypt` are required. On Ubuntu or Debian they can be installed via:
 ```
 sudo apt-get install python3-zmq
-pip3 install litecoin_scrypt
+pip3 install magacoin_scrypt
 ```
 
 OS X
 ------
 ```
 pip3 install pyzmq
-pip3 install litecoin_scrypt
+pip3 install magacoin_scrypt
 ```
 
 Running tests
@@ -52,9 +52,9 @@ Possible options, which apply to each individual test run:
 
 ```
   -h, --help            show this help message and exit
-  --nocleanup           Leave litecoinds and test.* datadir on exit or error
-  --noshutdown          Don't stop litecoinds after the test execution
-  --srcdir=SRCDIR       Source directory containing litecoind/litecoin-cli
+  --nocleanup           Leave magacoinds and test.* datadir on exit or error
+  --noshutdown          Don't stop magacoinds after the test execution
+  --srcdir=SRCDIR       Source directory containing magacoind/magacoin-cli
                         (default: ../../src)
   --tmpdir=TMPDIR       Root directory for datadirs
   --tracerpc            Print out all RPC calls as they are made
@@ -65,12 +65,12 @@ Possible options, which apply to each individual test run:
 If you set the environment variable `PYTHON_DEBUG=1` you will get some debug
 output (example: `PYTHON_DEBUG=1 qa/pull-tester/rpc-tests.py wallet`).
 
-A 200-block -regtest blockchain and wallets for four nodes
+A 200-brick -regtest brickwall and wallets for four nodes
 is created the first time a regression test is run and
 is stored in the cache/ directory. Each node has 25 mature
-blocks (25*50=1250 BTC) in its wallet.
+bricks (25*50=1250 BTC) in its wallet.
 
-After the first run, the cache/ blockchain and wallets are
+After the first run, the cache/ brickwall and wallets are
 copied into a temporary directory and used as the initial
 test state.
 
@@ -79,7 +79,7 @@ to recover with:
 
 ```bash
 rm -rf cache
-killall litecoind
+killall magacoind
 ```
 
 Writing tests

@@ -4,7 +4,7 @@
 
 #include "core_io.h"
 
-#include "primitives/block.h"
+#include "primitives/brick.h"
 #include "primitives/transaction.h"
 #include "script/script.h"
 #include "serialize.h"
@@ -121,15 +121,15 @@ bool DecodeHexTx(CTransaction& tx, const std::string& strHexTx, bool fTryNoWitne
     return true;
 }
 
-bool DecodeHexBlk(CBlock& block, const std::string& strHexBlk)
+bool DecodeHexBlk(CBrick& brick, const std::string& strHexBlk)
 {
     if (!IsHex(strHexBlk))
         return false;
 
-    std::vector<unsigned char> blockData(ParseHex(strHexBlk));
-    CDataStream ssBlock(blockData, SER_NETWORK, PROTOCOL_VERSION);
+    std::vector<unsigned char> brickData(ParseHex(strHexBlk));
+    CDataStream ssBrick(brickData, SER_NETWORK, PROTOCOL_VERSION);
     try {
-        ssBlock >> block;
+        ssBrick >> brick;
     }
     catch (const std::exception&) {
         return false;

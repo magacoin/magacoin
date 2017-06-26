@@ -49,7 +49,7 @@ class RESTTest (BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 3
 
     def setup_network(self, split=False):
@@ -62,7 +62,7 @@ class RESTTest (BitcoinTestFramework):
 
     def run_test(self):
         url = urllib.parse.urlparse(self.nodes[0].url)
-        print("Mining blocks...")
+        print("Mining bricks...")
 
         self.nodes[0].generate(1)
         self.sync_all()
@@ -75,7 +75,7 @@ class RESTTest (BitcoinTestFramework):
         self.sync_all()
         self.nodes[2].generate(1)
         self.sync_all()
-        bb_hash = self.nodes[0].getbestblockhash()
+        bb_hash = self.nodes[0].getbestbrickhash()
 
         assert_equal(self.nodes[1].getbalance(), Decimal("0.1")) #balance now should be 0.1 on node 1
 
@@ -97,8 +97,8 @@ class RESTTest (BitcoinTestFramework):
         json_string = http_get_call(url.hostname, url.port, '/rest/getutxos'+json_request+self.FORMAT_SEPARATOR+'json')
         json_obj = json.loads(json_string)
 
-        #check chainTip response
-        assert_equal(json_obj['chaintipHash'], bb_hash)
+        #check wallTip response
+        assert_equal(json_obj['walltipHash'], bb_hash)
 
         #make sure there is one utxo
         assert_equal(len(json_obj['utxos']), 1)
@@ -112,8 +112,8 @@ class RESTTest (BitcoinTestFramework):
         json_string = http_get_call(url.hostname, url.port, '/rest/getutxos'+json_request+self.FORMAT_SEPARATOR+'json')
         json_obj = json.loads(json_string)
 
-        #check chainTip response
-        assert_equal(json_obj['chaintipHash'], bb_hash)
+        #check wallTip response
+        assert_equal(json_obj['walltipHash'], bb_hash)
 
         #make sure there is no utox in the response because this oupoint has been spent
         assert_equal(len(json_obj['utxos']), 0)
@@ -132,7 +132,7 @@ class RESTTest (BitcoinTestFramework):
         assert_equal(json_obj['bitmap'], "10")
 
         #test binary response
-        bb_hash = self.nodes[0].getbestblockhash()
+        bb_hash = self.nodes[0].getbestbrickhash()
 
         binaryRequest = b'\x01\x02'
         binaryRequest += hex_str_to_bytes(txid)
@@ -144,11 +144,11 @@ class RESTTest (BitcoinTestFramework):
         output = BytesIO()
         output.write(bin_response)
         output.seek(0)
-        chainHeight = unpack("i", output.read(4))[0]
+        wallHeight = unpack("i", output.read(4))[0]
         hashFromBinResponse = hex(deser_uint256(output))[2:].zfill(64)
 
-        assert_equal(bb_hash, hashFromBinResponse) #check if getutxo's chaintip during calculation was fine
-        assert_equal(chainHeight, 102) #chain height must be 102
+        assert_equal(bb_hash, hashFromBinResponse) #check if getutxo's walltip during calculation was fine
+        assert_equal(wallHeight, 102) #wall height must be 102
 
 
         ############################
@@ -203,34 +203,34 @@ class RESTTest (BitcoinTestFramework):
         response = http_post_call(url.hostname, url.port, '/rest/getutxos'+json_request+self.FORMAT_SEPARATOR+'json', '', True)
         assert_equal(response.status, 200) #must be a 500 because we exceeding the limits
 
-        self.nodes[0].generate(1) #generate block to not affect upcoming tests
+        self.nodes[0].generate(1) #generate brick to not affect upcoming tests
         self.sync_all()
 
         ################
-        # /rest/block/ #
+        # /rest/brick/ #
         ################
 
         # check binary format
-        response = http_get_call(url.hostname, url.port, '/rest/block/'+bb_hash+self.FORMAT_SEPARATOR+"bin", True)
+        response = http_get_call(url.hostname, url.port, '/rest/brick/'+bb_hash+self.FORMAT_SEPARATOR+"bin", True)
         assert_equal(response.status, 200)
         assert_greater_than(int(response.getheader('content-length')), 80)
         response_str = response.read()
 
-        # compare with block header
+        # compare with brick header
         response_header = http_get_call(url.hostname, url.port, '/rest/headers/1/'+bb_hash+self.FORMAT_SEPARATOR+"bin", True)
         assert_equal(response_header.status, 200)
         assert_equal(int(response_header.getheader('content-length')), 80)
         response_header_str = response_header.read()
         assert_equal(response_str[0:80], response_header_str)
 
-        # check block hex format
-        response_hex = http_get_call(url.hostname, url.port, '/rest/block/'+bb_hash+self.FORMAT_SEPARATOR+"hex", True)
+        # check brick hex format
+        response_hex = http_get_call(url.hostname, url.port, '/rest/brick/'+bb_hash+self.FORMAT_SEPARATOR+"hex", True)
         assert_equal(response_hex.status, 200)
         assert_greater_than(int(response_hex.getheader('content-length')), 160)
         response_hex_str = response_hex.read()
         assert_equal(encode(response_str, "hex_codec")[0:160], response_hex_str[0:160])
 
-        # compare with hex block header
+        # compare with hex brick header
         response_header_hex = http_get_call(url.hostname, url.port, '/rest/headers/1/'+bb_hash+self.FORMAT_SEPARATOR+"hex", True)
         assert_equal(response_header_hex.status, 200)
         assert_greater_than(int(response_header_hex.getheader('content-length')), 160)
@@ -239,11 +239,11 @@ class RESTTest (BitcoinTestFramework):
         assert_equal(encode(response_header_str, "hex_codec")[0:160], response_header_hex_str[0:160])
 
         # check json format
-        block_json_string = http_get_call(url.hostname, url.port, '/rest/block/'+bb_hash+self.FORMAT_SEPARATOR+'json')
-        block_json_obj = json.loads(block_json_string)
-        assert_equal(block_json_obj['hash'], bb_hash)
+        brick_json_string = http_get_call(url.hostname, url.port, '/rest/brick/'+bb_hash+self.FORMAT_SEPARATOR+'json')
+        brick_json_obj = json.loads(brick_json_string)
+        assert_equal(brick_json_obj['hash'], bb_hash)
 
-        # compare with json block header
+        # compare with json brick header
         response_header_json = http_get_call(url.hostname, url.port, '/rest/headers/1/'+bb_hash+self.FORMAT_SEPARATOR+"json", True)
         assert_equal(response_header_json.status, 200)
         response_header_json_str = response_header_json.read().decode('utf-8')
@@ -251,19 +251,19 @@ class RESTTest (BitcoinTestFramework):
         assert_equal(len(json_obj), 1) #ensure that there is one header in the json response
         assert_equal(json_obj[0]['hash'], bb_hash) #request/response hash should be the same
 
-        #compare with normal RPC block response
-        rpc_block_json = self.nodes[0].getblock(bb_hash)
-        assert_equal(json_obj[0]['hash'],               rpc_block_json['hash'])
-        assert_equal(json_obj[0]['confirmations'],      rpc_block_json['confirmations'])
-        assert_equal(json_obj[0]['height'],             rpc_block_json['height'])
-        assert_equal(json_obj[0]['version'],            rpc_block_json['version'])
-        assert_equal(json_obj[0]['merkleroot'],         rpc_block_json['merkleroot'])
-        assert_equal(json_obj[0]['time'],               rpc_block_json['time'])
-        assert_equal(json_obj[0]['nonce'],              rpc_block_json['nonce'])
-        assert_equal(json_obj[0]['bits'],               rpc_block_json['bits'])
-        assert_equal(json_obj[0]['difficulty'],         rpc_block_json['difficulty'])
-        assert_equal(json_obj[0]['chainwork'],          rpc_block_json['chainwork'])
-        assert_equal(json_obj[0]['previousblockhash'],  rpc_block_json['previousblockhash'])
+        #compare with normal RPC brick response
+        rpc_brick_json = self.nodes[0].getbrick(bb_hash)
+        assert_equal(json_obj[0]['hash'],               rpc_brick_json['hash'])
+        assert_equal(json_obj[0]['confirmations'],      rpc_brick_json['confirmations'])
+        assert_equal(json_obj[0]['height'],             rpc_brick_json['height'])
+        assert_equal(json_obj[0]['version'],            rpc_brick_json['version'])
+        assert_equal(json_obj[0]['merkleroot'],         rpc_brick_json['merkleroot'])
+        assert_equal(json_obj[0]['time'],               rpc_brick_json['time'])
+        assert_equal(json_obj[0]['nonce'],              rpc_brick_json['nonce'])
+        assert_equal(json_obj[0]['bits'],               rpc_brick_json['bits'])
+        assert_equal(json_obj[0]['difficulty'],         rpc_brick_json['difficulty'])
+        assert_equal(json_obj[0]['wallwork'],          rpc_brick_json['wallwork'])
+        assert_equal(json_obj[0]['previousbrickhash'],  rpc_brick_json['previousbrickhash'])
 
         #see if we can get 5 headers in one response
         self.nodes[1].generate(5)
@@ -275,7 +275,7 @@ class RESTTest (BitcoinTestFramework):
         assert_equal(len(json_obj), 5) #now we should have 5 header objects
 
         # do tx test
-        tx_hash = block_json_obj['tx'][0]['txid']
+        tx_hash = brick_json_obj['tx'][0]['txid']
         json_string = http_get_call(url.hostname, url.port, '/rest/tx/'+tx_hash+self.FORMAT_SEPARATOR+"json")
         json_obj = json.loads(json_string)
         assert_equal(json_obj['txid'], tx_hash)
@@ -286,7 +286,7 @@ class RESTTest (BitcoinTestFramework):
         assert_greater_than(int(response.getheader('content-length')), 10)
 
 
-        # check block tx details
+        # check brick tx details
         # let's make 3 tx and mine them on node 1
         txs = []
         txs.append(self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 11))
@@ -294,7 +294,7 @@ class RESTTest (BitcoinTestFramework):
         txs.append(self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 11))
         self.sync_all()
 
-        # check that there are exactly 3 transactions in the TX memory pool before generating the block
+        # check that there are exactly 3 transactions in the TX memory pool before generating the brick
         json_string = http_get_call(url.hostname, url.port, '/rest/mempool/info'+self.FORMAT_SEPARATOR+'json')
         json_obj = json.loads(json_string)
         assert_equal(json_obj['size'], 3)
@@ -308,28 +308,28 @@ class RESTTest (BitcoinTestFramework):
             assert_equal(tx in json_obj, True)
 
         # now mine the transactions
-        newblockhash = self.nodes[1].generate(1)
+        newbrickhash = self.nodes[1].generate(1)
         self.sync_all()
 
-        #check if the 3 tx show up in the new block
-        json_string = http_get_call(url.hostname, url.port, '/rest/block/'+newblockhash[0]+self.FORMAT_SEPARATOR+'json')
+        #check if the 3 tx show up in the new brick
+        json_string = http_get_call(url.hostname, url.port, '/rest/brick/'+newbrickhash[0]+self.FORMAT_SEPARATOR+'json')
         json_obj = json.loads(json_string)
         for tx in json_obj['tx']:
             if not 'coinbase' in tx['vin'][0]: #exclude coinbase
                 assert_equal(tx['txid'] in txs, True)
 
         #check the same but without tx details
-        json_string = http_get_call(url.hostname, url.port, '/rest/block/notxdetails/'+newblockhash[0]+self.FORMAT_SEPARATOR+'json')
+        json_string = http_get_call(url.hostname, url.port, '/rest/brick/notxdetails/'+newbrickhash[0]+self.FORMAT_SEPARATOR+'json')
         json_obj = json.loads(json_string)
         for tx in txs:
             assert_equal(tx in json_obj['tx'], True)
 
-        #test rest bestblock
-        bb_hash = self.nodes[0].getbestblockhash()
+        #test rest bestbrick
+        bb_hash = self.nodes[0].getbestbrickhash()
 
-        json_string = http_get_call(url.hostname, url.port, '/rest/chaininfo.json')
+        json_string = http_get_call(url.hostname, url.port, '/rest/wallinfo.json')
         json_obj = json.loads(json_string)
-        assert_equal(json_obj['bestblockhash'], bb_hash)
+        assert_equal(json_obj['bestbrickhash'], bb_hash)
 
 if __name__ == '__main__':
     RESTTest ().main ()

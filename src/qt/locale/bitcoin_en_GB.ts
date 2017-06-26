@@ -222,12 +222,12 @@
         <translation>Open &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
-        <translation>Reindexing blocks on disk...</translation>
+        <source>Reindexing bricks on disk...</source>
+        <translation>Reindexing bricks on disk...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Send coins to a Litecoin address</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Send coins to a Magacoin address</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -250,8 +250,8 @@
         <translation>&amp;Verify message...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -278,12 +278,12 @@
         <translation>Encrypt the private keys that belong to your wallet</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Sign messages with your Litecoin addresses to prove you own them</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Sign messages with your Magacoin addresses to prove you own them</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verify messages to ensure they were signed with specified Litecoin addresses</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verify messages to ensure they were signed with specified Magacoin addresses</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -302,8 +302,8 @@
         <translation>Tabs toolbar</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Request payments (generates QR codes and litecoin: URIs)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Request payments (generates QR codes and magacoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -314,32 +314,32 @@
         <translation>Show the list of used receiving addresses and labels</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Open a litecoin: URI or payment request</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Open a magacoin: URI or payment request</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Command-line options</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n active connection to Litecoin network</numerusform><numerusform>%n active connections to Litecoin network</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n active connection to Magacoin network</numerusform><numerusform>%n active connections to Magacoin network</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
-        <translation>Indexing blocks on disk...</translation>
+        <source>Indexing bricks on disk...</source>
+        <translation>Indexing bricks on disk...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
-        <translation>Processing blocks on disk...</translation>
+        <source>Processing bricks on disk...</source>
+        <translation>Processing bricks on disk...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
-        <translation>No block source available...</translation>
+        <source>No brick source available...</source>
+        <translation>No brick source available...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation><numerusform>Processed %n block of transaction history.</numerusform><numerusform>Processed %n blocks of transaction history.</numerusform></translation>
+        <source>Processed %n brick(s) of transaction history.</source>
+        <translation><numerusform>Processed %n brick of transaction history.</numerusform><numerusform>Processed %n bricks of transaction history.</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
@@ -366,8 +366,8 @@
         <translation>%1 behind</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Last received block was generated %1 ago.</translation>
+        <source>Last received brick was generated %1 ago.</source>
+        <translation>Last received brick was generated %1 ago.</translation>
     </message>
     <message>
         <source>Transactions after this will not yet be visible.</source>
@@ -390,8 +390,8 @@
         <translation>Up to date</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
-        <translation>Show the %1 help message to get a list with possible Litecoin command-line options</translation>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
+        <translation>Show the %1 help message to get a list with possible Magacoin command-line options</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -647,8 +647,8 @@
         <translation>As this is the first time the program is launched, you can choose where %1 will store its data.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</translation>
+        <source>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -741,8 +741,8 @@
         <translation>Minimise instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</translation>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</translation>
     </message>
     <message>
         <source>Third party transaction URLs</source>
@@ -789,16 +789,16 @@
         <translation>&amp;Spend unconfirmed change</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Map port using &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Connect to the Litecoin network through a SOCKS5 proxy.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Connect to the Magacoin network through a SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -837,8 +837,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -936,8 +936,8 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>The displayed information may be out of date. Your Wallet automatically synchronises with the Litecoin Network after a connection is established, but this process has not been completed yet.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>The displayed information may be out of date. Your Wallet automatically synchronises with the Magacoin Network after a connection is established, but this process has not been completed yet.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1029,8 +1029,8 @@
         <translation>Amount</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Enter a Litecoin address (e.g. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Enter a Magacoin address (e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1111,12 +1111,12 @@
         <translation>Number of connections</translation>
     </message>
     <message>
-        <source>Block chain</source>
-        <translation>Block chain</translation>
+        <source>Brick wall</source>
+        <translation>Brick wall</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
-        <translation>Current number of blocks</translation>
+        <source>Current number of bricks</source>
+        <translation>Current number of bricks</translation>
     </message>
     <message>
         <source>Memory Pool</source>
@@ -1163,16 +1163,16 @@
         <translation>Version</translation>
     </message>
     <message>
-        <source>Starting Block</source>
-        <translation>Starting Block</translation>
+        <source>Starting Brick</source>
+        <translation>Starting Brick</translation>
     </message>
     <message>
         <source>Synced Headers</source>
         <translation>Synced Headers</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
-        <translation>Synced Blocks</translation>
+        <source>Synced Bricks</source>
+        <translation>Synced Bricks</translation>
     </message>
     <message>
         <source>User Agent</source>
@@ -1227,8 +1227,8 @@
         <translation>Time Offset</translation>
     </message>
     <message>
-        <source>Last block time</source>
-        <translation>Last block time</translation>
+        <source>Last brick time</source>
+        <translation>Last brick time</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -1378,8 +1378,8 @@
         <translation>R&amp;euse an existing receiving address (not recommended)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1551,8 +1551,8 @@
         <translation>total at least</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
-        <translation>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
+        <translation>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
@@ -1567,8 +1567,8 @@
         <translation>Custom:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
-        <translation>(Smart fee not initialised yet. This usually takes a few blocks...)</translation>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
+        <translation>(Smart fee not initialised yet. This usually takes a few bricks...)</translation>
     </message>
     <message>
         <source>Confirmation time:</source>
@@ -1642,8 +1642,8 @@
         <translation>This is a normal payment.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>The Litecoin address to send the payment to</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>The Magacoin address to send the payment to</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1662,8 +1662,8 @@
         <translation>Remove this entry</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -1686,8 +1686,8 @@
         <translation>Enter a label for this address to add it to the list of used addresses</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1723,12 +1723,12 @@
         <translation>&amp;Sign Message</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>The Litecoin address to sign the message with</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>The Magacoin address to sign the message with</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1759,8 +1759,8 @@
         <translation>Copy the current signature to the system clipboard</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Sign the message to prove you own this Litecoin address</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Sign the message to prove you own this Magacoin address</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1783,12 +1783,12 @@
         <translation>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>The Litecoin address the message was signed with</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>The Magacoin address the message was signed with</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verify the message to ensure it was signed with the specified Litecoin address</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verify the message to ensure it was signed with the specified Magacoin address</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1900,16 +1900,16 @@
         <translation>Prune configured below the minimum of %d MiB.  Please use a higher number.</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
-        <translation>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</translation>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
+        <translation>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
-        <translation>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</translation>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
+        <translation>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
-        <translation>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</translation>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
+        <translation>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
@@ -1920,8 +1920,8 @@
         <translation>Fee (in %s/kB) to add to transactions you send (default: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
-        <translation>Pruning blockstore...</translation>
+        <source>Pruning brickstore...</source>
+        <translation>Pruning brickstore...</translation>
     </message>
     <message>
         <source>Run in the background as a daemon and accept commands</source>
@@ -1936,8 +1936,8 @@
         <translation>Accept connections from outside (default: 1 if no -proxy or -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>The %s developers</source>
@@ -1964,8 +1964,8 @@
         <translation>Cannot obtain a lock on data directory %s. %s is probably already running.</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
-        <translation>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</translation>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
+        <translation>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
@@ -2008,16 +2008,16 @@
         <translation>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
-        <translation>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</translation>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
+        <translation>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</translation>
     </message>
     <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</translation>
     </message>
     <message>
-        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
-        <translation>Unable to rewind the database to a pre-fork state. You will need to re-download the blockchain</translation>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the brickwall</source>
+        <translation>Unable to rewind the database to a pre-fork state. You will need to re-download the brickwall</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
@@ -2036,8 +2036,8 @@
         <translation>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
-        <translation>You need to rebuild the database using -reindex-chainstate to change -txindex</translation>
+        <source>You need to rebuild the database using -reindex-wallstate to change -txindex</source>
+        <translation>You need to rebuild the database using -reindex-wallstate to change -txindex</translation>
     </message>
     <message>
         <source>%s corrupt, salvage failed</source>
@@ -2060,8 +2060,8 @@
         <translation>Attempt to recover private keys from a corrupt wallet on startup</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
-        <translation>Block creation options:</translation>
+        <source>Brick creation options:</source>
+        <translation>Brick creation options:</translation>
     </message>
     <message>
         <source>Cannot resolve -%s address: '%s'</source>
@@ -2084,8 +2084,8 @@
         <translation>Copyright (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
-        <translation>Corrupted block database detected</translation>
+        <source>Corrupted brick database detected</source>
+        <translation>Corrupted brick database detected</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -2096,20 +2096,20 @@
         <translation>Do not load the wallet and disable wallet RPC calls</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
-        <translation>Do you want to rebuild the block database now?</translation>
+        <source>Do you want to rebuild the brick database now?</source>
+        <translation>Do you want to rebuild the brick database now?</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
-        <translation>Enable publish hash block in &lt;address&gt;</translation>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
+        <translation>Enable publish hash brick in &lt;address&gt;</translation>
     </message>
     <message>
         <source>Enable publish hash transaction in &lt;address&gt;</source>
         <translation>Enable publish hash transaction in &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
-        <translation>Enable publish raw block in &lt;address&gt;</translation>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
+        <translation>Enable publish raw brick in &lt;address&gt;</translation>
     </message>
     <message>
         <source>Enable publish raw transaction in &lt;address&gt;</source>
@@ -2120,8 +2120,8 @@
         <translation>Enable transaction replacement in the memory pool (default: %u)</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
-        <translation>Error initialising block database</translation>
+        <source>Error initializing brick database</source>
+        <translation>Error initialising brick database</translation>
     </message>
     <message>
         <source>Error initializing wallet database environment %s!</source>
@@ -2144,12 +2144,12 @@
         <translation>Error loading %s: You can't disable HD on a already existing HD wallet</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
-        <translation>Error loading block database</translation>
+        <source>Error loading brick database</source>
+        <translation>Error loading brick database</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
-        <translation>Error opening block database</translation>
+        <source>Error opening brick database</source>
+        <translation>Error opening brick database</translation>
     </message>
     <message>
         <source>Error: Disk space is low!</source>
@@ -2164,8 +2164,8 @@
         <translation>Importing...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
-        <translation>Incorrect or no genesis block found. Wrong datadir for network?</translation>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
+        <translation>Incorrect or no genesis brick found. Wrong datadir for network?</translation>
     </message>
     <message>
         <source>Initialization sanity check failed. %s is shutting down.</source>
@@ -2220,28 +2220,28 @@
         <translation>Prune mode is incompatible with -txindex.</translation>
     </message>
     <message>
-        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
-        <translation>Rebuild chain state and block index from the blk*.dat files on disk</translation>
+        <source>Rebuild wall state and brick index from the blk*.dat files on disk</source>
+        <translation>Rebuild wall state and brick index from the blk*.dat files on disk</translation>
     </message>
     <message>
-        <source>Rebuild chain state from the currently indexed blocks</source>
-        <translation>Rebuild chain state from the currently indexed blocks</translation>
+        <source>Rebuild wall state from the currently indexed bricks</source>
+        <translation>Rebuild wall state from the currently indexed bricks</translation>
     </message>
     <message>
-        <source>Rewinding blocks...</source>
-        <translation>Rewinding blocks...</translation>
+        <source>Rewinding bricks...</source>
+        <translation>Rewinding bricks...</translation>
     </message>
     <message>
         <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
         <translation>Set database cache size in megabytes (%d to %d, default: %d)</translation>
     </message>
     <message>
-        <source>Set maximum BIP141 block weight (default: %d)</source>
-        <translation>Set maximum BIP141 block weight (default: %d)</translation>
+        <source>Set maximum BIP141 brick weight (default: %d)</source>
+        <translation>Set maximum BIP141 brick weight (default: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
-        <translation>Set maximum block size in bytes (default: %d)</translation>
+        <source>Set maximum brick size in bytes (default: %d)</source>
+        <translation>Set maximum brick size in bytes (default: %d)</translation>
     </message>
     <message>
         <source>Specify wallet file (within data directory)</source>
@@ -2276,8 +2276,8 @@
         <translation>User Agent comment (%s) contains unsafe characters.</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
-        <translation>Verifying blocks...</translation>
+        <source>Verifying bricks...</source>
+        <translation>Verifying bricks...</translation>
     </message>
     <message>
         <source>Verifying wallet...</source>
@@ -2332,8 +2332,8 @@
         <translation>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
-        <translation>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</translation>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
+        <translation>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
@@ -2372,8 +2372,8 @@
         <translation>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
-        <translation>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</translation>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
+        <translation>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</translation>
     </message>
     <message>
         <source>(default: %u)</source>
@@ -2396,8 +2396,8 @@
         <translation>Error reading from database, shutting down.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
-        <translation>Imports blocks from external blk000??.dat file on startup</translation>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
+        <translation>Imports bricks from external blk000??.dat file on startup</translation>
     </message>
     <message>
         <source>Information</source>
@@ -2432,8 +2432,8 @@
         <translation>Reducing -maxconnections from %d to %d, because of system limitations.</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
-        <translation>Rescan the block chain for missing wallet transactions on startup</translation>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
+        <translation>Rescan the brick wall for missing wallet transactions on startup</translation>
     </message>
     <message>
         <source>Send trace/debug info to console instead of debug.log file</source>
@@ -2508,8 +2508,8 @@
         <translation>Warning: unknown new rules activated (versionbit %i)</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
-        <translation>Whether to operate in a blocks only mode (default: %u)</translation>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
+        <translation>Whether to operate in a bricks only mode (default: %u)</translation>
     </message>
     <message>
         <source>Zapping all transactions from wallet...</source>
@@ -2524,8 +2524,8 @@
         <translation>Password for JSON-RPC connections</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>Execute command when the best block changes (%s in cmd is replaced by block hash)</translation>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
+        <translation>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -2556,8 +2556,8 @@
         <translation>Fees (in %s/kB) smaller than this are considered zero fee for transaction creation (default: %s)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>How thorough the block verification of -checkblocks is (0-4, default: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>How thorough the brick verification of -checkbricks is (0-4, default: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -2572,8 +2572,8 @@
         <translation>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</translation>
     </message>
     <message>
-        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
-        <translation>Support filtering of blocks and transaction with bloom filters (default: %u)</translation>
+        <source>Support filtering of bricks and transaction with bloom filters (default: %u)</source>
+        <translation>Support filtering of bricks and transaction with bloom filters (default: %u)</translation>
     </message>
     <message>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
@@ -2600,8 +2600,8 @@
         <translation>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. This option can be specified multiple times</translation>
     </message>
     <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
-        <translation>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</translation>
+        <source>Warning: Unknown brick versions being mined! It's possible unknown rules are in effect</source>
+        <translation>Warning: Unknown brick versions being mined! It's possible unknown rules are in effect</translation>
     </message>
     <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
@@ -2616,8 +2616,8 @@
         <translation>Always query for peer addresses via DNS lookup (default: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
-        <translation>How many blocks to check at startup (default: %u, 0 = all)</translation>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
+        <translation>How many bricks to check at startup (default: %u, 0 = all)</translation>
     </message>
     <message>
         <source>Include IP addresses in debug output (default: %u)</source>
@@ -2700,8 +2700,8 @@
         <translation>Insufficient funds</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
-        <translation>Loading block index...</translation>
+        <source>Loading brick index...</source>
+        <translation>Loading brick index...</translation>
     </message>
     <message>
         <source>Add a node to connect to and attempt to keep the connection open</source>

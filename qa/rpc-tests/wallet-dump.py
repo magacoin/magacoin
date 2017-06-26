@@ -56,7 +56,7 @@ class WalletDumpTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
         self.num_nodes = 1
         self.extra_args = [["-keypool=90"]]
 
@@ -86,7 +86,7 @@ class WalletDumpTest(BitcoinTestFramework):
         found_addr, found_addr_chg, found_addr_rsv, hd_master_addr_unenc = \
             read_dump(tmpdir + "/node0/wallet.unencrypted.dump", addrs, None)
         assert_equal(found_addr, test_addr_count)  # all keys must be in the dump
-        assert_equal(found_addr_chg, 50)  # 50 blocks where mined
+        assert_equal(found_addr_chg, 50)  # 50 bricks where mined
         assert_equal(found_addr_rsv, 90 + 1)  # keypool size (TODO: fix off-by-one)
 
         #encrypt wallet, restart, unlock and dump

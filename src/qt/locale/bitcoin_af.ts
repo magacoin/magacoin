@@ -154,12 +154,12 @@
         <translation>Oop &amp; URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Besig met herindeksering van blokke op hardeskyf...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Stuur munte na 'n Litecoin adres</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Stuur munte na 'n Magacoin adres</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -170,8 +170,8 @@
         <translation>Verander die wagwoord wat ek vir kodifikasie van my beursie gebruik</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -194,12 +194,12 @@
         <translation>Kodifiseer die private sleutes wat aan jou beursie gekoppel is.</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Onderteken boodskappe met u Litecoin adresse om u eienaarskap te bewys</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Onderteken boodskappe met u Magacoin adresse om u eienaarskap te bewys</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verifieër boodskappe om seker te maak dat dit met die gespesifiseerde Litecoin adresse</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verifieër boodskappe om seker te maak dat dit met die gespesifiseerde Magacoin adresse</translation>
     </message>
     <message>
         <source>&amp;Help</source>
@@ -210,8 +210,8 @@
         <translation>Orebalk</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Versoek betalings (genereer QR-kodes en litecoin: URI's)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Versoek betalings (genereer QR-kodes en magacoin: URI's)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -222,23 +222,23 @@
         <translation>Vertoon die lys van gebruikte ontvangers-adresse en etikette</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Skep 'n litecoin: URI of betalingsversoek</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Skep 'n magacoin: URI of betalingsversoek</translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>Blokke op skyf word geïndekseer...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>Blokke op skyf word geprosesseer...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Geen blokbron beskikbaar...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>%n blok van transaksiegeskiedenis geprosesseer.</numerusform><numerusform>%n blokke van transaksiegeskiedenis geprosesseer.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -266,7 +266,7 @@
         <translation>%1 agter</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Laaste ontvange blok is %1 gelede gegenereer.</translation>
     </message>
     <message>
@@ -573,11 +573,11 @@
         <translation>Aantal verbindings</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Blokketting</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Huidige aantal blokke</translation>
     </message>
     <message>
@@ -710,8 +710,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Kern</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Kern</translation>
     </message>
     <message>
         <source>Information</source>
@@ -730,7 +730,7 @@
         <translation>Onvoldoende fondse</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Blokindeks word gelaai...</translation>
     </message>
     <message>

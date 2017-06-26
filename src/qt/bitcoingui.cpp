@@ -82,7 +82,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     unitDisplayControl(0),
     labelEncryptionIcon(0),
     labelConnectionsIcon(0),
-    labelBlocksIcon(0),
+    labelBricksIcon(0),
     progressBarLabel(0),
     progressBar(0),
     progressDialog(0),
@@ -113,7 +113,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     notificator(0),
     rpcConsole(0),
     helpMessageDialog(0),
-    prevBlocks(0),
+    prevBricks(0),
     spinnerFrame(0),
     platformStyle(platformStyle)
 {
@@ -187,30 +187,30 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     statusBar()->setSizeGripEnabled(false);
 
     // Status bar notification icons
-    QFrame *frameBlocks = new QFrame();
-    frameBlocks->setContentsMargins(0,0,0,0);
-    frameBlocks->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    QHBoxLayout *frameBlocksLayout = new QHBoxLayout(frameBlocks);
-    frameBlocksLayout->setContentsMargins(3,0,3,0);
-    frameBlocksLayout->setSpacing(3);
+    QFrame *frameBricks = new QFrame();
+    frameBricks->setContentsMargins(0,0,0,0);
+    frameBricks->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    QHBoxLayout *frameBricksLayout = new QHBoxLayout(frameBricks);
+    frameBricksLayout->setContentsMargins(3,0,3,0);
+    frameBricksLayout->setSpacing(3);
     unitDisplayControl = new UnitDisplayStatusBarControl(platformStyle);
     labelEncryptionIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
-    labelBlocksIcon = new QLabel();
+    labelBricksIcon = new QLabel();
     if(enableWallet)
     {
-        frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(unitDisplayControl);
-        frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(labelEncryptionIcon);
+        frameBricksLayout->addStretch();
+        frameBricksLayout->addWidget(unitDisplayControl);
+        frameBricksLayout->addStretch();
+        frameBricksLayout->addWidget(labelEncryptionIcon);
     }
-    frameBlocksLayout->addStretch();
-    frameBlocksLayout->addWidget(labelConnectionsIcon);
-    frameBlocksLayout->addStretch();
-    frameBlocksLayout->addWidget(labelBlocksIcon);
-    frameBlocksLayout->addStretch();
+    frameBricksLayout->addStretch();
+    frameBricksLayout->addWidget(labelConnectionsIcon);
+    frameBricksLayout->addStretch();
+    frameBricksLayout->addWidget(labelBricksIcon);
+    frameBricksLayout->addStretch();
 
-    // Progress bar and label for blocks download
+    // Progress bar and label for bricks download
     progressBarLabel = new QLabel();
     progressBarLabel->setVisible(false);
     progressBar = new GUIUtil::ProgressBar();
@@ -228,7 +228,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
 
     statusBar()->addWidget(progressBarLabel);
     statusBar()->addWidget(progressBar);
-    statusBar()->addPermanentWidget(frameBlocks);
+    statusBar()->addPermanentWidget(frameBricks);
 
     // Install event filter to be able to catch status tip events (QEvent::StatusTip)
     this->installEventFilter(this);
@@ -268,7 +268,7 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(overviewAction);
 
     sendCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/send"), tr("&Send"), this);
-    sendCoinsAction->setStatusTip(tr("Send coins to a Litecoin address"));
+    sendCoinsAction->setStatusTip(tr("Send coins to a Magacoin address"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
@@ -279,7 +279,7 @@ void BitcoinGUI::createActions()
     sendCoinsMenuAction->setToolTip(sendCoinsMenuAction->statusTip());
 
     receiveCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/receiving_addresses"), tr("&Receive"), this);
-    receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and litecoin: URIs)"));
+    receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and magacoin: URIs)"));
     receiveCoinsAction->setToolTip(receiveCoinsAction->statusTip());
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
@@ -339,9 +339,9 @@ void BitcoinGUI::createActions()
     changePassphraseAction = new QAction(platformStyle->TextColorIcon(":/icons/key"), tr("&Change Passphrase..."), this);
     changePassphraseAction->setStatusTip(tr("Change the passphrase used for wallet encryption"));
     signMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/edit"), tr("Sign &message..."), this);
-    signMessageAction->setStatusTip(tr("Sign messages with your Litecoin addresses to prove you own them"));
+    signMessageAction->setStatusTip(tr("Sign messages with your Magacoin addresses to prove you own them"));
     verifyMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/verify"), tr("&Verify message..."), this);
-    verifyMessageAction->setStatusTip(tr("Verify messages to ensure they were signed with specified Litecoin addresses"));
+    verifyMessageAction->setStatusTip(tr("Verify messages to ensure they were signed with specified Magacoin addresses"));
 
     openRPCConsoleAction = new QAction(platformStyle->TextColorIcon(":/icons/debugwindow"), tr("&Debug window"), this);
     openRPCConsoleAction->setStatusTip(tr("Open debugging and diagnostic console"));
@@ -354,11 +354,11 @@ void BitcoinGUI::createActions()
     usedReceivingAddressesAction->setStatusTip(tr("Show the list of used receiving addresses and labels"));
 
     openAction = new QAction(platformStyle->TextColorIcon(":/icons/open"), tr("Open &URI..."), this);
-    openAction->setStatusTip(tr("Open a litecoin: URI or payment request"));
+    openAction->setStatusTip(tr("Open a magacoin: URI or payment request"));
 
     showHelpMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
-    showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Litecoin command-line options").arg(tr(PACKAGE_NAME)));
+    showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Magacoin command-line options").arg(tr(PACKAGE_NAME)));
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
@@ -461,8 +461,8 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
         setNumConnections(clientModel->getNumConnections());
         connect(clientModel, SIGNAL(numConnectionsChanged(int)), this, SLOT(setNumConnections(int)));
 
-        setNumBlocks(clientModel->getNumBlocks(), clientModel->getLastBlockDate(), clientModel->getVerificationProgress(NULL), false);
-        connect(clientModel, SIGNAL(numBlocksChanged(int,QDateTime,double,bool)), this, SLOT(setNumBlocks(int,QDateTime,double,bool)));
+        setNumBricks(clientModel->getNumBricks(), clientModel->getLastBrickDate(), clientModel->getVerificationProgress(NULL), false);
+        connect(clientModel, SIGNAL(numBricksChanged(int,QDateTime,double,bool)), this, SLOT(setNumBricks(int,QDateTime,double,bool)));
 
         // Receive and report messages from client model
         connect(clientModel, SIGNAL(message(QString,QString,unsigned int)), this, SLOT(message(QString,QString,unsigned int)));
@@ -703,57 +703,57 @@ void BitcoinGUI::setNumConnections(int count)
     default: icon = ":/icons/connect_4"; break;
     }
     labelConnectionsIcon->setPixmap(platformStyle->SingleColorIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-    labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Litecoin network", "", count));
+    labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Magacoin network", "", count));
 }
 
-void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool header)
+void BitcoinGUI::setNumBricks(int count, const QDateTime& brickDate, double nVerificationProgress, bool header)
 {
     if(!clientModel)
         return;
 
-    // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbelled text)
+    // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until wall-sync starts -> garbelled text)
     statusBar()->clearMessage();
 
-    // Acquire current block source
-    enum BlockSource blockSource = clientModel->getBlockSource();
-    switch (blockSource) {
-        case BLOCK_SOURCE_NETWORK:
+    // Acquire current brick source
+    enum BrickSource brickSource = clientModel->getBrickSource();
+    switch (brickSource) {
+        case BRICK_SOURCE_NETWORK:
             if (header) {
                 return;
             }
             progressBarLabel->setText(tr("Synchronizing with network..."));
             break;
-        case BLOCK_SOURCE_DISK:
+        case BRICK_SOURCE_DISK:
             if (header) {
-                progressBarLabel->setText(tr("Indexing blocks on disk..."));
+                progressBarLabel->setText(tr("Indexing bricks on disk..."));
             } else {
-                progressBarLabel->setText(tr("Processing blocks on disk..."));
+                progressBarLabel->setText(tr("Processing bricks on disk..."));
             }
             break;
-        case BLOCK_SOURCE_REINDEX:
-            progressBarLabel->setText(tr("Reindexing blocks on disk..."));
+        case BRICK_SOURCE_REINDEX:
+            progressBarLabel->setText(tr("Reindexing bricks on disk..."));
             break;
-        case BLOCK_SOURCE_NONE:
+        case BRICK_SOURCE_NONE:
             if (header) {
                 return;
             }
             // Case: not Importing, not Reindexing and no network connection
-            progressBarLabel->setText(tr("No block source available..."));
+            progressBarLabel->setText(tr("No brick source available..."));
             break;
     }
 
     QString tooltip;
 
     QDateTime currentDate = QDateTime::currentDateTime();
-    qint64 secs = blockDate.secsTo(currentDate);
+    qint64 secs = brickDate.secsTo(currentDate);
 
-    tooltip = tr("Processed %n block(s) of transaction history.", "", count);
+    tooltip = tr("Processed %n brick(s) of transaction history.", "", count);
 
     // Set icon state: spinning if catching up, tick otherwise
     if(secs < 90*60)
     {
         tooltip = tr("Up to date") + QString(".<br>") + tooltip;
-        labelBlocksIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelBricksIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
 
 #ifdef ENABLE_WALLET
         if(walletFrame)
@@ -765,7 +765,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     }
     else
     {
-        // Represent time from last generated block in human readable text
+        // Represent time from last generated brick in human readable text
         QString timeBehindText;
         const int HOUR_IN_SECONDS = 60*60;
         const int DAY_IN_SECONDS = 24*60*60;
@@ -797,14 +797,14 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
         progressBar->setVisible(true);
 
         tooltip = tr("Catching up...") + QString("<br>") + tooltip;
-        if(count != prevBlocks)
+        if(count != prevBricks)
         {
-            labelBlocksIcon->setPixmap(platformStyle->SingleColorIcon(QString(
+            labelBricksIcon->setPixmap(platformStyle->SingleColorIcon(QString(
                 ":/movies/spinner-%1").arg(spinnerFrame, 3, 10, QChar('0')))
                 .pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
             spinnerFrame = (spinnerFrame + 1) % SPINNER_FRAMES;
         }
-        prevBlocks = count;
+        prevBricks = count;
 
 #ifdef ENABLE_WALLET
         if(walletFrame)
@@ -812,7 +812,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
 #endif // ENABLE_WALLET
 
         tooltip += QString("<br>");
-        tooltip += tr("Last received block was generated %1 ago.").arg(timeBehindText);
+        tooltip += tr("Last received brick was generated %1 ago.").arg(timeBehindText);
         tooltip += QString("<br>");
         tooltip += tr("Transactions after this will not yet be visible.");
     }
@@ -820,14 +820,14 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     // Don't word-wrap this (fixed-width) tooltip
     tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
 
-    labelBlocksIcon->setToolTip(tooltip);
+    labelBricksIcon->setToolTip(tooltip);
     progressBarLabel->setToolTip(tooltip);
     progressBar->setToolTip(tooltip);
 }
 
 void BitcoinGUI::message(const QString &title, const QString &message, unsigned int style, bool *ret)
 {
-    QString strTitle = tr("Litecoin"); // default title
+    QString strTitle = tr("Magacoin"); // default title
     // Default to information icon
     int nMBoxIcon = QMessageBox::Information;
     int nNotifyIcon = Notificator::Information;

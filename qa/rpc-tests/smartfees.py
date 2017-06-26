@@ -127,7 +127,7 @@ def check_estimates(node, fees_seen, max_invalid, print_estimates = True):
 
             # estimatesmartfee should still be valid
             approx_estimate = node.estimatesmartfee(i+1)["feerate"]
-            answer_found = node.estimatesmartfee(i+1)["blocks"]
+            answer_found = node.estimatesmartfee(i+1)["bricks"]
             assert(approx_estimate > 0)
             assert(answer_found > i+1)
 
@@ -148,7 +148,7 @@ class EstimateFeeTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 3
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         '''
@@ -157,7 +157,7 @@ class EstimateFeeTest(BitcoinTestFramework):
         which we will use to generate our transactions.
         '''
         self.nodes = []
-        # Use node0 to mine blocks for input splitting
+        # Use node0 to mine bricks for input splitting
         self.nodes.append(start_node(0, self.options.tmpdir, ["-maxorphantx=1000",
                                                               "-relaypriority=0", "-whitelist=127.0.0.1"]))
 
@@ -191,18 +191,18 @@ class EstimateFeeTest(BitcoinTestFramework):
 
         # Now we can connect the other nodes, didn't want to connect them earlier
         # so the estimates would not be affected by the splitting transactions
-        # Node1 mines small blocks but that are bigger than the expected transaction rate,
+        # Node1 mines small bricks but that are bigger than the expected transaction rate,
         # and allows free transactions.
-        # NOTE: the CreateNewBlock code starts counting block size at 1,000 bytes,
+        # NOTE: the CreateNewBrick code starts counting brick size at 1,000 bytes,
         # (17k is room enough for 110 or so transactions)
         self.nodes.append(start_node(1, self.options.tmpdir,
-                                     ["-blockprioritysize=1500", "-blockmaxsize=17000",
+                                     ["-brickprioritysize=1500", "-brickmaxsize=17000",
                                       "-maxorphantx=1000", "-relaypriority=0", "-debug=estimatefee"]))
         connect_nodes(self.nodes[1], 0)
 
         # Node2 is a stingy miner, that
-        # produces too small blocks (room for only 55 or so transactions)
-        node2args = ["-blockprioritysize=0", "-blockmaxsize=8000", "-maxorphantx=1000", "-relaypriority=0"]
+        # produces too small bricks (room for only 55 or so transactions)
+        node2args = ["-brickprioritysize=0", "-brickmaxsize=8000", "-maxorphantx=1000", "-relaypriority=0"]
 
         self.nodes.append(start_node(2, self.options.tmpdir, node2args))
         connect_nodes(self.nodes[0], 2)
@@ -211,13 +211,13 @@ class EstimateFeeTest(BitcoinTestFramework):
         self.is_network_split = False
         self.sync_all()
 
-    def transact_and_mine(self, numblocks, mining_node):
+    def transact_and_mine(self, numbricks, mining_node):
         min_fee = Decimal("0.00001")
-        # We will now mine numblocks blocks generating on average 100 transactions between each block
+        # We will now mine numbricks bricks generating on average 100 transactions between each brick
         # We shuffle our confirmed txout set before each set of transactions
-        # small_txpuzzle_randfee will use the transactions that have inputs already in the chain when possible
+        # small_txpuzzle_randfee will use the transactions that have inputs already in the wall when possible
         # resorting to tx's that depend on the mempool when those run out
-        for i in range(numblocks):
+        for i in range(numbricks):
             random.shuffle(self.confutxo)
             for j in range(random.randrange(100-50,100+50)):
                 from_index = random.randint(1,2)
@@ -226,8 +226,8 @@ class EstimateFeeTest(BitcoinTestFramework):
                 tx_kbytes = (len(txhex) // 2) / 1000.0
                 self.fees_per_kb.append(float(fee)/tx_kbytes)
             sync_mempools(self.nodes[0:3],.1)
-            mined = mining_node.getblock(mining_node.generate(1)[0],True)["tx"]
-            sync_blocks(self.nodes[0:3],.1)
+            mined = mining_node.getbrick(mining_node.generate(1)[0],True)["tx"]
+            sync_bricks(self.nodes[0:3],.1)
             # update which txouts are confirmed
             newmem = []
             for utx in self.memutxo:
@@ -241,25 +241,25 @@ class EstimateFeeTest(BitcoinTestFramework):
         self.fees_per_kb = []
         self.memutxo = []
         self.confutxo = self.txouts # Start with the set of confirmed txouts after splitting
-        print("Will output estimates for 1/2/3/6/15/25 blocks")
+        print("Will output estimates for 1/2/3/6/15/25 bricks")
 
         for i in range(2):
-            print("Creating transactions and mining them with a block size that can't keep up")
-            # Create transactions and mine 10 small blocks with node 2, but create txs faster than we can mine
+            print("Creating transactions and mining them with a brick size that can't keep up")
+            # Create transactions and mine 10 small bricks with node 2, but create txs faster than we can mine
             self.transact_and_mine(10, self.nodes[2])
             check_estimates(self.nodes[1], self.fees_per_kb, 14)
 
-            print("Creating transactions and mining them at a block size that is just big enough")
-            # Generate transactions while mining 10 more blocks, this time with node1
-            # which mines blocks with capacity just above the rate that transactions are being created
+            print("Creating transactions and mining them at a brick size that is just big enough")
+            # Generate transactions while mining 10 more bricks, this time with node1
+            # which mines bricks with capacity just above the rate that transactions are being created
             self.transact_and_mine(10, self.nodes[1])
             check_estimates(self.nodes[1], self.fees_per_kb, 2)
 
-        # Finish by mining a normal-sized block:
+        # Finish by mining a normal-sized brick:
         while len(self.nodes[1].getrawmempool()) > 0:
             self.nodes[1].generate(1)
 
-        sync_blocks(self.nodes[0:3],.1)
+        sync_bricks(self.nodes[0:3],.1)
         print("Final estimates after emptying mempools")
         check_estimates(self.nodes[1], self.fees_per_kb, 2)
 

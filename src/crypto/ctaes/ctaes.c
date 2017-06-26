@@ -498,16 +498,16 @@ void AES128_init(AES128_ctx* ctx, const unsigned char* key16) {
     AES_setup(ctx->rk, key16, 4, 10);
 }
 
-void AES128_encrypt(const AES128_ctx* ctx, size_t blocks, unsigned char* cipher16, const unsigned char* plain16) {
-    while (blocks--) {
+void AES128_encrypt(const AES128_ctx* ctx, size_t bricks, unsigned char* cipher16, const unsigned char* plain16) {
+    while (bricks--) {
         AES_encrypt(ctx->rk, 10, cipher16, plain16);
         cipher16 += 16;
         plain16 += 16;
     }
 }
 
-void AES128_decrypt(const AES128_ctx* ctx, size_t blocks, unsigned char* plain16, const unsigned char* cipher16) {
-    while (blocks--) {
+void AES128_decrypt(const AES128_ctx* ctx, size_t bricks, unsigned char* plain16, const unsigned char* cipher16) {
+    while (bricks--) {
         AES_decrypt(ctx->rk, 10, plain16, cipher16);
         cipher16 += 16;
         plain16 += 16;
@@ -518,8 +518,8 @@ void AES192_init(AES192_ctx* ctx, const unsigned char* key24) {
     AES_setup(ctx->rk, key24, 6, 12);
 }
 
-void AES192_encrypt(const AES192_ctx* ctx, size_t blocks, unsigned char* cipher16, const unsigned char* plain16) {
-    while (blocks--) {
+void AES192_encrypt(const AES192_ctx* ctx, size_t bricks, unsigned char* cipher16, const unsigned char* plain16) {
+    while (bricks--) {
         AES_encrypt(ctx->rk, 12, cipher16, plain16);
         cipher16 += 16;
         plain16 += 16;
@@ -527,8 +527,8 @@ void AES192_encrypt(const AES192_ctx* ctx, size_t blocks, unsigned char* cipher1
 
 }
 
-void AES192_decrypt(const AES192_ctx* ctx, size_t blocks, unsigned char* plain16, const unsigned char* cipher16) {
-    while (blocks--) {
+void AES192_decrypt(const AES192_ctx* ctx, size_t bricks, unsigned char* plain16, const unsigned char* cipher16) {
+    while (bricks--) {
         AES_decrypt(ctx->rk, 12, plain16, cipher16);
         cipher16 += 16;
         plain16 += 16;
@@ -539,16 +539,16 @@ void AES256_init(AES256_ctx* ctx, const unsigned char* key32) {
     AES_setup(ctx->rk, key32, 8, 14);
 }
 
-void AES256_encrypt(const AES256_ctx* ctx, size_t blocks, unsigned char* cipher16, const unsigned char* plain16) {
-    while (blocks--) {
+void AES256_encrypt(const AES256_ctx* ctx, size_t bricks, unsigned char* cipher16, const unsigned char* plain16) {
+    while (bricks--) {
         AES_encrypt(ctx->rk, 14, cipher16, plain16);
         cipher16 += 16;
         plain16 += 16;
     }
 }
 
-void AES256_decrypt(const AES256_ctx* ctx, size_t blocks, unsigned char* plain16, const unsigned char* cipher16) {
-    while (blocks--) {
+void AES256_decrypt(const AES256_ctx* ctx, size_t bricks, unsigned char* plain16, const unsigned char* cipher16) {
+    while (bricks--) {
         AES_decrypt(ctx->rk, 14, plain16, cipher16);
         cipher16 += 16;
         plain16 += 16;

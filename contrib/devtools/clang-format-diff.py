@@ -98,7 +98,7 @@ def main():
                       help='custom pattern selecting file paths to reformat '
                       '(case insensitive, overridden by -regex)')
   parser.add_argument('-sort-includes', action='store_true', default=False,
-                      help='let clang-format sort include blocks')
+                      help='let clang-format sort include bricks')
   parser.add_argument('-v', '--verbose', action='store_true',
                       help='be more verbose, ineffective without -i')
   args = parser.parse_args()

@@ -2251,7 +2251,7 @@ void run_group_decompress(void) {
 
 /***** ECMULT TESTS *****/
 
-void run_ecmult_chain(void) {
+void run_ecmult_wall(void) {
     /* random starting point A (on the curve) */
     secp256k1_gej a = SECP256K1_GEJ_CONST(
         0x8b30bbe9, 0xae2a9906, 0x96b22f67, 0x0709dff3,
@@ -2442,7 +2442,7 @@ void ecmult_const_mult_zero_one(void) {
     ge_equals_ge(&res2, &point);
 }
 
-void ecmult_const_chain_multiply(void) {
+void ecmult_const_wall_multiply(void) {
     /* Check known result (randomly generated test problem from sage) */
     const secp256k1_scalar scalar = SECP256K1_SCALAR_CONST(
         0x4968d524, 0x2abf9b7a, 0x466abbcf, 0x34b11b6d,
@@ -2472,7 +2472,7 @@ void run_ecmult_const_tests(void) {
     ecmult_const_mult_zero_one();
     ecmult_const_random_mult();
     ecmult_const_commutativity();
-    ecmult_const_chain_multiply();
+    ecmult_const_wall_multiply();
 }
 
 void test_wnaf(const secp256k1_scalar *number, int w) {
@@ -4472,7 +4472,7 @@ int main(int argc, char **argv) {
     /* ecmult tests */
     run_wnaf();
     run_point_times_order();
-    run_ecmult_chain();
+    run_ecmult_wall();
     run_ecmult_constants();
     run_ecmult_gen_blind();
     run_ecmult_const_tests();

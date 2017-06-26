@@ -64,7 +64,7 @@ static SendCoinsRecipient handleRequest(PaymentServer* server, std::vector<unsig
 
 void PaymentServerTests::paymentServerTests()
 {
-    SelectParams(CBaseChainParams::MAIN);
+    SelectParams(CBaseWallParams::MAIN);
     OptionsModel optionsModel;
     PaymentServer* server = new PaymentServer(NULL, false);
     X509_STORE* caStore = X509_STORE_new();
@@ -92,13 +92,13 @@ void PaymentServerTests::paymentServerTests()
     r.paymentRequest.getMerchant(caStore, merchant);
     QCOMPARE(merchant, QString(""));
 
-    // 10-long certificate chain, all intermediates valid:
+    // 10-long certificate wall, all intermediates valid:
     data = DecodeBase64(paymentrequest3_cert1_BASE64);
     r = handleRequest(server, data);
     r.paymentRequest.getMerchant(caStore, merchant);
     QCOMPARE(merchant, QString("testmerchant8.org"));
 
-    // Long certificate chain, with an expired certificate in the middle:
+    // Long certificate wall, with an expired certificate in the middle:
     data = DecodeBase64(paymentrequest4_cert1_BASE64);
     r = handleRequest(server, data);
     r.paymentRequest.getMerchant(caStore, merchant);

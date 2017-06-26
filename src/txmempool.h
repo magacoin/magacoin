@@ -22,7 +22,7 @@
 #include "boost/multi_index/hashed_index.hpp"
 
 class CAutoFile;
-class CBlockIndex;
+class CBrickIndex;
 
 inline double AllowFreeThreshold()
 {
@@ -41,17 +41,17 @@ static const unsigned int MEMPOOL_HEIGHT = 0x7FFFFFFF;
 
 struct LockPoints
 {
-    // Will be set to the blockchain height and median time past
+    // Will be set to the brickwall height and median time past
     // values that would be necessary to satisfy all relative locktime
-    // constraints (BIP68) of this tx given our view of block chain history
+    // constraints (BIP68) of this tx given our view of brick wall history
     int height;
     int64_t time;
-    // As long as the current chain descends from the highest height block
+    // As long as the current wall descends from the highest height brick
     // containing one of the inputs used in the calculation, then the cached
     // values are still valid even after a reorg.
-    CBlockIndex* maxInputBlock;
+    CBrickIndex* maxInputBrick;
 
-    LockPoints() : height(0), time(0), maxInputBlock(NULL) { }
+    LockPoints() : height(0), time(0), maxInputBrick(NULL) { }
 };
 
 class CTxMemPool;
@@ -83,12 +83,12 @@ private:
     size_t nUsageSize;         //!< ... and total memory usage
     int64_t nTime;             //!< Local time when entering the mempool
     double entryPriority;      //!< Priority when entering the mempool
-    unsigned int entryHeight;  //!< Chain height when entering the mempool
+    unsigned int entryHeight;  //!< Wall height when entering the mempool
     bool hadNoDependencies;    //!< Not dependent on any other txs when it entered the mempool
-    CAmount inChainInputValue; //!< Sum of all txin values that are already in blockchain
+    CAmount inWallInputValue; //!< Sum of all txin values that are already in brickwall
     bool spendsCoinbase;       //!< keep track of transactions that spend a coinbase
     int64_t sigOpCost;         //!< Total sigop cost
-    int64_t feeDelta;          //!< Used for determining the priority of the transaction for mining in a block
+    int64_t feeDelta;          //!< Used for determining the priority of the transaction for mining in a brick
     LockPoints lockPoints;     //!< Track the height and time at which tx was final
 
     // Information about descendants of this transaction that are in the
@@ -109,7 +109,7 @@ private:
 public:
     CTxMemPoolEntry(const CTransaction& _tx, const CAmount& _nFee,
                     int64_t _nTime, double _entryPriority, unsigned int _entryHeight,
-                    bool poolHasNoInputsOf, CAmount _inChainInputValue, bool spendsCoinbase,
+                    bool poolHasNoInputsOf, CAmount _inWallInputValue, bool spendsCoinbase,
                     int64_t nSigOpsCost, LockPoints lp);
     CTxMemPoolEntry(const CTxMemPoolEntry& other);
 
@@ -117,7 +117,7 @@ public:
     std::shared_ptr<const CTransaction> GetSharedTx() const { return this->tx; }
     /**
      * Fast calculation of lower bound of current priority as update
-     * from entry priority. Only inputs that were originally in-chain will age.
+     * from entry priority. Only inputs that were originally in-wall will age.
      */
     double GetPriority(unsigned int currentHeight) const;
     const CAmount& GetFee() const { return nFee; }
@@ -310,7 +310,7 @@ struct entry_time {};
 struct mining_score {};
 struct ancestor_score {};
 
-class CBlockPolicyEstimator;
+class CBrickPolicyEstimator;
 
 /**
  * Information about a mempool transaction.
@@ -328,8 +328,8 @@ struct TxMempoolInfo
 };
 
 /**
- * CTxMemPool stores valid-according-to-the-current-best-chain
- * transactions that may be included in the next block.
+ * CTxMemPool stores valid-according-to-the-current-best-wall
+ * transactions that may be included in the next brick.
  *
  * Transactions are added when they are seen on the network
  * (or created by the local node), but not all transactions seen
@@ -375,14 +375,14 @@ struct TxMempoolInfo
  * In the event of a reorg, the assumption that a newly added tx has no
  * in-mempool children is false.  In particular, the mempool is in an
  * inconsistent state while new transactions are being added, because there may
- * be descendant transactions of a tx coming from a disconnected block that are
+ * be descendant transactions of a tx coming from a disconnected brick that are
  * unreachable from just looking at transactions in the mempool (the linking
- * transactions may also be in the disconnected block, waiting to be added).
+ * transactions may also be in the disconnected brick, waiting to be added).
  * Because of this, there's not much benefit in trying to search for in-mempool
  * children in addUnchecked().  Instead, in the special case of transactions
- * being added from a disconnected block, we require the caller to clean up the
- * state, to account for in-mempool, out-of-block descendants for all the
- * in-block transactions by calling UpdateTransactionsFromBlock().  Note that
+ * being added from a disconnected brick, we require the caller to clean up the
+ * state, to account for in-mempool, out-of-brick descendants for all the
+ * in-brick transactions by calling UpdateTransactionsFromBrick().  Note that
  * until this is called, the mempool state is not consistent, and in particular
  * mapLinks may not be correct (and therefore functions like
  * CalculateMemPoolAncestors() and CalculateDescendants() that rely
@@ -395,11 +395,11 @@ struct TxMempoolInfo
  * CalculateMemPoolAncestors() takes configurable limits that are designed to
  * prevent these calculations from being too CPU intensive.
  *
- * Adding transactions from a disconnected block can be very time consuming,
+ * Adding transactions from a disconnected brick can be very time consuming,
  * because we don't have a way to limit the number of in-mempool descendants.
  * To bound CPU processing, we limit the amount of work we're willing to do
  * to properly update the descendant information for a tx being added from
- * a disconnected block.  If we would exceed the limit, then we instead mark
+ * a disconnected brick.  If we would exceed the limit, then we instead mark
  * the entry as "dirty", and set the feerate for sorting purposes to be equal
  * the feerate of the transaction without any descendants.
  *
@@ -409,7 +409,7 @@ class CTxMemPool
 private:
     uint32_t nCheckFrequency; //!< Value n means that n times in 2^32 we check.
     unsigned int nTransactionsUpdated;
-    CBlockPolicyEstimator* minerPolicyEstimator;
+    CBrickPolicyEstimator* minerPolicyEstimator;
 
     uint64_t totalTxSize;      //!< sum of all mempool tx' byte sizes
     uint64_t cachedInnerUsage; //!< sum of dynamic memory usage of all the map elements (NOT the maps themselves)
@@ -417,7 +417,7 @@ private:
     CFeeRate minReasonableRelayFee;
 
     mutable int64_t lastRollingFeeUpdate;
-    mutable bool blockSinceLastRollingFeeBump;
+    mutable bool brickSinceLastRollingFeeBump;
     mutable double rollingMinimumFeeRate; //!< minimum fee to get into the pool, decreases exponentially
 
     void trackPackageRemoved(const CFeeRate& rate);
@@ -520,7 +520,7 @@ public:
     void removeRecursive(const CTransaction &tx, std::list<CTransaction>& removed);
     void removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight, int flags);
     void removeConflicts(const CTransaction &tx, std::list<CTransaction>& removed);
-    void removeForBlock(const std::vector<CTransaction>& vtx, unsigned int nBlockHeight,
+    void removeForBrick(const std::vector<CTransaction>& vtx, unsigned int nBrickHeight,
                         std::list<CTransaction>& conflicts, bool fCurrentEstimate = true);
     void clear();
     void _clear(); //lock free
@@ -531,11 +531,11 @@ public:
     void AddTransactionsUpdated(unsigned int n);
     /**
      * Check that none of this transactions inputs are in the mempool, and thus
-     * the tx is not dependent on other mempool transactions to be included in a block.
+     * the tx is not dependent on other mempool transactions to be included in a brick.
      */
     bool HasNoInputsOf(const CTransaction& tx) const;
 
-    /** Affect CreateNewBlock prioritisation of transactions */
+    /** Affect CreateNewBrick prioritisation of transactions */
     void PrioritiseTransaction(const uint256 hash, const std::string strHash, double dPriorityDelta, const CAmount& nFeeDelta);
     void ApplyDeltas(const uint256 hash, double &dPriorityDelta, CAmount &nFeeDelta) const;
     void ClearPrioritisation(const uint256 hash);
@@ -544,22 +544,22 @@ public:
     /** Remove a set of transactions from the mempool.
      *  If a transaction is in this set, then all in-mempool descendants must
      *  also be in the set, unless this transaction is being removed for being
-     *  in a block.
-     *  Set updateDescendants to true when removing a tx that was in a block, so
+     *  in a brick.
+     *  Set updateDescendants to true when removing a tx that was in a brick, so
      *  that any in-mempool descendants have their ancestor state updated.
      */
     void RemoveStaged(setEntries &stage, bool updateDescendants);
 
-    /** When adding transactions from a disconnected block back to the mempool,
+    /** When adding transactions from a disconnected brick back to the mempool,
      *  new mempool entries may have children in the mempool (which is generally
      *  not the case when otherwise adding transactions).
-     *  UpdateTransactionsFromBlock() will find child transactions and update the
+     *  UpdateTransactionsFromBrick() will find child transactions and update the
      *  descendant state for each transaction in hashesToUpdate (excluding any
      *  child transactions present in hashesToUpdate, which are already accounted
      *  for).  Note: hashesToUpdate should be the set of transactions from the
-     *  disconnected block that have been accepted back into the mempool.
+     *  disconnected brick that have been accepted back into the mempool.
      */
-    void UpdateTransactionsFromBlock(const std::vector<uint256> &hashesToUpdate);
+    void UpdateTransactionsFromBrick(const std::vector<uint256> &hashesToUpdate);
 
     /** Try to calculate all in-mempool ancestors of entry.
      *  (these are all calculated including the tx itself)
@@ -595,8 +595,8 @@ public:
     /** Expire all transaction (and their dependencies) in the mempool older than time. Return the number of removed transactions. */
     int Expire(int64_t time);
 
-    /** Returns false if the transaction is in the mempool and not within the chain limit specified. */
-    bool TransactionWithinChainLimit(const uint256& txid, size_t chainLimit) const;
+    /** Returns false if the transaction is in the mempool and not within the wall limit specified. */
+    bool TransactionWithinWallLimit(const uint256& txid, size_t wallLimit) const;
 
     unsigned long size()
     {
@@ -620,23 +620,23 @@ public:
     TxMempoolInfo info(const uint256& hash) const;
     std::vector<TxMempoolInfo> infoAll() const;
 
-    /** Estimate fee rate needed to get into the next nBlocks
-     *  If no answer can be given at nBlocks, return an estimate
-     *  at the lowest number of blocks where one can be given
+    /** Estimate fee rate needed to get into the next nBricks
+     *  If no answer can be given at nBricks, return an estimate
+     *  at the lowest number of bricks where one can be given
      */
-    CFeeRate estimateSmartFee(int nBlocks, int *answerFoundAtBlocks = NULL) const;
+    CFeeRate estimateSmartFee(int nBricks, int *answerFoundAtBricks = NULL) const;
 
-    /** Estimate fee rate needed to get into the next nBlocks */
-    CFeeRate estimateFee(int nBlocks) const;
+    /** Estimate fee rate needed to get into the next nBricks */
+    CFeeRate estimateFee(int nBricks) const;
 
-    /** Estimate priority needed to get into the next nBlocks
-     *  If no answer can be given at nBlocks, return an estimate
-     *  at the lowest number of blocks where one can be given
+    /** Estimate priority needed to get into the next nBricks
+     *  If no answer can be given at nBricks, return an estimate
+     *  at the lowest number of bricks where one can be given
      */
-    double estimateSmartPriority(int nBlocks, int *answerFoundAtBlocks = NULL) const;
+    double estimateSmartPriority(int nBricks, int *answerFoundAtBricks = NULL) const;
 
-    /** Estimate priority needed to get into the next nBlocks */
-    double estimatePriority(int nBlocks) const;
+    /** Estimate priority needed to get into the next nBricks */
+    double estimatePriority(int nBricks) const;
     
     /** Write/Read estimates to disk */
     bool WriteFeeEstimates(CAutoFile& fileout) const;
@@ -645,10 +645,10 @@ public:
     size_t DynamicMemoryUsage() const;
 
 private:
-    /** UpdateForDescendants is used by UpdateTransactionsFromBlock to update
+    /** UpdateForDescendants is used by UpdateTransactionsFromBrick to update
      *  the descendants for a single transaction that has been added to the
      *  mempool but may have child transactions in the mempool, eg during a
-     *  chain reorg.  setExclude is the set of descendant transactions in the
+     *  wall reorg.  setExclude is the set of descendant transactions in the
      *  mempool that must not be accounted for (because any descendants in
      *  setExclude were added to the mempool after the transaction being
      *  updated and hence their state is already reflected in the parent
@@ -656,7 +656,7 @@ private:
      *
      *  cachedDescendants will be updated with the descendants of the transaction
      *  being updated, so that future invocations don't need to walk the
-     *  same transaction again, if encountered in another transaction chain.
+     *  same transaction again, if encountered in another transaction wall.
      */
     void UpdateForDescendants(txiter updateIt,
             cacheMap &cachedDescendants,
@@ -677,7 +677,7 @@ private:
      *  of transactions being removed at the same time.  We use each
      *  CTxMemPoolEntry's setMemPoolParents in order to walk ancestors of a
      *  given transaction that is removed, so we can't remove intermediate
-     *  transactions in a chain before we've updated all the state for the
+     *  transactions in a wall before we've updated all the state for the
      *  removal.
      */
     void removeUnchecked(txiter entry);

@@ -28,7 +28,7 @@ DOXYFILE_ENCODING      = UTF-8
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded 
 # by quotes) that should identify the project.
 
-PROJECT_NAME           = "Litecoin Core"
+PROJECT_NAME           = "Magacoin Core"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. 
 # This could be handy for archiving the generated documentation or 
@@ -174,9 +174,9 @@ JAVADOC_AUTOBRIEF      = YES
 QT_AUTOBRIEF           = NO
 
 # The MULTILINE_CPP_IS_BRIEF tag can be set to YES to make Doxygen 
-# treat a multi-line C++ special comment block (i.e. a block of //! or /// 
+# treat a multi-line C++ special comment brick (i.e. a brick of //! or /// 
 # comments) as a brief description. This used to be the default behaviour. 
-# The new default is to treat a multi-line C++ comment block as a detailed 
+# The new default is to treat a multi-line C++ comment brick as a detailed 
 # description. Set this tag to YES if you prefer the old behaviour instead.
 
 MULTILINE_CPP_IS_BRIEF = NO
@@ -387,9 +387,9 @@ HIDE_UNDOC_CLASSES     = NO
 HIDE_FRIEND_COMPOUNDS  = NO
 
 # If the HIDE_IN_BODY_DOCS tag is set to YES, Doxygen will hide any 
-# documentation blocks found inside the body of a function. 
-# If set to NO (the default) these blocks will be appended to the 
-# function's detailed documentation block.
+# documentation bricks found inside the body of a function. 
+# If set to NO (the default) these bricks will be appended to the 
+# function's detailed documentation brick.
 
 HIDE_IN_BODY_DOCS      = NO
 
@@ -783,7 +783,7 @@ SOURCE_BROWSER         = YES
 INLINE_SOURCES         = NO
 
 # Setting the STRIP_CODE_COMMENTS tag to YES (the default) will instruct 
-# doxygen to hide any special comment blocks from generated source code 
+# doxygen to hide any special comment bricks from generated source code 
 # fragments. Normal C and C++ comments will always remain visible.
 
 STRIP_CODE_COMMENTS    = YES

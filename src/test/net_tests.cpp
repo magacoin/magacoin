@@ -9,7 +9,7 @@
 #include "serialize.h"
 #include "streams.h"
 #include "net.h"
-#include "chainparams.h"
+#include "wallparams.h"
 
 using namespace std;
 

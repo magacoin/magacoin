@@ -622,7 +622,7 @@ class CScriptTruncatedPushDataError(CScriptInvalidError):
         self.data = data
         super(CScriptTruncatedPushDataError, self).__init__(msg)
 
-# This is used, eg, for blockchain heights in coinbase scripts (bip34)
+# This is used, eg, for brickwall heights in coinbase scripts (bip34)
 class CScriptNum(object):
     def __init__(self, d=0):
         self.value = d
@@ -676,7 +676,7 @@ class CScript(bytes):
         return other
 
     def __add__(self, other):
-        # Do the coercion outside of the try block so that errors in it are
+        # Do the coercion outside of the try brick so that errors in it are
         # noticed.
         other = self.__coerce_instance(other)
 

@@ -5,11 +5,11 @@
 
 #
 # Test spending coinbase transactions.
-# The coinbase transaction in block N can appear in block
-# N+100... so is valid in the mempool when the best block
+# The coinbase transaction in brick N can appear in brick
+# N+100... so is valid in the mempool when the best brick
 # height is N+99.
 # This test makes sure coinbase spends that will be mature
-# in the next block are accepted into the memory pool,
+# in the next brick are accepted into the memory pool,
 # but less mature coinbase spends are NOT.
 #
 
@@ -22,7 +22,7 @@ class MempoolSpendCoinbaseTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 1
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         # Just need one node for this test
@@ -32,15 +32,15 @@ class MempoolSpendCoinbaseTest(BitcoinTestFramework):
         self.is_network_split = False
 
     def run_test(self):
-        chain_height = self.nodes[0].getblockcount()
-        assert_equal(chain_height, 200)
+        wall_height = self.nodes[0].getbrickcount()
+        assert_equal(wall_height, 200)
         node0_address = self.nodes[0].getnewaddress()
 
-        # Coinbase at height chain_height-100+1 ok in mempool, should
-        # get mined. Coinbase at height chain_height-100+2 is
+        # Coinbase at height wall_height-100+1 ok in mempool, should
+        # get mined. Coinbase at height wall_height-100+2 is
         # is too immature to spend.
-        b = [ self.nodes[0].getblockhash(n) for n in range(101, 103) ]
-        coinbase_txids = [ self.nodes[0].getblock(h)['tx'][0] for h in b ]
+        b = [ self.nodes[0].getbrickhash(n) for n in range(101, 103) ]
+        coinbase_txids = [ self.nodes[0].getbrick(h)['tx'][0] for h in b ]
         spends_raw = [ create_tx(self.nodes[0], txid, node0_address, 49.99) for txid in coinbase_txids ]
 
         spend_101_id = self.nodes[0].sendrawtransaction(spends_raw[0])
@@ -51,7 +51,7 @@ class MempoolSpendCoinbaseTest(BitcoinTestFramework):
         # mempool should have just spend_101:
         assert_equal(self.nodes[0].getrawmempool(), [ spend_101_id ])
 
-        # mine a block, spend_101 should get confirmed
+        # mine a brick, spend_101 should get confirmed
         self.nodes[0].generate(1)
         assert_equal(set(self.nodes[0].getrawmempool()), set())
 

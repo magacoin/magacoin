@@ -27,15 +27,15 @@ typedef struct {
 } AES256_ctx;
 
 void AES128_init(AES128_ctx* ctx, const unsigned char* key16);
-void AES128_encrypt(const AES128_ctx* ctx, size_t blocks, unsigned char* cipher16, const unsigned char* plain16);
-void AES128_decrypt(const AES128_ctx* ctx, size_t blocks, unsigned char* plain16, const unsigned char* cipher16);
+void AES128_encrypt(const AES128_ctx* ctx, size_t bricks, unsigned char* cipher16, const unsigned char* plain16);
+void AES128_decrypt(const AES128_ctx* ctx, size_t bricks, unsigned char* plain16, const unsigned char* cipher16);
 
 void AES192_init(AES192_ctx* ctx, const unsigned char* key24);
-void AES192_encrypt(const AES192_ctx* ctx, size_t blocks, unsigned char* cipher16, const unsigned char* plain16);
-void AES192_decrypt(const AES192_ctx* ctx, size_t blocks, unsigned char* plain16, const unsigned char* cipher16);
+void AES192_encrypt(const AES192_ctx* ctx, size_t bricks, unsigned char* cipher16, const unsigned char* plain16);
+void AES192_decrypt(const AES192_ctx* ctx, size_t bricks, unsigned char* plain16, const unsigned char* cipher16);
 
 void AES256_init(AES256_ctx* ctx, const unsigned char* key32);
-void AES256_encrypt(const AES256_ctx* ctx, size_t blocks, unsigned char* cipher16, const unsigned char* plain16);
-void AES256_decrypt(const AES256_ctx* ctx, size_t blocks, unsigned char* plain16, const unsigned char* cipher16);
+void AES256_encrypt(const AES256_ctx* ctx, size_t bricks, unsigned char* cipher16, const unsigned char* plain16);
+void AES256_decrypt(const AES256_ctx* ctx, size_t bricks, unsigned char* plain16, const unsigned char* cipher16);
 
 #endif

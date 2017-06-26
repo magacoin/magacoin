@@ -11,8 +11,8 @@
 
 #include "addrman.h"
 #include "amount.h"
-#include "chain.h"
-#include "chainparams.h"
+#include "wall.h"
+#include "wallparams.h"
 #include "checkpoints.h"
 #include "compat/sanity.h"
 #include "consensus/validation.h"
@@ -67,7 +67,7 @@ bool fFeeEstimatesInitialized = false;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_DISABLE_SAFEMODE = false;
-static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
+static const bool DEFAULT_STOPAFTERBRICKIMPORT = false;
 
 
 #if ENABLE_ZMQ
@@ -76,7 +76,7 @@ static CZMQNotificationInterface* pzmqNotificationInterface = NULL;
 
 #ifdef WIN32
 // Win32 LevelDB doesn't use filedescriptors, and the ones used for
-// accessing block files don't count towards the fd_set size limit
+// accessing brick files don't count towards the fd_set size limit
 // anyway.
 #define MIN_CORE_FILEDESCRIPTORS 0
 #else
@@ -136,7 +136,7 @@ bool ShutdownRequested()
 
 /**
  * This is a minimally invasive approach to shutdown on LevelDB read errors from the
- * chainstate, while keeping user interface out of the common library, which is shared
+ * wallstate, while keeping user interface out of the common library, which is shared
  * between bitcoind, and bitcoin-qt and non-server tools.
 */
 class CCoinsViewErrorCatcher : public CCoinsViewBacked
@@ -185,7 +185,7 @@ void Shutdown()
     /// for example if the data directory was found to be locked.
     /// Be sure that anything that writes files or flushes caches only does this if the respective
     /// module was initialized.
-    RenameThread("litecoin-shutoff");
+    RenameThread("magacoin-shutoff");
     mempool.AddTransactionsUpdated(1);
 
     StopHTTPRPC();
@@ -222,8 +222,8 @@ void Shutdown()
         pcoinscatcher = NULL;
         delete pcoinsdbview;
         pcoinsdbview = NULL;
-        delete pblocktree;
-        pblocktree = NULL;
+        delete pbricktree;
+        pbricktree = NULL;
     }
 #ifdef ENABLE_WALLET
     if (pwalletMain)
@@ -282,7 +282,7 @@ bool static Bind(const CService &addr, unsigned int flags) {
 
 void OnRPCStopped()
 {
-    cvBlockChange.notify_all();
+    cvBrickChange.notify_all();
     LogPrint("rpc", "RPC stopped.\n");
 }
 
@@ -305,11 +305,11 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-?", _("Print this help message and exit"));
     strUsage += HelpMessageOpt("-version", _("Print version and exit"));
     strUsage += HelpMessageOpt("-alertnotify=<cmd>", _("Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)"));
-    strUsage += HelpMessageOpt("-blocknotify=<cmd>", _("Execute command when the best block changes (%s in cmd is replaced by block hash)"));
+    strUsage += HelpMessageOpt("-bricknotify=<cmd>", _("Execute command when the best brick changes (%s in cmd is replaced by brick hash)"));
     if (showDebug)
-        strUsage += HelpMessageOpt("-blocksonly", strprintf(_("Whether to operate in a blocks only mode (default: %u)"), DEFAULT_BLOCKSONLY));
-    strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), DEFAULT_CHECKBLOCKS));
-    strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), DEFAULT_CHECKLEVEL));
+        strUsage += HelpMessageOpt("-bricksonly", strprintf(_("Whether to operate in a bricks only mode (default: %u)"), DEFAULT_BRICKSONLY));
+    strUsage += HelpMessageOpt("-checkbricks=<n>", strprintf(_("How many bricks to check at startup (default: %u, 0 = all)"), DEFAULT_CHECKBRICKS));
+    strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the brick verification of -checkbricks is (0-4, default: %u)"), DEFAULT_CHECKLEVEL));
     strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), BITCOIN_CONF_FILENAME));
     if (mode == HMM_BITCOIND)
     {
@@ -321,7 +321,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-dbcache=<n>", strprintf(_("Set database cache size in megabytes (%d to %d, default: %d)"), nMinDbCache, nMaxDbCache, nDefaultDbCache));
     if (showDebug)
         strUsage += HelpMessageOpt("-feefilter", strprintf("Tell other nodes to filter invs to us by our mempool min fee (default: %u)", DEFAULT_FEEFILTER));
-    strUsage += HelpMessageOpt("-loadblock=<file>", _("Imports blocks from external blk000??.dat file on startup"));
+    strUsage += HelpMessageOpt("-loadbrick=<file>", _("Imports bricks from external blk000??.dat file on startup"));
     strUsage += HelpMessageOpt("-maxorphantx=<n>", strprintf(_("Keep at most <n> unconnectable transactions in memory (default: %u)"), DEFAULT_MAX_ORPHAN_TRANSACTIONS));
     strUsage += HelpMessageOpt("-maxmempool=<n>", strprintf(_("Keep the transaction memory pool below <n> megabytes (default: %u)"), DEFAULT_MAX_MEMPOOL_SIZE));
     strUsage += HelpMessageOpt("-mempoolexpiry=<n>", strprintf(_("Do not keep transactions in the mempool longer than <n> hours (default: %u)"), DEFAULT_MEMPOOL_EXPIRY));
@@ -330,11 +330,11 @@ std::string HelpMessage(HelpMessageMode mode)
 #ifndef WIN32
     strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), BITCOIN_PID_FILENAME));
 #endif
-    strUsage += HelpMessageOpt("-prune=<n>", strprintf(_("Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. "
-            "Warning: Reverting this setting requires re-downloading the entire blockchain. "
-            "(default: 0 = disable pruning blocks, >%u = target size in MiB to use for block files)"), MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024));
-    strUsage += HelpMessageOpt("-reindex-chainstate", _("Rebuild chain state from the currently indexed blocks"));
-    strUsage += HelpMessageOpt("-reindex", _("Rebuild chain state and block index from the blk*.dat files on disk"));
+    strUsage += HelpMessageOpt("-prune=<n>", strprintf(_("Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. "
+            "Warning: Reverting this setting requires re-downloading the entire brickwall. "
+            "(default: 0 = disable pruning bricks, >%u = target size in MiB to use for brick files)"), MIN_DISK_SPACE_FOR_BRICK_FILES / 1024 / 1024));
+    strUsage += HelpMessageOpt("-reindex-wallstate", _("Rebuild wall state from the currently indexed bricks"));
+    strUsage += HelpMessageOpt("-reindex", _("Rebuild wall state and brick index from the blk*.dat files on disk"));
 #ifndef WIN32
     strUsage += HelpMessageOpt("-sysperms", _("Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)"));
 #endif
@@ -360,11 +360,11 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-onion=<ip:port>", strprintf(_("Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)"), "-proxy"));
     strUsage += HelpMessageOpt("-onlynet=<net>", _("Only connect to nodes in network <net> (ipv4, ipv6 or onion)"));
     strUsage += HelpMessageOpt("-permitbaremultisig", strprintf(_("Relay non-P2SH multisig (default: %u)"), DEFAULT_PERMIT_BAREMULTISIG));
-    strUsage += HelpMessageOpt("-peerbloomfilters", strprintf(_("Support filtering of blocks and transaction with bloom filters (default: %u)"), DEFAULT_PEERBLOOMFILTERS));
-    strUsage += HelpMessageOpt("-port=<port>", strprintf(_("Listen for connections on <port> (default: %u or testnet: %u)"), Params(CBaseChainParams::MAIN).GetDefaultPort(), Params(CBaseChainParams::TESTNET).GetDefaultPort()));
+    strUsage += HelpMessageOpt("-peerbloomfilters", strprintf(_("Support filtering of bricks and transaction with bloom filters (default: %u)"), DEFAULT_PEERBLOOMFILTERS));
+    strUsage += HelpMessageOpt("-port=<port>", strprintf(_("Listen for connections on <port> (default: %u or testnet: %u)"), Params(CBaseWallParams::MAIN).GetDefaultPort(), Params(CBaseWallParams::TESTNET).GetDefaultPort()));
     strUsage += HelpMessageOpt("-proxy=<ip:port>", _("Connect through SOCKS5 proxy"));
     strUsage += HelpMessageOpt("-proxyrandomize", strprintf(_("Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)"), DEFAULT_PROXYRANDOMIZE));
-    strUsage += HelpMessageOpt("-rpcserialversion", strprintf(_("Sets the serialization of raw transaction or block hex returned in non-verbose mode, non-segwit(0) or segwit(1) (default: %d)"), DEFAULT_RPC_SERIALIZE_VERSION));
+    strUsage += HelpMessageOpt("-rpcserialversion", strprintf(_("Sets the serialization of raw transaction or brick hex returned in non-verbose mode, non-segwit(0) or segwit(1) (default: %d)"), DEFAULT_RPC_SERIALIZE_VERSION));
     strUsage += HelpMessageOpt("-seednode=<ip>", _("Connect to a node to retrieve peer addresses, and disconnect"));
     strUsage += HelpMessageOpt("-timeout=<n>", strprintf(_("Specify connection timeout in milliseconds (minimum: 1, default: %d)"), DEFAULT_CONNECT_TIMEOUT));
     strUsage += HelpMessageOpt("-torcontrol=<ip>:<port>", strprintf(_("Tor control port to use if onion listening enabled (default: %s)"), DEFAULT_TOR_CONTROL));
@@ -389,9 +389,9 @@ std::string HelpMessage(HelpMessageMode mode)
 
 #if ENABLE_ZMQ
     strUsage += HelpMessageGroup(_("ZeroMQ notification options:"));
-    strUsage += HelpMessageOpt("-zmqpubhashblock=<address>", _("Enable publish hash block in <address>"));
+    strUsage += HelpMessageOpt("-zmqpubhashbrick=<address>", _("Enable publish hash brick in <address>"));
     strUsage += HelpMessageOpt("-zmqpubhashtx=<address>", _("Enable publish hash transaction in <address>"));
-    strUsage += HelpMessageOpt("-zmqpubrawblock=<address>", _("Enable publish raw block in <address>"));
+    strUsage += HelpMessageOpt("-zmqpubrawbrick=<address>", _("Enable publish raw brick in <address>"));
     strUsage += HelpMessageOpt("-zmqpubrawtx=<address>", _("Enable publish raw transaction in <address>"));
 #endif
 
@@ -399,21 +399,21 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-uacomment=<cmt>", _("Append comment to the user agent string"));
     if (showDebug)
     {
-        strUsage += HelpMessageOpt("-checkblockindex", strprintf("Do a full consistency check for mapBlockIndex, setBlockIndexCandidates, chainActive and mapBlocksUnlinked occasionally. Also sets -checkmempool (default: %u)", Params(CBaseChainParams::MAIN).DefaultConsistencyChecks()));
-        strUsage += HelpMessageOpt("-checkmempool=<n>", strprintf("Run checks every <n> transactions (default: %u)", Params(CBaseChainParams::MAIN).DefaultConsistencyChecks()));
-        strUsage += HelpMessageOpt("-checkpoints", strprintf("Disable expensive verification for known chain history (default: %u)", DEFAULT_CHECKPOINTS_ENABLED));
+        strUsage += HelpMessageOpt("-checkbrickindex", strprintf("Do a full consistency check for mapBrickIndex, setBrickIndexCandidates, wallActive and mapBricksUnlinked occasionally. Also sets -checkmempool (default: %u)", Params(CBaseWallParams::MAIN).DefaultConsistencyChecks()));
+        strUsage += HelpMessageOpt("-checkmempool=<n>", strprintf("Run checks every <n> transactions (default: %u)", Params(CBaseWallParams::MAIN).DefaultConsistencyChecks()));
+        strUsage += HelpMessageOpt("-checkpoints", strprintf("Disable expensive verification for known wall history (default: %u)", DEFAULT_CHECKPOINTS_ENABLED));
         strUsage += HelpMessageOpt("-disablesafemode", strprintf("Disable safemode, override a real safe mode event (default: %u)", DEFAULT_DISABLE_SAFEMODE));
         strUsage += HelpMessageOpt("-testsafemode", strprintf("Force safe mode (default: %u)", DEFAULT_TESTSAFEMODE));
         strUsage += HelpMessageOpt("-dropmessagestest=<n>", "Randomly drop 1 of every <n> network messages");
         strUsage += HelpMessageOpt("-fuzzmessagestest=<n>", "Randomly fuzz 1 of every <n> network messages");
-        strUsage += HelpMessageOpt("-stopafterblockimport", strprintf("Stop running after importing blocks from disk (default: %u)", DEFAULT_STOPAFTERBLOCKIMPORT));
+        strUsage += HelpMessageOpt("-stopafterbrickimport", strprintf("Stop running after importing bricks from disk (default: %u)", DEFAULT_STOPAFTERBRICKIMPORT));
         strUsage += HelpMessageOpt("-limitancestorcount=<n>", strprintf("Do not accept transactions if number of in-mempool ancestors is <n> or more (default: %u)", DEFAULT_ANCESTOR_LIMIT));
         strUsage += HelpMessageOpt("-limitancestorsize=<n>", strprintf("Do not accept transactions whose size with all in-mempool ancestors exceeds <n> kilobytes (default: %u)", DEFAULT_ANCESTOR_SIZE_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantcount=<n>", strprintf("Do not accept transactions if any ancestor would have <n> or more in-mempool descendants (default: %u)", DEFAULT_DESCENDANT_LIMIT));
         strUsage += HelpMessageOpt("-limitdescendantsize=<n>", strprintf("Do not accept transactions if any ancestor would have more than <n> kilobytes of in-mempool descendants (default: %u).", DEFAULT_DESCENDANT_SIZE_LIMIT));
         strUsage += HelpMessageOpt("-bip9params=deployment:start:end", "Use given start/end times for specified bip9 deployment (regtest-only)");
     }
-    string debugCategories = "addrman, alert, bench, cmpctblock, coindb, db, http, libevent, lock, mempool, mempoolrej, net, proxy, prune, rand, reindex, rpc, selectcoins, tor, zmq"; // Don't translate these and qt below
+    string debugCategories = "addrman, alert, bench, cmpctbrick, coindb, db, http, libevent, lock, mempool, mempoolrej, net, proxy, prune, rand, reindex, rpc, selectcoins, tor, zmq"; // Don't translate these and qt below
     if (mode == HMM_BITCOIN_QT)
         debugCategories += ", qt";
     strUsage += HelpMessageOpt("-debug=<category>", strprintf(_("Output debugging information (default: %u, supplying <category> is optional)"), 0) + ". " +
@@ -430,7 +430,7 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-limitfreerelay=<n>", strprintf("Continuously rate-limit free transactions to <n>*1000 bytes per minute (default: %u)", DEFAULT_LIMITFREERELAY));
         strUsage += HelpMessageOpt("-relaypriority", strprintf("Require high priority for relaying free or low-fee transactions (default: %u)", DEFAULT_RELAYPRIORITY));
         strUsage += HelpMessageOpt("-maxsigcachesize=<n>", strprintf("Limit size of signature cache to <n> MiB (default: %u)", DEFAULT_MAX_SIG_CACHE_SIZE));
-        strUsage += HelpMessageOpt("-maxtipage=<n>", strprintf("Maximum tip age in seconds to consider node in initial block download (default: %u)", DEFAULT_MAX_TIP_AGE));
+        strUsage += HelpMessageOpt("-maxtipage=<n>", strprintf("Maximum tip age in seconds to consider node in initial brick download (default: %u)", DEFAULT_MAX_TIP_AGE));
     }
     strUsage += HelpMessageOpt("-minrelaytxfee=<amt>", strprintf(_("Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)"),
         CURRENCY_UNIT, FormatMoney(DEFAULT_MIN_RELAY_TX_FEE)));
@@ -439,7 +439,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-printtoconsole", _("Send trace/debug info to console instead of debug.log file"));
     if (showDebug)
     {
-        strUsage += HelpMessageOpt("-printpriority", strprintf("Log transaction priority and fee per kB when mining blocks (default: %u)", DEFAULT_PRINTPRIORITY));
+        strUsage += HelpMessageOpt("-printpriority", strprintf("Log transaction priority and fee per kB when mining bricks (default: %u)", DEFAULT_PRINTPRIORITY));
     }
     strUsage += HelpMessageOpt("-shrinkdebugfile", _("Shrink debug.log file on client startup (default: 1 when no -debug)"));
 
@@ -447,18 +447,18 @@ std::string HelpMessage(HelpMessageMode mode)
 
     strUsage += HelpMessageGroup(_("Node relay options:"));
     if (showDebug)
-        strUsage += HelpMessageOpt("-acceptnonstdtxn", strprintf("Relay and mine \"non-standard\" transactions (%sdefault: %u)", "testnet/regtest only; ", !Params(CBaseChainParams::TESTNET).RequireStandard()));
+        strUsage += HelpMessageOpt("-acceptnonstdtxn", strprintf("Relay and mine \"non-standard\" transactions (%sdefault: %u)", "testnet/regtest only; ", !Params(CBaseWallParams::TESTNET).RequireStandard()));
     strUsage += HelpMessageOpt("-bytespersigop", strprintf(_("Equivalent bytes per sigop in transactions for relay and mining (default: %u)"), DEFAULT_BYTES_PER_SIGOP));
     strUsage += HelpMessageOpt("-datacarrier", strprintf(_("Relay and mine data carrier transactions (default: %u)"), DEFAULT_ACCEPT_DATACARRIER));
     strUsage += HelpMessageOpt("-datacarriersize", strprintf(_("Maximum size of data in data carrier transactions we relay and mine (default: %u)"), MAX_OP_RETURN_RELAY));
     strUsage += HelpMessageOpt("-mempoolreplacement", strprintf(_("Enable transaction replacement in the memory pool (default: %u)"), DEFAULT_ENABLE_REPLACEMENT));
 
-    strUsage += HelpMessageGroup(_("Block creation options:"));
-    strUsage += HelpMessageOpt("-blockmaxweight=<n>", strprintf(_("Set maximum BIP141 block weight (default: %d)"), DEFAULT_BLOCK_MAX_WEIGHT));
-    strUsage += HelpMessageOpt("-blockmaxsize=<n>", strprintf(_("Set maximum block size in bytes (default: %d)"), DEFAULT_BLOCK_MAX_SIZE));
-    strUsage += HelpMessageOpt("-blockprioritysize=<n>", strprintf(_("Set maximum size of high-priority/low-fee transactions in bytes (default: %d)"), DEFAULT_BLOCK_PRIORITY_SIZE));
+    strUsage += HelpMessageGroup(_("Brick creation options:"));
+    strUsage += HelpMessageOpt("-brickmaxweight=<n>", strprintf(_("Set maximum BIP141 brick weight (default: %d)"), DEFAULT_BRICK_MAX_WEIGHT));
+    strUsage += HelpMessageOpt("-brickmaxsize=<n>", strprintf(_("Set maximum brick size in bytes (default: %d)"), DEFAULT_BRICK_MAX_SIZE));
+    strUsage += HelpMessageOpt("-brickprioritysize=<n>", strprintf(_("Set maximum size of high-priority/low-fee transactions in bytes (default: %d)"), DEFAULT_BRICK_PRIORITY_SIZE));
     if (showDebug)
-        strUsage += HelpMessageOpt("-blockversion=<n>", "Override block version to test forking scenarios");
+        strUsage += HelpMessageOpt("-brickversion=<n>", "Override brick version to test forking scenarios");
 
     strUsage += HelpMessageGroup(_("RPC server options:"));
     strUsage += HelpMessageOpt("-server", _("Accept command line and JSON-RPC commands"));
@@ -468,7 +468,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-rpcuser=<user>", _("Username for JSON-RPC connections"));
     strUsage += HelpMessageOpt("-rpcpassword=<pw>", _("Password for JSON-RPC connections"));
     strUsage += HelpMessageOpt("-rpcauth=<userpw>", _("Username and hashed password for JSON-RPC connections. The field <userpw> comes in the format: <USERNAME>:<SALT>$<HASH>. A canonical python script is included in share/rpcuser. This option can be specified multiple times"));
-    strUsage += HelpMessageOpt("-rpcport=<port>", strprintf(_("Listen for JSON-RPC connections on <port> (default: %u or testnet: %u)"), BaseParams(CBaseChainParams::MAIN).RPCPort(), BaseParams(CBaseChainParams::TESTNET).RPCPort()));
+    strUsage += HelpMessageOpt("-rpcport=<port>", strprintf(_("Listen for JSON-RPC connections on <port> (default: %u or testnet: %u)"), BaseParams(CBaseWallParams::MAIN).RPCPort(), BaseParams(CBaseWallParams::TESTNET).RPCPort()));
     strUsage += HelpMessageOpt("-rpcallowip=<ip>", _("Allow JSON-RPC connections from specified source. Valid for <ip> are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times"));
     strUsage += HelpMessageOpt("-rpcthreads=<n>", strprintf(_("Set the number of threads to service RPC calls (default: %d)"), DEFAULT_HTTP_THREADS));
     if (showDebug) {
@@ -481,8 +481,8 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/litecoin-project/litecoin>";
-    const std::string URL_WEBSITE = "<https://litecoin.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/magacoin-project/magacoin>";
+    const std::string URL_WEBSITE = "<https://magacoin.org>";
     // todo: remove urls from translations on next change
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2011, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
@@ -501,14 +501,14 @@ std::string LicenseInfo()
            "\n";
 }
 
-static void BlockNotifyCallback(bool initialSync, const CBlockIndex *pBlockIndex)
+static void BrickNotifyCallback(bool initialSync, const CBrickIndex *pBrickIndex)
 {
-    if (initialSync || !pBlockIndex)
+    if (initialSync || !pBrickIndex)
         return;
 
-    std::string strCmd = GetArg("-blocknotify", "");
+    std::string strCmd = GetArg("-bricknotify", "");
 
-    boost::replace_all(strCmd, "%s", pBlockIndex->GetBlockHash().GetHex());
+    boost::replace_all(strCmd, "%s", pBrickIndex->GetBrickHash().GetHex());
     boost::thread t(runCommand, strCmd); // thread runs free
 }
 
@@ -516,9 +516,9 @@ static bool fHaveGenesis = false;
 static boost::mutex cs_GenesisWait;
 static CConditionVariable condvar_GenesisWait;
 
-static void BlockNotifyGenesisWait(bool, const CBlockIndex *pBlockIndex)
+static void BrickNotifyGenesisWait(bool, const CBrickIndex *pBrickIndex)
 {
-    if (pBlockIndex != NULL) {
+    if (pBrickIndex != NULL) {
         {
             boost::unique_lock<boost::mutex> lock_GenesisWait(cs_GenesisWait);
             fHaveGenesis = true;
@@ -541,40 +541,40 @@ struct CImportingNow
 };
 
 
-// If we're using -prune with -reindex, then delete block files that will be ignored by the
-// reindex.  Since reindexing works by starting at block file 0 and looping until a blockfile
-// is missing, do the same here to delete any later block files after a gap.  Also delete all
-// rev files since they'll be rewritten by the reindex anyway.  This ensures that vinfoBlockFile
+// If we're using -prune with -reindex, then delete brick files that will be ignored by the
+// reindex.  Since reindexing works by starting at brick file 0 and looping until a brickfile
+// is missing, do the same here to delete any later brick files after a gap.  Also delete all
+// rev files since they'll be rewritten by the reindex anyway.  This ensures that vinfoBrickFile
 // is in sync with what's actually on disk by the time we start downloading, so that pruning
 // works correctly.
-void CleanupBlockRevFiles()
+void CleanupBrickRevFiles()
 {
     using namespace boost::filesystem;
-    map<string, path> mapBlockFiles;
+    map<string, path> mapBrickFiles;
 
-    // Glob all blk?????.dat and rev?????.dat files from the blocks directory.
+    // Glob all blk?????.dat and rev?????.dat files from the bricks directory.
     // Remove the rev files immediately and insert the blk file paths into an
-    // ordered map keyed by block file index.
+    // ordered map keyed by brick file index.
     LogPrintf("Removing unusable blk?????.dat and rev?????.dat files for -reindex with -prune\n");
-    path blocksdir = GetDataDir() / "blocks";
-    for (directory_iterator it(blocksdir); it != directory_iterator(); it++) {
+    path bricksdir = GetDataDir() / "bricks";
+    for (directory_iterator it(bricksdir); it != directory_iterator(); it++) {
         if (is_regular_file(*it) &&
             it->path().filename().string().length() == 12 &&
             it->path().filename().string().substr(8,4) == ".dat")
         {
             if (it->path().filename().string().substr(0,3) == "blk")
-                mapBlockFiles[it->path().filename().string().substr(3,5)] = it->path();
+                mapBrickFiles[it->path().filename().string().substr(3,5)] = it->path();
             else if (it->path().filename().string().substr(0,3) == "rev")
                 remove(it->path());
         }
     }
 
-    // Remove all block files that aren't part of a contiguous set starting at
-    // zero by walking the ordered map (keys are block file indices) by
+    // Remove all brick files that aren't part of a contiguous set starting at
+    // zero by walking the ordered map (keys are brick file indices) by
     // keeping a separate counter.  Once we hit a gap (or if 0 doesn't exist)
-    // start removing block files.
+    // start removing brick files.
     int nContigCounter = 0;
-    BOOST_FOREACH(const PAIRTYPE(string, path)& item, mapBlockFiles) {
+    BOOST_FOREACH(const PAIRTYPE(string, path)& item, mapBrickFiles) {
         if (atoi(item.first) == nContigCounter) {
             nContigCounter++;
             continue;
@@ -585,29 +585,29 @@ void CleanupBlockRevFiles()
 
 void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
-    const CChainParams& chainparams = Params();
-    RenameThread("litecoin-loadblk");
+    const CWallParams& wallparams = Params();
+    RenameThread("magacoin-loadblk");
     CImportingNow imp;
 
     // -reindex
     if (fReindex) {
         int nFile = 0;
         while (true) {
-            CDiskBlockPos pos(nFile, 0);
-            if (!boost::filesystem::exists(GetBlockPosFilename(pos, "blk")))
-                break; // No block files left to reindex
-            FILE *file = OpenBlockFile(pos, true);
+            CDiskBrickPos pos(nFile, 0);
+            if (!boost::filesystem::exists(GetBrickPosFilename(pos, "blk")))
+                break; // No brick files left to reindex
+            FILE *file = OpenBrickFile(pos, true);
             if (!file)
-                break; // This error is logged in OpenBlockFile
-            LogPrintf("Reindexing block file blk%05u.dat...\n", (unsigned int)nFile);
-            LoadExternalBlockFile(chainparams, file, &pos);
+                break; // This error is logged in OpenBrickFile
+            LogPrintf("Reindexing brick file blk%05u.dat...\n", (unsigned int)nFile);
+            LoadExternalBrickFile(wallparams, file, &pos);
             nFile++;
         }
-        pblocktree->WriteReindexing(false);
+        pbricktree->WriteReindexing(false);
         fReindex = false;
         LogPrintf("Reindexing finished\n");
-        // To avoid ending up in a situation without genesis block, re-try initializing (no-op if reindexing worked):
-        InitBlockIndex(chainparams);
+        // To avoid ending up in a situation without genesis brick, re-try initializing (no-op if reindexing worked):
+        InitBrickIndex(wallparams);
     }
 
     // hardcoded $DATADIR/bootstrap.dat
@@ -617,33 +617,33 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
         if (file) {
             boost::filesystem::path pathBootstrapOld = GetDataDir() / "bootstrap.dat.old";
             LogPrintf("Importing bootstrap.dat...\n");
-            LoadExternalBlockFile(chainparams, file);
+            LoadExternalBrickFile(wallparams, file);
             RenameOver(pathBootstrap, pathBootstrapOld);
         } else {
             LogPrintf("Warning: Could not open bootstrap file %s\n", pathBootstrap.string());
         }
     }
 
-    // -loadblock=
+    // -loadbrick=
     BOOST_FOREACH(const boost::filesystem::path& path, vImportFiles) {
         FILE *file = fopen(path.string().c_str(), "rb");
         if (file) {
-            LogPrintf("Importing blocks file %s...\n", path.string());
-            LoadExternalBlockFile(chainparams, file);
+            LogPrintf("Importing bricks file %s...\n", path.string());
+            LoadExternalBrickFile(wallparams, file);
         } else {
-            LogPrintf("Warning: Could not open blocks file %s\n", path.string());
+            LogPrintf("Warning: Could not open bricks file %s\n", path.string());
         }
     }
 
-    // scan for better chains in the block chain database, that are not yet connected in the active best chain
+    // scan for better walls in the brick wall database, that are not yet connected in the active best wall
     CValidationState state;
-    if (!ActivateBestChain(state, chainparams)) {
-        LogPrintf("Failed to connect best block");
+    if (!ActivateBestWall(state, wallparams)) {
+        LogPrintf("Failed to connect best brick");
         StartShutdown();
     }
 
-    if (GetBoolArg("-stopafterblockimport", DEFAULT_STOPAFTERBLOCKIMPORT)) {
-        LogPrintf("Stopping after block import\n");
+    if (GetBoolArg("-stopafterbrickimport", DEFAULT_STOPAFTERBRICKIMPORT)) {
+        LogPrintf("Stopping after brick import\n");
         StartShutdown();
     }
 }
@@ -744,13 +744,13 @@ void InitParameterInteraction()
             LogPrintf("%s: parameter interaction: -zapwallettxes=<mode> -> setting -rescan=1\n", __func__);
     }
 
-    // disable walletbroadcast and whitelistrelay in blocksonly mode
-    if (GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY)) {
+    // disable walletbroadcast and whitelistrelay in bricksonly mode
+    if (GetBoolArg("-bricksonly", DEFAULT_BRICKSONLY)) {
         if (SoftSetBoolArg("-whitelistrelay", false))
-            LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -whitelistrelay=0\n", __func__);
+            LogPrintf("%s: parameter interaction: -bricksonly=1 -> setting -whitelistrelay=0\n", __func__);
 #ifdef ENABLE_WALLET
         if (SoftSetBoolArg("-walletbroadcast", false))
-            LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
+            LogPrintf("%s: parameter interaction: -bricksonly=1 -> setting -walletbroadcast=0\n", __func__);
 #endif
     }
 
@@ -774,7 +774,7 @@ void InitLogging()
     fLogIPs = GetBoolArg("-logips", DEFAULT_LOGIPS);
 
     LogPrintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    LogPrintf("Litecoin version %s\n", FormatFullVersion());
+    LogPrintf("Magacoin version %s\n", FormatFullVersion());
 }
 
 /** Initialize bitcoin.
@@ -839,17 +839,17 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 #endif
 
     // ********************************************************* Step 2: parameter interactions
-    const CChainParams& chainparams = Params();
+    const CWallParams& wallparams = Params();
 
     // also see: InitParameterInteraction()
 
-    // if using block pruning, then disable txindex
+    // if using brick pruning, then disable txindex
     if (GetArg("-prune", 0)) {
         if (GetBoolArg("-txindex", DEFAULT_TXINDEX))
             return InitError(_("Prune mode is incompatible with -txindex."));
 #ifdef ENABLE_WALLET
         if (GetBoolArg("-rescan", false)) {
-            return InitError(_("Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again."));
+            return InitError(_("Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again."));
         }
 #endif
     }
@@ -895,15 +895,15 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (GetBoolArg("-whitelistalwaysrelay", false))
         InitWarning(_("Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay."));
 
-    if (mapArgs.count("-blockminsize"))
-        InitWarning("Unsupported argument -blockminsize ignored.");
+    if (mapArgs.count("-brickminsize"))
+        InitWarning("Unsupported argument -brickminsize ignored.");
 
-    // Checkmempool and checkblockindex default to true in regtest mode
-    int ratio = std::min<int>(std::max<int>(GetArg("-checkmempool", chainparams.DefaultConsistencyChecks() ? 1 : 0), 0), 1000000);
+    // Checkmempool and checkbrickindex default to true in regtest mode
+    int ratio = std::min<int>(std::max<int>(GetArg("-checkmempool", wallparams.DefaultConsistencyChecks() ? 1 : 0), 0), 1000000);
     if (ratio != 0) {
         mempool.setSanityCheck(1.0 / ratio);
     }
-    fCheckBlockIndex = GetBoolArg("-checkblockindex", chainparams.DefaultConsistencyChecks());
+    fCheckBrickIndex = GetBoolArg("-checkbrickindex", wallparams.DefaultConsistencyChecks());
     fCheckpointsEnabled = GetBoolArg("-checkpoints", DEFAULT_CHECKPOINTS_ENABLED);
 
     // mempool limits
@@ -923,17 +923,17 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     fServer = GetBoolArg("-server", false);
 
-    // block pruning; get the amount of disk space (in MiB) to allot for block & undo files
+    // brick pruning; get the amount of disk space (in MiB) to allot for brick & undo files
     int64_t nSignedPruneTarget = GetArg("-prune", 0) * 1024 * 1024;
     if (nSignedPruneTarget < 0) {
         return InitError(_("Prune cannot be configured with a negative value."));
     }
     nPruneTarget = (uint64_t) nSignedPruneTarget;
     if (nPruneTarget) {
-        if (nPruneTarget < MIN_DISK_SPACE_FOR_BLOCK_FILES) {
-            return InitError(strprintf(_("Prune configured below the minimum of %d MiB.  Please use a higher number."), MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024));
+        if (nPruneTarget < MIN_DISK_SPACE_FOR_BRICK_FILES) {
+            return InitError(strprintf(_("Prune configured below the minimum of %d MiB.  Please use a higher number."), MIN_DISK_SPACE_FOR_BRICK_FILES / 1024 / 1024));
         }
-        LogPrintf("Prune configured to target %uMiB on disk for block and undo files.\n", nPruneTarget / 1024 / 1024);
+        LogPrintf("Prune configured to target %uMiB on disk for brick and undo files.\n", nPruneTarget / 1024 / 1024);
         fPruneMode = true;
     }
 
@@ -951,7 +951,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // Fee-per-kilobyte amount considered the same as "free"
     // If you are mining, be careful setting this:
     // if you set it to zero then
-    // a transaction spammer can cheaply fill blocks using
+    // a transaction spammer can cheaply fill bricks using
     // 1-satoshi-fee transactions. It should be set above the real
     // cost to you of processing a transaction.
     if (mapArgs.count("-minrelaytxfee"))
@@ -965,7 +965,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     fRequireStandard = !GetBoolArg("-acceptnonstdtxn", !Params().RequireStandard());
     if (Params().RequireStandard() && !fRequireStandard)
-        return InitError(strprintf("acceptnonstdtxn is not currently supported for %s chain", chainparams.NetworkIDString()));
+        return InitError(strprintf("acceptnonstdtxn is not currently supported for %s wall", wallparams.NetworkIDString()));
     nBytesPerSigOp = GetArg("-bytespersigop", nBytesPerSigOp);
 
 #ifdef ENABLE_WALLET
@@ -1002,7 +1002,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     if (!mapMultiArgs["-bip9params"].empty()) {
         // Allow overriding bip9 parameters for testing
-        if (!Params().MineBlocksOnDemand()) {
+        if (!Params().MineBricksOnDemand()) {
             return InitError("BIP9 parameters may only be overridden on regtest.");
         }
         const vector<string>& deployments = mapMultiArgs["-bip9params"];
@@ -1191,7 +1191,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     fListen = GetBoolArg("-listen", DEFAULT_LISTEN);
     fDiscover = GetBoolArg("-discover", true);
     fNameLookup = GetBoolArg("-dns", DEFAULT_NAME_LOOKUP);
-    fRelayTxes = !GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY);
+    fRelayTxes = !GetBoolArg("-bricksonly", DEFAULT_BRICKSONLY);
 
     bool fBound = false;
     if (fListen) {
@@ -1245,28 +1245,28 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         CNode::SetMaxOutboundTarget(GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET)*1024*1024);
     }
 
-    // ********************************************************* Step 7: load block chain
+    // ********************************************************* Step 7: load brick wall
 
     fReindex = GetBoolArg("-reindex", false);
-    bool fReindexChainState = GetBoolArg("-reindex-chainstate", false);
+    bool fReindexWallState = GetBoolArg("-reindex-wallstate", false);
 
-    // Upgrading to 0.8; hard-link the old blknnnn.dat files into /blocks/
-    boost::filesystem::path blocksDir = GetDataDir() / "blocks";
-    if (!boost::filesystem::exists(blocksDir))
+    // Upgrading to 0.8; hard-link the old blknnnn.dat files into /bricks/
+    boost::filesystem::path bricksDir = GetDataDir() / "bricks";
+    if (!boost::filesystem::exists(bricksDir))
     {
-        boost::filesystem::create_directories(blocksDir);
+        boost::filesystem::create_directories(bricksDir);
         bool linked = false;
         for (unsigned int i = 1; i < 10000; i++) {
             boost::filesystem::path source = GetDataDir() / strprintf("blk%04u.dat", i);
             if (!boost::filesystem::exists(source)) break;
-            boost::filesystem::path dest = blocksDir / strprintf("blk%05u.dat", i-1);
+            boost::filesystem::path dest = bricksDir / strprintf("blk%05u.dat", i-1);
             try {
                 boost::filesystem::create_hard_link(source, dest);
                 LogPrintf("Hardlinked %s -> %s\n", source.string(), dest.string());
                 linked = true;
             } catch (const boost::filesystem::filesystem_error& e) {
                 // Note: hardlink creation failing is not a disaster, it just means
-                // blocks will get re-downloaded from peers.
+                // bricks will get re-downloaded from peers.
                 LogPrintf("Error hardlinking blk%04u.dat: %s\n", i, e.what());
                 break;
             }
@@ -1281,16 +1281,16 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     int64_t nTotalCache = (GetArg("-dbcache", nDefaultDbCache) << 20);
     nTotalCache = std::max(nTotalCache, nMinDbCache << 20); // total cache cannot be less than nMinDbCache
     nTotalCache = std::min(nTotalCache, nMaxDbCache << 20); // total cache cannot be greater than nMaxDbcache
-    int64_t nBlockTreeDBCache = nTotalCache / 8;
-    nBlockTreeDBCache = std::min(nBlockTreeDBCache, (GetBoolArg("-txindex", DEFAULT_TXINDEX) ? nMaxBlockDBAndTxIndexCache : nMaxBlockDBCache) << 20);
-    nTotalCache -= nBlockTreeDBCache;
+    int64_t nBrickTreeDBCache = nTotalCache / 8;
+    nBrickTreeDBCache = std::min(nBrickTreeDBCache, (GetBoolArg("-txindex", DEFAULT_TXINDEX) ? nMaxBrickDBAndTxIndexCache : nMaxBrickDBCache) << 20);
+    nTotalCache -= nBrickTreeDBCache;
     int64_t nCoinDBCache = std::min(nTotalCache / 2, (nTotalCache / 4) + (1 << 23)); // use 25%-50% of the remainder for disk cache
     nCoinDBCache = std::min(nCoinDBCache, nMaxCoinsDBCache << 20); // cap total coins db cache
     nTotalCache -= nCoinDBCache;
     nCoinCacheUsage = nTotalCache; // the rest goes to in-memory cache
     LogPrintf("Cache configuration:\n");
-    LogPrintf("* Using %.1fMiB for block index database\n", nBlockTreeDBCache * (1.0 / 1024 / 1024));
-    LogPrintf("* Using %.1fMiB for chain state database\n", nCoinDBCache * (1.0 / 1024 / 1024));
+    LogPrintf("* Using %.1fMiB for brick index database\n", nBrickTreeDBCache * (1.0 / 1024 / 1024));
+    LogPrintf("* Using %.1fMiB for wall state database\n", nCoinDBCache * (1.0 / 1024 / 1024));
     LogPrintf("* Using %.1fMiB for in-memory UTXO set\n", nCoinCacheUsage * (1.0 / 1024 / 1024));
 
     bool fLoaded = false;
@@ -1298,91 +1298,91 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         bool fReset = fReindex;
         std::string strLoadError;
 
-        uiInterface.InitMessage(_("Loading block index..."));
+        uiInterface.InitMessage(_("Loading brick index..."));
 
         nStart = GetTimeMillis();
         do {
             try {
-                UnloadBlockIndex();
+                UnloadBrickIndex();
                 delete pcoinsTip;
                 delete pcoinsdbview;
                 delete pcoinscatcher;
-                delete pblocktree;
+                delete pbricktree;
 
-                pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex);
-                pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex || fReindexChainState);
+                pbricktree = new CBrickTreeDB(nBrickTreeDBCache, false, fReindex);
+                pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex || fReindexWallState);
                 pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
                 pcoinsTip = new CCoinsViewCache(pcoinscatcher);
 
                 if (fReindex) {
-                    pblocktree->WriteReindexing(true);
-                    //If we're reindexing in prune mode, wipe away unusable block files and all undo data files
+                    pbricktree->WriteReindexing(true);
+                    //If we're reindexing in prune mode, wipe away unusable brick files and all undo data files
                     if (fPruneMode)
-                        CleanupBlockRevFiles();
+                        CleanupBrickRevFiles();
                 }
 
-                if (!LoadBlockIndex()) {
-                    strLoadError = _("Error loading block database");
+                if (!LoadBrickIndex()) {
+                    strLoadError = _("Error loading brick database");
                     break;
                 }
 
-                // If the loaded chain has a wrong genesis, bail out immediately
+                // If the loaded wall has a wrong genesis, bail out immediately
                 // (we're likely using a testnet datadir, or the other way around).
-                if (!mapBlockIndex.empty() && mapBlockIndex.count(chainparams.GetConsensus().hashGenesisBlock) == 0)
-                    return InitError(_("Incorrect or no genesis block found. Wrong datadir for network?"));
+                if (!mapBrickIndex.empty() && mapBrickIndex.count(wallparams.GetConsensus().hashGenesisBrick) == 0)
+                    return InitError(_("Incorrect or no genesis brick found. Wrong datadir for network?"));
 
-                // Initialize the block index (no-op if non-empty database was already loaded)
-                if (!InitBlockIndex(chainparams)) {
-                    strLoadError = _("Error initializing block database");
+                // Initialize the brick index (no-op if non-empty database was already loaded)
+                if (!InitBrickIndex(wallparams)) {
+                    strLoadError = _("Error initializing brick database");
                     break;
                 }
 
                 // Check for changed -txindex state
                 if (fTxIndex != GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
-                    strLoadError = _("You need to rebuild the database using -reindex-chainstate to change -txindex");
+                    strLoadError = _("You need to rebuild the database using -reindex-wallstate to change -txindex");
                     break;
                 }
 
-                // Check for changed -prune state.  What we are concerned about is a user who has pruned blocks
+                // Check for changed -prune state.  What we are concerned about is a user who has pruned bricks
                 // in the past, but is now trying to run unpruned.
                 if (fHavePruned && !fPruneMode) {
-                    strLoadError = _("You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain");
+                    strLoadError = _("You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall");
                     break;
                 }
 
-                if (!fReindex && chainActive.Tip() != NULL) {
-                    uiInterface.InitMessage(_("Rewinding blocks..."));
-                    if (!RewindBlockIndex(chainparams)) {
-                        strLoadError = _("Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain");
+                if (!fReindex && wallActive.Tip() != NULL) {
+                    uiInterface.InitMessage(_("Rewinding bricks..."));
+                    if (!RewindBrickIndex(wallparams)) {
+                        strLoadError = _("Unable to rewind the database to a pre-fork state. You will need to redownload the brickwall");
                         break;
                     }
                 }
 
-                uiInterface.InitMessage(_("Verifying blocks..."));
-                if (fHavePruned && GetArg("-checkblocks", DEFAULT_CHECKBLOCKS) > MIN_BLOCKS_TO_KEEP) {
-                    LogPrintf("Prune: pruned datadir may not have more than %d blocks; only checking available blocks",
-                        MIN_BLOCKS_TO_KEEP);
+                uiInterface.InitMessage(_("Verifying bricks..."));
+                if (fHavePruned && GetArg("-checkbricks", DEFAULT_CHECKBRICKS) > MIN_BRICKS_TO_KEEP) {
+                    LogPrintf("Prune: pruned datadir may not have more than %d bricks; only checking available bricks",
+                        MIN_BRICKS_TO_KEEP);
                 }
 
                 {
                     LOCK(cs_main);
-                    CBlockIndex* tip = chainActive.Tip();
+                    CBrickIndex* tip = wallActive.Tip();
                     if (tip && tip->nTime > GetAdjustedTime() + 2 * 60 * 60) {
-                        strLoadError = _("The block database contains a block which appears to be from the future. "
+                        strLoadError = _("The brick database contains a brick which appears to be from the future. "
                                 "This may be due to your computer's date and time being set incorrectly. "
-                                "Only rebuild the block database if you are sure that your computer's date and time are correct");
+                                "Only rebuild the brick database if you are sure that your computer's date and time are correct");
                         break;
                     }
                 }
 
-                if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview, GetArg("-checklevel", DEFAULT_CHECKLEVEL),
-                              GetArg("-checkblocks", DEFAULT_CHECKBLOCKS))) {
-                    strLoadError = _("Corrupted block database detected");
+                if (!CVerifyDB().VerifyDB(wallparams, pcoinsdbview, GetArg("-checklevel", DEFAULT_CHECKLEVEL),
+                              GetArg("-checkbricks", DEFAULT_CHECKBRICKS))) {
+                    strLoadError = _("Corrupted brick database detected");
                     break;
                 }
             } catch (const std::exception& e) {
                 if (fDebug) LogPrintf("%s\n", e.what());
-                strLoadError = _("Error opening block database");
+                strLoadError = _("Error opening brick database");
                 break;
             }
 
@@ -1393,14 +1393,14 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             // first suggest a reindex
             if (!fReset) {
                 bool fRet = uiInterface.ThreadSafeQuestion(
-                    strLoadError + ".\n\n" + _("Do you want to rebuild the block database now?"),
-                    strLoadError + ".\nPlease restart with -reindex or -reindex-chainstate to recover.",
+                    strLoadError + ".\n\n" + _("Do you want to rebuild the brick database now?"),
+                    strLoadError + ".\nPlease restart with -reindex or -reindex-wallstate to recover.",
                     "", CClientUIInterface::MSG_ERROR | CClientUIInterface::BTN_ABORT);
                 if (fRet) {
                     fReindex = true;
                     fRequestShutdown = false;
                 } else {
-                    LogPrintf("Aborted block database rebuild. Exiting.\n");
+                    LogPrintf("Aborted brick database rebuild. Exiting.\n");
                     return false;
                 }
             } else {
@@ -1409,7 +1409,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
     }
 
-    // As LoadBlockIndex can take several minutes, it's possible the user
+    // As LoadBrickIndex can take several minutes, it's possible the user
     // requested to kill the GUI during the last operation. If so, exit.
     // As the program has not fully started yet, Shutdown() is possibly overkill.
     if (fRequestShutdown)
@@ -1417,7 +1417,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         LogPrintf("Shutdown requested. Exiting.\n");
         return false;
     }
-    LogPrintf(" block index %15dms\n", GetTimeMillis() - nStart);
+    LogPrintf(" brick index %15dms\n", GetTimeMillis() - nStart);
 
     boost::filesystem::path est_path = GetDataDir() / FEE_ESTIMATES_FILENAME;
     CAutoFile est_filein(fopen(est_path.string().c_str(), "rb"), SER_DISK, CLIENT_VERSION);
@@ -1442,13 +1442,13 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // ********************************************************* Step 9: data directory maintenance
 
-    // if pruning, unset the service bit and perform the initial blockstore prune
+    // if pruning, unset the service bit and perform the initial brickstore prune
     // after any wallet rescanning has taken place.
     if (fPruneMode) {
         LogPrintf("Unsetting NODE_NETWORK on prune mode\n");
         nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
         if (!fReindex) {
-            uiInterface.InitMessage(_("Pruning blockstore..."));
+            uiInterface.InitMessage(_("Pruning brickstore..."));
             PruneAndFlush();
         }
     }
@@ -1465,38 +1465,38 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         nRelevantServices = ServiceFlags(nRelevantServices | NODE_WITNESS);
     }
 
-    // ********************************************************* Step 10: import blocks
+    // ********************************************************* Step 10: import bricks
 
     if (!CheckDiskSpace())
         return false;
 
     // Either install a handler to notify us when genesis activates, or set fHaveGenesis directly.
     // No locking, as this happens before any background thread is started.
-    if (chainActive.Tip() == NULL) {
-        uiInterface.NotifyBlockTip.connect(BlockNotifyGenesisWait);
+    if (wallActive.Tip() == NULL) {
+        uiInterface.NotifyBrickTip.connect(BrickNotifyGenesisWait);
     } else {
         fHaveGenesis = true;
     }
 
-    if (mapArgs.count("-blocknotify"))
-        uiInterface.NotifyBlockTip.connect(BlockNotifyCallback);
+    if (mapArgs.count("-bricknotify"))
+        uiInterface.NotifyBrickTip.connect(BrickNotifyCallback);
 
     std::vector<boost::filesystem::path> vImportFiles;
-    if (mapArgs.count("-loadblock"))
+    if (mapArgs.count("-loadbrick"))
     {
-        BOOST_FOREACH(const std::string& strFile, mapMultiArgs["-loadblock"])
+        BOOST_FOREACH(const std::string& strFile, mapMultiArgs["-loadbrick"])
             vImportFiles.push_back(strFile);
     }
 
     threadGroup.create_thread(boost::bind(&ThreadImport, vImportFiles));
 
-    // Wait for genesis block to be processed
+    // Wait for genesis brick to be processed
     {
         boost::unique_lock<boost::mutex> lock(cs_GenesisWait);
         while (!fHaveGenesis) {
             condvar_GenesisWait.wait(lock);
         }
-        uiInterface.NotifyBlockTip.disconnect(BlockNotifyGenesisWait);
+        uiInterface.NotifyBrickTip.disconnect(BrickNotifyGenesisWait);
     }
 
     // ********************************************************* Step 11: start node
@@ -1505,8 +1505,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         return InitError(strErrors.str());
 
     //// debug print
-    LogPrintf("mapBlockIndex.size() = %u\n",   mapBlockIndex.size());
-    LogPrintf("nBestHeight = %d\n",                   chainActive.Height());
+    LogPrintf("mapBrickIndex.size() = %u\n",   mapBrickIndex.size());
+    LogPrintf("nBestHeight = %d\n",                   wallActive.Height());
 #ifdef ENABLE_WALLET
     LogPrintf("setKeyPool.size() = %u\n",      pwalletMain ? pwalletMain->setKeyPool.size() : 0);
     LogPrintf("mapWallet.size() = %u\n",       pwalletMain ? pwalletMain->mapWallet.size() : 0);
@@ -1525,7 +1525,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
 #ifdef ENABLE_WALLET
     if (pwalletMain) {
-        // Add wallet transactions that aren't already in a block to mapTransactions
+        // Add wallet transactions that aren't already in a brick to mapTransactions
         pwalletMain->ReacceptWalletTransactions();
 
         // Run a thread to flush wallet periodically

@@ -316,22 +316,22 @@ Performance can be tuned by changing the default values of the
 types defined in <code>include/leveldb/options.h</code>.
 
 <p>
-<h2>Block size</h2>
+<h2>Brick size</h2>
 <p>
-<code>leveldb</code> groups adjacent keys together into the same block and such a
-block is the unit of transfer to and from persistent storage.  The
-default block size is approximately 4096 uncompressed bytes.
+<code>leveldb</code> groups adjacent keys together into the same brick and such a
+brick is the unit of transfer to and from persistent storage.  The
+default brick size is approximately 4096 uncompressed bytes.
 Applications that mostly do bulk scans over the contents of the
 database may wish to increase this size.  Applications that do a lot
-of point reads of small values may wish to switch to a smaller block
+of point reads of small values may wish to switch to a smaller brick
 size if performance measurements indicate an improvement.  There isn't
-much benefit in using blocks smaller than one kilobyte, or larger than
+much benefit in using bricks smaller than one kilobyte, or larger than
 a few megabytes.  Also note that compression will be more effective
-with larger block sizes.
+with larger brick sizes.
 <p>
 <h2>Compression</h2>
 <p>
-Each block is individually compressed before being written to
+Each brick is individually compressed before being written to
 persistent storage.  Compression is on by default since the default
 compression method is very fast, and is automatically disabled for
 uncompressible data.  In rare cases, applications may want to disable
@@ -346,9 +346,9 @@ performance improvement:
 <h2>Cache</h2>
 <p>
 The contents of the database are stored in a set of files in the
-filesystem and each file stores a sequence of compressed blocks.  If
+filesystem and each file stores a sequence of compressed bricks.  If
 <code>options.cache</code> is non-NULL, it is used to cache frequently used
-uncompressed block contents.
+uncompressed brick contents.
 <p>
 <pre>
   #include "leveldb/cache.h"
@@ -363,7 +363,7 @@ uncompressed block contents.
 </pre>
 Note that the cache holds uncompressed data, and therefore it should
 be sized according to application level data sizes, without any
-reduction from compression.  (Caching of compressed blocks is left to
+reduction from compression.  (Caching of compressed bricks is left to
 the operating system buffer cache, or any custom <code>Env</code>
 implementation provided by the client.)
 <p>
@@ -382,9 +382,9 @@ used to achieve this:
 </pre>
 <h2>Key Layout</h2>
 <p>
-Note that the unit of disk transfer and caching is a block.  Adjacent
+Note that the unit of disk transfer and caching is a brick.  Adjacent
 keys (according to the database sort order) will usually be placed in
-the same block.  Therefore the application can improve its performance
+the same brick.  Therefore the application can improve its performance
 by placing keys that are accessed together near each other and placing
 infrequently used keys in a separate region of the key space.
 <p>
@@ -392,11 +392,11 @@ For example, suppose we are implementing a simple file system on top
 of <code>leveldb</code>.  The types of entries we might wish to store are:
 <p>
 <pre>
-   filename -&gt; permission-bits, length, list of file_block_ids
-   file_block_id -&gt; data
+   filename -&gt; permission-bits, length, list of file_brick_ids
+   file_brick_id -&gt; data
 </pre>
 We might want to prefix <code>filename</code> keys with one letter (say '/') and the
-<code>file_block_id</code> keys with a different letter (say '0') so that scans
+<code>file_brick_id</code> keys with a different letter (say '0') so that scans
 over just the metadata do not force us to fetch and cache bulky file
 contents.
 <p>

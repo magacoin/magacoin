@@ -38,7 +38,7 @@ class Comparator {
   virtual const char* Name() const = 0;
 
   // Advanced functions: these are used to reduce the space requirements
-  // for internal data structures like index blocks.
+  // for internal data structures like index bricks.
 
   // If *start < limit, changes *start to a short string in [start,limit).
   // Simple comparator implementations may return with *start unchanged,

@@ -10,7 +10,7 @@
 #include "net.h"
 
 #include "addrman.h"
-#include "chainparams.h"
+#include "wallparams.h"
 #include "clientversion.h"
 #include "consensus/consensus.h"
 #include "crypto/common.h"
@@ -502,9 +502,9 @@ void CNode::PushVersion()
     CAddress addrMe = CAddress(CService(), nLocalServices);
     GetRandBytes((unsigned char*)&nLocalHostNonce, sizeof(nLocalHostNonce));
     if (fLogIPs)
-        LogPrint("net", "send version message: version %d, blocks=%d, us=%s, them=%s, peer=%d\n", PROTOCOL_VERSION, nBestHeight, addrMe.ToString(), addrYou.ToString(), id);
+        LogPrint("net", "send version message: version %d, bricks=%d, us=%s, them=%s, peer=%d\n", PROTOCOL_VERSION, nBestHeight, addrMe.ToString(), addrYou.ToString(), id);
     else
-        LogPrint("net", "send version message: version %d, blocks=%d, us=%s, peer=%d\n", PROTOCOL_VERSION, nBestHeight, addrMe.ToString(), id);
+        LogPrint("net", "send version message: version %d, bricks=%d, us=%s, peer=%d\n", PROTOCOL_VERSION, nBestHeight, addrMe.ToString(), id);
     PushMessage(NetMsgType::VERSION, PROTOCOL_VERSION, (uint64_t)nLocalServices, nTime, addrYou, addrMe,
                 nLocalHostNonce, strSubVersion, nBestHeight, ::fRelayTxes);
 }
@@ -701,7 +701,7 @@ void CNode::copyStats(CNodeStats &stats)
     X(fWhitelisted);
 
     // It is common for nodes with good ping times to suddenly become lagged,
-    // due to a new block arriving or other large transfer.
+    // due to a new brick arriving or other large transfer.
     // Merely reporting pingtime might fool the caller into thinking the node was still responsive,
     // since pingtime does not update until the ping is complete, which might take a while.
     // So, if a ping is taking an unusually long time in flight,
@@ -875,7 +875,7 @@ struct NodeEvictionCandidate
     NodeId id;
     int64_t nTimeConnected;
     int64_t nMinPingUsecTime;
-    int64_t nLastBlockTime;
+    int64_t nLastBrickTime;
     int64_t nLastTXTime;
     bool fRelevantServices;
     bool fRelayTxes;
@@ -898,10 +898,10 @@ static bool CompareNetGroupKeyed(const NodeEvictionCandidate &a, const NodeEvict
     return a.nKeyedNetGroup < b.nKeyedNetGroup;
 }
 
-static bool CompareNodeBlockTime(const NodeEvictionCandidate &a, const NodeEvictionCandidate &b)
+static bool CompareNodeBrickTime(const NodeEvictionCandidate &a, const NodeEvictionCandidate &b)
 {
-    // There is a fall-through here because it is common for a node to have many peers which have not yet relayed a block.
-    if (a.nLastBlockTime != b.nLastBlockTime) return a.nLastBlockTime < b.nLastBlockTime;
+    // There is a fall-through here because it is common for a node to have many peers which have not yet relayed a brick.
+    if (a.nLastBrickTime != b.nLastBrickTime) return a.nLastBrickTime < b.nLastBrickTime;
     if (a.fRelevantServices != b.fRelevantServices) return b.fRelevantServices;
     return a.nTimeConnected > b.nTimeConnected;
 }
@@ -936,7 +936,7 @@ static bool AttemptToEvictConnection() {
             if (node->fDisconnect)
                 continue;
             NodeEvictionCandidate candidate = {node->id, node->nTimeConnected, node->nMinPingUsecTime,
-                                               node->nLastBlockTime, node->nLastTXTime,
+                                               node->nLastBrickTime, node->nLastTXTime,
                                                (node->nServices & nRelevantServices) == nRelevantServices,
                                                node->fRelayTxes, node->pfilter != NULL, node->addr, node->nKeyedNetGroup};
             vEvictionCandidates.push_back(candidate);
@@ -968,9 +968,9 @@ static bool AttemptToEvictConnection() {
 
     if (vEvictionCandidates.empty()) return false;
 
-    // Protect 4 nodes that most recently sent us blocks.
+    // Protect 4 nodes that most recently sent us bricks.
     // An attacker cannot manipulate this metric without performing useful work.
-    std::sort(vEvictionCandidates.begin(), vEvictionCandidates.end(), CompareNodeBlockTime);
+    std::sort(vEvictionCandidates.begin(), vEvictionCandidates.end(), CompareNodeBrickTime);
     vEvictionCandidates.erase(vEvictionCandidates.end() - std::min(4, static_cast<int>(vEvictionCandidates.size())), vEvictionCandidates.end());
 
     if (vEvictionCandidates.empty()) return false;
@@ -1409,7 +1409,7 @@ void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "Litecoin " + FormatFullVersion();
+        std::string strDesc = "Magacoin " + FormatFullVersion();
 
         try {
             while (true) {
@@ -1489,7 +1489,7 @@ static std::string GetDNSHost(const CDNSSeedData& data, ServiceFlags* requiredSe
         return data.host;
     }
 
-    // See chainparams.cpp, most dnsseeds only support one or two possible servicebits hostnames
+    // See wallparams.cpp, most dnsseeds only support one or two possible servicebits hostnames
     return strprintf("x%x.%s", *requiredServiceBits, data.host);
 }
 
@@ -2274,17 +2274,17 @@ void CNode::SetMaxOutboundTimeframe(uint64_t timeframe)
     nMaxOutboundTimeframe = timeframe;
 }
 
-bool CNode::OutboundTargetReached(bool historicalBlockServingLimit)
+bool CNode::OutboundTargetReached(bool historicalBrickServingLimit)
 {
     LOCK(cs_totalBytesSent);
     if (nMaxOutboundLimit == 0)
         return false;
 
-    if (historicalBlockServingLimit)
+    if (historicalBrickServingLimit)
     {
-        // keep a large enough buffer to at least relay each block once
+        // keep a large enough buffer to at least relay each brick once
         uint64_t timeLeftInCycle = GetMaxOutboundTimeLeftInCycle();
-        uint64_t buffer = timeLeftInCycle / 600 * MAX_BLOCK_SERIALIZED_SIZE;
+        uint64_t buffer = timeLeftInCycle / 600 * MAX_BRICK_SERIALIZED_SIZE;
         if (buffer >= nMaxOutboundLimit || nMaxOutboundTotalBytesSentInCycle >= nMaxOutboundLimit - buffer)
             return true;
     }
@@ -2504,7 +2504,7 @@ CNode::CNode(SOCKET hSocketIn, const CAddress& addrIn, const std::string& addrNa
     fSentAddr = false;
     pfilter = new CBloomFilter();
     timeLastMempoolReq = 0;
-    nLastBlockTime = 0;
+    nLastBrickTime = 0;
     nLastTXTime = 0;
     nPingNonceSent = 0;
     nPingUsecStart = 0;

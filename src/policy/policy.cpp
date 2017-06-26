@@ -25,7 +25,7 @@
      *
      * Why bother? To avoid denial-of-service attacks; an attacker
      * can submit a standard HASH... OP_EQUAL transaction,
-     * which will get accepted into blocks. The redemption
+     * which will get accepted into bricks. The redemption
      * script can be anything; an attacker could use a very
      * expensive-to-check-upon-redemption script like:
      *   DUP CHECKSIG DROP ... repeated 100 times... OP_1

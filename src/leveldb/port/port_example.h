@@ -47,7 +47,7 @@ class CondVar {
   explicit CondVar(Mutex* mu);
   ~CondVar();
 
-  // Atomically release *mu and block on this condition variable until
+  // Atomically release *mu and brick on this condition variable until
   // either a call to SignalAll(), or a call to Signal() that picks
   // this thread to wakeup.
   // REQUIRES: this thread holds *mu

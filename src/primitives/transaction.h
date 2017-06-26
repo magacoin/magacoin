@@ -77,7 +77,7 @@ public:
 
     /* If CTxIn::nSequence encodes a relative lock-time and this flag
      * is set, the relative lock-time has units of 512 seconds,
-     * otherwise it specifies blocks with a granularity of 1. */
+     * otherwise it specifies bricks with a granularity of 1. */
     static const uint32_t SEQUENCE_LOCKTIME_TYPE_FLAG = (1 << 22);
 
     /* If CTxIn::nSequence encodes a relative lock-time, this mask is
@@ -85,7 +85,7 @@ public:
     static const uint32_t SEQUENCE_LOCKTIME_MASK = 0x0000ffff;
 
     /* In order to use the same number of bits to encode roughly the
-     * same wall-clock duration, and because blocks are naturally
+     * same wall-clock duration, and because bricks are naturally
      * limited to occur every 600s on average, the minimum granularity
      * for time-based relative lock-time is fixed at 512 seconds.
      * Converting from CTxIn::nSequence to seconds is performed by
@@ -345,7 +345,7 @@ inline void SerializeTransaction(TxType& tx, Stream& s, Operation ser_action, in
 }
 
 /** The basic transaction that is broadcasted on the network and contained in
- * blocks.  A transaction can contain multiple inputs and outputs.
+ * bricks.  A transaction can contain multiple inputs and outputs.
  */
 class CTransaction
 {

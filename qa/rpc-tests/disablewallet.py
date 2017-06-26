@@ -15,7 +15,7 @@ class DisableWalletTest (BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 1
 
     def setup_network(self, split=False):
@@ -35,8 +35,8 @@ class DisableWalletTest (BitcoinTestFramework):
             self.nodes[0].generatetoaddress(1, 'mneYUmWYsuk7kySiURxCi3AGxrAqZxLgPZ')
         except JSONRPCException as e:
             assert("Invalid address" not in e.error['message'])
-            assert("ProcessNewBlock, block not accepted" not in e.error['message'])
-            assert("Couldn't create new block" not in e.error['message'])
+            assert("ProcessNewBrick, brick not accepted" not in e.error['message'])
+            assert("Couldn't create new brick" not in e.error['message'])
 
         try:
             self.nodes[0].generatetoaddress(1, '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')

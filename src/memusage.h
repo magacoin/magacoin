@@ -140,7 +140,7 @@ static inline size_t DynamicUsage(const std::unique_ptr<X>& p)
 template<typename X>
 static inline size_t DynamicUsage(const std::shared_ptr<X>& p)
 {
-    // A shared_ptr can either use a single continuous memory block for both
+    // A shared_ptr can either use a single continuous memory brick for both
     // the counter and the storage (when using std::make_shared), or separate.
     // We can't observe the difference, however, so assume the worst.
     return p ? MallocUsage(sizeof(X)) + MallocUsage(sizeof(stl_shared_counter)) : 0;

@@ -142,12 +142,12 @@
         <translation>Адчыниць &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Пераіндэксацыя блокаў на дыску...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Даслаць манеты на Litecoin-адрас</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Даслаць манеты на Magacoin-адрас</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -170,8 +170,8 @@
         <translation>Праверыць паведамленне...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -198,12 +198,12 @@
         <translation>Зашыфраваць прыватныя ключы, якия належаць вашаму гаманцу</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Падпісаць паведамленне з дапамогай Litecoin-адраса каб даказаць, што яно належыць вам</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Падпісаць паведамленне з дапамогай Magacoin-адраса каб даказаць, што яно належыць вам</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Спраўдзіць паведамленне з дапамогай Litecoin-адраса каб даказаць, што яно належыць вам</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Спраўдзіць паведамленне з дапамогай Magacoin-адраса каб даказаць, што яно належыць вам</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -218,8 +218,8 @@
         <translation>Дапамога</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Запатрабаваць плацёж (генеруецца QR-код для Litecoin URI)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Запатрабаваць плацёж (генеруецца QR-код для Magacoin URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -230,23 +230,23 @@
         <translation>Паказаць спіс адрасоў і метак для прымання</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Адкрыць Litecoin: URI ці запыт плацяжу</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Адкрыць Magacoin: URI ці запыт плацяжу</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Опцыі каманднага радка</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n актыўнае злучэнне з сецівам Litecoin</numerusform><numerusform>%n актыўных злучэнняў з сецівам Litecoin</numerusform><numerusform>%n актыўных злучэнняў з сецівам Litecoin</numerusform><numerusform>%n актыўных злучэнняў з сецівам Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n актыўнае злучэнне з сецівам Magacoin</numerusform><numerusform>%n актыўных злучэнняў з сецівам Magacoin</numerusform><numerusform>%n актыўных злучэнняў з сецівам Magacoin</numerusform><numerusform>%n актыўных злучэнняў з сецівам Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Крыніца блокаў недасяжная...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Апрацаваны %n блок гісторыі транзакцый.</numerusform><numerusform>Апрацавана %n блокі гісторыі транзакцый.</numerusform><numerusform>Апрацавана %n блокаў гісторыі транзакцый.</numerusform><numerusform>Апрацавана %n блокаў гісторыі транзакцый.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -274,7 +274,7 @@
         <translation>%1 таму</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Апошні прыняты блок генераваны %1 таму.</translation>
     </message>
     <message>
@@ -736,15 +736,15 @@
         <translation>Запусціць у фоне як дэман і прымаць каманды</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Ці жадаеце вы перабудаваць зараз базу звестак блокаў?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Памылка ініцыялізацыі базвы звестак блокаў</translation>
     </message>
     <message>
@@ -752,11 +752,11 @@
         <translation>Памалка ініцыялізацыі асяроддзя базы звестак гаманца %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Памылка загрузкі базвы звестак блокаў</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Памылка адчынення базы звестак блокаў</translation>
     </message>
     <message>
@@ -776,7 +776,7 @@
         <translation>Use UPnP to map the listening port (default: %u)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Праверка блокаў...</translation>
     </message>
     <message>
@@ -828,7 +828,7 @@
         <translation>Пароль для JSON-RPC злучэнняў</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Выканаць каманду калі лепшы блок зменіцца (%s замяняецца на хэш блока)</translation>
     </message>
     <message>
@@ -840,7 +840,7 @@
         <translation>Недастаткова сродкаў</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Загружаем індэкс блокаў...</translation>
     </message>
     <message>

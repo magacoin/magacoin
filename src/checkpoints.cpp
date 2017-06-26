@@ -4,8 +4,8 @@
 
 #include "checkpoints.h"
 
-#include "chain.h"
-#include "chainparams.h"
+#include "wall.h"
+#include "wallparams.h"
 #include "main.h"
 #include "uint256.h"
 
@@ -25,8 +25,8 @@ namespace Checkpoints {
      */
     static const double SIGCHECK_VERIFICATION_FACTOR = 5.0;
 
-    //! Guess how far we are in the verification process at the given block index
-    double GuessVerificationProgress(const CCheckpointData& data, CBlockIndex *pindex, bool fSigchecks) {
+    //! Guess how far we are in the verification process at the given brick index
+    double GuessVerificationProgress(const CCheckpointData& data, CBrickIndex *pindex, bool fSigchecks) {
         if (pindex==NULL)
             return 0.0;
 
@@ -38,16 +38,16 @@ namespace Checkpoints {
         // Work is defined as: 1.0 per transaction before the last checkpoint, and
         // fSigcheckVerificationFactor per transaction after.
 
-        if (pindex->nChainTx <= data.nTransactionsLastCheckpoint) {
-            double nCheapBefore = pindex->nChainTx;
-            double nCheapAfter = data.nTransactionsLastCheckpoint - pindex->nChainTx;
+        if (pindex->nWallTx <= data.nTransactionsLastCheckpoint) {
+            double nCheapBefore = pindex->nWallTx;
+            double nCheapAfter = data.nTransactionsLastCheckpoint - pindex->nWallTx;
             double nExpensiveAfter = (nNow - data.nTimeLastCheckpoint)/86400.0*data.fTransactionsPerDay;
             fWorkBefore = nCheapBefore;
             fWorkAfter = nCheapAfter + nExpensiveAfter*fSigcheckVerificationFactor;
         } else {
             double nCheapBefore = data.nTransactionsLastCheckpoint;
-            double nExpensiveBefore = pindex->nChainTx - data.nTransactionsLastCheckpoint;
-            double nExpensiveAfter = (nNow - pindex->GetBlockTime())/86400.0*data.fTransactionsPerDay;
+            double nExpensiveBefore = pindex->nWallTx - data.nTransactionsLastCheckpoint;
+            double nExpensiveAfter = (nNow - pindex->GetBrickTime())/86400.0*data.fTransactionsPerDay;
             fWorkBefore = nCheapBefore + nExpensiveBefore*fSigcheckVerificationFactor;
             fWorkAfter = nExpensiveAfter*fSigcheckVerificationFactor;
         }
@@ -55,15 +55,15 @@ namespace Checkpoints {
         return fWorkBefore / (fWorkBefore + fWorkAfter);
     }
 
-    CBlockIndex* GetLastCheckpoint(const CCheckpointData& data)
+    CBrickIndex* GetLastCheckpoint(const CCheckpointData& data)
     {
         const MapCheckpoints& checkpoints = data.mapCheckpoints;
 
         BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints)
         {
             const uint256& hash = i.second;
-            BlockMap::const_iterator t = mapBlockIndex.find(hash);
-            if (t != mapBlockIndex.end())
+            BrickMap::const_iterator t = mapBrickIndex.find(hash);
+            if (t != mapBrickIndex.end())
                 return t->second;
         }
         return NULL;

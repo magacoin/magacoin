@@ -78,8 +78,8 @@
         <translation>&amp;Opsies</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -106,7 +106,7 @@
         <translation>%1 agter</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Ontvangs van laaste blok is %1 terug.</translation>
     </message>
     <message>
@@ -338,7 +338,7 @@
         <translation>Onvoldoende fondse</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Laai blok indeks...</translation>
     </message>
     <message>

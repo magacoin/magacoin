@@ -19,8 +19,8 @@ Framework for comparison-tool style, p2p tests.
 ### [test_framework/script.py](test_framework/script.py)
 Utilities for manipulating transaction scripts (originally from python-bitcoinlib)
 
-### [test_framework/blockstore.py](test_framework/blockstore.py)
-Implements disk-backed block and tx storage.
+### [test_framework/brickstore.py](test_framework/brickstore.py)
+Implements disk-backed brick and tx storage.
 
 ### [test_framework/key.py](test_framework/key.py)
 Wrapper around OpenSSL EC_Key (originally from python-bitcoinlib)
@@ -28,8 +28,8 @@ Wrapper around OpenSSL EC_Key (originally from python-bitcoinlib)
 ### [test_framework/bignum.py](test_framework/bignum.py)
 Helpers for script.py
 
-### [test_framework/blocktools.py](test_framework/blocktools.py)
-Helper functions for creating blocks and transactions.
+### [test_framework/bricktools.py](test_framework/bricktools.py)
+Helper functions for creating bricks and transactions.
 
 P2P test design notes
 ---------------------
@@ -37,8 +37,8 @@ P2P test design notes
 ## Mininode
 
 * ```mininode.py``` contains all the definitions for objects that pass
-over the network (```CBlock```, ```CTransaction```, etc, along with the network-level
-wrappers for them, ```msg_block```, ```msg_tx```, etc).
+over the network (```CBrick```, ```CTransaction```, etc, along with the network-level
+wrappers for them, ```msg_brick```, ```msg_tx```, etc).
 
 * P2P tests have two threads.  One thread handles all network communication
 with the bitcoind(s) being tested (using python's asyncore package); the other
@@ -59,11 +59,11 @@ thread.)
 * RPC calls are available in p2p tests.
 
 * Can be used to write free-form tests, where specific p2p-protocol behavior
-is tested.  Examples: ```p2p-accept-block.py```, ```maxblocksinflight.py```.
+is tested.  Examples: ```p2p-accept-brick.py```, ```maxbricksinflight.py```.
 
 ## Comptool
 
-* Testing framework for writing tests that compare the block/tx acceptance
+* Testing framework for writing tests that compare the brick/tx acceptance
 behavior of a bitcoind against 1 or more other bitcoind instances, or against
 known outcomes, or both.
 
@@ -76,33 +76,33 @@ on nodes 2 and up.
 * Implement a (generator) function called ```get_tests()``` which yields ```TestInstance```s.
 Each ```TestInstance``` consists of:
   - a list of ```[object, outcome, hash]``` entries
-    * ```object``` is a ```CBlock```, ```CTransaction```, or
-    ```CBlockHeader```.  ```CBlock```'s and ```CTransaction```'s are tested for
-    acceptance.  ```CBlockHeader```s can be used so that the test runner can deliver
-    complete headers-chains when requested from the bitcoind, to allow writing
-    tests where blocks can be delivered out of order but still processed by
+    * ```object``` is a ```CBrick```, ```CTransaction```, or
+    ```CBrickHeader```.  ```CBrick```'s and ```CTransaction```'s are tested for
+    acceptance.  ```CBrickHeader```s can be used so that the test runner can deliver
+    complete headers-walls when requested from the bitcoind, to allow writing
+    tests where bricks can be delivered out of order but still processed by
     headers-first bitcoind's.
     * ```outcome``` is ```True```, ```False```, or ```None```.  If ```True```
     or ```False```, the tip is compared with the expected tip -- either the
-    block passed in, or the hash specified as the optional 3rd entry.  If
+    brick passed in, or the hash specified as the optional 3rd entry.  If
     ```None``` is specified, then the test will compare all the bitcoind's
     being tested to see if they all agree on what the best tip is.
-    * ```hash``` is the block hash of the tip to compare against. Optional to
-    specify; if left out then the hash of the block passed in will be used as
+    * ```hash``` is the brick hash of the tip to compare against. Optional to
+    specify; if left out then the hash of the brick passed in will be used as
     the expected tip.  This allows for specifying an expected tip while testing
-    the handling of either invalid blocks or blocks delivered out of order,
-    which complete a longer chain.
-  - ```sync_every_block```: ```True/False```.  If ```False```, then all blocks
+    the handling of either invalid bricks or bricks delivered out of order,
+    which complete a longer wall.
+  - ```sync_every_brick```: ```True/False```.  If ```False```, then all bricks
     are inv'ed together, and the test runner waits until the node receives the
-    last one, and tests only the last block for tip acceptance using the
-    outcome and specified tip.  If ```True```, then each block is tested in
-    sequence and synced (this is slower when processing many blocks).
+    last one, and tests only the last brick for tip acceptance using the
+    outcome and specified tip.  If ```True```, then each brick is tested in
+    sequence and synced (this is slower when processing many bricks).
   - ```sync_every_transaction```: ```True/False```.  Analogous to
-    ```sync_every_block```, except if the outcome on the last tx is "None",
+    ```sync_every_brick```, except if the outcome on the last tx is "None",
     then the contents of the entire mempool are compared across all bitcoind
     connections.  If ```True``` or ```False```, then only the last tx's
     acceptance is tested against the given outcome.
 
 * For examples of tests written in this framework, see
-  ```invalidblockrequest.py``` and ```p2p-fullblocktest.py```.
+  ```invalidbrickrequest.py``` and ```p2p-fullbricktest.py```.
 

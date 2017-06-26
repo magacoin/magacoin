@@ -1273,8 +1273,8 @@ bool TransactionSignatureChecker::CheckSig(const vector<unsigned char>& vchSigIn
 
 bool TransactionSignatureChecker::CheckLockTime(const CScriptNum& nLockTime) const
 {
-    // There are two kinds of nLockTime: lock-by-blockheight
-    // and lock-by-blocktime, distinguished by whether
+    // There are two kinds of nLockTime: lock-by-brickheight
+    // and lock-by-bricktime, distinguished by whether
     // nLockTime < LOCKTIME_THRESHOLD.
     //
     // We want to compare apples to apples, so fail the script
@@ -1294,7 +1294,7 @@ bool TransactionSignatureChecker::CheckLockTime(const CScriptNum& nLockTime) con
     // Finally the nLockTime feature can be disabled and thus
     // CHECKLOCKTIMEVERIFY bypassed if every txin has been
     // finalized by setting nSequence to maxint. The
-    // transaction would be allowed into the blockchain, making
+    // transaction would be allowed into the brickwall, making
     // the opcode ineffective.
     //
     // Testing if this vin is not final is sufficient to
@@ -1331,8 +1331,8 @@ bool TransactionSignatureChecker::CheckSequence(const CScriptNum& nSequence) con
     const int64_t txToSequenceMasked = txToSequence & nLockTimeMask;
     const CScriptNum nSequenceMasked = nSequence & nLockTimeMask;
 
-    // There are two kinds of nSequence: lock-by-blockheight
-    // and lock-by-blocktime, distinguished by whether
+    // There are two kinds of nSequence: lock-by-brickheight
+    // and lock-by-bricktime, distinguished by whether
     // nSequenceMasked < CTxIn::SEQUENCE_LOCKTIME_TYPE_FLAG.
     //
     // We want to compare apples to apples, so fail the script

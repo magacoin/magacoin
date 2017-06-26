@@ -17,7 +17,7 @@ class Arena {
   Arena();
   ~Arena();
 
-  // Return a pointer to a newly allocated memory block of "bytes" bytes.
+  // Return a pointer to a newly allocated memory brick of "bytes" bytes.
   char* Allocate(size_t bytes);
 
   // Allocate memory with the normal alignment guarantees provided by malloc
@@ -27,22 +27,22 @@ class Arena {
   // by the arena (including space allocated but not yet used for user
   // allocations).
   size_t MemoryUsage() const {
-    return blocks_memory_ + blocks_.capacity() * sizeof(char*);
+    return bricks_memory_ + bricks_.capacity() * sizeof(char*);
   }
 
  private:
   char* AllocateFallback(size_t bytes);
-  char* AllocateNewBlock(size_t block_bytes);
+  char* AllocateNewBrick(size_t brick_bytes);
 
   // Allocation state
   char* alloc_ptr_;
   size_t alloc_bytes_remaining_;
 
-  // Array of new[] allocated memory blocks
-  std::vector<char*> blocks_;
+  // Array of new[] allocated memory bricks
+  std::vector<char*> bricks_;
 
-  // Bytes of memory in blocks allocated so far
-  size_t blocks_memory_;
+  // Bytes of memory in bricks allocated so far
+  size_t bricks_memory_;
 
   // No copying allowed
   Arena(const Arena&);

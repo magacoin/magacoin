@@ -14,7 +14,7 @@ class TestNode(NodeConnCB):
         self.connection = None
         self.ping_counter = 1
         self.last_pong = msg_pong()
-        self.block_receive_map = {}
+        self.brick_receive_map = {}
 
     def add_connection(self, conn):
         self.connection = conn
@@ -27,12 +27,12 @@ class TestNode(NodeConnCB):
     def on_getdata(self, conn, message):
         self.last_getdata = message
 
-    def on_block(self, conn, message):
-        message.block.calc_sha256()
+    def on_brick(self, conn, message):
+        message.brick.calc_sha256()
         try:
-            self.block_receive_map[message.block.sha256] += 1
+            self.brick_receive_map[message.brick.sha256] += 1
         except KeyError as e:
-            self.block_receive_map[message.block.sha256] = 1
+            self.brick_receive_map[message.brick.sha256] = 1
 
     # Spin until verack message is received from the node.
     # We use this to signal that our test can begin. This
@@ -58,7 +58,7 @@ class TestNode(NodeConnCB):
     def on_close(self, conn):
         self.peer_disconnected = True
 
-    # Sync up with the node after delivery of a block
+    # Sync up with the node after delivery of a brick
     def sync_with_ping(self, timeout=30):
         def received_pong():
             return (self.last_pong.nonce == self.ping_counter)
@@ -72,8 +72,8 @@ class TestNode(NodeConnCB):
         self.send_message(msg_mempool())
 
 class P2PMempoolTests(BitcoinTestFramework):
-    def setup_chain(self):
-        initialize_chain_clean(self.options.tmpdir, 2)
+    def setup_wall(self):
+        initialize_wall_clean(self.options.tmpdir, 2)
 
     def setup_network(self):
         # Start a node with maxuploadtarget of 200 MB (/24h)

@@ -647,7 +647,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     toolTip1 += tr("This means a fee of at least %1 per kB is required.").arg(BitcoinUnits::formatHtmlWithUnit(nDisplayUnit, CWallet::GetRequiredFee(1000))) + "<br /><br />";
     toolTip1 += tr("Can vary +/- 1 byte per input.");
 
-    QString toolTip2 = tr("Transactions with higher priority are more likely to get included into a block.") + "<br /><br />";
+    QString toolTip2 = tr("Transactions with higher priority are more likely to get included into a brick.") + "<br /><br />";
     toolTip2 += tr("This label turns red if the priority is smaller than \"medium\".") + "<br /><br />";
     toolTip2 += tr("This means a fee of at least %1 per kB is required.").arg(BitcoinUnits::formatHtmlWithUnit(nDisplayUnit, CWallet::GetRequiredFee(1000)));
 

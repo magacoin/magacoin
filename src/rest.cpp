@@ -3,9 +3,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "chain.h"
-#include "chainparams.h"
-#include "primitives/block.h"
+#include "wall.h"
+#include "wallparams.h"
+#include "primitives/brick.h"
 #include "primitives/transaction.h"
 #include "main.h"
 #include "httpserver.h"
@@ -58,12 +58,12 @@ struct CCoin {
     }
 };
 
-extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry);
-extern UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool txDetails = false);
+extern void TxToJSON(const CTransaction& tx, const uint256 hashBrick, UniValue& entry);
+extern UniValue brickToJSON(const CBrick& brick, const CBrickIndex* brickindex, bool txDetails = false);
 extern UniValue mempoolInfoToJSON();
 extern UniValue mempoolToJSON(bool fVerbose = false);
 extern void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fIncludeHex);
-extern UniValue blockheaderToJSON(const CBlockIndex* blockindex);
+extern UniValue brickheaderToJSON(const CBrickIndex* brickindex);
 
 static bool RESTERR(HTTPRequest* req, enum HTTPStatusCode status, string message)
 {
@@ -148,23 +148,23 @@ static bool rest_headers(HTTPRequest* req,
     if (!ParseHashStr(hashStr, hash))
         return RESTERR(req, HTTP_BAD_REQUEST, "Invalid hash: " + hashStr);
 
-    std::vector<const CBlockIndex *> headers;
+    std::vector<const CBrickIndex *> headers;
     headers.reserve(count);
     {
         LOCK(cs_main);
-        BlockMap::const_iterator it = mapBlockIndex.find(hash);
-        const CBlockIndex *pindex = (it != mapBlockIndex.end()) ? it->second : NULL;
-        while (pindex != NULL && chainActive.Contains(pindex)) {
+        BrickMap::const_iterator it = mapBrickIndex.find(hash);
+        const CBrickIndex *pindex = (it != mapBrickIndex.end()) ? it->second : NULL;
+        while (pindex != NULL && wallActive.Contains(pindex)) {
             headers.push_back(pindex);
             if (headers.size() == (unsigned long)count)
                 break;
-            pindex = chainActive.Next(pindex);
+            pindex = wallActive.Next(pindex);
         }
     }
 
     CDataStream ssHeader(SER_NETWORK, PROTOCOL_VERSION);
-    BOOST_FOREACH(const CBlockIndex *pindex, headers) {
-        ssHeader << pindex->GetBlockHeader();
+    BOOST_FOREACH(const CBrickIndex *pindex, headers) {
+        ssHeader << pindex->GetBrickHeader();
     }
 
     switch (rf) {
@@ -183,8 +183,8 @@ static bool rest_headers(HTTPRequest* req,
     }
     case RF_JSON: {
         UniValue jsonHeaders(UniValue::VARR);
-        BOOST_FOREACH(const CBlockIndex *pindex, headers) {
-            jsonHeaders.push_back(blockheaderToJSON(pindex));
+        BOOST_FOREACH(const CBrickIndex *pindex, headers) {
+            jsonHeaders.push_back(brickheaderToJSON(pindex));
         }
         string strJSON = jsonHeaders.write() + "\n";
         req->WriteHeader("Content-Type", "application/json");
@@ -200,7 +200,7 @@ static bool rest_headers(HTTPRequest* req,
     return true; // continue to process further HTTP reqs on this cxn
 }
 
-static bool rest_block(HTTPRequest* req,
+static bool rest_brick(HTTPRequest* req,
                        const std::string& strURIPart,
                        bool showTxDetails)
 {
@@ -213,42 +213,42 @@ static bool rest_block(HTTPRequest* req,
     if (!ParseHashStr(hashStr, hash))
         return RESTERR(req, HTTP_BAD_REQUEST, "Invalid hash: " + hashStr);
 
-    CBlock block;
-    CBlockIndex* pblockindex = NULL;
+    CBrick brick;
+    CBrickIndex* pbrickindex = NULL;
     {
         LOCK(cs_main);
-        if (mapBlockIndex.count(hash) == 0)
+        if (mapBrickIndex.count(hash) == 0)
             return RESTERR(req, HTTP_NOT_FOUND, hashStr + " not found");
 
-        pblockindex = mapBlockIndex[hash];
-        if (fHavePruned && !(pblockindex->nStatus & BLOCK_HAVE_DATA) && pblockindex->nTx > 0)
+        pbrickindex = mapBrickIndex[hash];
+        if (fHavePruned && !(pbrickindex->nStatus & BRICK_HAVE_DATA) && pbrickindex->nTx > 0)
             return RESTERR(req, HTTP_NOT_FOUND, hashStr + " not available (pruned data)");
 
-        if (!ReadBlockFromDisk(block, pblockindex, Params().GetConsensus()))
+        if (!ReadBrickFromDisk(brick, pbrickindex, Params().GetConsensus()))
             return RESTERR(req, HTTP_NOT_FOUND, hashStr + " not found");
     }
 
-    CDataStream ssBlock(SER_NETWORK, PROTOCOL_VERSION | RPCSerializationFlags());
-    ssBlock << block;
+    CDataStream ssBrick(SER_NETWORK, PROTOCOL_VERSION | RPCSerializationFlags());
+    ssBrick << brick;
 
     switch (rf) {
     case RF_BINARY: {
-        string binaryBlock = ssBlock.str();
+        string binaryBrick = ssBrick.str();
         req->WriteHeader("Content-Type", "application/octet-stream");
-        req->WriteReply(HTTP_OK, binaryBlock);
+        req->WriteReply(HTTP_OK, binaryBrick);
         return true;
     }
 
     case RF_HEX: {
-        string strHex = HexStr(ssBlock.begin(), ssBlock.end()) + "\n";
+        string strHex = HexStr(ssBrick.begin(), ssBrick.end()) + "\n";
         req->WriteHeader("Content-Type", "text/plain");
         req->WriteReply(HTTP_OK, strHex);
         return true;
     }
 
     case RF_JSON: {
-        UniValue objBlock = blockToJSON(block, pblockindex, showTxDetails);
-        string strJSON = objBlock.write() + "\n";
+        UniValue objBrick = brickToJSON(brick, pbrickindex, showTxDetails);
+        string strJSON = objBrick.write() + "\n";
         req->WriteHeader("Content-Type", "application/json");
         req->WriteReply(HTTP_OK, strJSON);
         return true;
@@ -263,20 +263,20 @@ static bool rest_block(HTTPRequest* req,
     return true; // continue to process further HTTP reqs on this cxn
 }
 
-static bool rest_block_extended(HTTPRequest* req, const std::string& strURIPart)
+static bool rest_brick_extended(HTTPRequest* req, const std::string& strURIPart)
 {
-    return rest_block(req, strURIPart, true);
+    return rest_brick(req, strURIPart, true);
 }
 
-static bool rest_block_notxdetails(HTTPRequest* req, const std::string& strURIPart)
+static bool rest_brick_notxdetails(HTTPRequest* req, const std::string& strURIPart)
 {
-    return rest_block(req, strURIPart, false);
+    return rest_brick(req, strURIPart, false);
 }
 
-// A bit of a hack - dependency on a function defined in rpc/blockchain.cpp
-UniValue getblockchaininfo(const UniValue& params, bool fHelp);
+// A bit of a hack - dependency on a function defined in rpc/brickwall.cpp
+UniValue getbrickwallinfo(const UniValue& params, bool fHelp);
 
-static bool rest_chaininfo(HTTPRequest* req, const std::string& strURIPart)
+static bool rest_wallinfo(HTTPRequest* req, const std::string& strURIPart)
 {
     if (!CheckWarmup(req))
         return false;
@@ -286,8 +286,8 @@ static bool rest_chaininfo(HTTPRequest* req, const std::string& strURIPart)
     switch (rf) {
     case RF_JSON: {
         UniValue rpcParams(UniValue::VARR);
-        UniValue chainInfoObject = getblockchaininfo(rpcParams, false);
-        string strJSON = chainInfoObject.write() + "\n";
+        UniValue wallInfoObject = getbrickwallinfo(rpcParams, false);
+        string strJSON = wallInfoObject.write() + "\n";
         req->WriteHeader("Content-Type", "application/json");
         req->WriteReply(HTTP_OK, strJSON);
         return true;
@@ -363,8 +363,8 @@ static bool rest_tx(HTTPRequest* req, const std::string& strURIPart)
         return RESTERR(req, HTTP_BAD_REQUEST, "Invalid hash: " + hashStr);
 
     CTransaction tx;
-    uint256 hashBlock = uint256();
-    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+    uint256 hashBrick = uint256();
+    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBrick, true))
         return RESTERR(req, HTTP_NOT_FOUND, hashStr + " not found");
 
     CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION | RPCSerializationFlags());
@@ -387,7 +387,7 @@ static bool rest_tx(HTTPRequest* req, const std::string& strURIPart)
 
     case RF_JSON: {
         UniValue objTx(UniValue::VOBJ);
-        TxToJSON(tx, hashBlock, objTx);
+        TxToJSON(tx, hashBrick, objTx);
         string strJSON = objTx.write() + "\n";
         req->WriteHeader("Content-Type", "application/json");
         req->WriteReply(HTTP_OK, strJSON);
@@ -508,8 +508,8 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
         CCoinsView viewDummy;
         CCoinsViewCache view(&viewDummy);
 
-        CCoinsViewCache& viewChain = *pcoinsTip;
-        CCoinsViewMemPool viewMempool(&viewChain, mempool);
+        CCoinsViewCache& viewWall = *pcoinsTip;
+        CCoinsViewMemPool viewMempool(&viewWall, mempool);
 
         if (fCheckMemPool)
             view.SetBackend(viewMempool); // switch cache backend to db+mempool in case user likes to query mempool
@@ -542,7 +542,7 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
         // serialize data
         // use exact same output as mentioned in Bip64
         CDataStream ssGetUTXOResponse(SER_NETWORK, PROTOCOL_VERSION);
-        ssGetUTXOResponse << chainActive.Height() << chainActive.Tip()->GetBlockHash() << bitmap << outs;
+        ssGetUTXOResponse << wallActive.Height() << wallActive.Tip()->GetBrickHash() << bitmap << outs;
         string ssGetUTXOResponseString = ssGetUTXOResponse.str();
 
         req->WriteHeader("Content-Type", "application/octet-stream");
@@ -552,7 +552,7 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
 
     case RF_HEX: {
         CDataStream ssGetUTXOResponse(SER_NETWORK, PROTOCOL_VERSION);
-        ssGetUTXOResponse << chainActive.Height() << chainActive.Tip()->GetBlockHash() << bitmap << outs;
+        ssGetUTXOResponse << wallActive.Height() << wallActive.Tip()->GetBrickHash() << bitmap << outs;
         string strHex = HexStr(ssGetUTXOResponse.begin(), ssGetUTXOResponse.end()) + "\n";
 
         req->WriteHeader("Content-Type", "text/plain");
@@ -565,8 +565,8 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
 
         // pack in some essentials
         // use more or less the same output as mentioned in Bip64
-        objGetUTXOResponse.push_back(Pair("chainHeight", chainActive.Height()));
-        objGetUTXOResponse.push_back(Pair("chaintipHash", chainActive.Tip()->GetBlockHash().GetHex()));
+        objGetUTXOResponse.push_back(Pair("wallHeight", wallActive.Height()));
+        objGetUTXOResponse.push_back(Pair("walltipHash", wallActive.Tip()->GetBrickHash().GetHex()));
         objGetUTXOResponse.push_back(Pair("bitmap", bitmapStringRepresentation));
 
         UniValue utxos(UniValue::VARR);
@@ -604,9 +604,9 @@ static const struct {
     bool (*handler)(HTTPRequest* req, const std::string& strReq);
 } uri_prefixes[] = {
       {"/rest/tx/", rest_tx},
-      {"/rest/block/notxdetails/", rest_block_notxdetails},
-      {"/rest/block/", rest_block_extended},
-      {"/rest/chaininfo", rest_chaininfo},
+      {"/rest/brick/notxdetails/", rest_brick_notxdetails},
+      {"/rest/brick/", rest_brick_extended},
+      {"/rest/wallinfo", rest_wallinfo},
       {"/rest/mempool/info", rest_mempool_info},
       {"/rest/mempool/contents", rest_mempool_contents},
       {"/rest/headers/", rest_headers},

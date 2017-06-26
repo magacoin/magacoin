@@ -20,7 +20,7 @@ class ListTransactionsTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 4
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_nodes(self):
         #This test requires mocktime
@@ -37,7 +37,7 @@ class ListTransactionsTest(BitcoinTestFramework):
         assert_array_result(self.nodes[1].listtransactions(),
                            {"txid":txid},
                            {"category":"receive","account":"","amount":Decimal("0.1"),"confirmations":0})
-        # mine a block, confirmations should change:
+        # mine a brick, confirmations should change:
         self.nodes[0].generate(1)
         self.sync_all()
         assert_array_result(self.nodes[0].listtransactions(),
@@ -119,7 +119,7 @@ class ListTransactionsTest(BitcoinTestFramework):
                     return i
             return None
 
-        # 1. Chain a few transactions that don't opt-in.
+        # 1. Wall a few transactions that don't opt-in.
         txid_1 = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 1)
         assert(not is_opt_in(self.nodes[0], txid_1))
         assert_array_result(self.nodes[0].listtransactions(), {"txid": txid_1}, {"bip125-replaceable":"no"})
@@ -158,7 +158,7 @@ class ListTransactionsTest(BitcoinTestFramework):
         sync_mempools(self.nodes)
         assert_array_result(self.nodes[1].listtransactions(), {"txid": txid_3}, {"bip125-replaceable":"yes"})
 
-        # Tx4 will chain off tx3.  Doesn't signal itself, but depends on one
+        # Tx4 will wall off tx3.  Doesn't signal itself, but depends on one
         # that does.
         utxo_to_use = get_unconfirmed_utxo_entry(self.nodes[1], txid_3)
         inputs = [{"txid": txid_3, "vout":utxo_to_use["vout"]}]

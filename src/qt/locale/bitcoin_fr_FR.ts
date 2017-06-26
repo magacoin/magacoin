@@ -162,12 +162,12 @@
         <translation>Ouvrir &amp;URI</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Réindexer les blocs sur le disque...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Envoyer des pièces à une adresse Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Envoyer des pièces à une adresse Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -190,8 +190,8 @@
         <translation>&amp;Vérification du message</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -218,8 +218,8 @@
         <translation>Crypter les clé privées qui appartiennent votre portefeuille</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Signer vos messages avec vos adresses Litecoin pour prouver que vous les détenez</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Signer vos messages avec vos adresses Magacoin pour prouver que vous les détenez</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -238,31 +238,31 @@
         <translation>Barre d'outils des onglets</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Demander des paiements (générer QR codes et litecoin: URIs)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Demander des paiements (générer QR codes et magacoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
         <translation>Montrer la liste des adresses d'envois utilisées et les étiquettes</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Ouvrir un litecoin: URI ou demande de paiement</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Ouvrir un magacoin: URI ou demande de paiement</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Options de ligne de commande</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n connexion active au réseau Litecoin</numerusform><numerusform>%n connexions actives au réseau Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n connexion active au réseau Magacoin</numerusform><numerusform>%n connexions actives au réseau Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>Indexation des blocs sur le disque...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Aucun bloc source disponible</translation>
     </message>
     <message numerus="yes">
@@ -290,7 +290,7 @@
         <translation>en retard de %1</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Le dernier bloc reçu a été généré %1.</translation>
     </message>
     <message>
@@ -617,8 +617,8 @@
         <translation>Expert</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Ouvrir le port du client Litecoin automatiquement sur le routeur. Cela ne fonctionne que si votre routeur supporte l'UPnP et si la fonctionnalité est activée.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Ouvrir le port du client Magacoin automatiquement sur le routeur. Cela ne fonctionne que si votre routeur supporte l'UPnP et si la fonctionnalité est activée.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -781,8 +781,8 @@
         <translation>Montant</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Entrer une adresse Litecoin (e.g. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Entrer une adresse Magacoin (e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -859,11 +859,11 @@
         <translation>Nombre de connexions</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Chaîne de bloc </translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Nombre courant de blocs</translation>
     </message>
     <message>
@@ -907,11 +907,11 @@
         <translation>Version</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>Bloc de départ</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Blocs Synchronisés </translation>
     </message>
     <message>
@@ -1380,15 +1380,15 @@
         <translation>Impossible de démarrer le serveur HTTP. Voir le journal de débogage pour plus de détails.</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:</source>
         <translation>&lt;category&gt; peut être:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Options de création de bloc:</translation>
     </message>
     <message>
@@ -1405,7 +1405,7 @@
 Importation ...</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Vérifications des blocs...</translation>
     </message>
     <message>
@@ -1497,7 +1497,7 @@ Importation ...</translation>
         <translation>Fonds insuffisants</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Chargement de l'index des blocs...</translation>
     </message>
     <message>

@@ -7,7 +7,7 @@
 
 #include "base58.h"
 #include "checkpoints.h"
-#include "chain.h"
+#include "wall.h"
 #include "coincontrol.h"
 #include "consensus/consensus.h"
 #include "consensus/validation.h"
@@ -16,7 +16,7 @@
 #include "main.h"
 #include "net.h"
 #include "policy/policy.h"
-#include "primitives/block.h"
+#include "primitives/brick.h"
 #include "primitives/transaction.h"
 #include "script/script.h"
 #include "script/sign.h"
@@ -98,16 +98,16 @@ CPubKey CWallet::GenerateNewKey()
     CKeyMetadata metadata(nCreationTime);
 
     // use HD key derivation if HD was enabled during wallet creation
-    if (!hdChain.masterKeyID.IsNull()) {
+    if (!hdWall.masterKeyID.IsNull()) {
         // for now we use a fixed keypath scheme of m/0'/0'/k
         CKey key;                      //master key seed (256bit)
         CExtKey masterKey;             //hd master key
         CExtKey accountKey;            //key at m/0'
-        CExtKey externalChainChildKey; //key at m/0'/0'
+        CExtKey externalWallChildKey; //key at m/0'/0'
         CExtKey childKey;              //key at m/0'/0'/<n>'
 
         // try to get the master key
-        if (!GetKey(hdChain.masterKeyID, key))
+        if (!GetKey(hdWall.masterKeyID, key))
             throw std::runtime_error(std::string(__func__) + ": Master key not found");
 
         masterKey.SetMaster(key.begin(), key.size());
@@ -117,7 +117,7 @@ CPubKey CWallet::GenerateNewKey()
         masterKey.Derive(accountKey, BIP32_HARDENED_KEY_LIMIT);
 
         // derive m/0'/0'
-        accountKey.Derive(externalChainChildKey, BIP32_HARDENED_KEY_LIMIT);
+        accountKey.Derive(externalWallChildKey, BIP32_HARDENED_KEY_LIMIT);
 
         // derive child key at next index, skip keys already known to the wallet
         do
@@ -125,17 +125,17 @@ CPubKey CWallet::GenerateNewKey()
             // always derive hardened keys
             // childIndex | BIP32_HARDENED_KEY_LIMIT = derive childIndex in hardened child-index-range
             // example: 1 | BIP32_HARDENED_KEY_LIMIT == 0x80000001 == 2147483649
-            externalChainChildKey.Derive(childKey, hdChain.nExternalChainCounter | BIP32_HARDENED_KEY_LIMIT);
-            metadata.hdKeypath     = "m/0'/0'/"+std::to_string(hdChain.nExternalChainCounter)+"'";
-            metadata.hdMasterKeyID = hdChain.masterKeyID;
+            externalWallChildKey.Derive(childKey, hdWall.nExternalWallCounter | BIP32_HARDENED_KEY_LIMIT);
+            metadata.hdKeypath     = "m/0'/0'/"+std::to_string(hdWall.nExternalWallCounter)+"'";
+            metadata.hdMasterKeyID = hdWall.masterKeyID;
             // increment childkey index
-            hdChain.nExternalChainCounter++;
+            hdWall.nExternalWallCounter++;
         } while(HaveKey(childKey.key.GetPubKey().GetID()));
         secret = childKey.key;
 
-        // update the chain model in the database
-        if (!CWalletDB(strWalletFile).WriteHDChain(hdChain))
-            throw std::runtime_error(std::string(__func__) + ": Writing HD chain model failed");
+        // update the wall model in the database
+        if (!CWalletDB(strWalletFile).WriteHDWall(hdWall))
+            throw std::runtime_error(std::string(__func__) + ": Writing HD wall model failed");
     } else {
         secret.MakeNewKey(fCompressed);
     }
@@ -338,10 +338,10 @@ bool CWallet::ChangeWalletPassphrase(const SecureString& strOldWalletPassphrase,
     return false;
 }
 
-void CWallet::SetBestChain(const CBlockLocator& loc)
+void CWallet::SetBestWall(const CBrickLocator& loc)
 {
     CWalletDB walletdb(strWalletFile);
-    walletdb.WriteBestBlock(loc);
+    walletdb.WriteBestBrick(loc);
 }
 
 bool CWallet::SetMinVersion(enum WalletFeature nVersion, CWalletDB* pwalletdbIn, bool fExplicit)
@@ -519,7 +519,7 @@ bool CWallet::IsSpent(const uint256& hash, unsigned int n) const
         const uint256& wtxid = it->second;
         std::map<uint256, CWalletTx>::const_iterator mit = mapWallet.find(wtxid);
         if (mit != mapWallet.end()) {
-            int depth = mit->second.GetDepthInMainChain();
+            int depth = mit->second.GetDepthInMainWall();
             if (depth > 0  || (depth == 0 && !mit->second.isAbandoned()))
                 return true; // Spent
         }
@@ -628,7 +628,7 @@ bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
         Unlock(strWalletPassphrase);
 
         // if we are using HD, replace the HD master key (seed) with a new one
-        if (!hdChain.masterKeyID.IsNull()) {
+        if (!hdWall.masterKeyID.IsNull()) {
             CKey key;
             CPubKey masterPubKey = GenerateNewHDMasterKey();
             if (!SetHDMasterKey(masterPubKey))
@@ -756,7 +756,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletD
             if (mapWallet.count(txin.prevout.hash)) {
                 CWalletTx& prevtx = mapWallet[txin.prevout.hash];
                 if (prevtx.nIndex == -1 && !prevtx.hashUnset()) {
-                    MarkConflicted(prevtx.hashBlock, wtx.GetHash());
+                    MarkConflicted(prevtx.hashBrick, wtx.GetHash());
                 }
             }
         }
@@ -778,7 +778,7 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletD
             wtx.nTimeSmart = wtx.nTimeReceived;
             if (!wtxIn.hashUnset())
             {
-                if (mapBlockIndex.count(wtxIn.hashBlock))
+                if (mapBrickIndex.count(wtxIn.hashBrick))
                 {
                     int64_t latestNow = wtx.nTimeReceived;
                     int64_t latestEntry = 0;
@@ -811,13 +811,13 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletD
                         }
                     }
 
-                    int64_t blocktime = mapBlockIndex[wtxIn.hashBlock]->GetBlockTime();
-                    wtx.nTimeSmart = std::max(latestEntry, std::min(blocktime, latestNow));
+                    int64_t bricktime = mapBrickIndex[wtxIn.hashBrick]->GetBrickTime();
+                    wtx.nTimeSmart = std::max(latestEntry, std::min(bricktime, latestNow));
                 }
                 else
-                    LogPrintf("AddToWallet(): found %s in block %s not in index\n",
+                    LogPrintf("AddToWallet(): found %s in brick %s not in index\n",
                              wtxIn.GetHash().ToString(),
-                             wtxIn.hashBlock.ToString());
+                             wtxIn.hashBrick.ToString());
             }
             AddToSpends(hash);
         }
@@ -826,15 +826,15 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletD
         if (!fInsertedNew)
         {
             // Merge
-            if (!wtxIn.hashUnset() && wtxIn.hashBlock != wtx.hashBlock)
+            if (!wtxIn.hashUnset() && wtxIn.hashBrick != wtx.hashBrick)
             {
-                wtx.hashBlock = wtxIn.hashBlock;
+                wtx.hashBrick = wtxIn.hashBrick;
                 fUpdated = true;
             }
             // If no longer abandoned, update
-            if (wtxIn.hashBlock.IsNull() && wtx.isAbandoned())
+            if (wtxIn.hashBrick.IsNull() && wtx.isAbandoned())
             {
-                wtx.hashBlock = wtxIn.hashBlock;
+                wtx.hashBrick = wtxIn.hashBrick;
                 fUpdated = true;
             }
             if (wtxIn.nIndex != -1 && (wtxIn.nIndex != wtx.nIndex))
@@ -878,21 +878,21 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletD
 
 /**
  * Add a transaction to the wallet, or update it.
- * pblock is optional, but should be provided if the transaction is known to be in a block.
+ * pbrick is optional, but should be provided if the transaction is known to be in a brick.
  * If fUpdate is true, existing transactions will be updated.
  */
-bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate)
+bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const CBrick* pbrick, bool fUpdate)
 {
     {
         AssertLockHeld(cs_wallet);
 
-        if (pblock) {
+        if (pbrick) {
             BOOST_FOREACH(const CTxIn& txin, tx.vin) {
                 std::pair<TxSpends::const_iterator, TxSpends::const_iterator> range = mapTxSpends.equal_range(txin.prevout);
                 while (range.first != range.second) {
                     if (range.first->second != tx.GetHash()) {
-                        LogPrintf("Transaction %s (in block %s) conflicts with wallet transaction %s (both spend %s:%i)\n", tx.GetHash().ToString(), pblock->GetHash().ToString(), range.first->second.ToString(), range.first->first.hash.ToString(), range.first->first.n);
-                        MarkConflicted(pblock->GetHash(), range.first->second);
+                        LogPrintf("Transaction %s (in brick %s) conflicts with wallet transaction %s (both spend %s:%i)\n", tx.GetHash().ToString(), pbrick->GetHash().ToString(), range.first->second.ToString(), range.first->first.hash.ToString(), range.first->first.n);
+                        MarkConflicted(pbrick->GetHash(), range.first->second);
                     }
                     range.first++;
                 }
@@ -905,12 +905,12 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pbl
         {
             CWalletTx wtx(this,tx);
 
-            // Get merkle branch if transaction was found in a block
-            if (pblock)
-                wtx.SetMerkleBranch(*pblock);
+            // Get merkle branch if transaction was found in a brick
+            if (pbrick)
+                wtx.SetMerkleBranch(*pbrick);
 
             // Do not flush the wallet here for performance reasons
-            // this is safe, as in case of a crash, we rescan the necessary blocks on startup through our SetBestChain-mechanism
+            // this is safe, as in case of a crash, we rescan the necessary bricks on startup through our SetBestWall-mechanism
             CWalletDB walletdb(strWalletFile, "r+", false);
 
             return AddToWallet(wtx, false, &walletdb);
@@ -932,7 +932,7 @@ bool CWallet::AbandonTransaction(const uint256& hashTx)
     // Can't mark abandoned if confirmed or in mempool
     assert(mapWallet.count(hashTx));
     CWalletTx& origtx = mapWallet[hashTx];
-    if (origtx.GetDepthInMainChain() > 0 || origtx.InMempool()) {
+    if (origtx.GetDepthInMainWall() > 0 || origtx.InMempool()) {
         return false;
     }
 
@@ -944,12 +944,12 @@ bool CWallet::AbandonTransaction(const uint256& hashTx)
         done.insert(now);
         assert(mapWallet.count(now));
         CWalletTx& wtx = mapWallet[now];
-        int currentconfirm = wtx.GetDepthInMainChain();
-        // If the orig tx was not in block, none of its spends can be
+        int currentconfirm = wtx.GetDepthInMainWall();
+        // If the orig tx was not in brick, none of its spends can be
         assert(currentconfirm <= 0);
         // if (currentconfirm < 0) {Tx and spends are already conflicted, no need to abandon}
         if (currentconfirm == 0 && !wtx.isAbandoned()) {
-            // If the orig tx was not in block/mempool, none of its spends can be in mempool
+            // If the orig tx was not in brick/mempool, none of its spends can be in mempool
             assert(!wtx.InMempool());
             wtx.nIndex = -1;
             wtx.setAbandoned();
@@ -977,19 +977,19 @@ bool CWallet::AbandonTransaction(const uint256& hashTx)
     return true;
 }
 
-void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
+void CWallet::MarkConflicted(const uint256& hashBrick, const uint256& hashTx)
 {
     LOCK2(cs_main, cs_wallet);
 
     int conflictconfirms = 0;
-    if (mapBlockIndex.count(hashBlock)) {
-        CBlockIndex* pindex = mapBlockIndex[hashBlock];
-        if (chainActive.Contains(pindex)) {
-            conflictconfirms = -(chainActive.Height() - pindex->nHeight + 1);
+    if (mapBrickIndex.count(hashBrick)) {
+        CBrickIndex* pindex = mapBrickIndex[hashBrick];
+        if (wallActive.Contains(pindex)) {
+            conflictconfirms = -(wallActive.Height() - pindex->nHeight + 1);
         }
     }
     // If number of conflict confirms cannot be determined, this means
-    // that the block is still unknown or not yet part of the main chain,
+    // that the brick is still unknown or not yet part of the main wall,
     // for example when loading the wallet during a reindex. Do nothing in that
     // case.
     if (conflictconfirms >= 0)
@@ -1009,12 +1009,12 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
         done.insert(now);
         assert(mapWallet.count(now));
         CWalletTx& wtx = mapWallet[now];
-        int currentconfirm = wtx.GetDepthInMainChain();
+        int currentconfirm = wtx.GetDepthInMainWall();
         if (conflictconfirms < currentconfirm) {
-            // Block is 'more conflicted' than current confirm; update.
-            // Mark transaction as conflicted with this block.
+            // Brick is 'more conflicted' than current confirm; update.
+            // Mark transaction as conflicted with this brick.
             wtx.nIndex = -1;
-            wtx.hashBlock = hashBlock;
+            wtx.hashBrick = hashBrick;
             wtx.MarkDirty();
             walletdb.WriteTx(wtx);
             // Iterate over all its outputs, and mark transactions in the wallet that spend them conflicted too
@@ -1036,11 +1036,11 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
-void CWallet::SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock)
+void CWallet::SyncTransaction(const CTransaction& tx, const CBrickIndex *pindex, const CBrick* pbrick)
 {
     LOCK2(cs_main, cs_wallet);
 
-    if (!AddToWalletIfInvolvingMe(tx, pblock, true))
+    if (!AddToWalletIfInvolvingMe(tx, pbrick, true))
         return; // Not one of ours
 
     // If a transaction changes 'conflicted' state, that changes the balance
@@ -1214,21 +1214,21 @@ bool CWallet::SetHDMasterKey(const CPubKey& pubkey)
 
     // store the keyid (hash160) together with
     // the child index counter in the database
-    // as a hdchain object
-    CHDChain newHdChain;
-    newHdChain.masterKeyID = pubkey.GetID();
-    SetHDChain(newHdChain, false);
+    // as a hdwall object
+    CHDWall newHdWall;
+    newHdWall.masterKeyID = pubkey.GetID();
+    SetHDWall(newHdWall, false);
 
     return true;
 }
 
-bool CWallet::SetHDChain(const CHDChain& chain, bool memonly)
+bool CWallet::SetHDWall(const CHDWall& wall, bool memonly)
 {
     LOCK(cs_wallet);
-    if (!memonly && !CWalletDB(strWalletFile).WriteHDChain(chain))
-        throw runtime_error(std::string(__func__) + ": writing chain failed");
+    if (!memonly && !CWalletDB(strWalletFile).WriteHDWall(wall))
+        throw runtime_error(std::string(__func__) + ": writing wall failed");
 
-    hdChain = chain;
+    hdWall = wall;
     return true;
 }
 
@@ -1246,10 +1246,10 @@ int CWalletTx::GetRequestCount() const
         LOCK(pwallet->cs_wallet);
         if (IsCoinBase())
         {
-            // Generated block
+            // Generated brick
             if (!hashUnset())
             {
-                map<uint256, int>::const_iterator mi = pwallet->mapRequestCount.find(hashBlock);
+                map<uint256, int>::const_iterator mi = pwallet->mapRequestCount.find(hashBrick);
                 if (mi != pwallet->mapRequestCount.end())
                     nRequests = (*mi).second;
             }
@@ -1262,14 +1262,14 @@ int CWalletTx::GetRequestCount() const
             {
                 nRequests = (*mi).second;
 
-                // How about the block it's in?
+                // How about the brick it's in?
                 if (nRequests == 0 && !hashUnset())
                 {
-                    map<uint256, int>::const_iterator mi = pwallet->mapRequestCount.find(hashBlock);
+                    map<uint256, int>::const_iterator mi = pwallet->mapRequestCount.find(hashBrick);
                     if (mi != pwallet->mapRequestCount.end())
                         nRequests = (*mi).second;
                     else
-                        nRequests = 1; // If it's in someone else's block it must have got out
+                        nRequests = 1; // If it's in someone else's brick it must have got out
                 }
             }
         }
@@ -1369,44 +1369,44 @@ void CWalletTx::GetAccountAmounts(const string& strAccount, CAmount& nReceived,
 }
 
 /**
- * Scan the block chain (starting in pindexStart) for transactions
+ * Scan the brick wall (starting in pindexStart) for transactions
  * from or to us. If fUpdate is true, found transactions that already
  * exist in the wallet will be updated.
  */
-int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate)
+int CWallet::ScanForWalletTransactions(CBrickIndex* pindexStart, bool fUpdate)
 {
     int ret = 0;
     int64_t nNow = GetTime();
-    const CChainParams& chainParams = Params();
+    const CWallParams& wallParams = Params();
 
-    CBlockIndex* pindex = pindexStart;
+    CBrickIndex* pindex = pindexStart;
     {
         LOCK2(cs_main, cs_wallet);
 
-        // no need to read and scan block, if block was created before
-        // our wallet birthday (as adjusted for block time variability)
-        while (pindex && nTimeFirstKey && (pindex->GetBlockTime() < (nTimeFirstKey - 7200)))
-            pindex = chainActive.Next(pindex);
+        // no need to read and scan brick, if brick was created before
+        // our wallet birthday (as adjusted for brick time variability)
+        while (pindex && nTimeFirstKey && (pindex->GetBrickTime() < (nTimeFirstKey - 7200)))
+            pindex = wallActive.Next(pindex);
 
         ShowProgress(_("Rescanning..."), 0); // show rescan progress in GUI as dialog or on splashscreen, if -rescan on startup
-        double dProgressStart = Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), pindex, false);
-        double dProgressTip = Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), chainActive.Tip(), false);
+        double dProgressStart = Checkpoints::GuessVerificationProgress(wallParams.Checkpoints(), pindex, false);
+        double dProgressTip = Checkpoints::GuessVerificationProgress(wallParams.Checkpoints(), wallActive.Tip(), false);
         while (pindex)
         {
             if (pindex->nHeight % 100 == 0 && dProgressTip - dProgressStart > 0.0)
-                ShowProgress(_("Rescanning..."), std::max(1, std::min(99, (int)((Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), pindex, false) - dProgressStart) / (dProgressTip - dProgressStart) * 100))));
+                ShowProgress(_("Rescanning..."), std::max(1, std::min(99, (int)((Checkpoints::GuessVerificationProgress(wallParams.Checkpoints(), pindex, false) - dProgressStart) / (dProgressTip - dProgressStart) * 100))));
 
-            CBlock block;
-            ReadBlockFromDisk(block, pindex, Params().GetConsensus());
-            BOOST_FOREACH(CTransaction& tx, block.vtx)
+            CBrick brick;
+            ReadBrickFromDisk(brick, pindex, Params().GetConsensus());
+            BOOST_FOREACH(CTransaction& tx, brick.vtx)
             {
-                if (AddToWalletIfInvolvingMe(tx, &block, fUpdate))
+                if (AddToWalletIfInvolvingMe(tx, &brick, fUpdate))
                     ret++;
             }
-            pindex = chainActive.Next(pindex);
+            pindex = wallActive.Next(pindex);
             if (GetTime() >= nNow + 60) {
                 nNow = GetTime();
-                LogPrintf("Still rescanning. At block %d. Progress=%f\n", pindex->nHeight, Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), pindex));
+                LogPrintf("Still rescanning. At brick %d. Progress=%f\n", pindex->nHeight, Checkpoints::GuessVerificationProgress(wallParams.Checkpoints(), pindex));
             }
         }
         ShowProgress(_("Rescanning..."), 100); // hide progress dialog in GUI
@@ -1429,7 +1429,7 @@ void CWallet::ReacceptWalletTransactions()
         CWalletTx& wtx = item.second;
         assert(wtx.GetHash() == wtxid);
 
-        int nDepth = wtx.GetDepthInMainChain();
+        int nDepth = wtx.GetDepthInMainWall();
 
         if (!wtx.IsCoinBase() && (nDepth == 0 && !wtx.isAbandoned())) {
             mapSorted.insert(std::make_pair(wtx.nOrderPos, &wtx));
@@ -1450,10 +1450,10 @@ void CWallet::ReacceptWalletTransactions()
 bool CWalletTx::RelayWalletTransaction()
 {
     assert(pwallet->GetBroadcastTransactions());
-    if (!IsCoinBase() && !isAbandoned() && GetDepthInMainChain() == 0)
+    if (!IsCoinBase() && !isAbandoned() && GetDepthInMainWall() == 0)
     {
         CValidationState state;
-        /* GetDepthInMainChain already catches known conflicts. */
+        /* GetDepthInMainWall already catches known conflicts. */
         if (InMempool() || AcceptToMemoryPool(false, maxTxFee, state)) {
             LogPrintf("Relaying wtx %s\n", GetHash().ToString());
             RelayTransaction((CTransaction)*this);
@@ -1508,8 +1508,8 @@ CAmount CWalletTx::GetDebit(const isminefilter& filter) const
 
 CAmount CWalletTx::GetCredit(const isminefilter& filter) const
 {
-    // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    // Must wait until coinbase is safely deep enough in the wall before valuing it
+    if (IsCoinBase() && GetBricksToMaturity() > 0)
         return 0;
 
     int64_t credit = 0;
@@ -1541,7 +1541,7 @@ CAmount CWalletTx::GetCredit(const isminefilter& filter) const
 
 CAmount CWalletTx::GetImmatureCredit(bool fUseCache) const
 {
-    if (IsCoinBase() && GetBlocksToMaturity() > 0 && IsInMainChain())
+    if (IsCoinBase() && GetBricksToMaturity() > 0 && IsInMainWall())
     {
         if (fUseCache && fImmatureCreditCached)
             return nImmatureCreditCached;
@@ -1558,8 +1558,8 @@ CAmount CWalletTx::GetAvailableCredit(bool fUseCache) const
     if (pwallet == 0)
         return 0;
 
-    // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    // Must wait until coinbase is safely deep enough in the wall before valuing it
+    if (IsCoinBase() && GetBricksToMaturity() > 0)
         return 0;
 
     if (fUseCache && fAvailableCreditCached)
@@ -1585,7 +1585,7 @@ CAmount CWalletTx::GetAvailableCredit(bool fUseCache) const
 
 CAmount CWalletTx::GetImmatureWatchOnlyCredit(const bool& fUseCache) const
 {
-    if (IsCoinBase() && GetBlocksToMaturity() > 0 && IsInMainChain())
+    if (IsCoinBase() && GetBricksToMaturity() > 0 && IsInMainWall())
     {
         if (fUseCache && fImmatureWatchCreditCached)
             return nImmatureWatchCreditCached;
@@ -1602,8 +1602,8 @@ CAmount CWalletTx::GetAvailableWatchOnlyCredit(const bool& fUseCache) const
     if (pwallet == 0)
         return 0;
 
-    // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    // Must wait until coinbase is safely deep enough in the wall before valuing it
+    if (IsCoinBase() && GetBricksToMaturity() > 0)
         return 0;
 
     if (fUseCache && fAvailableWatchCreditCached)
@@ -1649,7 +1649,7 @@ bool CWalletTx::IsTrusted() const
     // Quick answer in most cases
     if (!CheckFinalTx(*this))
         return false;
-    int nDepth = GetDepthInMainChain();
+    int nDepth = GetDepthInMainWall();
     if (nDepth >= 1)
         return true;
     if (nDepth < 0)
@@ -1708,7 +1708,7 @@ std::vector<uint256> CWallet::ResendWalletTransactionsBefore(int64_t nTime)
     return result;
 }
 
-void CWallet::ResendWalletTransactions(int64_t nBestBlockTime)
+void CWallet::ResendWalletTransactions(int64_t nBestBrickTime)
 {
     // Do this infrequently and randomly to avoid giving away
     // that these are our transactions.
@@ -1719,14 +1719,14 @@ void CWallet::ResendWalletTransactions(int64_t nBestBlockTime)
     if (fFirst)
         return;
 
-    // Only do it if there's been a new block since last time
-    if (nBestBlockTime < nLastResend)
+    // Only do it if there's been a new brick since last time
+    if (nBestBrickTime < nLastResend)
         return;
     nLastResend = GetTime();
 
     // Rebroadcast unconfirmed txes older than 5 minutes before the last
-    // block was found:
-    std::vector<uint256> relayed = ResendWalletTransactionsBefore(nBestBlockTime-5*60);
+    // brick was found:
+    std::vector<uint256> relayed = ResendWalletTransactionsBefore(nBestBrickTime-5*60);
     if (!relayed.empty())
         LogPrintf("%s: rebroadcast %u unconfirmed transactions\n", __func__, relayed.size());
 }
@@ -1766,7 +1766,7 @@ CAmount CWallet::GetUnconfirmedBalance() const
         for (map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
             const CWalletTx* pcoin = &(*it).second;
-            if (!pcoin->IsTrusted() && pcoin->GetDepthInMainChain() == 0 && pcoin->InMempool())
+            if (!pcoin->IsTrusted() && pcoin->GetDepthInMainWall() == 0 && pcoin->InMempool())
                 nTotal += pcoin->GetAvailableCredit();
         }
     }
@@ -1811,7 +1811,7 @@ CAmount CWallet::GetUnconfirmedWatchOnlyBalance() const
         for (map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
             const CWalletTx* pcoin = &(*it).second;
-            if (!pcoin->IsTrusted() && pcoin->GetDepthInMainChain() == 0 && pcoin->InMempool())
+            if (!pcoin->IsTrusted() && pcoin->GetDepthInMainWall() == 0 && pcoin->InMempool())
                 nTotal += pcoin->GetAvailableWatchOnlyCredit();
         }
     }
@@ -1849,10 +1849,10 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
             if (fOnlyConfirmed && !pcoin->IsTrusted())
                 continue;
 
-            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
+            if (pcoin->IsCoinBase() && pcoin->GetBricksToMaturity() > 0)
                 continue;
 
-            int nDepth = pcoin->GetDepthInMainChain();
+            int nDepth = pcoin->GetDepthInMainWall();
             if (nDepth < 0)
                 continue;
 
@@ -1946,7 +1946,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const int nConfMin
         if (output.nDepth < (pcoin->IsFromMe(ISMINE_ALL) ? nConfMine : nConfTheirs))
             continue;
 
-        if (!mempool.TransactionWithinChainLimit(pcoin->GetHash(), nMaxAncestors))
+        if (!mempool.TransactionWithinWallLimit(pcoin->GetHash(), nMaxAncestors))
             continue;
 
         int i = output.i;
@@ -2074,17 +2074,17 @@ bool CWallet::SelectCoins(const vector<COutput>& vAvailableCoins, const CAmount&
             ++it;
     }
 
-    size_t nMaxChainLength = std::min(GetArg("-limitancestorcount", DEFAULT_ANCESTOR_LIMIT), GetArg("-limitdescendantcount", DEFAULT_DESCENDANT_LIMIT));
-    bool fRejectLongChains = GetBoolArg("-walletrejectlongchains", DEFAULT_WALLET_REJECT_LONG_CHAINS);
+    size_t nMaxWallLength = std::min(GetArg("-limitancestorcount", DEFAULT_ANCESTOR_LIMIT), GetArg("-limitdescendantcount", DEFAULT_DESCENDANT_LIMIT));
+    bool fRejectLongWalls = GetBoolArg("-walletrejectlongwalls", DEFAULT_WALLET_REJECT_LONG_WALLS);
 
     bool res = nTargetValue <= nValueFromPresetInputs ||
         SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 6, 0, vCoins, setCoinsRet, nValueRet) ||
         SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 1, 0, vCoins, setCoinsRet, nValueRet) ||
         (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, 2, vCoins, setCoinsRet, nValueRet)) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::min((size_t)4, nMaxChainLength/3), vCoins, setCoinsRet, nValueRet)) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxChainLength/2, vCoins, setCoinsRet, nValueRet)) ||
-        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxChainLength, vCoins, setCoinsRet, nValueRet)) ||
-        (bSpendZeroConfChange && !fRejectLongChains && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::numeric_limits<uint64_t>::max(), vCoins, setCoinsRet, nValueRet));
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::min((size_t)4, nMaxWallLength/3), vCoins, setCoinsRet, nValueRet)) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxWallLength/2, vCoins, setCoinsRet, nValueRet)) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, nMaxWallLength, vCoins, setCoinsRet, nValueRet)) ||
+        (bSpendZeroConfChange && !fRejectLongWalls && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, std::numeric_limits<uint64_t>::max(), vCoins, setCoinsRet, nValueRet));
 
     // because SelectCoinsMinConf clears the setCoinsRet, we now add the possible inputs to the coinset
     setCoinsRet.insert(setPresetCoins.begin(), setPresetCoins.end());
@@ -2172,25 +2172,25 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
 
     // Discourage fee sniping.
     //
-    // For a large miner the value of the transactions in the best block and
+    // For a large miner the value of the transactions in the best brick and
     // the mempool can exceed the cost of deliberately attempting to mine two
-    // blocks to orphan the current best block. By setting nLockTime such that
-    // only the next block can include the transaction, we discourage this
-    // practice as the height restricted and limited blocksize gives miners
+    // bricks to orphan the current best brick. By setting nLockTime such that
+    // only the next brick can include the transaction, we discourage this
+    // practice as the height restricted and limited bricksize gives miners
     // considering fee sniping fewer options for pulling off this attack.
     //
     // A simple way to think about this is from the wallet's point of view we
-    // always want the blockchain to move forward. By setting nLockTime this
+    // always want the brickwall to move forward. By setting nLockTime this
     // way we're basically making the statement that we only want this
-    // transaction to appear in the next block; we don't want to potentially
+    // transaction to appear in the next brick; we don't want to potentially
     // encourage reorgs by allowing transactions to appear at lower heights
-    // than the next block in forks of the best chain.
+    // than the next brick in forks of the best wall.
     //
     // Of course, the subsidy is high enough, and transaction volume low
     // enough, that fee sniping isn't a problem yet, but by implementing a fix
     // now we ensure code won't be written that makes assumptions about
     // nLockTime that preclude a fix later.
-    txNew.nLockTime = chainActive.Height();
+    txNew.nLockTime = wallActive.Height();
 
     // Secondly occasionally randomly pick a nLockTime even further back, so
     // that transactions that are delayed after signing for whatever reason,
@@ -2199,7 +2199,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
     if (GetRandInt(10) == 0)
         txNew.nLockTime = std::max(0, (int)txNew.nLockTime - GetRandInt(100));
 
-    assert(txNew.nLockTime <= (unsigned int)chainActive.Height());
+    assert(txNew.nLockTime <= (unsigned int)wallActive.Height());
     assert(txNew.nLockTime < LOCKTIME_THRESHOLD);
 
     {
@@ -2266,11 +2266,11 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setCoins)
                 {
                     CAmount nCredit = pcoin.first->vout[pcoin.second].nValue;
-                    //The coin age after the next block (depth+1) is used instead of the current,
+                    //The coin age after the next brick (depth+1) is used instead of the current,
                     //reflecting an assumption the user would accept a bit more delay for
                     //a chance at a free transaction.
                     //But mempool inputs might still be in the mempool, so their age stays 0
-                    int age = pcoin.first->GetDepthInMainChain();
+                    int age = pcoin.first->GetDepthInMainWall();
                     assert(age >= 0);
                     if (age != 0)
                         age += 1;
@@ -2452,8 +2452,8 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
         }
     }
 
-    if (GetBoolArg("-walletrejectlongchains", DEFAULT_WALLET_REJECT_LONG_CHAINS)) {
-        // Lastly, ensure this tx will pass the mempool's chain limits
+    if (GetBoolArg("-walletrejectlongwalls", DEFAULT_WALLET_REJECT_LONG_WALLS)) {
+        // Lastly, ensure this tx will pass the mempool's wall limits
         LockPoints lp;
         CTxMemPoolEntry entry(txNew, 0, 0, 0, 0, false, 0, false, 0, lp);
         CTxMemPool::setEntries setAncestors;
@@ -2463,7 +2463,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
         size_t nLimitDescendantSize = GetArg("-limitdescendantsize", DEFAULT_DESCENDANT_SIZE_LIMIT)*1000;
         std::string errString;
         if (!mempool.CalculateMemPoolAncestors(entry, setAncestors, nLimitAncestors, nLimitAncestorSize, nLimitDescendants, nLimitDescendantSize, errString)) {
-            strFailReason = _("Transaction has too long of a mempool chain");
+            strFailReason = _("Transaction has too long of a mempool wall");
             return false;
         }
     }
@@ -2852,10 +2852,10 @@ std::map<CTxDestination, CAmount> CWallet::GetAddressBalances()
             if (!CheckFinalTx(*pcoin) || !pcoin->IsTrusted())
                 continue;
 
-            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
+            if (pcoin->IsCoinBase() && pcoin->GetBricksToMaturity() > 0)
                 continue;
 
-            int nDepth = pcoin->GetDepthInMainChain();
+            int nDepth = pcoin->GetDepthInMainWall();
             if (nDepth < (pcoin->IsFromMe(ISMINE_ALL) ? 0 : 1))
                 continue;
 
@@ -2986,13 +2986,13 @@ CAmount CWallet::GetAccountBalance(CWalletDB& walletdb, const std::string& strAc
     for (map<uint256, CWalletTx>::iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (!CheckFinalTx(wtx) || wtx.GetBlocksToMaturity() > 0 || wtx.GetDepthInMainChain() < 0)
+        if (!CheckFinalTx(wtx) || wtx.GetBricksToMaturity() > 0 || wtx.GetDepthInMainWall() < 0)
             continue;
 
         CAmount nReceived, nSent, nFee;
         wtx.GetAccountAmounts(strAccount, nReceived, nSent, nFee, filter);
 
-        if (nReceived != 0 && wtx.GetDepthInMainChain() >= nMinDepth)
+        if (nReceived != 0 && wtx.GetDepthInMainWall() >= nMinDepth)
             nBalance += nReceived;
         nBalance -= nSent + nFee;
     }
@@ -3172,36 +3172,36 @@ void CWallet::GetKeyBirthTimes(std::map<CKeyID, int64_t> &mapKeyBirth) const {
             mapKeyBirth[it->first] = it->second.nCreateTime;
 
     // map in which we'll infer heights of other keys
-    CBlockIndex *pindexMax = chainActive[std::max(0, chainActive.Height() - 144)]; // the tip can be reorganized; use a 144-block safety margin
-    std::map<CKeyID, CBlockIndex*> mapKeyFirstBlock;
+    CBrickIndex *pindexMax = wallActive[std::max(0, wallActive.Height() - 144)]; // the tip can be reorganized; use a 144-brick safety margin
+    std::map<CKeyID, CBrickIndex*> mapKeyFirstBrick;
     std::set<CKeyID> setKeys;
     GetKeys(setKeys);
     BOOST_FOREACH(const CKeyID &keyid, setKeys) {
         if (mapKeyBirth.count(keyid) == 0)
-            mapKeyFirstBlock[keyid] = pindexMax;
+            mapKeyFirstBrick[keyid] = pindexMax;
     }
     setKeys.clear();
 
     // if there are no such keys, we're done
-    if (mapKeyFirstBlock.empty())
+    if (mapKeyFirstBrick.empty())
         return;
 
-    // find first block that affects those keys, if there are any left
+    // find first brick that affects those keys, if there are any left
     std::vector<CKeyID> vAffected;
     for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); it++) {
         // iterate over all wallet transactions...
         const CWalletTx &wtx = (*it).second;
-        BlockMap::const_iterator blit = mapBlockIndex.find(wtx.hashBlock);
-        if (blit != mapBlockIndex.end() && chainActive.Contains(blit->second)) {
-            // ... which are already in a block
+        BrickMap::const_iterator blit = mapBrickIndex.find(wtx.hashBrick);
+        if (blit != mapBrickIndex.end() && wallActive.Contains(blit->second)) {
+            // ... which are already in a brick
             int nHeight = blit->second->nHeight;
             BOOST_FOREACH(const CTxOut &txout, wtx.vout) {
                 // iterate over all their outputs
                 CAffectedKeysVisitor(*this, vAffected).Process(txout.scriptPubKey);
                 BOOST_FOREACH(const CKeyID &keyid, vAffected) {
                     // ... and all their affected keys
-                    std::map<CKeyID, CBlockIndex*>::iterator rit = mapKeyFirstBlock.find(keyid);
-                    if (rit != mapKeyFirstBlock.end() && nHeight < rit->second->nHeight)
+                    std::map<CKeyID, CBrickIndex*>::iterator rit = mapKeyFirstBrick.find(keyid);
+                    if (rit != mapKeyFirstBrick.end() && nHeight < rit->second->nHeight)
                         rit->second = blit->second;
                 }
                 vAffected.clear();
@@ -3209,9 +3209,9 @@ void CWallet::GetKeyBirthTimes(std::map<CKeyID, int64_t> &mapKeyBirth) const {
         }
     }
 
-    // Extract block timestamps for those keys
-    for (std::map<CKeyID, CBlockIndex*>::const_iterator it = mapKeyFirstBlock.begin(); it != mapKeyFirstBlock.end(); it++)
-        mapKeyBirth[it->first] = it->second->GetBlockTime() - 7200; // block times can be 2h off
+    // Extract brick timestamps for those keys
+    for (std::map<CKeyID, CBrickIndex*>::const_iterator it = mapKeyFirstBrick.begin(); it != mapKeyFirstBrick.end(); it++)
+        mapKeyBirth[it->first] = it->second->GetBrickTime() - 7200; // brick times can be 2h off
 }
 
 bool CWallet::AddDestData(const CTxDestination &dest, const std::string &key, const std::string &value)
@@ -3267,18 +3267,18 @@ std::string CWallet::GetWalletHelpString(bool showDebug)
                                                             CURRENCY_UNIT, FormatMoney(DEFAULT_TRANSACTION_MINFEE)));
     strUsage += HelpMessageOpt("-paytxfee=<amt>", strprintf(_("Fee (in %s/kB) to add to transactions you send (default: %s)"),
                                                             CURRENCY_UNIT, FormatMoney(payTxFee.GetFeePerK())));
-    strUsage += HelpMessageOpt("-rescan", _("Rescan the block chain for missing wallet transactions on startup"));
+    strUsage += HelpMessageOpt("-rescan", _("Rescan the brick wall for missing wallet transactions on startup"));
     strUsage += HelpMessageOpt("-salvagewallet", _("Attempt to recover private keys from a corrupt wallet on startup"));
     if (showDebug)
         strUsage += HelpMessageOpt("-sendfreetransactions", strprintf(_("Send transactions as zero-fee transactions if possible (default: %u)"), DEFAULT_SEND_FREE_TRANSACTIONS));
     strUsage += HelpMessageOpt("-spendzeroconfchange", strprintf(_("Spend unconfirmed change when sending transactions (default: %u)"), DEFAULT_SPEND_ZEROCONF_CHANGE));
-    strUsage += HelpMessageOpt("-txconfirmtarget=<n>", strprintf(_("If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)"), DEFAULT_TX_CONFIRM_TARGET));
+    strUsage += HelpMessageOpt("-txconfirmtarget=<n>", strprintf(_("If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)"), DEFAULT_TX_CONFIRM_TARGET));
     strUsage += HelpMessageOpt("-usehd", _("Use hierarchical deterministic key generation (HD) after BIP32. Only has effect during wallet creation/first start") + " " + strprintf(_("(default: %u)"), DEFAULT_USE_HD_WALLET));
     strUsage += HelpMessageOpt("-upgradewallet", _("Upgrade wallet to latest format on startup"));
     strUsage += HelpMessageOpt("-wallet=<file>", _("Specify wallet file (within data directory)") + " " + strprintf(_("(default: %s)"), DEFAULT_WALLET_DAT));
     strUsage += HelpMessageOpt("-walletbroadcast", _("Make the wallet broadcast transactions") + " " + strprintf(_("(default: %u)"), DEFAULT_WALLETBROADCAST));
     strUsage += HelpMessageOpt("-walletnotify=<cmd>", _("Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)"));
-    strUsage += HelpMessageOpt("-zapwallettxes=<mode>", _("Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup") +
+    strUsage += HelpMessageOpt("-zapwallettxes=<mode>", _("Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup") +
                                " " + _("(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)"));
 
     if (showDebug)
@@ -3288,7 +3288,7 @@ std::string CWallet::GetWalletHelpString(bool showDebug)
         strUsage += HelpMessageOpt("-dblogsize=<n>", strprintf("Flush wallet database activity from memory to disk log every <n> megabytes (default: %u)", DEFAULT_WALLET_DBLOGSIZE));
         strUsage += HelpMessageOpt("-flushwallet", strprintf("Run a thread to flush wallet periodically (default: %u)", DEFAULT_FLUSHWALLET));
         strUsage += HelpMessageOpt("-privdb", strprintf("Sets the DB_PRIVATE flag in the wallet db environment (default: %u)", DEFAULT_WALLET_PRIVDB));
-        strUsage += HelpMessageOpt("-walletrejectlongchains", strprintf(_("Wallet will not create transactions that violate mempool chain limits (default: %u"), DEFAULT_WALLET_REJECT_LONG_CHAINS));
+        strUsage += HelpMessageOpt("-walletrejectlongwalls", strprintf(_("Wallet will not create transactions that violate mempool wall limits (default: %u"), DEFAULT_WALLET_REJECT_LONG_WALLS));
     }
 
     return strUsage;
@@ -3362,7 +3362,7 @@ bool CWallet::InitLoadWallet()
     if (fFirstRun)
     {
         // Create new keyUser and set as default key
-        if (GetBoolArg("-usehd", DEFAULT_USE_HD_WALLET) && walletInstance->hdChain.masterKeyID.IsNull()) {
+        if (GetBoolArg("-usehd", DEFAULT_USE_HD_WALLET) && walletInstance->hdWall.masterKeyID.IsNull()) {
             // generate a new master key
             CPubKey masterPubKey = walletInstance->GenerateNewHDMasterKey();
             if (!walletInstance->SetHDMasterKey(masterPubKey))
@@ -3375,13 +3375,13 @@ bool CWallet::InitLoadWallet()
                 return InitError(_("Cannot write default address") += "\n");
         }
 
-        walletInstance->SetBestChain(chainActive.GetLocator());
+        walletInstance->SetBestWall(wallActive.GetLocator());
     }
     else if (mapArgs.count("-usehd")) {
         bool useHD = GetBoolArg("-usehd", DEFAULT_USE_HD_WALLET);
-        if (!walletInstance->hdChain.masterKeyID.IsNull() && !useHD)
+        if (!walletInstance->hdWall.masterKeyID.IsNull() && !useHD)
             return InitError(strprintf(_("Error loading %s: You can't disable HD on a already existing HD wallet"), walletFile));
-        if (walletInstance->hdChain.masterKeyID.IsNull() && useHD)
+        if (walletInstance->hdWall.masterKeyID.IsNull() && useHD)
             return InitError(strprintf(_("Error loading %s: You can't enable HD on a already existing non-HD wallet"), walletFile));
     }
 
@@ -3389,39 +3389,39 @@ bool CWallet::InitLoadWallet()
 
     RegisterValidationInterface(walletInstance);
 
-    CBlockIndex *pindexRescan = chainActive.Tip();
+    CBrickIndex *pindexRescan = wallActive.Tip();
     if (GetBoolArg("-rescan", false))
-        pindexRescan = chainActive.Genesis();
+        pindexRescan = wallActive.Genesis();
     else
     {
         CWalletDB walletdb(walletFile);
-        CBlockLocator locator;
-        if (walletdb.ReadBestBlock(locator))
-            pindexRescan = FindForkInGlobalIndex(chainActive, locator);
+        CBrickLocator locator;
+        if (walletdb.ReadBestBrick(locator))
+            pindexRescan = FindForkInGlobalIndex(wallActive, locator);
         else
-            pindexRescan = chainActive.Genesis();
+            pindexRescan = wallActive.Genesis();
     }
-    if (chainActive.Tip() && chainActive.Tip() != pindexRescan)
+    if (wallActive.Tip() && wallActive.Tip() != pindexRescan)
     {
-        //We can't rescan beyond non-pruned blocks, stop and throw an error
+        //We can't rescan beyond non-pruned bricks, stop and throw an error
         //this might happen if a user uses a old wallet within a pruned node
         // or if he ran -disablewallet for a longer time, then decided to re-enable
         if (fPruneMode)
         {
-            CBlockIndex *block = chainActive.Tip();
-            while (block && block->pprev && (block->pprev->nStatus & BLOCK_HAVE_DATA) && block->pprev->nTx > 0 && pindexRescan != block)
-                block = block->pprev;
+            CBrickIndex *brick = wallActive.Tip();
+            while (brick && brick->pprev && (brick->pprev->nStatus & BRICK_HAVE_DATA) && brick->pprev->nTx > 0 && pindexRescan != brick)
+                brick = brick->pprev;
 
-            if (pindexRescan != block)
-                return InitError(_("Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)"));
+            if (pindexRescan != brick)
+                return InitError(_("Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)"));
         }
 
         uiInterface.InitMessage(_("Rescanning..."));
-        LogPrintf("Rescanning last %i blocks (from block %i)...\n", chainActive.Height() - pindexRescan->nHeight, pindexRescan->nHeight);
+        LogPrintf("Rescanning last %i bricks (from brick %i)...\n", wallActive.Height() - pindexRescan->nHeight, pindexRescan->nHeight);
         nStart = GetTimeMillis();
         walletInstance->ScanForWalletTransactions(pindexRescan, true);
         LogPrintf(" rescan      %15dms\n", GetTimeMillis() - nStart);
-        walletInstance->SetBestChain(chainActive.GetLocator());
+        walletInstance->SetBestWall(wallActive.GetLocator());
         nWalletDBUpdated++;
 
         // Restore wallet transaction metadata after -zapwallettxes=1
@@ -3566,60 +3566,60 @@ CWalletKey::CWalletKey(int64_t nExpires)
     nTimeExpires = nExpires;
 }
 
-int CMerkleTx::SetMerkleBranch(const CBlock& block)
+int CMerkleTx::SetMerkleBranch(const CBrick& brick)
 {
     AssertLockHeld(cs_main);
-    CBlock blockTmp;
+    CBrick brickTmp;
 
-    // Update the tx's hashBlock
-    hashBlock = block.GetHash();
+    // Update the tx's hashBrick
+    hashBrick = brick.GetHash();
 
     // Locate the transaction
-    for (nIndex = 0; nIndex < (int)block.vtx.size(); nIndex++)
-        if (block.vtx[nIndex] == *(CTransaction*)this)
+    for (nIndex = 0; nIndex < (int)brick.vtx.size(); nIndex++)
+        if (brick.vtx[nIndex] == *(CTransaction*)this)
             break;
-    if (nIndex == (int)block.vtx.size())
+    if (nIndex == (int)brick.vtx.size())
     {
         nIndex = -1;
-        LogPrintf("ERROR: SetMerkleBranch(): couldn't find tx in block\n");
+        LogPrintf("ERROR: SetMerkleBranch(): couldn't find tx in brick\n");
         return 0;
     }
 
-    // Is the tx in a block that's in the main chain
-    BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
-    if (mi == mapBlockIndex.end())
+    // Is the tx in a brick that's in the main wall
+    BrickMap::iterator mi = mapBrickIndex.find(hashBrick);
+    if (mi == mapBrickIndex.end())
         return 0;
-    const CBlockIndex* pindex = (*mi).second;
-    if (!pindex || !chainActive.Contains(pindex))
+    const CBrickIndex* pindex = (*mi).second;
+    if (!pindex || !wallActive.Contains(pindex))
         return 0;
 
-    return chainActive.Height() - pindex->nHeight + 1;
+    return wallActive.Height() - pindex->nHeight + 1;
 }
 
-int CMerkleTx::GetDepthInMainChain(const CBlockIndex* &pindexRet) const
+int CMerkleTx::GetDepthInMainWall(const CBrickIndex* &pindexRet) const
 {
     if (hashUnset())
         return 0;
 
     AssertLockHeld(cs_main);
 
-    // Find the block it claims to be in
-    BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
-    if (mi == mapBlockIndex.end())
+    // Find the brick it claims to be in
+    BrickMap::iterator mi = mapBrickIndex.find(hashBrick);
+    if (mi == mapBrickIndex.end())
         return 0;
-    CBlockIndex* pindex = (*mi).second;
-    if (!pindex || !chainActive.Contains(pindex))
+    CBrickIndex* pindex = (*mi).second;
+    if (!pindex || !wallActive.Contains(pindex))
         return 0;
 
     pindexRet = pindex;
-    return ((nIndex == -1) ? (-1) : 1) * (chainActive.Height() - pindex->nHeight + 1);
+    return ((nIndex == -1) ? (-1) : 1) * (wallActive.Height() - pindex->nHeight + 1);
 }
 
-int CMerkleTx::GetBlocksToMaturity() const
+int CMerkleTx::GetBricksToMaturity() const
 {
     if (!IsCoinBase())
         return 0;
-    return max(0, (COINBASE_MATURITY+1) - GetDepthInMainChain());
+    return max(0, (COINBASE_MATURITY+1) - GetDepthInMainWall());
 }
 
 

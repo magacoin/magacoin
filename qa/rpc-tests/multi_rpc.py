@@ -18,15 +18,15 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
         self.num_nodes = 1
 
-    def setup_chain(self):
-        super().setup_chain()
+    def setup_wall(self):
+        super().setup_wall()
         #Append rpcauth to bitcoin.conf before initialization
         rpcauth = "rpcauth=rt:93648e835a54c573682c2eb19f882535$7681e9c5b74bdd85e78166031d2058e1069b3ed7ed967c93fc63abba06f31144"
         rpcauth2 = "rpcauth=rt2:f8607b1a88861fac29dfccf9b52ff9f$ff36a0c23c8c62b4846112e50fa888416e94c17bfd4c42f88fd8f55ec6a3137e"
-        with open(os.path.join(self.options.tmpdir+"/node0", "litecoin.conf"), 'a', encoding='utf8') as f:
+        with open(os.path.join(self.options.tmpdir+"/node0", "magacoin.conf"), 'a', encoding='utf8') as f:
             f.write(rpcauth+"\n")
             f.write(rpcauth2+"\n")
 
@@ -56,7 +56,7 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
         conn = http.client.HTTPConnection(url.hostname, url.port)
         conn.connect()
-        conn.request('POST', '/', '{"method": "getbestblockhash"}', headers)
+        conn.request('POST', '/', '{"method": "getbestbrickhash"}', headers)
         resp = conn.getresponse()
         assert_equal(resp.status==401, False)
         conn.close()
@@ -66,7 +66,7 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
         conn = http.client.HTTPConnection(url.hostname, url.port)
         conn.connect()
-        conn.request('POST', '/', '{"method": "getbestblockhash"}', headers)
+        conn.request('POST', '/', '{"method": "getbestbrickhash"}', headers)
         resp = conn.getresponse()
         assert_equal(resp.status==401, False)
         conn.close()
@@ -77,7 +77,7 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
         conn = http.client.HTTPConnection(url.hostname, url.port)
         conn.connect()
-        conn.request('POST', '/', '{"method": "getbestblockhash"}', headers)
+        conn.request('POST', '/', '{"method": "getbestbrickhash"}', headers)
         resp = conn.getresponse()
         assert_equal(resp.status==401, True)
         conn.close()
@@ -88,7 +88,7 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
         conn = http.client.HTTPConnection(url.hostname, url.port)
         conn.connect()
-        conn.request('POST', '/', '{"method": "getbestblockhash"}', headers)
+        conn.request('POST', '/', '{"method": "getbestbrickhash"}', headers)
         resp = conn.getresponse()
         assert_equal(resp.status==401, True)
         conn.close()
@@ -99,7 +99,7 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
         conn = http.client.HTTPConnection(url.hostname, url.port)
         conn.connect()
-        conn.request('POST', '/', '{"method": "getbestblockhash"}', headers)
+        conn.request('POST', '/', '{"method": "getbestbrickhash"}', headers)
         resp = conn.getresponse()
         assert_equal(resp.status==401, False)
         conn.close()
@@ -110,7 +110,7 @@ class HTTPBasicsTest (BitcoinTestFramework):
 
         conn = http.client.HTTPConnection(url.hostname, url.port)
         conn.connect()
-        conn.request('POST', '/', '{"method": "getbestblockhash"}', headers)
+        conn.request('POST', '/', '{"method": "getbestbrickhash"}', headers)
         resp = conn.getresponse()
         assert_equal(resp.status==401, True)
         conn.close()

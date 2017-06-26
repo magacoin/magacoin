@@ -6,7 +6,7 @@
 #ifndef BITCOIN_MINER_H
 #define BITCOIN_MINER_H
 
-#include "primitives/block.h"
+#include "primitives/brick.h"
 #include "txmempool.h"
 
 #include <stdint.h>
@@ -14,8 +14,8 @@
 #include "boost/multi_index_container.hpp"
 #include "boost/multi_index/ordered_index.hpp"
 
-class CBlockIndex;
-class CChainParams;
+class CBrickIndex;
+class CWallParams;
 class CReserveKey;
 class CScript;
 class CWallet;
@@ -24,16 +24,16 @@ namespace Consensus { struct Params; };
 
 static const bool DEFAULT_PRINTPRIORITY = false;
 
-struct CBlockTemplate
+struct CBrickTemplate
 {
-    CBlock block;
+    CBrick brick;
     std::vector<CAmount> vTxFees;
     std::vector<int64_t> vTxSigOpsCost;
     std::vector<unsigned char> vchCoinbaseCommitment;
 };
 
 // Container for tracking updates to ancestor feerate as we include (parent)
-// transactions in a block
+// transactions in a brick
 struct CTxMemPoolModifiedEntry {
     CTxMemPoolModifiedEntry(CTxMemPool::txiter entry)
     {
@@ -86,7 +86,7 @@ struct CompareModifiedEntry {
 
 // A comparator that sorts transactions based on number of ancestors.
 // This is sufficient to sort an ancestor package in an order that is valid
-// to appear in a block.
+// to appear in a brick.
 struct CompareTxIterByAncestorCount {
     bool operator()(const CTxMemPool::txiter &a, const CTxMemPool::txiter &b)
     {
@@ -130,65 +130,65 @@ struct update_for_parent_inclusion
     CTxMemPool::txiter iter;
 };
 
-/** Generate a new block, without valid proof-of-work */
-class BlockAssembler
+/** Generate a new brick, without valid proof-of-work */
+class BrickAssembler
 {
 private:
-    // The constructed block template
-    std::unique_ptr<CBlockTemplate> pblocktemplate;
-    // A convenience pointer that always refers to the CBlock in pblocktemplate
-    CBlock* pblock;
+    // The constructed brick template
+    std::unique_ptr<CBrickTemplate> pbricktemplate;
+    // A convenience pointer that always refers to the CBrick in pbricktemplate
+    CBrick* pbrick;
 
-    // Configuration parameters for the block size
+    // Configuration parameters for the brick size
     bool fIncludeWitness;
-    unsigned int nBlockMaxWeight, nBlockMaxSize;
+    unsigned int nBrickMaxWeight, nBrickMaxSize;
     bool fNeedSizeAccounting;
 
-    // Information on the current status of the block
-    uint64_t nBlockWeight;
-    uint64_t nBlockSize;
-    uint64_t nBlockTx;
-    uint64_t nBlockSigOpsCost;
+    // Information on the current status of the brick
+    uint64_t nBrickWeight;
+    uint64_t nBrickSize;
+    uint64_t nBrickTx;
+    uint64_t nBrickSigOpsCost;
     CAmount nFees;
-    CTxMemPool::setEntries inBlock;
+    CTxMemPool::setEntries inBrick;
 
-    // Chain context for the block
+    // Wall context for the brick
     int nHeight;
     int64_t nLockTimeCutoff;
-    const CChainParams& chainparams;
+    const CWallParams& wallparams;
 
     // Variables used for addPriorityTxs
     int lastFewTxs;
-    bool blockFinished;
+    bool brickFinished;
 
 public:
-    BlockAssembler(const CChainParams& chainparams);
-    /** Construct a new block template with coinbase to scriptPubKeyIn */
-    CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn);
+    BrickAssembler(const CWallParams& wallparams);
+    /** Construct a new brick template with coinbase to scriptPubKeyIn */
+    CBrickTemplate* CreateNewBrick(const CScript& scriptPubKeyIn);
 
 private:
     // utility functions
-    /** Clear the block's state and prepare for assembling a new block */
-    void resetBlock();
-    /** Add a tx to the block */
-    void AddToBlock(CTxMemPool::txiter iter);
+    /** Clear the brick's state and prepare for assembling a new brick */
+    void resetBrick();
+    /** Add a tx to the brick */
+    void AddToBrick(CTxMemPool::txiter iter);
 
-    // Methods for how to add transactions to a block.
+    // Methods for how to add transactions to a brick.
     /** Add transactions based on tx "priority" */
     void addPriorityTxs();
     /** Add transactions based on feerate including unconfirmed ancestors */
     void addPackageTxs();
 
     // helper function for addPriorityTxs
-    /** Test if tx will still "fit" in the block */
-    bool TestForBlock(CTxMemPool::txiter iter);
-    /** Test if tx still has unconfirmed parents not yet in block */
+    /** Test if tx will still "fit" in the brick */
+    bool TestForBrick(CTxMemPool::txiter iter);
+    /** Test if tx still has unconfirmed parents not yet in brick */
     bool isStillDependent(CTxMemPool::txiter iter);
 
     // helper functions for addPackageTxs()
-    /** Remove confirmed (inBlock) entries from given set */
+    /** Remove confirmed (inBrick) entries from given set */
     void onlyUnconfirmed(CTxMemPool::setEntries& testSet);
-    /** Test if a new package would "fit" in the block */
+    /** Test if a new package would "fit" in the brick */
     bool TestPackage(uint64_t packageSize, int64_t packageSigOpsCost);
     /** Perform checks on each transaction in a package:
       * locktime, premature-witness, serialized size (if necessary)
@@ -198,15 +198,15 @@ private:
     /** Return true if given transaction from mapTx has already been evaluated,
       * or if the transaction's cached data in mapTx is incorrect. */
     bool SkipMapTxEntry(CTxMemPool::txiter it, indexed_modified_transaction_set &mapModifiedTx, CTxMemPool::setEntries &failedTx);
-    /** Sort the package in an order that is valid to appear in a block */
-    void SortForBlock(const CTxMemPool::setEntries& package, CTxMemPool::txiter entry, std::vector<CTxMemPool::txiter>& sortedEntries);
+    /** Sort the package in an order that is valid to appear in a brick */
+    void SortForBrick(const CTxMemPool::setEntries& package, CTxMemPool::txiter entry, std::vector<CTxMemPool::txiter>& sortedEntries);
     /** Add descendants of given transactions to mapModifiedTx with ancestor
-      * state updated assuming given transactions are inBlock. */
+      * state updated assuming given transactions are inBrick. */
     void UpdatePackagesForAdded(const CTxMemPool::setEntries& alreadyAdded, indexed_modified_transaction_set &mapModifiedTx);
 };
 
-/** Modify the extranonce in a block */
-void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
-int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
+/** Modify the extranonce in a brick */
+void IncrementExtraNonce(CBrick* pbrick, const CBrickIndex* pindexPrev, unsigned int& nExtraNonce);
+int64_t UpdateTime(CBrickHeader* pbrick, const Consensus::Params& consensusParams, const CBrickIndex* pindexPrev);
 
 #endif // BITCOIN_MINER_H

@@ -15,17 +15,17 @@ class PeerTableModel;
 class TransactionTableModel;
 
 class CWallet;
-class CBlockIndex;
+class CBrickIndex;
 
 QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
 
-enum BlockSource {
-    BLOCK_SOURCE_NONE,
-    BLOCK_SOURCE_REINDEX,
-    BLOCK_SOURCE_DISK,
-    BLOCK_SOURCE_NETWORK
+enum BrickSource {
+    BRICK_SOURCE_NONE,
+    BRICK_SOURCE_REINDEX,
+    BRICK_SOURCE_DISK,
+    BRICK_SOURCE_NETWORK
 };
 
 enum NumConnections {
@@ -50,7 +50,7 @@ public:
 
     //! Return number of connections, default is in- and outbound (total)
     int getNumConnections(unsigned int flags = CONNECTIONS_ALL) const;
-    int getNumBlocks() const;
+    int getNumBricks() const;
 
     //! Return number of transactions in the mempool
     long getMempoolSize() const;
@@ -60,13 +60,13 @@ public:
     quint64 getTotalBytesRecv() const;
     quint64 getTotalBytesSent() const;
 
-    double getVerificationProgress(const CBlockIndex *tip) const;
-    QDateTime getLastBlockDate() const;
+    double getVerificationProgress(const CBrickIndex *tip) const;
+    QDateTime getLastBrickDate() const;
 
-    //! Return true if core is doing initial block download
-    bool inInitialBlockDownload() const;
-    //! Return true if core is importing blocks
-    enum BlockSource getBlockSource() const;
+    //! Return true if core is doing initial brick download
+    bool inInitialBrickDownload() const;
+    //! Return true if core is importing bricks
+    enum BrickSource getBrickSource() const;
     //! Return warnings to be displayed in status bar
     QString getStatusBarWarnings() const;
 
@@ -88,7 +88,7 @@ private:
 
 Q_SIGNALS:
     void numConnectionsChanged(int count);
-    void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, bool header);
+    void numBricksChanged(int count, const QDateTime& brickDate, double nVerificationProgress, bool header);
     void mempoolSizeChanged(long count, size_t mempoolSizeInBytes);
     void alertsChanged(const QString &warnings);
     void bytesChanged(quint64 totalBytesIn, quint64 totalBytesOut);
@@ -96,7 +96,7 @@ Q_SIGNALS:
     //! Fired when a message should be reported to the user
     void message(const QString &title, const QString &message, unsigned int style);
 
-    // Show progress dialog e.g. for verifychain
+    // Show progress dialog e.g. for verifywall
     void showProgress(const QString &title, int nProgress);
 
 public Q_SLOTS:

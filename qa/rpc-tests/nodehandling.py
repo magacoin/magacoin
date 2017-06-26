@@ -18,7 +18,7 @@ class NodeHandlingTest (BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 4
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def run_test(self):
         ###########################

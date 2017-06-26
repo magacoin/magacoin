@@ -51,8 +51,8 @@ static const CAmount MIN_CHANGE = CENT;
 static const bool DEFAULT_SPEND_ZEROCONF_CHANGE = true;
 //! Default for -sendfreetransactions
 static const bool DEFAULT_SEND_FREE_TRANSACTIONS = false;
-//! Default for -walletrejectlongchains
-static const bool DEFAULT_WALLET_REJECT_LONG_CHAINS = false;
+//! Default for -walletrejectlongwalls
+static const bool DEFAULT_WALLET_REJECT_LONG_WALLS = false;
 //! -txconfirmtarget default
 static const unsigned int DEFAULT_TX_CONFIRM_TARGET = 2;
 //! Largest (in bytes) free transaction we're willing to create
@@ -64,7 +64,7 @@ static const bool DEFAULT_USE_HD_WALLET = true;
 
 extern const char * DEFAULT_WALLET_DAT;
 
-class CBlockIndex;
+class CBrickIndex;
 class CCoinControl;
 class COutput;
 class CReserveKey;
@@ -157,18 +157,18 @@ struct COutputEntry
     int vout;
 };
 
-/** A transaction with a merkle branch linking it to the block chain. */
+/** A transaction with a merkle branch linking it to the brick wall. */
 class CMerkleTx : public CTransaction
 {
 private:
-  /** Constant used in hashBlock to indicate tx has been abandoned */
+  /** Constant used in hashBrick to indicate tx has been abandoned */
     static const uint256 ABANDON_HASH;
 
 public:
-    uint256 hashBlock;
+    uint256 hashBrick;
 
-    /* An nIndex == -1 means that hashBlock (in nonzero) refers to the earliest
-     * block in the chain we know this or any in-wallet dependency conflicts
+    /* An nIndex == -1 means that hashBrick (in nonzero) refers to the earliest
+     * brick in the wall we know this or any in-wallet dependency conflicts
      * with. Older clients interpret nIndex == -1 as unconfirmed for backward
      * compatibility.
      */
@@ -186,7 +186,7 @@ public:
 
     void Init()
     {
-        hashBlock = uint256();
+        hashBrick = uint256();
         nIndex = -1;
     }
 
@@ -197,33 +197,33 @@ public:
         std::vector<uint256> vMerkleBranch; // For compatibility with older versions.
         READWRITE(*(CTransaction*)this);
         nVersion = this->nVersion;
-        READWRITE(hashBlock);
+        READWRITE(hashBrick);
         READWRITE(vMerkleBranch);
         READWRITE(nIndex);
     }
 
-    int SetMerkleBranch(const CBlock& block);
+    int SetMerkleBranch(const CBrick& brick);
 
     /**
-     * Return depth of transaction in blockchain:
-     * <0  : conflicts with a transaction this deep in the blockchain
-     *  0  : in memory pool, waiting to be included in a block
-     * >=1 : this many blocks deep in the main chain
+     * Return depth of transaction in brickwall:
+     * <0  : conflicts with a transaction this deep in the brickwall
+     *  0  : in memory pool, waiting to be included in a brick
+     * >=1 : this many bricks deep in the main wall
      */
-    int GetDepthInMainChain(const CBlockIndex* &pindexRet) const;
-    int GetDepthInMainChain() const { const CBlockIndex *pindexRet; return GetDepthInMainChain(pindexRet); }
-    bool IsInMainChain() const { const CBlockIndex *pindexRet; return GetDepthInMainChain(pindexRet) > 0; }
-    int GetBlocksToMaturity() const;
+    int GetDepthInMainWall(const CBrickIndex* &pindexRet) const;
+    int GetDepthInMainWall() const { const CBrickIndex *pindexRet; return GetDepthInMainWall(pindexRet); }
+    bool IsInMainWall() const { const CBrickIndex *pindexRet; return GetDepthInMainWall(pindexRet) > 0; }
+    int GetBricksToMaturity() const;
     /** Pass this transaction to the mempool. Fails if absolute fee exceeds absurd fee. */
     bool AcceptToMemoryPool(bool fLimitFree, const CAmount nAbsurdFee, CValidationState& state);
-    bool hashUnset() const { return (hashBlock.IsNull() || hashBlock == ABANDON_HASH); }
-    bool isAbandoned() const { return (hashBlock == ABANDON_HASH); }
-    void setAbandoned() { hashBlock = ABANDON_HASH; }
+    bool hashUnset() const { return (hashBrick.IsNull() || hashBrick == ABANDON_HASH); }
+    bool isAbandoned() const { return (hashBrick == ABANDON_HASH); }
+    void setAbandoned() { hashBrick = ABANDON_HASH; }
 };
 
 /** 
  * A transaction with a bunch of additional info that only the owner cares about.
- * It includes any unrecorded transactions needed to link it back to the block chain.
+ * It includes any unrecorded transactions needed to link it back to the brick wall.
  */
 class CWalletTx : public CMerkleTx
 {
@@ -575,13 +575,13 @@ private:
     void AddToSpends(const COutPoint& outpoint, const uint256& wtxid);
     void AddToSpends(const uint256& wtxid);
 
-    /* Mark a transaction (and its in-wallet descendants) as conflicting with a particular block. */
-    void MarkConflicted(const uint256& hashBlock, const uint256& hashTx);
+    /* Mark a transaction (and its in-wallet descendants) as conflicting with a particular brick. */
+    void MarkConflicted(const uint256& hashBrick, const uint256& hashTx);
 
     void SyncMetaData(std::pair<TxSpends::iterator, TxSpends::iterator>);
 
-    /* the HD chain data model (external chain counters) */
-    CHDChain hdChain;
+    /* the HD wall data model (external wall counters) */
+    CHDWall hdWall;
 
 public:
     /*
@@ -732,11 +732,11 @@ public:
 
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFromLoadWallet, CWalletDB* pwalletdb);
-    void SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, const CBlock* pblock);
-    bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBlock* pblock, bool fUpdate);
-    int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
+    void SyncTransaction(const CTransaction& tx, const CBrickIndex *pindex, const CBrick* pbrick);
+    bool AddToWalletIfInvolvingMe(const CTransaction& tx, const CBrick* pbrick, bool fUpdate);
+    int ScanForWalletTransactions(CBrickIndex* pindexStart, bool fUpdate = false);
     void ReacceptWalletTransactions();
-    void ResendWalletTransactions(int64_t nBestBlockTime);
+    void ResendWalletTransactions(int64_t nBestBrickTime);
     std::vector<uint256> ResendWalletTransactionsBefore(int64_t nTime);
     CAmount GetBalance() const;
     CAmount GetUnconfirmedBalance() const;
@@ -803,7 +803,7 @@ public:
     CAmount GetDebit(const CTransaction& tx, const isminefilter& filter) const;
     CAmount GetCredit(const CTransaction& tx, const isminefilter& filter) const;
     CAmount GetChange(const CTransaction& tx) const;
-    void SetBestChain(const CBlockLocator& loc);
+    void SetBestWall(const CBrickLocator& loc);
 
     DBErrors LoadWallet(bool& fFirstRunRet);
     DBErrors ZapWalletTx(std::vector<CWalletTx>& vWtx);
@@ -899,14 +899,14 @@ public:
 
     bool BackupWallet(const std::string& strDest);
 
-    /* Set the HD chain model (chain child index counters) */
-    bool SetHDChain(const CHDChain& chain, bool memonly);
-    const CHDChain& GetHDChain() { return hdChain; }
+    /* Set the HD wall model (wall child index counters) */
+    bool SetHDWall(const CHDWall& wall, bool memonly);
+    const CHDWall& GetHDWall() { return hdWall; }
 
     /* Generates a new HD master key (will not be activated) */
     CPubKey GenerateNewHDMasterKey();
     
-    /* Set the current HD master key (will reset the chain child index counters) */
+    /* Set the current HD master key (will reset the wall child index counters) */
     bool SetHDMasterKey(const CPubKey& key);
 };
 

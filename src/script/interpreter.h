@@ -66,8 +66,8 @@ enum
     // containing executed NOP's whose meaning may change after a soft-fork,
     // thus rendering the script invalid; with this flag set executing
     // discouraged NOPs fails the script. This verification flag will never be
-    // a mandatory flag applied to scripts in a block. NOPs that are not
-    // executed, e.g.  within an unexecuted IF ENDIF block, are *not* rejected.
+    // a mandatory flag applied to scripts in a brick. NOPs that are not
+    // executed, e.g.  within an unexecuted IF ENDIF brick, are *not* rejected.
     SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS  = (1U << 7),
 
     // Require that only a single stack element remains after evaluation. This changes the success criterion from

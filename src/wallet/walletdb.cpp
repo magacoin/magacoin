@@ -129,17 +129,17 @@ bool CWalletDB::EraseWatchOnly(const CScript &dest)
     return Erase(std::make_pair(std::string("watchs"), *(const CScriptBase*)(&dest)));
 }
 
-bool CWalletDB::WriteBestBlock(const CBlockLocator& locator)
+bool CWalletDB::WriteBestBrick(const CBrickLocator& locator)
 {
     nWalletDBUpdated++;
-    Write(std::string("bestblock"), CBlockLocator()); // Write empty block locator so versions that require a merkle branch automatically rescan
-    return Write(std::string("bestblock_nomerkle"), locator);
+    Write(std::string("bestbrick"), CBrickLocator()); // Write empty brick locator so versions that require a merkle branch automatically rescan
+    return Write(std::string("bestbrick_nomerkle"), locator);
 }
 
-bool CWalletDB::ReadBestBlock(CBlockLocator& locator)
+bool CWalletDB::ReadBestBrick(CBrickLocator& locator)
 {
-    if (Read(std::string("bestblock"), locator) && !locator.vHave.empty()) return true;
-    return Read(std::string("bestblock_nomerkle"), locator);
+    if (Read(std::string("bestbrick"), locator) && !locator.vHave.empty()) return true;
+    return Read(std::string("bestbrick_nomerkle"), locator);
 }
 
 bool CWalletDB::WriteOrderPosNext(int64_t nOrderPosNext)
@@ -599,13 +599,13 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
                 return false;
             }
         }
-        else if (strType == "hdchain")
+        else if (strType == "hdwall")
         {
-            CHDChain chain;
-            ssValue >> chain;
-            if (!pwallet->SetHDChain(chain, true))
+            CHDWall wall;
+            ssValue >> wall;
+            if (!pwallet->SetHDWall(wall, true))
             {
-                strErr = "Error reading wallet database: SetHDChain failed";
+                strErr = "Error reading wallet database: SetHDWall failed";
                 return false;
             }
         }
@@ -854,7 +854,7 @@ DBErrors CWalletDB::ZapWalletTx(CWallet* pwallet, vector<CWalletTx>& vWtx)
 void ThreadFlushWalletDB(const string& strFile)
 {
     // Make this thread recognisable as the wallet flushing thread
-    RenameThread("litecoin-wallet");
+    RenameThread("magacoin-wallet");
 
     static bool fOneThread;
     if (fOneThread)
@@ -977,7 +977,7 @@ bool CWalletDB::Recover(CDBEnv& dbenv, const std::string& filename, bool fOnlyKe
                 fReadOK = ReadKeyValue(&dummyWallet, ssKey, ssValue,
                                         wss, strType, strErr);
             }
-            if (!IsKeyType(strType) && strType != "hdchain")
+            if (!IsKeyType(strType) && strType != "hdwall")
                 continue;
             if (!fReadOK)
             {
@@ -1015,8 +1015,8 @@ bool CWalletDB::EraseDestData(const std::string &address, const std::string &key
 }
 
 
-bool CWalletDB::WriteHDChain(const CHDChain& chain)
+bool CWalletDB::WriteHDWall(const CHDWall& wall)
 {
     nWalletDBUpdated++;
-    return Write(std::string("hdchain"), chain);
+    return Write(std::string("hdwall"), wall);
 }

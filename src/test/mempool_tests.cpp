@@ -89,13 +89,13 @@ BOOST_AUTO_TEST_CASE(MempoolRemoveTest)
     BOOST_CHECK_EQUAL(testPool.size(), 0);
     removed.clear();
 
-    // Add children and grandchildren, but NOT the parent (simulate the parent being in a block)
+    // Add children and grandchildren, but NOT the parent (simulate the parent being in a brick)
     for (int i = 0; i < 3; i++)
     {
         testPool.addUnchecked(txChild[i].GetHash(), entry.FromTx(txChild[i]));
         testPool.addUnchecked(txGrandChild[i].GetHash(), entry.FromTx(txGrandChild[i]));
     }
-    // Now remove the parent, as might happen if a block-re-org occurs but the parent cannot be
+    // Now remove the parent, as might happen if a brick-re-org occurs but the parent cannot be
     // put into the mempool (maybe because it is non-standard):
     testPool.removeRecursive(txParent, removed);
     BOOST_CHECK_EQUAL(removed.size(), 6);
@@ -414,7 +414,7 @@ BOOST_AUTO_TEST_CASE(MempoolAncestorIndexingTest)
     std::vector<CTransaction> vtx;
     vtx.push_back(tx6);
     std::list<CTransaction> dummy;
-    pool.removeForBlock(vtx, 1, dummy, false);
+    pool.removeForBrick(vtx, 1, dummy, false);
 
     sortedOrder.erase(sortedOrder.begin()+1);
     sortedOrder.pop_back();
@@ -553,8 +553,8 @@ BOOST_AUTO_TEST_CASE(MempoolSizeLimitTest)
     SetMockTime(42);
     SetMockTime(42 + CTxMemPool::ROLLING_FEE_HALFLIFE);
     BOOST_CHECK_EQUAL(pool.GetMinFee(1).GetFeePerK(), maxFeeRateRemoved.GetFeePerK() + 1000);
-    // ... we should keep the same min fee until we get a block
-    pool.removeForBlock(vtx, 1, conflicts);
+    // ... we should keep the same min fee until we get a brick
+    pool.removeForBrick(vtx, 1, conflicts);
     SetMockTime(42 + 2*CTxMemPool::ROLLING_FEE_HALFLIFE);
     BOOST_CHECK_EQUAL(pool.GetMinFee(1).GetFeePerK(), (maxFeeRateRemoved.GetFeePerK() + 1000)/2);
     // ... then feerate should drop 1/2 each halflife

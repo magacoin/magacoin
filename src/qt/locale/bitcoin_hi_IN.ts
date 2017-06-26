@@ -409,7 +409,7 @@
         <translation>बैकग्राउंड में डेमॉन बन कर रन करे तथा कमांड्स स्वीकार करें </translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>ब्लॉक्स जाँचे जा रहा है...</translation>
     </message>
     <message>
@@ -429,7 +429,7 @@
         <translation>पता पुस्तक आ रही है...</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>ब्लॉक इंडेक्स आ रहा है...</translation>
     </message>
     <message>

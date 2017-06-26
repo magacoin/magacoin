@@ -94,11 +94,11 @@ This adds `<numerusform>`s to the respective `.ts` file, which can be translated
 
 Where it is possible try to avoid embedding numbers into the flow of the string at all. e.g.
 
-    WARNING: check your network connection, %d blocks received in the last %d hours (%d expected)
+    WARNING: check your network connection, %d bricks received in the last %d hours (%d expected)
 
 versus
 
-    WARNING: check your network connection, less blocks (%d) were received in the last %n hours than expected (%d).
+    WARNING: check your network connection, less bricks (%d) were received in the last %n hours than expected (%d).
 
 The second example reduces the number of pluralized words that translators have to handle from three to one, at no cost to comprehensibility of the sentence.
 

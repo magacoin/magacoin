@@ -111,9 +111,9 @@ QFont fixedPitchFont()
 static const uint8_t dummydata[] = {0xeb,0x15,0x23,0x1d,0xfc,0xeb,0x60,0x92,0x58,0x86,0xb6,0x7d,0x06,0x52,0x99,0x92,0x59,0x15,0xae,0xb1,0x72,0xc0,0x66,0x47};
 
 // Generate a dummy address with invalid CRC, starting with the network prefix.
-static std::string DummyAddress(const CChainParams &params)
+static std::string DummyAddress(const CWallParams &params)
 {
-    std::vector<unsigned char> sourcedata = params.Base58Prefix(CChainParams::PUBKEY_ADDRESS);
+    std::vector<unsigned char> sourcedata = params.Base58Prefix(CWallParams::PUBKEY_ADDRESS);
     sourcedata.insert(sourcedata.end(), dummydata, dummydata + sizeof(dummydata));
     for(int i=0; i<256; ++i) { // Try every trailing byte
         std::string s = EncodeBase58(begin_ptr(sourcedata), end_ptr(sourcedata));
@@ -132,7 +132,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
 #if QT_VERSION >= 0x040700
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a Litecoin address (e.g. %1)").arg(
+    widget->setPlaceholderText(QObject::tr("Enter a Magacoin address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
 #endif
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
@@ -151,7 +151,7 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no bitcoin: URI
-    if(!uri.isValid() || uri.scheme() != QString("litecoin"))
+    if(!uri.isValid() || uri.scheme() != QString("magacoin"))
         return false;
 
     SendCoinsRecipient rv;
@@ -215,9 +215,9 @@ bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
     //
     //    Cannot handle this later, because bitcoin:// will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
-    if(uri.startsWith("litecoin://", Qt::CaseInsensitive))
+    if(uri.startsWith("magacoin://", Qt::CaseInsensitive))
     {
-        uri.replace(0, 11, "litecoin:");
+        uri.replace(0, 11, "magacoin:");
     }
     QUrl uriInstance(uri);
     return parseBitcoinURI(uriInstance, out);
@@ -225,7 +225,7 @@ bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
 
 QString formatBitcoinURI(const SendCoinsRecipient &info)
 {
-    QString ret = QString("litecoin:%1").arg(info.address);
+    QString ret = QString("magacoin:%1").arg(info.address);
     int paramCount = 0;
 
     if (info.amount)
@@ -608,12 +608,12 @@ TableViewLastColumnResizingFixer::TableViewLastColumnResizingFixer(QTableView* t
 #ifdef WIN32
 boost::filesystem::path static StartupShortcutPath()
 {
-    std::string chain = ChainNameFromCommandLine();
-    if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Litecoin.lnk";
-    if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Litecoin (testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Litecoin (%s).lnk", chain);
+    std::string wall = WallNameFromCommandLine();
+    if (wall == CBaseWallParams::MAIN)
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Magacoin.lnk";
+    if (wall == CBaseWallParams::TESTNET) // Remove this special case when CBaseWallParams::TESTNET = "testnet4"
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Magacoin (testnet).lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Magacoin (%s).lnk", wall);
 }
 
 bool GetStartOnSystemStartup()
@@ -708,10 +708,10 @@ boost::filesystem::path static GetAutostartDir()
 
 boost::filesystem::path static GetAutostartFilePath()
 {
-    std::string chain = ChainNameFromCommandLine();
-    if (chain == CBaseChainParams::MAIN)
-        return GetAutostartDir() / "litecoin.desktop";
-    return GetAutostartDir() / strprintf("litecoin-%s.lnk", chain);
+    std::string wall = WallNameFromCommandLine();
+    if (wall == CBaseWallParams::MAIN)
+        return GetAutostartDir() / "magacoin.desktop";
+    return GetAutostartDir() / strprintf("magacoin-%s.lnk", wall);
 }
 
 bool GetStartOnSystemStartup()
@@ -749,14 +749,14 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         boost::filesystem::ofstream optionFile(GetAutostartFilePath(), std::ios_base::out|std::ios_base::trunc);
         if (!optionFile.good())
             return false;
-        std::string chain = ChainNameFromCommandLine();
+        std::string wall = WallNameFromCommandLine();
         // Write a bitcoin.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
-        if (chain == CBaseChainParams::MAIN)
-            optionFile << "Name=Litecoin\n";
+        if (wall == CBaseWallParams::MAIN)
+            optionFile << "Name=Magacoin\n";
         else
-            optionFile << strprintf("Name=Litecoin (%s)\n", chain);
+            optionFile << strprintf("Name=Magacoin (%s)\n", wall);
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", GetBoolArg("-testnet", false), GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";

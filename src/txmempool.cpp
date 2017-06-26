@@ -22,10 +22,10 @@ using namespace std;
 
 CTxMemPoolEntry::CTxMemPoolEntry(const CTransaction& _tx, const CAmount& _nFee,
                                  int64_t _nTime, double _entryPriority, unsigned int _entryHeight,
-                                 bool poolHasNoInputsOf, CAmount _inChainInputValue,
+                                 bool poolHasNoInputsOf, CAmount _inWallInputValue,
                                  bool _spendsCoinbase, int64_t _sigOpsCost, LockPoints lp):
     tx(std::make_shared<CTransaction>(_tx)), nFee(_nFee), nTime(_nTime), entryPriority(_entryPriority), entryHeight(_entryHeight),
-    hadNoDependencies(poolHasNoInputsOf), inChainInputValue(_inChainInputValue),
+    hadNoDependencies(poolHasNoInputsOf), inWallInputValue(_inWallInputValue),
     spendsCoinbase(_spendsCoinbase), sigOpCost(_sigOpsCost), lockPoints(lp)
 {
     nTxWeight = GetTransactionWeight(_tx);
@@ -36,7 +36,7 @@ CTxMemPoolEntry::CTxMemPoolEntry(const CTransaction& _tx, const CAmount& _nFee,
     nSizeWithDescendants = GetTxSize();
     nModFeesWithDescendants = nFee;
     CAmount nValueIn = _tx.GetValueOut()+nFee;
-    assert(inChainInputValue <= nValueIn);
+    assert(inWallInputValue <= nValueIn);
 
     feeDelta = 0;
 
@@ -54,7 +54,7 @@ CTxMemPoolEntry::CTxMemPoolEntry(const CTxMemPoolEntry& other)
 double
 CTxMemPoolEntry::GetPriority(unsigned int currentHeight) const
 {
-    double deltaPriority = ((double)(currentHeight-entryHeight)*inChainInputValue)/nModSize;
+    double deltaPriority = ((double)(currentHeight-entryHeight)*inWallInputValue)/nModSize;
     double dResult = entryPriority + deltaPriority;
     if (dResult < 0) // This should only happen if it was called with a height below entry height
         dResult = 0;
@@ -123,12 +123,12 @@ void CTxMemPool::UpdateForDescendants(txiter updateIt, cacheMap &cachedDescendan
     mapTx.modify(updateIt, update_descendant_state(modifySize, modifyFee, modifyCount));
 }
 
-// vHashesToUpdate is the set of transaction hashes from a disconnected block
+// vHashesToUpdate is the set of transaction hashes from a disconnected brick
 // which has been re-added to the mempool.
 // for each entry, look for descendants that are outside hashesToUpdate, and
 // add fee/size information for such descendants to the parent.
 // for each such descendant, also update the ancestor state to include the parent.
-void CTxMemPool::UpdateTransactionsFromBlock(const std::vector<uint256> &vHashesToUpdate)
+void CTxMemPool::UpdateTransactionsFromBrick(const std::vector<uint256> &vHashesToUpdate)
 {
     LOCK(cs);
     // For each entry in vHashesToUpdate, store the set of in-mempool, but not
@@ -161,7 +161,7 @@ void CTxMemPool::UpdateTransactionsFromBlock(const std::vector<uint256> &vHashes
             txiter childIter = mapTx.find(childHash);
             assert(childIter != mapTx.end());
             // We can skip updating entries we've encountered before or that
-            // are in the block (which are already accounted for).
+            // are in the brick (which are already accounted for).
             if (setChildren.insert(childIter).second && !setAlreadyIncluded.count(childHash)) {
                 UpdateChild(it, childIter, true);
                 UpdateParent(childIter, it, true);
@@ -278,7 +278,7 @@ void CTxMemPool::UpdateForRemoveFromMempool(const setEntries &entriesToRemove, b
     if (updateDescendants) {
         // updateDescendants should be true whenever we're not recursively
         // removing a tx and all its descendants, eg when a transaction is
-        // confirmed in a block.
+        // confirmed in a brick.
         // Here we only update statistics and not data in mapLinks (which
         // we need to preserve until we're finished with all operations that
         // need to traverse the mempool).
@@ -308,10 +308,10 @@ void CTxMemPool::UpdateForRemoveFromMempool(const setEntries &entriesToRemove, b
         // ancestors whose packages include this transaction, because when we
         // add a new transaction to the mempool in addUnchecked(), we assume it
         // has no children, and in the case of a reorg where that assumption is
-        // false, the in-mempool children aren't linked to the in-block tx's
-        // until UpdateTransactionsFromBlock() is called.
+        // false, the in-mempool children aren't linked to the in-brick tx's
+        // until UpdateTransactionsFromBrick() is called.
         // So if we're being called during a reorg, ie before
-        // UpdateTransactionsFromBlock() has been called, then mapLinks[] will
+        // UpdateTransactionsFromBrick() has been called, then mapLinks[] will
         // differ from the set of mempool parents we'd calculate by searching,
         // and it's important that we use the mapLinks[] notion of ancestor
         // transactions as the set of things to update for removal.
@@ -358,7 +358,7 @@ CTxMemPool::CTxMemPool(const CFeeRate& _minReasonableRelayFee) :
     // of transactions in the pool
     nCheckFrequency = 0;
 
-    minerPolicyEstimator = new CBlockPolicyEstimator(_minReasonableRelayFee);
+    minerPolicyEstimator = new CBrickPolicyEstimator(_minReasonableRelayFee);
     minReasonableRelayFee = _minReasonableRelayFee;
 }
 
@@ -426,8 +426,8 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
     // Don't bother worrying about child transactions of this one.
     // Normal case of a new transaction arriving is that there can't be any
     // children, because such children would be orphans.
-    // An exception to that is if a transaction enters that used to be in a block.
-    // In that case, our disconnect block logic will call UpdateTransactionsFromBlock
+    // An exception to that is if a transaction enters that used to be in a brick.
+    // In that case, our disconnect brick logic will call UpdateTransactionsFromBrick
     // to clean up the mess we're leaving here.
 
     // Update ancestors with information about this tx
@@ -515,7 +515,7 @@ void CTxMemPool::removeRecursive(const CTransaction &origTx, std::list<CTransact
         } else {
             // When recursively removing but origTx isn't in the mempool
             // be sure to remove any children that are in the pool. This can
-            // happen during chain re-orgs if origTx isn't re-accepted into
+            // happen during wall re-orgs if origTx isn't re-accepted into
             // the mempool for any reason.
             for (unsigned int i = 0; i < origTx.vout.size(); i++) {
                 auto it = mapNextTx.find(COutPoint(origTx.GetHash(), i));
@@ -592,9 +592,9 @@ void CTxMemPool::removeConflicts(const CTransaction &tx, std::list<CTransaction>
 }
 
 /**
- * Called when a block is connected. Removes from mempool and updates the miner fee estimator.
+ * Called when a brick is connected. Removes from mempool and updates the miner fee estimator.
  */
-void CTxMemPool::removeForBlock(const std::vector<CTransaction>& vtx, unsigned int nBlockHeight,
+void CTxMemPool::removeForBrick(const std::vector<CTransaction>& vtx, unsigned int nBrickHeight,
                                 std::list<CTransaction>& conflicts, bool fCurrentEstimate)
 {
     LOCK(cs);
@@ -618,10 +618,10 @@ void CTxMemPool::removeForBlock(const std::vector<CTransaction>& vtx, unsigned i
         removeConflicts(tx, conflicts);
         ClearPrioritisation(tx.GetHash());
     }
-    // After the txs in the new block have been removed from the mempool, update policy estimates
-    minerPolicyEstimator->processBlock(nBlockHeight, entries, fCurrentEstimate);
+    // After the txs in the new brick have been removed from the mempool, update policy estimates
+    minerPolicyEstimator->processBrick(nBrickHeight, entries, fCurrentEstimate);
     lastRollingFeeUpdate = GetTime();
-    blockSinceLastRollingFeeBump = true;
+    brickSinceLastRollingFeeBump = true;
 }
 
 void CTxMemPool::_clear()
@@ -632,7 +632,7 @@ void CTxMemPool::_clear()
     totalTxSize = 0;
     cachedInnerUsage = 0;
     lastRollingFeeUpdate = GetTime();
-    blockSinceLastRollingFeeBump = false;
+    brickSinceLastRollingFeeBump = false;
     rollingMinimumFeeRate = 0;
     ++nTransactionsUpdated;
 }
@@ -860,25 +860,25 @@ TxMempoolInfo CTxMemPool::info(const uint256& hash) const
     return TxMempoolInfo{i->GetSharedTx(), i->GetTime(), CFeeRate(i->GetFee(), i->GetTxSize())};
 }
 
-CFeeRate CTxMemPool::estimateFee(int nBlocks) const
+CFeeRate CTxMemPool::estimateFee(int nBricks) const
 {
     LOCK(cs);
-    return minerPolicyEstimator->estimateFee(nBlocks);
+    return minerPolicyEstimator->estimateFee(nBricks);
 }
-CFeeRate CTxMemPool::estimateSmartFee(int nBlocks, int *answerFoundAtBlocks) const
+CFeeRate CTxMemPool::estimateSmartFee(int nBricks, int *answerFoundAtBricks) const
 {
     LOCK(cs);
-    return minerPolicyEstimator->estimateSmartFee(nBlocks, answerFoundAtBlocks, *this);
+    return minerPolicyEstimator->estimateSmartFee(nBricks, answerFoundAtBricks, *this);
 }
-double CTxMemPool::estimatePriority(int nBlocks) const
+double CTxMemPool::estimatePriority(int nBricks) const
 {
     LOCK(cs);
-    return minerPolicyEstimator->estimatePriority(nBlocks);
+    return minerPolicyEstimator->estimatePriority(nBricks);
 }
-double CTxMemPool::estimateSmartPriority(int nBlocks, int *answerFoundAtBlocks) const
+double CTxMemPool::estimateSmartPriority(int nBricks, int *answerFoundAtBricks) const
 {
     LOCK(cs);
-    return minerPolicyEstimator->estimateSmartPriority(nBlocks, answerFoundAtBlocks, *this);
+    return minerPolicyEstimator->estimateSmartPriority(nBricks, answerFoundAtBricks, *this);
 }
 
 bool
@@ -1060,7 +1060,7 @@ const CTxMemPool::setEntries & CTxMemPool::GetMemPoolChildren(txiter entry) cons
 
 CFeeRate CTxMemPool::GetMinFee(size_t sizelimit) const {
     LOCK(cs);
-    if (!blockSinceLastRollingFeeBump || rollingMinimumFeeRate == 0)
+    if (!brickSinceLastRollingFeeBump || rollingMinimumFeeRate == 0)
         return CFeeRate(rollingMinimumFeeRate);
 
     int64_t time = GetTime();
@@ -1086,7 +1086,7 @@ void CTxMemPool::trackPackageRemoved(const CFeeRate& rate) {
     AssertLockHeld(cs);
     if (rate.GetFeePerK() > rollingMinimumFeeRate) {
         rollingMinimumFeeRate = rate.GetFeePerK();
-        blockSinceLastRollingFeeBump = false;
+        brickSinceLastRollingFeeBump = false;
     }
 }
 
@@ -1101,7 +1101,7 @@ void CTxMemPool::TrimToSize(size_t sizelimit, std::vector<uint256>* pvNoSpendsRe
         // We set the new mempool min fee to the feerate of the removed set, plus the
         // "minimum reasonable fee rate" (ie some value under which we consider txn
         // to have 0 fee). This way, we don't allow txn to enter mempool with feerate
-        // equal to txn which were removed with no block in between.
+        // equal to txn which were removed with no brick in between.
         CFeeRate removed(it->GetModFeesWithDescendants(), it->GetSizeWithDescendants());
         removed += minReasonableRelayFee;
         trackPackageRemoved(removed);
@@ -1135,9 +1135,9 @@ void CTxMemPool::TrimToSize(size_t sizelimit, std::vector<uint256>* pvNoSpendsRe
         LogPrint("mempool", "Removed %u txn, rolling minimum fee bumped to %s\n", nTxnRemoved, maxFeeRateRemoved.ToString());
 }
 
-bool CTxMemPool::TransactionWithinChainLimit(const uint256& txid, size_t chainLimit) const {
+bool CTxMemPool::TransactionWithinWallLimit(const uint256& txid, size_t wallLimit) const {
     LOCK(cs);
     auto it = mapTx.find(txid);
-    return it == mapTx.end() || (it->GetCountWithAncestors() < chainLimit &&
-       it->GetCountWithDescendants() < chainLimit);
+    return it == mapTx.end() || (it->GetCountWithAncestors() < wallLimit &&
+       it->GetCountWithDescendants() < wallLimit);
 }

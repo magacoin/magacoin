@@ -33,10 +33,10 @@ private:
     //! Mutex to protect the inner state
     boost::mutex mutex;
 
-    //! Worker threads block on this when out of work
+    //! Worker threads brick on this when out of work
     boost::condition_variable condWorker;
 
-    //! Master thread blocks on this when out of work
+    //! Master thread bricks on this when out of work
     boost::condition_variable condMaster;
 
     //! The queue of elements to be processed.

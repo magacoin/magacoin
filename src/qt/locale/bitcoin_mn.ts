@@ -329,15 +329,15 @@
         <translation>Холболтын тоо</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Блокийн цуваа</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Одоогийн блокийн тоо</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Сүүлийн блокийн хугацаа</translation>
     </message>
     <message>
@@ -562,7 +562,7 @@
         <translation>Таны дансны үлдэгдэл хүрэлцэхгүй байна</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Блокийн индексүүдийг ачааллаж байна...</translation>
     </message>
     <message>

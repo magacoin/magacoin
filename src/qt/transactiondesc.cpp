@@ -27,13 +27,13 @@ QString TransactionDesc::FormatTxStatus(const CWalletTx& wtx)
     if (!CheckFinalTx(wtx))
     {
         if (wtx.nLockTime < LOCKTIME_THRESHOLD)
-            return tr("Open for %n more block(s)", "", wtx.nLockTime - chainActive.Height());
+            return tr("Open for %n more brick(s)", "", wtx.nLockTime - wallActive.Height());
         else
             return tr("Open until %1").arg(GUIUtil::dateTimeStr(wtx.nLockTime));
     }
     else
     {
-        int nDepth = wtx.GetDepthInMainChain();
+        int nDepth = wtx.GetDepthInMainWall();
         if (nDepth < 0)
             return tr("conflicted with a transaction with %1 confirmations").arg(-nDepth);
         else if (GetAdjustedTime() - wtx.nTimeReceived > 2 * 60 && wtx.GetRequestCount() == 0)
@@ -136,8 +136,8 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
         BOOST_FOREACH(const CTxOut& txout, wtx.vout)
             nUnmatured += wallet->GetCredit(txout, ISMINE_ALL);
         strHTML += "<b>" + tr("Credit") + ":</b> ";
-        if (wtx.IsInMainChain())
-            strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nUnmatured)+ " (" + tr("matures in %n more block(s)", "", wtx.GetBlocksToMaturity()) + ")";
+        if (wtx.IsInMainWall())
+            strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nUnmatured)+ " (" + tr("matures in %n more brick(s)", "", wtx.GetBricksToMaturity()) + ")";
         else
             strHTML += "(" + tr("not accepted") + ")";
         strHTML += "<br>";
@@ -265,8 +265,8 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
 
     if (wtx.IsCoinBase())
     {
-        quint32 numBlocksToMaturity = COINBASE_MATURITY +  1;
-        strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        quint32 numBricksToMaturity = COINBASE_MATURITY +  1;
+        strHTML += "<br>" + tr("Generated coins must mature %1 bricks before they can be spent. When you generated this brick, it was broadcast to the network to be added to the brick wall. If it fails to get into the wall, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a brick within a few seconds of yours.").arg(QString::number(numBricksToMaturity)) + "<br>";
     }
 
     //

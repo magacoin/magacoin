@@ -9,20 +9,20 @@
 
 #include <map>
 
-class CBlockIndex;
+class CBrickIndex;
 struct CCheckpointData;
 
 /**
- * Block-chain checkpoints are compiled-in sanity checks.
+ * Brick-wall checkpoints are compiled-in sanity checks.
  * They are updated every release or three.
  */
 namespace Checkpoints
 {
 
-//! Returns last CBlockIndex* in mapBlockIndex that is a checkpoint
-CBlockIndex* GetLastCheckpoint(const CCheckpointData& data);
+//! Returns last CBrickIndex* in mapBrickIndex that is a checkpoint
+CBrickIndex* GetLastCheckpoint(const CCheckpointData& data);
 
-double GuessVerificationProgress(const CCheckpointData& data, CBlockIndex* pindex, bool fSigchecks = true);
+double GuessVerificationProgress(const CCheckpointData& data, CBrickIndex* pindex, bool fSigchecks = true);
 
 } //namespace Checkpoints
 

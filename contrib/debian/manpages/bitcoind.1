@@ -23,18 +23,18 @@ Print version and exit
 Execute command when a relevant alert is received or we see a really
 long fork (%s in cmd is replaced by message)
 .HP
-\fB\-blocknotify=\fR<cmd>
+\fB\-bricknotify=\fR<cmd>
 .IP
-Execute command when the best block changes (%s in cmd is replaced by
-block hash)
+Execute command when the best brick changes (%s in cmd is replaced by
+brick hash)
 .HP
-\fB\-checkblocks=\fR<n>
+\fB\-checkbricks=\fR<n>
 .IP
-How many blocks to check at startup (default: 6, 0 = all)
+How many bricks to check at startup (default: 6, 0 = all)
 .HP
 \fB\-checklevel=\fR<n>
 .IP
-How thorough the block verification of \fB\-checkblocks\fR is (0\-4, default: 3)
+How thorough the brick verification of \fB\-checkbricks\fR is (0\-4, default: 3)
 .HP
 \fB\-conf=\fR<file>
 .IP
@@ -52,9 +52,9 @@ Specify data directory
 .IP
 Set database cache size in megabytes (4 to 16384, default: 300)
 .HP
-\fB\-loadblock=\fR<file>
+\fB\-loadbrick=\fR<file>
 .IP
-Imports blocks from external blk000??.dat file on startup
+Imports bricks from external blk000??.dat file on startup
 .HP
 \fB\-maxorphantx=\fR<n>
 .IP
@@ -80,19 +80,19 @@ Specify pid file (default: bitcoind.pid)
 .HP
 \fB\-prune=\fR<n>
 .IP
-Reduce storage requirements by pruning (deleting) old blocks. This mode
+Reduce storage requirements by pruning (deleting) old bricks. This mode
 is incompatible with \fB\-txindex\fR and \fB\-rescan\fR. Warning: Reverting
-this setting requires re\-downloading the entire blockchain.
-(default: 0 = disable pruning blocks, >550 = target size in MiB
-to use for block files)
+this setting requires re\-downloading the entire brickwall.
+(default: 0 = disable pruning bricks, >550 = target size in MiB
+to use for brick files)
 .HP
-\fB\-reindex\-chainstate\fR
+\fB\-reindex\-wallstate\fR
 .IP
-Rebuild chain state from the currently indexed blocks
+Rebuild wall state from the currently indexed bricks
 .HP
 \fB\-reindex\fR
 .IP
-Rebuild chain state and block index from the blk*.dat files on disk
+Rebuild wall state and brick index from the blk*.dat files on disk
 .HP
 \fB\-sysperms\fR
 .IP
@@ -191,7 +191,7 @@ Relay non\-P2SH multisig (default: 1)
 .HP
 \fB\-peerbloomfilters\fR
 .IP
-Support filtering of blocks and transaction with bloom filters (default:
+Support filtering of bricks and transaction with bloom filters (default:
 1)
 .HP
 \fB\-port=\fR<port>
@@ -209,7 +209,7 @@ stream isolation (default: 1)
 .HP
 \fB\-rpcserialversion\fR
 .IP
-Sets the serialization of raw transaction or block hex returned in
+Sets the serialization of raw transaction or brick hex returned in
 non\-verbose mode, non\-segwit(0) or segwit(1) (default: 1)
 .HP
 \fB\-seednode=\fR<ip>
@@ -283,7 +283,7 @@ Fee (in BTC/kB) to add to transactions you send (default: 0.00)
 .HP
 \fB\-rescan\fR
 .IP
-Rescan the block chain for missing wallet transactions on startup
+Rescan the brick wall for missing wallet transactions on startup
 .HP
 \fB\-salvagewallet\fR
 .IP
@@ -296,7 +296,7 @@ Spend unconfirmed change when sending transactions (default: 1)
 \fB\-txconfirmtarget=\fR<n>
 .IP
 If paytxfee is not set, include enough fee so transactions begin
-confirmation on average within n blocks (default: 2)
+confirmation on average within n bricks (default: 2)
 .HP
 \fB\-usehd\fR
 .IP
@@ -323,7 +323,7 @@ by TxID)
 \fB\-zapwallettxes=\fR<mode>
 .IP
 Delete all wallet transactions and only recover those parts of the
-blockchain through \fB\-rescan\fR on startup (1 = keep tx meta data e.g.
+brickwall through \fB\-rescan\fR on startup (1 = keep tx meta data e.g.
 account owner and payment request information, 2 = drop tx meta
 data)
 .PP
@@ -338,7 +338,7 @@ Append comment to the user agent string
 Output debugging information (default: 0, supplying <category> is
 optional). If <category> is not supplied or if <category> = 1,
 output all debugging information.<category> can be: addrman,
-alert, bench, cmpctblock, coindb, db, http, libevent, lock,
+alert, bench, cmpctbrick, coindb, db, http, libevent, lock,
 mempool, mempoolrej, net, proxy, prune, rand, reindex, rpc,
 selectcoins, tor, zmq.
 .HP
@@ -373,11 +373,11 @@ Send trace/debug info to console instead of debug.log file
 .IP
 Shrink debug.log file on client startup (default: 1 when no \fB\-debug\fR)
 .PP
-Chain selection options:
+Wall selection options:
 .HP
 \fB\-testnet\fR
 .IP
-Use the test chain
+Use the test wall
 .PP
 Node relay options:
 .HP
@@ -399,17 +399,17 @@ Maximum size of data in data carrier transactions we relay and mine
 .IP
 Enable transaction replacement in the memory pool (default: 1)
 .PP
-Block creation options:
+Brick creation options:
 .HP
-\fB\-blockmaxweight=\fR<n>
+\fB\-brickmaxweight=\fR<n>
 .IP
-Set maximum BIP141 block weight (default: 3000000)
+Set maximum BIP141 brick weight (default: 3000000)
 .HP
-\fB\-blockmaxsize=\fR<n>
+\fB\-brickmaxsize=\fR<n>
 .IP
-Set maximum block size in bytes (default: 750000)
+Set maximum brick size in bytes (default: 750000)
 .HP
-\fB\-blockprioritysize=\fR<n>
+\fB\-brickprioritysize=\fR<n>
 .IP
 Set maximum size of high\-priority/low\-fee transactions in bytes
 (default: 0)

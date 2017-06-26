@@ -10,7 +10,7 @@ NSEEDS=512
 
 MAX_SEEDS_PER_ASN=2
 
-MIN_BLOCKS = 337600
+MIN_BRICKS = 337600
 
 # These are hosts that have been observed to be behaving strangely (e.g.
 # aggressively connecting to every node).
@@ -82,8 +82,8 @@ def parseline(line):
     agent = sline[11][1:-1]
     # Extract service flags.
     service = int(sline[9], 16)
-    # Extract blocks.
-    blocks = int(sline[8])
+    # Extract bricks.
+    bricks = int(sline[8])
     # Construct result.
     return {
         'net': net,
@@ -95,7 +95,7 @@ def parseline(line):
         'version': version,
         'agent': agent,
         'service': service,
-        'blocks': blocks,
+        'bricks': bricks,
         'sortkey': sortkey,
     }
 
@@ -145,8 +145,8 @@ def main():
     ips = [ip for ip in ips if ip is not None]
     # Skip entries from suspicious hosts.
     ips = [ip for ip in ips if ip['ip'] not in SUSPICIOUS_HOSTS]
-    # Enforce minimal number of blocks.
-    ips = [ip for ip in ips if ip['blocks'] >= MIN_BLOCKS]
+    # Enforce minimal number of bricks.
+    ips = [ip for ip in ips if ip['bricks'] >= MIN_BRICKS]
     # Require service bit 1.
     ips = [ip for ip in ips if (ip['service'] & 1) == 1]
     # Require at least 50% 30-day uptime.

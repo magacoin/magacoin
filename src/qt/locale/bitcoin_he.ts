@@ -62,11 +62,11 @@
         <translation>מקבל כתובות</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Magacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>אלה הם כתובות ללייטקוין שלך לשליחת תשלומים. חשוב לבדוק את הכמות של הכתובות המקבלות לפני שליחת מטבעות</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your Magacoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation>אלה הן כתובות ללייטקוין שלך לקבלת תשלומים. מומלץ להשתמש בכתובת חדשה לכל העברה.</translation>
     </message>
     <message>
@@ -214,11 +214,11 @@
         <translation>פתיחת &amp;כתובת משאב…</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>המקטעים נוספים למפתח בכונן…</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
+        <source>Send coins to a Magacoin address</source>
         <translation>שליחת מטבעות לכתובת ללייטקוין</translation>
     </message>
     <message>
@@ -242,7 +242,7 @@
         <translation>&amp;אימות הודעה…</translation>
     </message>
     <message>
-        <source>Litecoin</source>
+        <source>Magacoin</source>
         <translation>ביטקוין</translation>
     </message>
     <message>
@@ -270,11 +270,11 @@
         <translation>הצפנת המפתחות הפרטיים ששייכים לארנק שלך</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
         <translation>חתום על הודעות עם כתובות ללייטקוין שלך כדי להוכיח שהן בבעלותך</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
         <translation>אמת הודעות כדי להבטיח שהן נחתמו עם כתובת ללייטקוין מסוימות</translation>
     </message>
     <message>
@@ -294,8 +294,8 @@
         <translation>סרגל כלים לשוניות</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>בקשת תשלומים (יצירה של קודים מסוג QR וסכימות כתובות משאב של :litecoin)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>בקשת תשלומים (יצירה של קודים מסוג QR וסכימות כתובות משאב של :magacoin)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -306,7 +306,7 @@
         <translation>הצגת רשימת הכתובות והתוויות הנמצאות בשימוש</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
+        <source>Open a magacoin: URI or payment request</source>
         <translation>פתיחת ללייטקוין: כתובת משאב או בקשת תשלום</translation>
     </message>
     <message>
@@ -314,11 +314,11 @@
         <translation>אפשרויות &amp;שורת הפקודה</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>מעבד בלוקים על הדיסק...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>אין מקור מקטעים זמין…</translation>
     </message>
     <message>
@@ -330,7 +330,7 @@
         <translation>%1 מאחור</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>המקטע האחרון שהתקבל נוצר לפני %1.</translation>
     </message>
     <message>
@@ -619,7 +619,7 @@
         <translation>כתובת ה־IP של המתווך (לדוגמה IPv4: 127.0.0.1‏ / IPv6: ::1)</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>כתובות צד־שלישי (כגון: סייר מקטעים) שמופיעים בלשונית ההעברות בתור פריטים בתפריט ההקשר. %s בכתובת מוחלף בגיבוב ההעברה. מספר כתובות יופרדו בפס אנכי |.</translation>
     </message>
     <message>
@@ -667,7 +667,7 @@
         <translation>עודף &amp;בלתי מאושר מההשקעה</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation>פתיחת הפתחה של ללייטקוין בנתב באופן אוטומטי. עובד רק אם UPnP מופעל ונתמך בנתב.</translation>
     </message>
     <message>
@@ -774,7 +774,7 @@
         <translation>טופס</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
         <translation>המידע המוצג עשוי להיות מיושן. הארנק שלך מסתנכרן באופן אוטומטי עם רשת ללייטקוין לאחר יצירת החיבור, אך התהליך טרם הסתיים.</translation>
     </message>
     <message>
@@ -863,7 +863,7 @@
         <translation>כמות</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
+        <source>Enter a Magacoin address (e.g. %1)</source>
         <translation>נא להזין כתובת ללייטקוין (למשל: %1)</translation>
     </message>
     <message>
@@ -945,11 +945,11 @@
         <translation>מספר חיבורים</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>שרשרת מקטעים</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>מספר המקטעים הנוכחי</translation>
     </message>
     <message>
@@ -997,11 +997,11 @@
         <translation>גרסה</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>בלוק התחלה</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>בלוקים מסונכרנים</translation>
     </message>
     <message>
@@ -1045,7 +1045,7 @@
         <translation>הפרש זמן</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>זמן המקטע האחרון</translation>
     </message>
     <message>
@@ -1176,7 +1176,7 @@
         <translation>ש&amp;ימוש &amp;חוזר בכתובת קבלה קיימת (לא מומלץ)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
         <translation>הודעת רשות לצירוף לבקשת התשלום שתוצג בעת פתיחת הבקשה. לתשומת לבך: ההודעה לא תישלח עם התשלום ברשת ללייטקוין.</translation>
     </message>
     <message>
@@ -1420,7 +1420,7 @@
         <translation>זהו תשלום רגיל.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
+        <source>The Magacoin address to send the payment to</source>
         <translation>כתובת ללייטקוין של המוטב</translation>
     </message>
     <message>
@@ -1452,7 +1452,7 @@
         <translation>יש להזין תווית עבור כתובת זו כדי להוסיף אותה לרשימת הכתובות בשימוש</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
         <translation>הודעה שצורפה לללייטקוין: כתובת שתאוחסן בהעברה לצורך מעקב מצדך. לתשומת לבך: הודעה זו לא תישלח ברשת ללייטקוין.</translation>
     </message>
     <message>
@@ -1485,7 +1485,7 @@
         <translation>חתימה על הו&amp;דעה</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
+        <source>The Magacoin address to sign the message with</source>
         <translation>כתובת ללייטקוין אתה לחתום אתה את ההודעה</translation>
     </message>
     <message>
@@ -1517,7 +1517,7 @@
         <translation>העתקת החתימה הנוכחית ללוח הגזירים</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>ניתן לחתום על ההודעה כדי להוכיח שכתובת ללייטקוין הזו בבעלותך.</translation>
     </message>
     <message>
@@ -1537,11 +1537,11 @@
         <translation>&amp;אימות הודעה</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
+        <source>The Magacoin address the message was signed with</source>
         <translation>כתובת ללייטקוין שאתה נחתמה ההודעה</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
         <translation>ניתן לאמת את ההודעה כדי להבטיח שהיא נחתמה עם כתובת ללייטקוין הנתונה</translation>
     </message>
     <message>
@@ -1654,7 +1654,7 @@
         <translation>קבלת חיבורים מבחוץ (בררת מחדל: 1 ללא ‎-proxy או ‎-connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
+        <source>Magacoin Core</source>
         <translation>ליבת ללייטקוין</translation>
     </message>
     <message>
@@ -1666,7 +1666,7 @@
         <translation>להתאגד לכתובת נתונה להאזין לה תמיד. יש להשתמש בצורה ‎[host]:port עבור IPv6.</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>מחיקת כל העברות הארנק ולשחזר רק את החלקים המסוימים בשרשרת המקטעים באמצעות ‎-rescan עם ההפעלה</translation>
     </message>
     <message>
@@ -1690,7 +1690,7 @@
         <translation>&lt;קטגוריה&gt; יכולה להיות:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>אפשרויות יצירת מקטע:</translation>
     </message>
     <message>
@@ -1706,7 +1706,7 @@
         <translation>הגדרות חיבור:</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>התגלה מסד נתוני מקטעים לא תקין</translation>
     </message>
     <message>
@@ -1718,11 +1718,11 @@
         <translation>לא לטעון את הארנק ולנטרל קריאות RPC</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>האם לבנות מחדש את מסד נתוני המקטעים?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>שגיאה באתחול מסד נתוני המקטעים</translation>
     </message>
     <message>
@@ -1734,11 +1734,11 @@
         <translation>שגיאה בטעינת %s</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>שגיאה בטעינת מסד נתוני המקטעים</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>שגיאה בטעינת מסד נתוני המקטעים</translation>
     </message>
     <message>
@@ -1754,7 +1754,7 @@
         <translation>מתבצע יבוא…</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>מקטע הפתיח הוא שגוי או לא נמצא. תיקיית נתונים שגויה עבור הרשת?</translation>
     </message>
     <message>
@@ -1782,7 +1782,7 @@
         <translation>הגדרת גודל מטמון מסדי הנתונים במגה בתים (%d עד %d, בררת מחדל: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>הגדרת קובץ מקטע מרבי בבתים (בררת מחדל: %d)</translation>
     </message>
     <message>
@@ -1790,7 +1790,7 @@
         <translation>ציון קובץ ארנק (בתוך תיקיית הנתונים)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>המקטעים מאומתים…</translation>
     </message>
     <message>
@@ -1906,7 +1906,7 @@
         <translation>ססמה לחיבורי JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>יש לבצע פקודה זו כשהמקטע הטוב ביותר משתנה (%s בפקודה יוחלף בגיבוב המקטע)</translation>
     </message>
     <message>
@@ -1934,7 +1934,7 @@
         <translation>אין מספיק כספים</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>מפתח המקטעים נטען…</translation>
     </message>
     <message>

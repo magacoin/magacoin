@@ -162,12 +162,12 @@
         <translation>Avaa &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Ladataan lohkoindeksiä...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Lähetä kolikoita Litecoin-osoitteeseen</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Lähetä kolikoita Magacoin-osoitteeseen</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -190,8 +190,8 @@
         <translation>Varmista &amp;viesti...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -211,19 +211,19 @@
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Näytä tai piilota Litecoin-ikkuna</translation>
+        <translation>Näytä tai piilota Magacoin-ikkuna</translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
         <translation>Suojaa yksityiset avaimet, jotka kuuluvat lompakkoosi</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Allekirjoita viestisi omalla Litecoin -osoitteellasi todistaaksesi, että omistat ne</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Allekirjoita viestisi omalla Magacoin -osoitteellasi todistaaksesi, että omistat ne</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Varmista, että viestisi on allekirjoitettu määritetyllä Litecoin -osoitteella</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Varmista, että viestisi on allekirjoitettu määritetyllä Magacoin -osoitteella</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -242,8 +242,8 @@
         <translation>Välilehtipalkki</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Pyydä maksuja (Luo QR koodit ja litecoin: URIt)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Pyydä maksuja (Luo QR koodit ja magacoin: URIt)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -254,31 +254,31 @@
         <translation>Näytä vastaanottamiseen käytettyjen osoitteiden ja nimien lista</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Avaa litecoin: URI tai maksupyyntö</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Avaa magacoin: URI tai maksupyyntö</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Komentorivin valinnat</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n aktiivinen yhteys Litecoin-verkkoon</numerusform><numerusform>%n aktiivista yhteyttä Litecoin-verkkoon</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n aktiivinen yhteys Magacoin-verkkoon</numerusform><numerusform>%n aktiivista yhteyttä Magacoin-verkkoon</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>Ladataan lohkoindeksiä...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>Käsitellään lohkoja levyllä...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Lohkojen lähdettä ei saatavilla...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Prosessoitu %n lohko rahansiirtohistoriasta.</numerusform><numerusform>Prosessoitu %n lohkoa rahansiirtohistoriasta.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -306,7 +306,7 @@
         <translation>%1 jäljessä</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Viimeisin vastaanotettu lohko tuotettu %1.</translation>
     </message>
     <message>
@@ -330,8 +330,8 @@
         <translation>Rahansiirtohistoria on ajan tasalla</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
-        <translation>Näytä %1 ohjeet saadaksesi listan mahdollisista Litecoinin komentorivivalinnoista</translation>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
+        <translation>Näytä %1 ohjeet saadaksesi listan mahdollisista Magacoinin komentorivivalinnoista</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -583,8 +583,8 @@
         <translation>Tämä on ensimmäinen kerta, kun %1 on käynnistetty, joten voit valita data-hakemiston paikan.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>%1 lataa ja tallentaa kopion Litecoinin lohkoketjusta. Vähintään %2Gt dataa tullaan tallentamaan tähän hakemistoon, ja tarve kasvaa ajan myötä. Lompakko tullaan myös tallentamaan tähän hakemistoon.</translation>
+        <source>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>%1 lataa ja tallentaa kopion Magacoinin lohkoketjusta. Vähintään %2Gt dataa tullaan tallentamaan tähän hakemistoon, ja tarve kasvaa ajan myötä. Lompakko tullaan myös tallentamaan tähän hakemistoon.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -677,8 +677,8 @@
         <translation>Minimoi ikkuna ohjelman sulkemisen sijasta kun ikkuna suljetaan. Kun tämä asetus on käytössä, ohjelma suljetaan vain valittaessa valikosta Poistu.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>Ulkopuoliset URL-osoitteet (esim. block explorer,) jotka esiintyvät siirrot-välilehdellä valikossa. %s URL-osoitteessa korvataan siirtotunnuksella. Useampi URL-osoite on eroteltu pystyviivalla |.</translation>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>Ulkopuoliset URL-osoitteet (esim. brick explorer,) jotka esiintyvät siirrot-välilehdellä valikossa. %s URL-osoitteessa korvataan siirtotunnuksella. Useampi URL-osoite on eroteltu pystyviivalla |.</translation>
     </message>
     <message>
         <source>Third party transaction URLs</source>
@@ -725,16 +725,16 @@
         <translation>&amp;Käytä varmistamattomia vaihtorahoja</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Avaa Litecoin-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Avaa Magacoin-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Portin uudelleenohjaus &amp;UPnP:llä</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Yhdistä Litecoin-verkkoon SOCKS5-välityspalvelimen kautta.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Yhdistä Magacoin-verkkoon SOCKS5-välityspalvelimen kautta.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -773,8 +773,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Yhdistä Litecoin-verkkoon erillisen SOCKS5-välityspalvelimen kautta piilotettuja Tor-palveluja varten.</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Yhdistä Magacoin-verkkoon erillisen SOCKS5-välityspalvelimen kautta piilotettuja Tor-palveluja varten.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -810,11 +810,11 @@
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>Yksikkö jona litecoin-määrät näytetään</translation>
+        <translation>Yksikkö jona magacoin-määrät näytetään</translation>
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Valitse mitä yksikköä käytetään ensisijaisesti litecoin-määrien näyttämiseen.</translation>
+        <translation>Valitse mitä yksikköä käytetään ensisijaisesti magacoin-määrien näyttämiseen.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -864,8 +864,8 @@
         <translation>Lomake</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Näytetyt tiedot eivät välttämättä ole ajantasalla. Lompakkosi synkronoituu Litecoin-verkon kanssa automaattisesti yhteyden muodostamisen jälkeen, mutta synkronointi on vielä meneillään.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Näytetyt tiedot eivät välttämättä ole ajantasalla. Lompakkosi synkronoituu Magacoin-verkon kanssa automaattisesti yhteyden muodostamisen jälkeen, mutta synkronointi on vielä meneillään.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -905,7 +905,7 @@
     </message>
     <message>
         <source>Your current total balance</source>
-        <translation>Tililläsi tällä hetkellä olevien Litecoinien määrä</translation>
+        <translation>Tililläsi tällä hetkellä olevien Magacoinien määrä</translation>
     </message>
     <message>
         <source>Your current balance in watch-only addresses</source>
@@ -957,8 +957,8 @@
         <translation>Määrä</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Syötä Litecoin-osoite (esim. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Syötä Magacoin-osoite (esim. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1039,11 +1039,11 @@
         <translation>Yhteyksien lukumäärä</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Lohkoketju</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Nykyinen Lohkojen määrä</translation>
     </message>
     <message>
@@ -1091,7 +1091,7 @@
         <translation>Versio</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>Alkaen lohkosta</translation>
     </message>
     <message>
@@ -1099,7 +1099,7 @@
         <translation>Synkronoidut ylätunnisteet</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Synkronoidut lohkot</translation>
     </message>
     <message>
@@ -1155,7 +1155,7 @@
         <translation>Ajan poikkeama</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Viimeisimmän lohkon aika</translation>
     </message>
     <message>
@@ -1302,8 +1302,8 @@
         <translation>&amp;Uudelleenkäytä vastaanotto-osoitetta (ei suositella)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä Litecoin-verkkoon.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä Magacoin-verkkoon.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1376,7 +1376,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Lähetä Litecoineja</translation>
+        <translation>Lähetä Magacoineja</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -1467,7 +1467,7 @@
         <translation>Muokattu:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(Älykästä rahansiirtokulua ei ole vielä alustettu. Tähän kuluu yleensä aikaa muutaman lohkon verran...)</translation>
     </message>
     <message>
@@ -1538,8 +1538,8 @@
         <translation>Tämä on normaali maksu.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>Litecoin-osoite johon maksu lähetetään</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>Magacoin-osoite johon maksu lähetetään</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1558,8 +1558,8 @@
         <translation>Poista tämä alkio</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Kulu vähennetään lähetettävästä määrästä. Saaja vastaanottaa vähemmän litecoineja kuin merkitset Määrä-kenttään. Jos saajia on monia, kulu jaetaan tasan.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Kulu vähennetään lähetettävästä määrästä. Saaja vastaanottaa vähemmän magacoineja kuin merkitset Määrä-kenttään. Jos saajia on monia, kulu jaetaan tasan.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -1582,8 +1582,8 @@
         <translation>Aseta nimi tälle osoitteelle lisätäksesi sen käytettyjen osoitteiden listalle.</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>Viesti joka liitettiin litecoin: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä Litecoin-verkkoon.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>Viesti joka liitettiin magacoin: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä Magacoin-verkkoon.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1619,8 +1619,8 @@
         <translation>&amp;Allekirjoita viesti</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>Litecoin-osoite jolla viesti allekirjoitetaan</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>Magacoin-osoite jolla viesti allekirjoitetaan</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1651,8 +1651,8 @@
         <translation>Kopioi tämänhetkinen allekirjoitus leikepöydälle</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän Litecoin-osoitteen</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän Magacoin-osoitteen</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1671,12 +1671,12 @@
         <translation>&amp;Varmista viesti</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Litecoin-osoite jolla viesti on allekirjoitettu</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Magacoin-osoite jolla viesti on allekirjoitettu</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä Litecoin-osoitteella</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä Magacoin-osoitteella</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1764,15 +1764,15 @@
         <translation>Karsinta konfiguroitu alle minimin %d MiB. Käytä surempaa numeroa.</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
         <translation>Karsinta: viime lompakon synkronisointi menee karsitun datan taakse. Sinun tarvitsee ajaa -reindex (lataa koko lohkoketju uudelleen tapauksessa jossa karsiva noodi)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
         <translation>Vähennä levytilan tarvetta karsimalla (poistamalla) vanhoja lohkoja. Tämä tila ei ole yhteensopiva -txindex ja -rescan -parametrien kanssa. Varoitus: Tämän asetuksen peruutus vaatii koko lohkoketjun uudelleenlataamisen. (oletus: 0 = poista karsinta käytöstä, &gt;%u = kohdekoko muodossa MiB jota käytetään lohkotiedostoille) </translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
         <translation>Uudelleenskannaukset eivät ole mahdollisia karsivassa tilassa. Sinun täytyy käyttää -reindex joka lataa koko lohkoketjun uudelleen.</translation>
     </message>
     <message>
@@ -1784,7 +1784,7 @@
         <translation>Kulu (muodossa %s/kB) joka lisätään rahansiirtoihin joita lähetät (oletus: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
+        <source>Pruning brickstore...</source>
         <translation>Karsitaan lohkovarastoa...</translation>
     </message>
     <message>
@@ -1800,8 +1800,8 @@
         <translation>Hyväksy yhteyksiä ulkopuolelta (vakioasetus: 1 jos -proxy tai -connect ei määritelty)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin-ydin</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin-ydin</translation>
     </message>
     <message>
         <source>The %s developers</source>
@@ -1840,7 +1840,7 @@
         <translation>Aseta script varmistuksen threadien lukumäärä (%u - %d, 0= auto, &lt;0 = jätä näin monta ydintä vapaaksi, oletus: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>Lohkotietokanta sisältää lohkon, joka vaikuttaa olevan tulevaisuudesta. Tämä saattaa johtua tietokoneesi virheellisesti asetetuista aika-asetuksista. Rakenna lohkotietokanta uudelleen vain jos olet varma, että tietokoneesi päivämäärä ja aika ovat oikein.</translation>
     </message>
     <message>
@@ -1864,8 +1864,8 @@
         <translation>Salli vertaisten yhdistää annetusta verkkomaskista tai IP-osoitteesta. Voidaan määrittää useampia kertoja.</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
-        <translation>Sinun tulee uudelleenrakentaa tietokanta käyttäen -reindex-chainstate vaihtaaksesi -txindex</translation>
+        <source>You need to rebuild the database using -reindex-wallstate to change -txindex</source>
+        <translation>Sinun tulee uudelleenrakentaa tietokanta käyttäen -reindex-wallstate vaihtaaksesi -txindex</translation>
     </message>
     <message>
         <source>%s corrupt, salvage failed</source>
@@ -1884,7 +1884,7 @@
         <translation>Yritä palauttaa yksityiset avaimet korruptoituneesta lompakosta käynnistyksen yhteydessä</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Lohkon luonnin asetukset:</translation>
     </message>
     <message>
@@ -1904,7 +1904,7 @@
         <translation>Tekijänoikeus (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Vioittunut lohkotietokanta havaittu</translation>
     </message>
     <message>
@@ -1916,7 +1916,7 @@
         <translation>Älä lataa lompakkoa ja poista lompakon RPC kutsut</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Haluatko uudelleenrakentaa lohkotietokannan nyt?</translation>
     </message>
     <message>
@@ -1924,7 +1924,7 @@
         <translation>Ota rahansiirtojen raakavedosten julkaisu käyttöön osoitteessa &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Virhe alustaessa lohkotietokantaa</translation>
     </message>
     <message>
@@ -1944,11 +1944,11 @@
         <translation>Virhe ladattaessa %s: Tarvitset uudemman %s -version</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Virhe avattaessa lohkoketjua</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Virhe avattaessa lohkoindeksiä</translation>
     </message>
     <message>
@@ -1964,7 +1964,7 @@
         <translation>Tuodaan...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Virheellinen tai olematon alkulohko löydetty. Väärä data-hakemisto verkolle?</translation>
     </message>
     <message>
@@ -2012,11 +2012,11 @@
         <translation>Aseta tietokannan välimuistin koko megatavuissa (%d - %d, oletus: %d</translation>
     </message>
     <message>
-        <source>Set maximum BIP141 block weight (default: %d)</source>
+        <source>Set maximum BIP141 brick weight (default: %d)</source>
         <translation>Aseta suurin BIP141-lohkopaino (oletus: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>Aseta lohkon maksimikoko tavuissa (oletus: %d)</translation>
     </message>
     <message>
@@ -2044,7 +2044,7 @@
         <translation>Käytä UPnP:ta kuuntelevan portin kartoittamiseen (oletus: %u)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Varmistetaan lohkoja...</translation>
     </message>
     <message>
@@ -2112,7 +2112,7 @@
         <translation>Virheitä tietokantaa luettaessa, ohjelma pysäytetään.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
         <translation>Tuo lohkot ulkoisesta blk000??.dat -tiedostosta käynnistettäessä</translation>
     </message>
     <message>
@@ -2144,7 +2144,7 @@
         <translation>RPC-palvelimen valinnat:</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
         <translation>Uudelleenskannaa lohkoketju käynnistyksen yhteydessä puuttuvien lompakon rahansiirtojen vuoksi</translation>
     </message>
     <message>
@@ -2208,7 +2208,7 @@
         <translation>Varoitus</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
         <translation>Toimitaanko tilassa jossa ainoastaan lohkot sallitaan (oletus: %u)</translation>
     </message>
     <message>
@@ -2224,8 +2224,8 @@
         <translation>Salasana JSON-RPC-yhteyksille</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>Suorita käsky kun paras lohko muuttuu (%s cmd on vaihdettu block hashin kanssa)</translation>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
+        <translation>Suorita käsky kun paras lohko muuttuu (%s cmd on vaihdettu brick hashin kanssa)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -2248,8 +2248,8 @@
         <translation>Älä pidä rahansiirtoja muistivarannoissa kauemmin kuin &lt;n&gt; tuntia (oletus: %u)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>Kuinka läpikäyvä lohkojen -checkblocks -todennus on (0-4, oletus: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>Kuinka läpikäyvä lohkojen -checkbricks -todennus on (0-4, oletus: %u)</translation>
     </message>
     <message>
         <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
@@ -2268,7 +2268,7 @@
         <translation>Pyydä vertaisten osoitteita aina DNS-kyselyjen avulla (oletus: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>Kuinka monta lohkoa tarkistetaan käynnistyksessä (oletus: %u, 0 = kaikki)</translation>
     </message>
     <message>
@@ -2352,7 +2352,7 @@
         <translation>Lompakon saldo ei riitä</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Ladataan lohkoindeksiä...</translation>
     </message>
     <message>

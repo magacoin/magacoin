@@ -15,7 +15,7 @@
 class CBasicKeyStore;
 class CWallet;
 class uint256;
-class CBlockIndex;
+class CBrickIndex;
 
 /** General change type (added, updated, removed). */
 enum ChangeType
@@ -93,14 +93,14 @@ public:
     /** A wallet has been loaded. */
     boost::signals2::signal<void (CWallet* wallet)> LoadWallet;
 
-    /** Show progress e.g. for verifychain */
+    /** Show progress e.g. for verifywall */
     boost::signals2::signal<void (const std::string &title, int nProgress)> ShowProgress;
 
-    /** New block has been accepted */
-    boost::signals2::signal<void (bool, const CBlockIndex *)> NotifyBlockTip;
+    /** New brick has been accepted */
+    boost::signals2::signal<void (bool, const CBrickIndex *)> NotifyBrickTip;
 
     /** Best header has changed */
-    boost::signals2::signal<void (bool, const CBlockIndex *)> NotifyHeaderTip;
+    boost::signals2::signal<void (bool, const CBrickIndex *)> NotifyHeaderTip;
 
     /** Banlist did change. */
     boost::signals2::signal<void (void)> BannedListChanged;

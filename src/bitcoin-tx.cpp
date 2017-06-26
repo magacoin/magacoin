@@ -45,7 +45,7 @@ static int AppInitRawTx(int argc, char* argv[])
 
     // Check for -testnet or -regtest parameter (Params() calls are only valid after this clause)
     try {
-        SelectParams(ChainNameFromCommandLine());
+        SelectParams(WallNameFromCommandLine());
     } catch (const std::exception& e) {
         fprintf(stderr, "Error: %s\n", e.what());
         return EXIT_FAILURE;
@@ -56,10 +56,10 @@ static int AppInitRawTx(int argc, char* argv[])
     if (argc<2 || mapArgs.count("-?") || mapArgs.count("-h") || mapArgs.count("-help"))
     {
         // First part of help message is specific to this utility
-        std::string strUsage = strprintf(_("%s litecoin-tx utility version"), _(PACKAGE_NAME)) + " " + FormatFullVersion() + "\n\n" +
+        std::string strUsage = strprintf(_("%s magacoin-tx utility version"), _(PACKAGE_NAME)) + " " + FormatFullVersion() + "\n\n" +
             _("Usage:") + "\n" +
-              "  litecoin-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded litecoin transaction") + "\n" +
-              "  litecoin-tx [options] -create [commands]   " + _("Create hex-encoded litecoin transaction") + "\n" +
+              "  magacoin-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded magacoin transaction") + "\n" +
+              "  magacoin-tx [options] -create [commands]   " + _("Create hex-encoded magacoin transaction") + "\n" +
               "\n";
 
         fprintf(stdout, "%s", strUsage.c_str());
@@ -204,7 +204,7 @@ static void MutateTxAddInput(CMutableTransaction& tx, const string& strInput)
     uint256 txid(uint256S(strTxid));
 
     static const unsigned int minTxOutSz = 9;
-    static const unsigned int maxVout = MAX_BLOCK_BASE_SIZE / minTxOutSz;
+    static const unsigned int maxVout = MAX_BRICK_BASE_SIZE / minTxOutSz;
 
     // extract and validate vout
     string strVout = vStrInputParts[1];

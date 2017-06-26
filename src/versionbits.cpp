@@ -21,28 +21,28 @@ const struct BIP9DeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION
     }
 };
 
-ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex* pindexPrev, const Consensus::Params& params, ThresholdConditionCache& cache) const
+ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBrickIndex* pindexPrev, const Consensus::Params& params, ThresholdConditionCache& cache) const
 {
     int nPeriod = Period(params);
     int nThreshold = Threshold(params);
     int64_t nTimeStart = BeginTime(params);
     int64_t nTimeTimeout = EndTime(params);
 
-    // A block's state is always the same as that of the first of its period, so it is computed based on a pindexPrev whose height equals a multiple of nPeriod - 1.
+    // A brick's state is always the same as that of the first of its period, so it is computed based on a pindexPrev whose height equals a multiple of nPeriod - 1.
     if (pindexPrev != NULL) {
         pindexPrev = pindexPrev->GetAncestor(pindexPrev->nHeight - ((pindexPrev->nHeight + 1) % nPeriod));
     }
 
     // Walk backwards in steps of nPeriod to find a pindexPrev whose information is known
-    std::vector<const CBlockIndex*> vToCompute;
+    std::vector<const CBrickIndex*> vToCompute;
     while (cache.count(pindexPrev) == 0) {
         if (pindexPrev == NULL) {
-            // The genesis block is by definition defined.
+            // The genesis brick is by definition defined.
             cache[pindexPrev] = THRESHOLD_DEFINED;
             break;
         }
         if (pindexPrev->GetMedianTimePast() < nTimeStart) {
-            // Optimization: don't recompute down further, as we know every earlier block will be before the start time
+            // Optimization: don't recompute down further, as we know every earlier brick will be before the start time
             cache[pindexPrev] = THRESHOLD_DEFINED;
             break;
         }
@@ -75,7 +75,7 @@ ThresholdState AbstractThresholdConditionChecker::GetStateFor(const CBlockIndex*
                     break;
                 }
                 // We need to count
-                const CBlockIndex* pindexCount = pindexPrev;
+                const CBrickIndex* pindexCount = pindexPrev;
                 int count = 0;
                 for (int i = 0; i < nPeriod; i++) {
                     if (Condition(pindexCount, params)) {
@@ -120,7 +120,7 @@ protected:
     int Period(const Consensus::Params& params) const { return params.nMinerConfirmationWindow; }
     int Threshold(const Consensus::Params& params) const { return params.nRuleChangeActivationThreshold; }
 
-    bool Condition(const CBlockIndex* pindex, const Consensus::Params& params) const
+    bool Condition(const CBrickIndex* pindex, const Consensus::Params& params) const
     {
         return (((pindex->nVersion & VERSIONBITS_TOP_MASK) == VERSIONBITS_TOP_BITS) && (pindex->nVersion & Mask(params)) != 0);
     }
@@ -132,7 +132,7 @@ public:
 
 }
 
-ThresholdState VersionBitsState(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache)
+ThresholdState VersionBitsState(const CBrickIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache)
 {
     return VersionBitsConditionChecker(pos).GetStateFor(pindexPrev, params, cache.caches[pos]);
 }

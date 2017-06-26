@@ -26,7 +26,7 @@
 #include "leveldb/table.h"
 #include "leveldb/table_builder.h"
 #include "port/port.h"
-#include "table/block.h"
+#include "table/brick.h"
 #include "table/merger.h"
 #include "table/two_level_iterator.h"
 #include "util/coding.h"
@@ -96,7 +96,7 @@ Options SanitizeOptions(const std::string& dbname,
   result.filter_policy = (src.filter_policy != NULL) ? ipolicy : NULL;
   ClipToRange(&result.max_open_files,    64 + kNumNonTableCacheFiles, 50000);
   ClipToRange(&result.write_buffer_size, 64<<10,                      1<<30);
-  ClipToRange(&result.block_size,        1<<10,                       4<<20);
+  ClipToRange(&result.brick_size,        1<<10,                       4<<20);
   if (result.info_log == NULL) {
     // Open a log file in the same directory as the db
     src.env->CreateDir(dbname);  // In case it does not exist
@@ -107,8 +107,8 @@ Options SanitizeOptions(const std::string& dbname,
       result.info_log = NULL;
     }
   }
-  if (result.block_cache == NULL) {
-    result.block_cache = NewLRUCache(8 << 20);
+  if (result.brick_cache == NULL) {
+    result.brick_cache = NewLRUCache(8 << 20);
   }
   return result;
 }
@@ -120,7 +120,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       options_(SanitizeOptions(dbname, &internal_comparator_,
                                &internal_filter_policy_, raw_options)),
       owns_info_log_(options_.info_log != raw_options.info_log),
-      owns_cache_(options_.block_cache != raw_options.block_cache),
+      owns_cache_(options_.brick_cache != raw_options.brick_cache),
       dbname_(dbname),
       db_lock_(NULL),
       shutting_down_(NULL),
@@ -170,7 +170,7 @@ DBImpl::~DBImpl() {
     delete options_.info_log;
   }
   if (owns_cache_) {
-    delete options_.block_cache;
+    delete options_.brick_cache;
   }
 }
 

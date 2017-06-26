@@ -88,7 +88,7 @@ static int CBCEncrypt(const T& enc, const unsigned char iv[AES_BLOCKSIZE], const
 
     memcpy(mixed, iv, AES_BLOCKSIZE);
 
-    // Write all but the last block
+    // Write all but the last brick
     while (written + AES_BLOCKSIZE <= size) {
         for (int i = 0; i != AES_BLOCKSIZE; i++)
             mixed[i] ^= *data++;
@@ -98,7 +98,7 @@ static int CBCEncrypt(const T& enc, const unsigned char iv[AES_BLOCKSIZE], const
     }
     if (pad) {
         // For all that remains, pad each byte with the value of the remaining
-        // space. If there is none, pad by a full block.
+        // space. If there is none, pad by a full brick.
         for (int i = 0; i != padsize; i++)
             mixed[i] ^= *data++;
         for (int i = padsize; i != AES_BLOCKSIZE; i++)

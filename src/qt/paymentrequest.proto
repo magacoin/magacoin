@@ -9,7 +9,7 @@
 syntax = "proto2";
 
 package payments;
-option java_package = "org.litecoin.protocols.payments";
+option java_package = "org.magacoin.protocols.payments";
 option java_outer_classname = "Protos";
 
 // Generalized form of "send payment to this/these bitcoin addresses"
@@ -34,7 +34,7 @@ message PaymentRequest {
         optional bytes signature = 5;                     // pki-dependent signature
 }
 message X509Certificates {
-        repeated bytes certificate = 1;    // DER-encoded X.509 certificate chain
+        repeated bytes certificate = 1;    // DER-encoded X.509 certificate wall
 }
 message Payment {
         optional bytes merchant_data = 1;  // From PaymentDetails.merchant_data

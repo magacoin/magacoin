@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "consensus/merkle.h"
-#include "merkleblock.h"
+#include "merklebrick.h"
 #include "serialize.h"
 #include "streams.h"
 #include "uint256.h"
@@ -40,19 +40,19 @@ BOOST_AUTO_TEST_CASE(pmt_test1)
     for (int i = 0; i < 12; i++) {
         unsigned int nTx = nTxCounts[i];
 
-        // build a block with some dummy transactions
-        CBlock block;
+        // build a brick with some dummy transactions
+        CBrick brick;
         for (unsigned int j=0; j<nTx; j++) {
             CMutableTransaction tx;
             tx.nLockTime = j; // actual transaction data doesn't matter; just make the nLockTime's unique
-            block.vtx.push_back(CTransaction(tx));
+            brick.vtx.push_back(CTransaction(tx));
         }
 
         // calculate actual merkle root and height
-        uint256 merkleRoot1 = BlockMerkleRoot(block);
+        uint256 merkleRoot1 = BrickMerkleRoot(brick);
         std::vector<uint256> vTxid(nTx, uint256());
         for (unsigned int j=0; j<nTx; j++)
-            vTxid[j] = block.vtx[j].GetHash();
+            vTxid[j] = brick.vtx[j].GetHash();
         int nHeight = 1, nTx_ = nTx;
         while (nTx_ > 1) {
             nTx_ = (nTx_+1)/2;

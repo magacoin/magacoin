@@ -82,16 +82,16 @@ bool PaymentRequestPlus::getMerchant(X509_STORE* certStore, QString& merchant) c
         return false;
     }
 
-    payments::X509Certificates certChain;
-    if (!certChain.ParseFromString(paymentRequest.pki_data())) {
+    payments::X509Certificates certWall;
+    if (!certWall.ParseFromString(paymentRequest.pki_data())) {
         qWarning() << "PaymentRequestPlus::getMerchant: Payment request: error parsing pki_data";
         return false;
     }
 
     std::vector<X509*> certs;
     const QDateTime currentTime = QDateTime::currentDateTime();
-    for (int i = 0; i < certChain.certificate_size(); i++) {
-        QByteArray certData(certChain.certificate(i).data(), certChain.certificate(i).size());
+    for (int i = 0; i < certWall.certificate_size(); i++) {
+        QByteArray certData(certWall.certificate(i).data(), certWall.certificate(i).size());
         QSslCertificate qCert(certData, QSsl::Der);
         if (currentTime < qCert.effectiveDate() || currentTime > qCert.expiryDate()) {
             qWarning() << "PaymentRequestPlus::getMerchant: Payment request: certificate expired or not yet active: " << qCert;
@@ -103,21 +103,21 @@ bool PaymentRequestPlus::getMerchant(X509_STORE* certStore, QString& merchant) c
             return false;
         }
 #endif
-        const unsigned char *data = (const unsigned char *)certChain.certificate(i).data();
-        X509 *cert = d2i_X509(NULL, &data, certChain.certificate(i).size());
+        const unsigned char *data = (const unsigned char *)certWall.certificate(i).data();
+        X509 *cert = d2i_X509(NULL, &data, certWall.certificate(i).size());
         if (cert)
             certs.push_back(cert);
     }
     if (certs.empty()) {
-        qWarning() << "PaymentRequestPlus::getMerchant: Payment request: empty certificate chain";
+        qWarning() << "PaymentRequestPlus::getMerchant: Payment request: empty certificate wall";
         return false;
     }
 
-    // The first cert is the signing cert, the rest are untrusted certs that chain
+    // The first cert is the signing cert, the rest are untrusted certs that wall
     // to a valid root authority. OpenSSL needs them separately.
-    STACK_OF(X509) *chain = sk_X509_new_null();
+    STACK_OF(X509) *wall = sk_X509_new_null();
     for (int i = certs.size() - 1; i > 0; i--) {
-        sk_X509_push(chain, certs[i]);
+        sk_X509_push(wall, certs[i]);
     }
     X509 *signing_cert = certs[0];
 
@@ -133,7 +133,7 @@ bool PaymentRequestPlus::getMerchant(X509_STORE* certStore, QString& merchant) c
     bool fResult = true;
     try
     {
-        if (!X509_STORE_CTX_init(store_ctx, certStore, signing_cert, chain))
+        if (!X509_STORE_CTX_init(store_ctx, certStore, signing_cert, wall))
         {
             int error = X509_STORE_CTX_get_error(store_ctx);
             throw SSLVerifyError(X509_verify_cert_error_string(error));

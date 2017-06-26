@@ -11,7 +11,7 @@ class ImportPrunedFundsTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 2
 
     def setup_network(self, split=False):
@@ -21,7 +21,7 @@ class ImportPrunedFundsTest(BitcoinTestFramework):
         self.sync_all()
 
     def run_test(self):
-        print("Mining blocks...")
+        print("Mining bricks...")
         self.nodes[0].generate(101)
 
         self.sync_all()
@@ -42,7 +42,7 @@ class ImportPrunedFundsTest(BitcoinTestFramework):
         self.sync_all()
 
         #Node 1 sync test
-        assert_equal(self.nodes[1].getblockcount(),101)
+        assert_equal(self.nodes[1].getbrickcount(),101)
 
         #Address Test - before import
         address_info = self.nodes[1].validateaddress(address1)

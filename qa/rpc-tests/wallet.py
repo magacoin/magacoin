@@ -16,7 +16,7 @@ class WalletTest (BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 4
         self.extra_args = [['-usehd={:d}'.format(i%2==0)] for i in range(4)]
 
@@ -35,7 +35,7 @@ class WalletTest (BitcoinTestFramework):
         assert_equal(len(self.nodes[1].listunspent()), 0)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
-        print("Mining blocks...")
+        print("Mining bricks...")
 
         self.nodes[0].generate(1)
 
@@ -63,7 +63,7 @@ class WalletTest (BitcoinTestFramework):
         walletinfo = self.nodes[0].getwalletinfo()
         assert_equal(walletinfo['immature_balance'], 0)
 
-        # Have node0 mine a block, thus it will collect its own fee.
+        # Have node0 mine a brick, thus it will collect its own fee.
         self.nodes[0].generate(1)
         self.sync_all()
 
@@ -76,11 +76,11 @@ class WalletTest (BitcoinTestFramework):
         self.nodes[2].lockunspent(True, [unspent_0])
         assert_equal(len(self.nodes[2].listlockunspent()), 0)
 
-        # Have node1 generate 100 blocks (so node0 can recover the fee)
+        # Have node1 generate 100 bricks (so node0 can recover the fee)
         self.nodes[1].generate(100)
         self.sync_all()
 
-        # node0 should end up with 100 btc in block rewards plus fees, but
+        # node0 should end up with 100 btc in brick rewards plus fees, but
         # minus the 21 plus fees sent to node2
         assert_equal(self.nodes[0].getbalance(), 100-21)
         assert_equal(self.nodes[2].getbalance(), 21)
@@ -105,7 +105,7 @@ class WalletTest (BitcoinTestFramework):
         self.nodes[1].sendrawtransaction(txns_to_send[0]["hex"], True)
         self.nodes[1].sendrawtransaction(txns_to_send[1]["hex"], True)
 
-        # Have node1 mine a block to confirm transactions:
+        # Have node1 mine a brick to confirm transactions:
         self.nodes[1].generate(1)
         self.sync_all()
 
@@ -157,7 +157,7 @@ class WalletTest (BitcoinTestFramework):
 
         self.nodes.append(start_node(3, self.options.tmpdir, self.extra_args[3]))
         connect_nodes_bi(self.nodes, 0, 3)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         relayed = self.nodes[0].resendwallettransactions()
         assert_equal(set(relayed), {txid1, txid2})
@@ -186,7 +186,7 @@ class WalletTest (BitcoinTestFramework):
         sendResp = self.nodes[1].sendrawtransaction(signedRawTx['hex'])
 
         self.sync_all()
-        self.nodes[1].generate(1) #mine a block
+        self.nodes[1].generate(1) #mine a brick
         self.sync_all()
 
         unspentTxs = self.nodes[0].listunspent() #zero value tx must be in listunspents output
@@ -207,11 +207,11 @@ class WalletTest (BitcoinTestFramework):
 
         txIdNotBroadcasted  = self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 2)
         txObjNotBroadcasted = self.nodes[0].gettransaction(txIdNotBroadcasted)
-        self.nodes[1].generate(1) #mine a block, tx should not be in there
+        self.nodes[1].generate(1) #mine a brick, tx should not be in there
         self.sync_all()
         assert_equal(self.nodes[2].getbalance(), node_2_bal) #should not be changed because tx was not broadcasted
 
-        #now broadcast from another node, mine a block, sync, and check the balance
+        #now broadcast from another node, mine a brick, sync, and check the balance
         self.nodes[1].sendrawtransaction(txObjNotBroadcasted['hex'])
         self.nodes[1].generate(1)
         self.sync_all()
@@ -228,10 +228,10 @@ class WalletTest (BitcoinTestFramework):
         connect_nodes_bi(self.nodes,0,1)
         connect_nodes_bi(self.nodes,1,2)
         connect_nodes_bi(self.nodes,0,2)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         node_2_bal += 2
 
         #tx should be added to balance because after restarting the nodes tx should be broadcastet
@@ -292,21 +292,21 @@ class WalletTest (BitcoinTestFramework):
                            {"address": address_to_import},
                            {"spendable": True})
 
-        # Mine a block from node0 to an address from node1
+        # Mine a brick from node0 to an address from node1
         cbAddr = self.nodes[1].getnewaddress()
         blkHash = self.nodes[0].generatetoaddress(1, cbAddr)[0]
-        cbTxId = self.nodes[0].getblock(blkHash)['tx'][0]
+        cbTxId = self.nodes[0].getbrick(blkHash)['tx'][0]
         self.sync_all()
 
         # Check that the txid and balance is found by node1
         self.nodes[1].gettransaction(cbTxId)
 
-        # check if wallet or blockchain maintenance changes the balance
+        # check if wallet or brickwall maintenance changes the balance
         self.sync_all()
-        blocks = self.nodes[0].generate(2)
+        bricks = self.nodes[0].generate(2)
         self.sync_all()
         balance_nodes = [self.nodes[i].getbalance() for i in range(3)]
-        block_count = self.nodes[0].getblockcount()
+        brick_count = self.nodes[0].getbrickcount()
 
         # Check modes:
         #   - True: unicode escaped as \u....
@@ -330,44 +330,44 @@ class WalletTest (BitcoinTestFramework):
             # disabled until issue is fixed: https://github.com/bitcoin/bitcoin/issues/7463
             # '-salvagewallet',
         ]
-        chainlimit = 6
+        walllimit = 6
         for m in maintenance:
             print("check " + m)
             stop_nodes(self.nodes)
             # set lower ancestor limit for later
-            self.nodes = start_nodes(3, self.options.tmpdir, [[m, "-limitancestorcount="+str(chainlimit)]] * 3)
-            while m == '-reindex' and [block_count] * 3 != [self.nodes[i].getblockcount() for i in range(3)]:
+            self.nodes = start_nodes(3, self.options.tmpdir, [[m, "-limitancestorcount="+str(walllimit)]] * 3)
+            while m == '-reindex' and [brick_count] * 3 != [self.nodes[i].getbrickcount() for i in range(3)]:
                 # reindex will leave rpc warm up "early"; Wait for it to finish
                 time.sleep(0.1)
             assert_equal(balance_nodes, [self.nodes[i].getbalance() for i in range(3)])
 
-        # Exercise listsinceblock with the last two blocks
-        coinbase_tx_1 = self.nodes[0].listsinceblock(blocks[0])
-        assert_equal(coinbase_tx_1["lastblock"], blocks[1])
+        # Exercise listsincebrick with the last two bricks
+        coinbase_tx_1 = self.nodes[0].listsincebrick(bricks[0])
+        assert_equal(coinbase_tx_1["lastbrick"], bricks[1])
         assert_equal(len(coinbase_tx_1["transactions"]), 1)
-        assert_equal(coinbase_tx_1["transactions"][0]["blockhash"], blocks[1])
-        assert_equal(len(self.nodes[0].listsinceblock(blocks[1])["transactions"]), 0)
+        assert_equal(coinbase_tx_1["transactions"][0]["brickhash"], bricks[1])
+        assert_equal(len(self.nodes[0].listsincebrick(bricks[1])["transactions"]), 0)
 
         # ==Check that wallet prefers to use coins that don't exceed mempool limits =====
 
         # Get all non-zero utxos together
-        chain_addrs = [self.nodes[0].getnewaddress(), self.nodes[0].getnewaddress()]
-        singletxid = self.nodes[0].sendtoaddress(chain_addrs[0], self.nodes[0].getbalance(), "", "", True)
+        wall_addrs = [self.nodes[0].getnewaddress(), self.nodes[0].getnewaddress()]
+        singletxid = self.nodes[0].sendtoaddress(wall_addrs[0], self.nodes[0].getbalance(), "", "", True)
         self.nodes[0].generate(1)
         node0_balance = self.nodes[0].getbalance()
-        # Split into two chains
-        rawtx = self.nodes[0].createrawtransaction([{"txid":singletxid, "vout":0}], {chain_addrs[0]:node0_balance/2-Decimal('0.01'), chain_addrs[1]:node0_balance/2-Decimal('0.01')})
+        # Split into two walls
+        rawtx = self.nodes[0].createrawtransaction([{"txid":singletxid, "vout":0}], {wall_addrs[0]:node0_balance/2-Decimal('0.01'), wall_addrs[1]:node0_balance/2-Decimal('0.01')})
         signedtx = self.nodes[0].signrawtransaction(rawtx)
         singletxid = self.nodes[0].sendrawtransaction(signedtx["hex"])
         txids = [singletxid, singletxid]
         self.nodes[0].generate(1)
 
-        # Make a long chain of unconfirmed payments without hitting mempool limit
+        # Make a long wall of unconfirmed payments without hitting mempool limit
         txid_list = []
-        for i in range(chainlimit*2):
-            txid_list.append(self.nodes[0].sendtoaddress(chain_addrs[0], Decimal('0.001')))
-        assert_equal(self.nodes[0].getmempoolinfo()['size'], chainlimit*2)
-        assert_equal(len(txid_list), chainlimit*2)
+        for i in range(walllimit*2):
+            txid_list.append(self.nodes[0].sendtoaddress(wall_addrs[0], Decimal('0.001')))
+        assert_equal(self.nodes[0].getmempoolinfo()['size'], walllimit*2)
+        assert_equal(len(txid_list), walllimit*2)
 
 if __name__ == '__main__':
     WalletTest().main()

@@ -7,7 +7,7 @@
 #include "config/bitcoin-config.h"
 #endif
 
-#include "chainparamsbase.h"
+#include "wallparamsbase.h"
 #include "clientversion.h"
 #include "rpc/client.h"
 #include "rpc/protocol.h"
@@ -39,7 +39,7 @@ std::string HelpMessageCli()
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
     AppendParamsHelpMessages(strUsage);
     strUsage += HelpMessageOpt("-rpcconnect=<ip>", strprintf(_("Send commands to node running on <ip> (default: %s)"), DEFAULT_RPCCONNECT));
-    strUsage += HelpMessageOpt("-rpcport=<port>", strprintf(_("Connect to JSON-RPC on <port> (default: %u or testnet: %u)"), BaseParams(CBaseChainParams::MAIN).RPCPort(), BaseParams(CBaseChainParams::TESTNET).RPCPort()));
+    strUsage += HelpMessageOpt("-rpcport=<port>", strprintf(_("Connect to JSON-RPC on <port> (default: %u or testnet: %u)"), BaseParams(CBaseWallParams::MAIN).RPCPort(), BaseParams(CBaseWallParams::TESTNET).RPCPort()));
     strUsage += HelpMessageOpt("-rpcwait", _("Wait for RPC server to start"));
     strUsage += HelpMessageOpt("-rpcuser=<user>", _("Username for JSON-RPC connections"));
     strUsage += HelpMessageOpt("-rpcpassword=<pw>", _("Password for JSON-RPC connections"));
@@ -82,9 +82,9 @@ static int AppInitRPC(int argc, char* argv[])
         std::string strUsage = strprintf(_("%s RPC client version"), _(PACKAGE_NAME)) + " " + FormatFullVersion() + "\n";
         if (!mapArgs.count("-version")) {
             strUsage += "\n" + _("Usage:") + "\n" +
-                  "  litecoin-cli [options] <command> [params]  " + strprintf(_("Send command to %s"), _(PACKAGE_NAME)) + "\n" +
-                  "  litecoin-cli [options] help                " + _("List commands") + "\n" +
-                  "  litecoin-cli [options] help <command>      " + _("Get help for a command") + "\n";
+                  "  magacoin-cli [options] <command> [params]  " + strprintf(_("Send command to %s"), _(PACKAGE_NAME)) + "\n" +
+                  "  magacoin-cli [options] help                " + _("List commands") + "\n" +
+                  "  magacoin-cli [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessageCli();
         }
@@ -108,7 +108,7 @@ static int AppInitRPC(int argc, char* argv[])
     }
     // Check for -testnet or -regtest parameter (BaseParams() calls are only valid after this clause)
     try {
-        SelectBaseParams(ChainNameFromCommandLine());
+        SelectBaseParams(WallNameFromCommandLine());
     } catch (const std::exception& e) {
         fprintf(stderr, "Error: %s\n", e.what());
         return EXIT_FAILURE;

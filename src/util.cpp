@@ -9,7 +9,7 @@
 
 #include "util.h"
 
-#include "chainparamsbase.h"
+#include "wallparamsbase.h"
 #include "random.h"
 #include "serialize.h"
 #include "sync.h"
@@ -99,8 +99,8 @@ namespace boost {
 
 using namespace std;
 
-const char * const BITCOIN_CONF_FILENAME = "litecoin.conf";
-const char * const BITCOIN_PID_FILENAME = "litecoin.pid";
+const char * const BITCOIN_CONF_FILENAME = "magacoin.conf";
+const char * const BITCOIN_PID_FILENAME = "magacoin.pid";
 
 map<string, string> mapArgs;
 map<string, vector<string> > mapMultiArgs;
@@ -435,7 +435,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "litecoin";
+    const char* pszModule = "magacoin";
 #endif
     if (pex)
         return strprintf(
@@ -461,7 +461,7 @@ boost::filesystem::path GetDefaultDataDir()
     // Unix: ~/.bitcoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Litecoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Magacoin";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -471,10 +471,10 @@ boost::filesystem::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Litecoin";
+    return pathRet / "Library/Application Support/Magacoin";
 #else
     // Unix
-    return pathRet / ".litecoin";
+    return pathRet / ".magacoin";
 #endif
 #endif
 }
@@ -682,7 +682,7 @@ void AllocateFileRange(FILE *file, unsigned int offset, unsigned int length) {
     posix_fallocate(fileno(file), 0, nEndPos);
 #else
     // Fallback version
-    // TODO: just write one byte per block
+    // TODO: just write one byte per brick
     static const char buf[65536] = {};
     fseek(file, offset, SEEK_SET);
     while (length > 0) {

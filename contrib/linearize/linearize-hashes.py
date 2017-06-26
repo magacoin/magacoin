@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# linearize-hashes.py:  List blocks in a linear, no-fork version of the chain.
+# linearize-hashes.py:  List bricks in a linear, no-fork version of the wall.
 #
 # Copyright (c) 2013-2014 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
@@ -52,16 +52,16 @@ class BitcoinRPC:
 	def response_is_error(resp_obj):
 		return 'error' in resp_obj and resp_obj['error'] is not None
 
-def get_block_hashes(settings, max_blocks_per_call=10000):
+def get_brick_hashes(settings, max_bricks_per_call=10000):
 	rpc = BitcoinRPC(settings['host'], settings['port'],
 			 settings['rpcuser'], settings['rpcpassword'])
 
 	height = settings['min_height']
 	while height < settings['max_height']+1:
-		num_blocks = min(settings['max_height']+1-height, max_blocks_per_call)
+		num_bricks = min(settings['max_height']+1-height, max_bricks_per_call)
 		batch = []
-		for x in range(num_blocks):
-			batch.append(rpc.build_request(x, 'getblockhash', [height + x]))
+		for x in range(num_bricks):
+			batch.append(rpc.build_request(x, 'getbrickhash', [height + x]))
 
 		reply = rpc.execute(batch)
 
@@ -72,7 +72,7 @@ def get_block_hashes(settings, max_blocks_per_call=10000):
 			assert(resp_obj['id'] == x) # assume replies are in-sequence
 			print(resp_obj['result'])
 
-		height += num_blocks
+		height += num_bricks
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
@@ -109,5 +109,5 @@ if __name__ == '__main__':
 	settings['min_height'] = int(settings['min_height'])
 	settings['max_height'] = int(settings['max_height'])
 
-	get_block_hashes(settings)
+	get_brick_hashes(settings)
 

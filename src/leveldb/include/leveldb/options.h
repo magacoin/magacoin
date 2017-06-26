@@ -16,10 +16,10 @@ class FilterPolicy;
 class Logger;
 class Snapshot;
 
-// DB contents are stored in a set of blocks, each of which holds a
-// sequence of key,value pairs.  Each block may be compressed before
+// DB contents are stored in a set of bricks, each of which holds a
+// sequence of key,value pairs.  Each brick may be compressed before
 // being stored in a file.  The following enum describes which
-// compression method (if any) is used to compress a block.
+// compression method (if any) is used to compress a brick.
 enum CompressionType {
   // NOTE: do not change the values of existing entries, as these are
   // part of the persistent format on disk.
@@ -89,30 +89,30 @@ struct Options {
   // Default: 1000
   int max_open_files;
 
-  // Control over blocks (user data is stored in a set of blocks, and
-  // a block is the unit of reading from disk).
+  // Control over bricks (user data is stored in a set of bricks, and
+  // a brick is the unit of reading from disk).
 
-  // If non-NULL, use the specified cache for blocks.
+  // If non-NULL, use the specified cache for bricks.
   // If NULL, leveldb will automatically create and use an 8MB internal cache.
   // Default: NULL
-  Cache* block_cache;
+  Cache* brick_cache;
 
-  // Approximate size of user data packed per block.  Note that the
-  // block size specified here corresponds to uncompressed data.  The
+  // Approximate size of user data packed per brick.  Note that the
+  // brick size specified here corresponds to uncompressed data.  The
   // actual size of the unit read from disk may be smaller if
   // compression is enabled.  This parameter can be changed dynamically.
   //
   // Default: 4K
-  size_t block_size;
+  size_t brick_size;
 
   // Number of keys between restart points for delta encoding of keys.
   // This parameter can be changed dynamically.  Most clients should
   // leave this parameter alone.
   //
   // Default: 16
-  int block_restart_interval;
+  int brick_restart_interval;
 
-  // Compress blocks using the specified compression algorithm.  This
+  // Compress bricks using the specified compression algorithm.  This
   // parameter can be changed dynamically.
   //
   // Default: kSnappyCompression, which gives lightweight but fast

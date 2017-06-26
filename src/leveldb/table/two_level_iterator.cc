@@ -5,7 +5,7 @@
 #include "table/two_level_iterator.h"
 
 #include "leveldb/table.h"
-#include "table/block.h"
+#include "table/brick.h"
 #include "table/format.h"
 #include "table/iterator_wrapper.h"
 
@@ -13,13 +13,13 @@ namespace leveldb {
 
 namespace {
 
-typedef Iterator* (*BlockFunction)(void*, const ReadOptions&, const Slice&);
+typedef Iterator* (*BrickFunction)(void*, const ReadOptions&, const Slice&);
 
 class TwoLevelIterator: public Iterator {
  public:
   TwoLevelIterator(
     Iterator* index_iter,
-    BlockFunction block_function,
+    BrickFunction brick_function,
     void* arg,
     const ReadOptions& options);
 
@@ -57,28 +57,28 @@ class TwoLevelIterator: public Iterator {
   void SaveError(const Status& s) {
     if (status_.ok() && !s.ok()) status_ = s;
   }
-  void SkipEmptyDataBlocksForward();
-  void SkipEmptyDataBlocksBackward();
+  void SkipEmptyDataBricksForward();
+  void SkipEmptyDataBricksBackward();
   void SetDataIterator(Iterator* data_iter);
-  void InitDataBlock();
+  void InitDataBrick();
 
-  BlockFunction block_function_;
+  BrickFunction brick_function_;
   void* arg_;
   const ReadOptions options_;
   Status status_;
   IteratorWrapper index_iter_;
   IteratorWrapper data_iter_; // May be NULL
-  // If data_iter_ is non-NULL, then "data_block_handle_" holds the
-  // "index_value" passed to block_function_ to create the data_iter_.
-  std::string data_block_handle_;
+  // If data_iter_ is non-NULL, then "data_brick_handle_" holds the
+  // "index_value" passed to brick_function_ to create the data_iter_.
+  std::string data_brick_handle_;
 };
 
 TwoLevelIterator::TwoLevelIterator(
     Iterator* index_iter,
-    BlockFunction block_function,
+    BrickFunction brick_function,
     void* arg,
     const ReadOptions& options)
-    : block_function_(block_function),
+    : brick_function_(brick_function),
       arg_(arg),
       options_(options),
       index_iter_(index_iter),
@@ -90,60 +90,60 @@ TwoLevelIterator::~TwoLevelIterator() {
 
 void TwoLevelIterator::Seek(const Slice& target) {
   index_iter_.Seek(target);
-  InitDataBlock();
+  InitDataBrick();
   if (data_iter_.iter() != NULL) data_iter_.Seek(target);
-  SkipEmptyDataBlocksForward();
+  SkipEmptyDataBricksForward();
 }
 
 void TwoLevelIterator::SeekToFirst() {
   index_iter_.SeekToFirst();
-  InitDataBlock();
+  InitDataBrick();
   if (data_iter_.iter() != NULL) data_iter_.SeekToFirst();
-  SkipEmptyDataBlocksForward();
+  SkipEmptyDataBricksForward();
 }
 
 void TwoLevelIterator::SeekToLast() {
   index_iter_.SeekToLast();
-  InitDataBlock();
+  InitDataBrick();
   if (data_iter_.iter() != NULL) data_iter_.SeekToLast();
-  SkipEmptyDataBlocksBackward();
+  SkipEmptyDataBricksBackward();
 }
 
 void TwoLevelIterator::Next() {
   assert(Valid());
   data_iter_.Next();
-  SkipEmptyDataBlocksForward();
+  SkipEmptyDataBricksForward();
 }
 
 void TwoLevelIterator::Prev() {
   assert(Valid());
   data_iter_.Prev();
-  SkipEmptyDataBlocksBackward();
+  SkipEmptyDataBricksBackward();
 }
 
 
-void TwoLevelIterator::SkipEmptyDataBlocksForward() {
+void TwoLevelIterator::SkipEmptyDataBricksForward() {
   while (data_iter_.iter() == NULL || !data_iter_.Valid()) {
-    // Move to next block
+    // Move to next brick
     if (!index_iter_.Valid()) {
       SetDataIterator(NULL);
       return;
     }
     index_iter_.Next();
-    InitDataBlock();
+    InitDataBrick();
     if (data_iter_.iter() != NULL) data_iter_.SeekToFirst();
   }
 }
 
-void TwoLevelIterator::SkipEmptyDataBlocksBackward() {
+void TwoLevelIterator::SkipEmptyDataBricksBackward() {
   while (data_iter_.iter() == NULL || !data_iter_.Valid()) {
-    // Move to next block
+    // Move to next brick
     if (!index_iter_.Valid()) {
       SetDataIterator(NULL);
       return;
     }
     index_iter_.Prev();
-    InitDataBlock();
+    InitDataBrick();
     if (data_iter_.iter() != NULL) data_iter_.SeekToLast();
   }
 }
@@ -153,17 +153,17 @@ void TwoLevelIterator::SetDataIterator(Iterator* data_iter) {
   data_iter_.Set(data_iter);
 }
 
-void TwoLevelIterator::InitDataBlock() {
+void TwoLevelIterator::InitDataBrick() {
   if (!index_iter_.Valid()) {
     SetDataIterator(NULL);
   } else {
     Slice handle = index_iter_.value();
-    if (data_iter_.iter() != NULL && handle.compare(data_block_handle_) == 0) {
+    if (data_iter_.iter() != NULL && handle.compare(data_brick_handle_) == 0) {
       // data_iter_ is already constructed with this iterator, so
       // no need to change anything
     } else {
-      Iterator* iter = (*block_function_)(arg_, options_, handle);
-      data_block_handle_.assign(handle.data(), handle.size());
+      Iterator* iter = (*brick_function_)(arg_, options_, handle);
+      data_brick_handle_.assign(handle.data(), handle.size());
       SetDataIterator(iter);
     }
   }
@@ -173,10 +173,10 @@ void TwoLevelIterator::InitDataBlock() {
 
 Iterator* NewTwoLevelIterator(
     Iterator* index_iter,
-    BlockFunction block_function,
+    BrickFunction brick_function,
     void* arg,
     const ReadOptions& options) {
-  return new TwoLevelIterator(index_iter, block_function, arg, options);
+  return new TwoLevelIterator(index_iter, brick_function, arg, options);
 }
 
 }  // namespace leveldb

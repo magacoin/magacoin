@@ -250,12 +250,12 @@
         <translation>باز کردن &amp;آدرس</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>بازنشانی بلوک‌ها روی دیسک...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>ارسال وجه به نشانی Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>ارسال وجه به نشانی Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -278,8 +278,8 @@
         <translation>با&amp;زبینی پیام...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -306,12 +306,12 @@
         <translation>رمزنگاری کلیدهای خصوصی متعلق به کیف پول شما</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>برای اثبات اینکه پیام‌ها به شما تعلق دارند، آن‌ها را با نشانی Litecoin خود امضا کنید</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>برای اثبات اینکه پیام‌ها به شما تعلق دارند، آن‌ها را با نشانی Magacoin خود امضا کنید</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>برای حصول اطمینان از اینکه پیام با نشانی Litecoin مشخص شده امضا است یا خیر، پیام را شناسایی کنید</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>برای حصول اطمینان از اینکه پیام با نشانی Magacoin مشخص شده امضا است یا خیر، پیام را شناسایی کنید</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -330,7 +330,7 @@
         <translation>نوارابزار برگه‌ها</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
         <translation>درخواست پرداخت ( تولید کد کیوار و ادرس بیت کوین)</translation>
     </message>
     <message>
@@ -342,7 +342,7 @@
         <translation>نمایش لیست آدرس های دریافت و لیبل ها</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
+        <source>Open a magacoin: URI or payment request</source>
         <translation>بازکردن یک بیت کوین: آدرس یا درخواست پرداخت</translation>
     </message>
     <message>
@@ -350,19 +350,19 @@
         <translation>گزینه‌های خط‌فرمان</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n ارتباط فعال با شبکهٔ Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n ارتباط فعال با شبکهٔ Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>پردازش بلوک‌ها روی دیسک...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>منبعی برای دریافت بلاک در دسترس نیست...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>پردازش %n  بلاک از تاریخچه ی تراکنش ها </numerusform></translation>
     </message>
     <message numerus="yes">
@@ -390,7 +390,7 @@
         <translation>%1 عقب‌تر</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>آخرین بلاک دریافتی %1 پیش ایجاد شده است.</translation>
     </message>
     <message>
@@ -662,8 +662,8 @@
         <translation>ویرایش آدرس قرستنده</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Litecoin address.</source>
-        <translation>نشانی وارد شده "%1" یک نشانی معتبر Litecoin نیست.</translation>
+        <source>The entered address "%1" is not a valid Magacoin address.</source>
+        <translation>نشانی وارد شده "%1" یک نشانی معتبر Magacoin نیست.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -833,8 +833,8 @@
         <translation>استخراج</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>باز کردن خودکار درگاه شبکهٔ Litecoin روی روترها. تنها زمانی کار می‌کند که روتر از پروتکل UPnP پشتیبانی کند و این پروتکل فعال باشد.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>باز کردن خودکار درگاه شبکهٔ Magacoin روی روترها. تنها زمانی کار می‌کند که روتر از پروتکل UPnP پشتیبانی کند و این پروتکل فعال باشد.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -932,8 +932,8 @@
         <translation>فرم</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>اطلاعات نمایش‌داده شده ممکن است قدیمی باشند. بعد از این که یک اتصال با شبکه برقرار شد، کیف پول شما به‌صورت خودکار با شبکهٔ Litecoin همگام‌سازی می‌شود. اما این روند هنوز کامل نشده است.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>اطلاعات نمایش‌داده شده ممکن است قدیمی باشند. بعد از این که یک اتصال با شبکه برقرار شد، کیف پول شما به‌صورت خودکار با شبکهٔ Magacoin همگام‌سازی می‌شود. اما این روند هنوز کامل نشده است.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -997,8 +997,8 @@
         <translation>مبلغ</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>یک آدرس Litecoin وارد کنید (مثلاً %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>یک آدرس Magacoin وارد کنید (مثلاً %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1071,11 +1071,11 @@
         <translation>تعداد ارتباطات</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>زنجیرهٔ بلوک‌ها</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>تعداد فعلی بلوک‌ها</translation>
     </message>
     <message>
@@ -1123,7 +1123,7 @@
         <translation>انتظار پینگ</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>زمان آخرین بلوک</translation>
     </message>
     <message>
@@ -1422,8 +1422,8 @@
         <translation>این یک پرداخت عادی است</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>نشانی Litecoin برای ارسال پرداخت به آن</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>نشانی Magacoin برای ارسال پرداخت به آن</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1475,8 +1475,8 @@
         <translation>ا&amp;مضای پیام</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>نشانی Litecoin برای امضاء پیغام با آن</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>نشانی Magacoin برای امضاء پیغام با آن</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1507,7 +1507,7 @@
         <translation>امضای فعلی را به حافظهٔ سیستم کپی کن</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>برای اثبات تعلق این نشانی به شما، پیام را امضا کنید</translation>
     </message>
     <message>
@@ -1527,12 +1527,12 @@
         <translation>&amp;شناسایی پیام</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>نشانی Litecoin که پیغام با آن امضاء شده</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>نشانی Magacoin که پیغام با آن امضاء شده</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>برای حصول اطمینان از اینکه پیام با نشانی Litecoin مشخص شده امضا است یا خیر، پیام را شناسایی کنید</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>برای حصول اطمینان از اینکه پیام با نشانی Magacoin مشخص شده امضا است یا خیر، پیام را شناسایی کنید</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1644,8 +1644,8 @@
         <translation>پذیرش اتصالات از بیرون (پیش فرض:1 بدون پراکسی یا اتصال)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation> هسته Litecoin </translation>
+        <source>Magacoin Core</source>
+        <translation> هسته Magacoin </translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
@@ -1660,7 +1660,7 @@
         <translation>این یک نسخه ی آزمایشی است - با مسئولیت خودتان از آن استفاده کنید -  آن را در معدن و بازرگانی بکار نگیرید.</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>بستن گزینه ایجاد</translation>
     </message>
     <message>
@@ -1676,15 +1676,15 @@
         <translation>حق تألیف (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>یک پایگاه داده ی بلوک خراب یافت شد</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>آیا مایلید که اکنون پایگاه داده ی بلوک را بازسازی کنید؟</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>خطا در آماده سازی پایگاه داده ی بلوک</translation>
     </message>
     <message>
@@ -1692,11 +1692,11 @@
         <translation>خطا در بارگیری %s</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>خطا در بارگذاری پایگاه داده ها</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>خطا در بازگشایی پایگاه داده ی بلوک</translation>
     </message>
     <message>
@@ -1724,7 +1724,7 @@
         <translation>چاپ نسخه و خروج</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>در حال بازبینی بلوک‌ها...</translation>
     </message>
     <message>
@@ -1780,8 +1780,8 @@
         <translation>JSON-RPC عبارت عبور برای ارتباطات</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>زمانی که بهترین بلاک تغییر کرد، دستور را اجرا کن (%s در cmd با block hash جایگزین شده است)</translation>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
+        <translation>زمانی که بهترین بلاک تغییر کرد، دستور را اجرا کن (%s در cmd با brick hash جایگزین شده است)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -1808,7 +1808,7 @@
         <translation>بود جه نا کافی </translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>بار گیری شاخص بلوک</translation>
     </message>
     <message>

@@ -18,7 +18,7 @@ class RawTransactionsTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 4
 
     def setup_network(self, split=False):
@@ -33,7 +33,7 @@ class RawTransactionsTest(BitcoinTestFramework):
         self.sync_all()
 
     def run_test(self):
-        print("Mining blocks...")
+        print("Mining bricks...")
 
         min_relay_tx_fee = self.nodes[0].getnetworkinfo()['relayfee']
         # This test is not meant to test fee estimation and we'd like
@@ -201,9 +201,9 @@ class RawTransactionsTest(BitcoinTestFramework):
 
         try:
             self.nodes[2].fundrawtransaction(rawtx, {'changeAddress': 'foobar'})
-            raise AssertionError("Accepted invalid litecoin address")
+            raise AssertionError("Accepted invalid magacoin address")
         except JSONRPCException as e:
-            assert("changeAddress must be a valid litecoin address" in e.error['message'])
+            assert("changeAddress must be a valid magacoin address" in e.error['message'])
 
 
         ############################################################
@@ -582,7 +582,7 @@ class RawTransactionsTest(BitcoinTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
-        assert_equal(oldBalance+Decimal('50.19000000'), self.nodes[0].getbalance()) #0.19+block reward
+        assert_equal(oldBalance+Decimal('50.19000000'), self.nodes[0].getbalance()) #0.19+brick reward
 
         #####################################################
         # test fundrawtransaction with OP_RETURN and no vin #

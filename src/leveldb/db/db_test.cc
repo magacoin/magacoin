@@ -57,7 +57,7 @@ void DelayMilliseconds(int millis) {
 // Special Env used to delay background operations
 class SpecialEnv : public EnvWrapper {
  public:
-  // sstable/log Sync() calls are blocked while this pointer is non-NULL.
+  // sstable/log Sync() calls are bricked while this pointer is non-NULL.
   port::AtomicPointer delay_data_sync_;
 
   // sstable/log Sync() calls return an error.
@@ -542,7 +542,7 @@ TEST(DBTest, GetFromImmutableLayer) {
     ASSERT_OK(Put("foo", "v1"));
     ASSERT_EQ("v1", Get("foo"));
 
-    env_->delay_data_sync_.Release_Store(env_);      // Block sync calls
+    env_->delay_data_sync_.Release_Store(env_);      // Brick sync calls
     Put("k1", std::string(100000, 'x'));             // Fill memtable
     Put("k2", std::string(100000, 'y'));             // Trigger compaction
     ASSERT_EQ("v1", Get("foo"));
@@ -1683,7 +1683,7 @@ TEST(DBTest, BloomFilter) {
   env_->count_random_reads_ = true;
   Options options = CurrentOptions();
   options.env = env_;
-  options.block_cache = NewLRUCache(0);  // Prevent cache hits
+  options.brick_cache = NewLRUCache(0);  // Prevent cache hits
   options.filter_policy = NewBloomFilterPolicy(10);
   Reopen(&options);
 
@@ -1722,7 +1722,7 @@ TEST(DBTest, BloomFilter) {
 
   env_->delay_data_sync_.Release_Store(NULL);
   Close();
-  delete options.block_cache;
+  delete options.brick_cache;
   delete options.filter_policy;
 }
 

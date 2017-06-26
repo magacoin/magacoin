@@ -9,8 +9,8 @@
 #include "leveldb/env.h"
 #include "leveldb/filter_policy.h"
 #include "leveldb/options.h"
-#include "table/block.h"
-#include "table/filter_block.h"
+#include "table/brick.h"
+#include "table/filter_brick.h"
 #include "table/format.h"
 #include "table/two_level_iterator.h"
 #include "util/coding.h"
@@ -21,18 +21,18 @@ struct Table::Rep {
   ~Rep() {
     delete filter;
     delete [] filter_data;
-    delete index_block;
+    delete index_brick;
   }
 
   Options options;
   Status status;
   RandomAccessFile* file;
   uint64_t cache_id;
-  FilterBlockReader* filter;
+  FilterBrickReader* filter;
   const char* filter_data;
 
-  BlockHandle metaindex_handle;  // Handle to metaindex_block: saved from footer
-  Block* index_block;
+  BrickHandle metaindex_handle;  // Handle to metaindex_brick: saved from footer
+  Brick* index_brick;
 };
 
 Status Table::Open(const Options& options,
@@ -54,35 +54,35 @@ Status Table::Open(const Options& options,
   s = footer.DecodeFrom(&footer_input);
   if (!s.ok()) return s;
 
-  // Read the index block
-  BlockContents contents;
-  Block* index_block = NULL;
+  // Read the index brick
+  BrickContents contents;
+  Brick* index_brick = NULL;
   if (s.ok()) {
     ReadOptions opt;
     if (options.paranoid_checks) {
       opt.verify_checksums = true;
     }
-    s = ReadBlock(file, opt, footer.index_handle(), &contents);
+    s = ReadBrick(file, opt, footer.index_handle(), &contents);
     if (s.ok()) {
-      index_block = new Block(contents);
+      index_brick = new Brick(contents);
     }
   }
 
   if (s.ok()) {
-    // We've successfully read the footer and the index block: we're
+    // We've successfully read the footer and the index brick: we're
     // ready to serve requests.
     Rep* rep = new Table::Rep;
     rep->options = options;
     rep->file = file;
     rep->metaindex_handle = footer.metaindex_handle();
-    rep->index_block = index_block;
-    rep->cache_id = (options.block_cache ? options.block_cache->NewId() : 0);
+    rep->index_brick = index_brick;
+    rep->cache_id = (options.brick_cache ? options.brick_cache->NewId() : 0);
     rep->filter_data = NULL;
     rep->filter = NULL;
     *table = new Table(rep);
     (*table)->ReadMeta(footer);
   } else {
-    if (index_block) delete index_block;
+    if (index_brick) delete index_brick;
   }
 
   return s;
@@ -94,17 +94,17 @@ void Table::ReadMeta(const Footer& footer) {
   }
 
   // TODO(sanjay): Skip this if footer.metaindex_handle() size indicates
-  // it is an empty block.
+  // it is an empty brick.
   ReadOptions opt;
   if (rep_->options.paranoid_checks) {
     opt.verify_checksums = true;
   }
-  BlockContents contents;
-  if (!ReadBlock(rep_->file, opt, footer.metaindex_handle(), &contents).ok()) {
+  BrickContents contents;
+  if (!ReadBrick(rep_->file, opt, footer.metaindex_handle(), &contents).ok()) {
     // Do not propagate errors since meta info is not needed for operation
     return;
   }
-  Block* meta = new Block(contents);
+  Brick* meta = new Brick(contents);
 
   Iterator* iter = meta->NewIterator(BytewiseComparator());
   std::string key = "filter.";
@@ -119,97 +119,97 @@ void Table::ReadMeta(const Footer& footer) {
 
 void Table::ReadFilter(const Slice& filter_handle_value) {
   Slice v = filter_handle_value;
-  BlockHandle filter_handle;
+  BrickHandle filter_handle;
   if (!filter_handle.DecodeFrom(&v).ok()) {
     return;
   }
 
-  // We might want to unify with ReadBlock() if we start
+  // We might want to unify with ReadBrick() if we start
   // requiring checksum verification in Table::Open.
   ReadOptions opt;
   if (rep_->options.paranoid_checks) {
     opt.verify_checksums = true;
   }
-  BlockContents block;
-  if (!ReadBlock(rep_->file, opt, filter_handle, &block).ok()) {
+  BrickContents brick;
+  if (!ReadBrick(rep_->file, opt, filter_handle, &brick).ok()) {
     return;
   }
-  if (block.heap_allocated) {
-    rep_->filter_data = block.data.data();     // Will need to delete later
+  if (brick.heap_allocated) {
+    rep_->filter_data = brick.data.data();     // Will need to delete later
   }
-  rep_->filter = new FilterBlockReader(rep_->options.filter_policy, block.data);
+  rep_->filter = new FilterBrickReader(rep_->options.filter_policy, brick.data);
 }
 
 Table::~Table() {
   delete rep_;
 }
 
-static void DeleteBlock(void* arg, void* ignored) {
-  delete reinterpret_cast<Block*>(arg);
+static void DeleteBrick(void* arg, void* ignored) {
+  delete reinterpret_cast<Brick*>(arg);
 }
 
-static void DeleteCachedBlock(const Slice& key, void* value) {
-  Block* block = reinterpret_cast<Block*>(value);
-  delete block;
+static void DeleteCachedBrick(const Slice& key, void* value) {
+  Brick* brick = reinterpret_cast<Brick*>(value);
+  delete brick;
 }
 
-static void ReleaseBlock(void* arg, void* h) {
+static void ReleaseBrick(void* arg, void* h) {
   Cache* cache = reinterpret_cast<Cache*>(arg);
   Cache::Handle* handle = reinterpret_cast<Cache::Handle*>(h);
   cache->Release(handle);
 }
 
-// Convert an index iterator value (i.e., an encoded BlockHandle)
-// into an iterator over the contents of the corresponding block.
-Iterator* Table::BlockReader(void* arg,
+// Convert an index iterator value (i.e., an encoded BrickHandle)
+// into an iterator over the contents of the corresponding brick.
+Iterator* Table::BrickReader(void* arg,
                              const ReadOptions& options,
                              const Slice& index_value) {
   Table* table = reinterpret_cast<Table*>(arg);
-  Cache* block_cache = table->rep_->options.block_cache;
-  Block* block = NULL;
+  Cache* brick_cache = table->rep_->options.brick_cache;
+  Brick* brick = NULL;
   Cache::Handle* cache_handle = NULL;
 
-  BlockHandle handle;
+  BrickHandle handle;
   Slice input = index_value;
   Status s = handle.DecodeFrom(&input);
   // We intentionally allow extra stuff in index_value so that we
   // can add more features in the future.
 
   if (s.ok()) {
-    BlockContents contents;
-    if (block_cache != NULL) {
+    BrickContents contents;
+    if (brick_cache != NULL) {
       char cache_key_buffer[16];
       EncodeFixed64(cache_key_buffer, table->rep_->cache_id);
       EncodeFixed64(cache_key_buffer+8, handle.offset());
       Slice key(cache_key_buffer, sizeof(cache_key_buffer));
-      cache_handle = block_cache->Lookup(key);
+      cache_handle = brick_cache->Lookup(key);
       if (cache_handle != NULL) {
-        block = reinterpret_cast<Block*>(block_cache->Value(cache_handle));
+        brick = reinterpret_cast<Brick*>(brick_cache->Value(cache_handle));
       } else {
-        s = ReadBlock(table->rep_->file, options, handle, &contents);
+        s = ReadBrick(table->rep_->file, options, handle, &contents);
         if (s.ok()) {
-          block = new Block(contents);
+          brick = new Brick(contents);
           if (contents.cachable && options.fill_cache) {
-            cache_handle = block_cache->Insert(
-                key, block, block->size(), &DeleteCachedBlock);
+            cache_handle = brick_cache->Insert(
+                key, brick, brick->size(), &DeleteCachedBrick);
           }
         }
       }
     } else {
-      s = ReadBlock(table->rep_->file, options, handle, &contents);
+      s = ReadBrick(table->rep_->file, options, handle, &contents);
       if (s.ok()) {
-        block = new Block(contents);
+        brick = new Brick(contents);
       }
     }
   }
 
   Iterator* iter;
-  if (block != NULL) {
-    iter = block->NewIterator(table->rep_->options.comparator);
+  if (brick != NULL) {
+    iter = brick->NewIterator(table->rep_->options.comparator);
     if (cache_handle == NULL) {
-      iter->RegisterCleanup(&DeleteBlock, block, NULL);
+      iter->RegisterCleanup(&DeleteBrick, brick, NULL);
     } else {
-      iter->RegisterCleanup(&ReleaseBlock, block_cache, cache_handle);
+      iter->RegisterCleanup(&ReleaseBrick, brick_cache, cache_handle);
     }
   } else {
     iter = NewErrorIterator(s);
@@ -219,32 +219,32 @@ Iterator* Table::BlockReader(void* arg,
 
 Iterator* Table::NewIterator(const ReadOptions& options) const {
   return NewTwoLevelIterator(
-      rep_->index_block->NewIterator(rep_->options.comparator),
-      &Table::BlockReader, const_cast<Table*>(this), options);
+      rep_->index_brick->NewIterator(rep_->options.comparator),
+      &Table::BrickReader, const_cast<Table*>(this), options);
 }
 
 Status Table::InternalGet(const ReadOptions& options, const Slice& k,
                           void* arg,
                           void (*saver)(void*, const Slice&, const Slice&)) {
   Status s;
-  Iterator* iiter = rep_->index_block->NewIterator(rep_->options.comparator);
+  Iterator* iiter = rep_->index_brick->NewIterator(rep_->options.comparator);
   iiter->Seek(k);
   if (iiter->Valid()) {
     Slice handle_value = iiter->value();
-    FilterBlockReader* filter = rep_->filter;
-    BlockHandle handle;
+    FilterBrickReader* filter = rep_->filter;
+    BrickHandle handle;
     if (filter != NULL &&
         handle.DecodeFrom(&handle_value).ok() &&
         !filter->KeyMayMatch(handle.offset(), k)) {
       // Not found
     } else {
-      Iterator* block_iter = BlockReader(this, options, iiter->value());
-      block_iter->Seek(k);
-      if (block_iter->Valid()) {
-        (*saver)(arg, block_iter->key(), block_iter->value());
+      Iterator* brick_iter = BrickReader(this, options, iiter->value());
+      brick_iter->Seek(k);
+      if (brick_iter->Valid()) {
+        (*saver)(arg, brick_iter->key(), brick_iter->value());
       }
-      s = block_iter->status();
-      delete block_iter;
+      s = brick_iter->status();
+      delete brick_iter;
     }
   }
   if (s.ok()) {
@@ -257,24 +257,24 @@ Status Table::InternalGet(const ReadOptions& options, const Slice& k,
 
 uint64_t Table::ApproximateOffsetOf(const Slice& key) const {
   Iterator* index_iter =
-      rep_->index_block->NewIterator(rep_->options.comparator);
+      rep_->index_brick->NewIterator(rep_->options.comparator);
   index_iter->Seek(key);
   uint64_t result;
   if (index_iter->Valid()) {
-    BlockHandle handle;
+    BrickHandle handle;
     Slice input = index_iter->value();
     Status s = handle.DecodeFrom(&input);
     if (s.ok()) {
       result = handle.offset();
     } else {
-      // Strange: we can't decode the block handle in the index block.
-      // We'll just return the offset of the metaindex block, which is
+      // Strange: we can't decode the brick handle in the index brick.
+      // We'll just return the offset of the metaindex brick, which is
       // close to the whole file size for this case.
       result = rep_->metaindex_handle.offset();
     }
   } else {
     // key is past the last key in the file.  Approximate the offset
-    // by returning the offset of the metaindex block (which is
+    // by returning the offset of the metaindex brick (which is
     // right near the end of the file).
     result = rep_->metaindex_handle.offset();
   }

@@ -30,7 +30,7 @@ class ReceivedByTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 4
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_nodes(self):
         #This test requires mocktime
@@ -51,7 +51,7 @@ class ReceivedByTest(BitcoinTestFramework):
                            {"address":addr},
                            { },
                            True)
-        #Bury Tx under 10 block so it will be returned by listreceivedbyaddress
+        #Bury Tx under 10 brick so it will be returned by listreceivedbyaddress
         self.nodes[1].generate(10)
         self.sync_all()
         assert_array_result(self.nodes[1].listreceivedbyaddress(),
@@ -88,7 +88,7 @@ class ReceivedByTest(BitcoinTestFramework):
         if balance != Decimal("0.1"):
             raise AssertionError("Wrong balance returned by getreceivedbyaddress, %0.2f"%(balance))
 
-        #Bury Tx under 10 block so it will be returned by the default getreceivedbyaddress
+        #Bury Tx under 10 brick so it will be returned by the default getreceivedbyaddress
         self.nodes[1].generate(10)
         self.sync_all()
         balance = self.nodes[1].getreceivedbyaddress(addr)

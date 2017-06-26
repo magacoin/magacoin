@@ -21,7 +21,7 @@ static const bool DEFAULT_FLUSHWALLET = true;
 
 class CAccount;
 class CAccountingEntry;
-struct CBlockLocator;
+struct CBrickLocator;
 class CKeyPool;
 class CMasterKey;
 class CScript;
@@ -41,31 +41,31 @@ enum DBErrors
     DB_NEED_REWRITE
 };
 
-/* simple HD chain data model */
-class CHDChain
+/* simple HD wall data model */
+class CHDWall
 {
 public:
-    uint32_t nExternalChainCounter;
+    uint32_t nExternalWallCounter;
     CKeyID masterKeyID; //!< master key hash160
 
     static const int CURRENT_VERSION = 1;
     int nVersion;
 
-    CHDChain() { SetNull(); }
+    CHDWall() { SetNull(); }
     ADD_SERIALIZE_METHODS;
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
     {
         READWRITE(this->nVersion);
         nVersion = this->nVersion;
-        READWRITE(nExternalChainCounter);
+        READWRITE(nExternalWallCounter);
         READWRITE(masterKeyID);
     }
 
     void SetNull()
     {
-        nVersion = CHDChain::CURRENT_VERSION;
-        nExternalChainCounter = 0;
+        nVersion = CHDWall::CURRENT_VERSION;
+        nExternalWallCounter = 0;
         masterKeyID.SetNull();
     }
 };
@@ -140,8 +140,8 @@ public:
     bool WriteWatchOnly(const CScript &script);
     bool EraseWatchOnly(const CScript &script);
 
-    bool WriteBestBlock(const CBlockLocator& locator);
-    bool ReadBestBlock(CBlockLocator& locator);
+    bool WriteBestBrick(const CBrickLocator& locator);
+    bool ReadBestBrick(CBrickLocator& locator);
 
     bool WriteOrderPosNext(int64_t nOrderPosNext);
 
@@ -175,8 +175,8 @@ public:
     static bool Recover(CDBEnv& dbenv, const std::string& filename, bool fOnlyKeys);
     static bool Recover(CDBEnv& dbenv, const std::string& filename);
 
-    //! write the hdchain model (external chain child index counter)
-    bool WriteHDChain(const CHDChain& chain);
+    //! write the hdwall model (external wall child index counter)
+    bool WriteHDWall(const CHDWall& wall);
 
 private:
     CWalletDB(const CWalletDB&);

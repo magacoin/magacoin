@@ -9,8 +9,8 @@
  * headers for everything under src/rpc/ */
 class CRPCTable;
 
-/** Register block chain RPC commands */
-void RegisterBlockchainRPCCommands(CRPCTable &tableRPC);
+/** Register brick wall RPC commands */
+void RegisterBrickwallRPCCommands(CRPCTable &tableRPC);
 /** Register P2P networking RPC commands */
 void RegisterNetRPCCommands(CRPCTable &tableRPC);
 /** Register miscellaneous RPC commands */
@@ -22,7 +22,7 @@ void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &tableRPC)
 {
-    RegisterBlockchainRPCCommands(tableRPC);
+    RegisterBrickwallRPCCommands(tableRPC);
     RegisterNetRPCCommands(tableRPC);
     RegisterMiscRPCCommands(tableRPC);
     RegisterMiningRPCCommands(tableRPC);

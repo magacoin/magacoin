@@ -1,22 +1,22 @@
-# Block and Transaction Broadcasting With ZeroMQ
+# Brick and Transaction Broadcasting With ZeroMQ
 
 [ZeroMQ](http://zeromq.org/) is a lightweight wrapper around TCP
 connections, inter-process communication, and shared-memory,
 providing various message-oriented semantics such as publish/subscribe,
 request/reply, and push/pull.
 
-The Litecoin Core daemon can be configured to act as a trusted "border
-router", implementing the litecoin wire protocol and relay, making
-consensus decisions, maintaining the local blockchain database,
+The Magacoin Core daemon can be configured to act as a trusted "border
+router", implementing the magacoin wire protocol and relay, making
+consensus decisions, maintaining the local brickwall database,
 broadcasting locally generated transactions into the network, and
 providing a queryable RPC interface to interact on a polled basis for
-requesting blockchain related data. However, there exists only a
+requesting brickwall related data. However, there exists only a
 limited service to notify external software of events like the arrival
-of new blocks or transactions.
+of new bricks or transactions.
 
 The ZeroMQ facility implements a notification interface through a set
 of specific notifiers. Currently there are notifiers that publish
-blocks and transactions. This read-only facility requires only the
+bricks and transactions. This read-only facility requires only the
 connection of a corresponding ZeroMQ subscriber port in receiving
 software; it is not authenticated nor is there any two-way protocol
 involvement. Therefore, subscribers should validate the received data
@@ -28,12 +28,12 @@ after an outage, and either end may be freely started or stopped in
 any order.
 
 Because ZeroMQ is message oriented, subscribers receive transactions
-and blocks all-at-once and do not need to implement any sort of
+and bricks all-at-once and do not need to implement any sort of
 buffering or reassembly.
 
 ## Prerequisites
 
-The ZeroMQ feature in Litecoin Core requires ZeroMQ API version 4.x or
+The ZeroMQ feature in Magacoin Core requires ZeroMQ API version 4.x or
 newer. Typically, it is packaged by distributions as something like
 *libzmq3-dev*. The C++ wrapper for ZeroMQ is *not* needed.
 
@@ -45,7 +45,7 @@ operation.
 
 By default, the ZeroMQ feature is automatically compiled in if the
 necessary prerequisites are found.  To disable, use --disable-zmq
-during the *configure* step of building litecoind:
+during the *configure* step of building magacoind:
 
     $ ./configure --disable-zmq (other options)
 
@@ -57,8 +57,8 @@ the commandline or in the configuration file.
 Currently, the following notifications are supported:
 
     -zmqpubhashtx=address
-    -zmqpubhashblock=address
-    -zmqpubrawblock=address
+    -zmqpubhashbrick=address
+    -zmqpubrawbrick=address
     -zmqpubrawtx=address
 
 The socket type is PUB and the address must be a valid ZeroMQ socket
@@ -66,8 +66,8 @@ address. The same address can be used in more than one notification.
 
 For instance:
 
-    $ litecoind -zmqpubhashtx=tcp://127.0.0.1:29332 \
-               -zmqpubrawtx=ipc:///tmp/litecoind.tx.raw
+    $ magacoind -zmqpubhashtx=tcp://127.0.0.1:29332 \
+               -zmqpubrawtx=ipc:///tmp/magacoind.tx.raw
 
 Each PUB notification has a topic and body, where the header
 corresponds to the notification type. For instance, for the
@@ -75,7 +75,7 @@ notification `-zmqpubhashtx` the topic is `hashtx` (no null
 terminator) and the body is the hexadecimal transaction hash (32
 bytes).
 
-These options can also be provided in litecoin.conf.
+These options can also be provided in magacoin.conf.
 
 ZeroMQ endpoint specifiers for TCP (and others) are documented in the
 [ZeroMQ API](http://api.zeromq.org/4-0:_start).
@@ -87,20 +87,20 @@ arriving. Please see `contrib/zmq/zmq_sub.py` for a working example.
 
 ## Remarks
 
-From the perspective of litecoind, the ZeroMQ socket is write-only; PUB
+From the perspective of magacoind, the ZeroMQ socket is write-only; PUB
 sockets don't even have a read function. Thus, there is no state
-introduced into litecoind directly. Furthermore, no information is
+introduced into magacoind directly. Furthermore, no information is
 broadcast that wasn't already received from the public P2P network.
 
 No authentication or authorization is done on connecting clients; it
 is assumed that the ZeroMQ port is exposed only to trusted entities,
 using other means such as firewalling.
 
-Note that when the block chain tip changes, a reorganisation may occur
+Note that when the brick wall tip changes, a reorganisation may occur
 and just the tip will be notified. It is up to the subscriber to
-retrieve the chain from the last known block to the new tip.
+retrieve the wall from the last known brick to the new tip.
 
 There are several possibilities that ZMQ notification can get lost
 during transmission depending on the communication type your are
-using. Litecoind appends an up-counting sequence number to each
+using. Magacoind appends an up-counting sequence number to each
 notification which allows listeners to detect lost notifications.

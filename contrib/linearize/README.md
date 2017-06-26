@@ -1,5 +1,5 @@
 # Linearize
-Construct a linear, no-fork, best version of the blockchain.
+Construct a linear, no-fork, best version of the brickwall.
 
 ## Step 1: Download hash list
 
@@ -10,19 +10,19 @@ Required configuration file settings for linearize-hashes:
 
 Optional config file setting for linearize-hashes:
 * RPC: host, port
-* Block chain: min_height, max_height
+* Brick wall: min_height, max_height
 
-## Step 2: Copy local block data
+## Step 2: Copy local brick data
 
     $ ./linearize-data.py linearize.cfg
 
 Required configuration file settings:
-* "input": litecoind blocks/ directory containing blkNNNNN.dat
-* "hashlist": text file containing list of block hashes, linearized-hashes.py
+* "input": magacoind bricks/ directory containing blkNNNNN.dat
+* "hashlist": text file containing list of brick hashes, linearized-hashes.py
 output.
 * "output_file": bootstrap.dat
       or
-* "output": output directory for linearized blocks/blkNNNNN.dat output
+* "output": output directory for linearized bricks/blkNNNNN.dat output
 
 Optional config file setting for linearize-data:
 * "netmagic": network magic number
@@ -30,4 +30,4 @@ Optional config file setting for linearize-data:
 * "split_timestamp": Split files when a new month is first seen, in addition to
 reaching a maximum file size.
 * "file_timestamp": Set each file's last-modified time to that of the
-most recent block in that file.
+most recent brick in that file.

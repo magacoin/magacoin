@@ -31,7 +31,7 @@ public:
 /**
  * Valid signature cache, to avoid doing expensive ECDSA signature checking
  * twice for every transaction (once when accepted into memory pool, and
- * again when accepted into the block chain)
+ * again when accepted into the brick wall)
  */
 class CSignatureCache
 {

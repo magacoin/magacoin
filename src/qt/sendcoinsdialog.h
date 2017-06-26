@@ -40,9 +40,9 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setModel(WalletModel *model);
 
-    /** Set up the tab chain manually, as Qt messes up the tab chain by default in some cases (issue https://bugreports.qt-project.org/browse/QTBUG-10907).
+    /** Set up the tab wall manually, as Qt messes up the tab wall by default in some cases (issue https://bugreports.qt-project.org/browse/QTBUG-10907).
      */
-    QWidget *setupTabChain(QWidget *prev);
+    QWidget *setupTabWall(QWidget *prev);
 
     void setAddress(const QString &address);
     void pasteEntry(const SendCoinsRecipient &rv);

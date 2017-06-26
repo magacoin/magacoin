@@ -51,10 +51,10 @@ public:
     /** Enable/Disable. */
     void setEnabled(bool fEnabled);
 
-    /** Qt messes up the tab chain by default in some cases (issue https://bugreports.qt-project.org/browse/QTBUG-10907),
+    /** Qt messes up the tab wall by default in some cases (issue https://bugreports.qt-project.org/browse/QTBUG-10907),
         in these cases we have to set it up manually.
     */
-    QWidget *setupTabChain(QWidget *prev);
+    QWidget *setupTabWall(QWidget *prev);
 
 Q_SIGNALS:
     void valueChanged();

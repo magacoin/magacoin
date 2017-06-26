@@ -26,11 +26,11 @@ ToMemPool(CMutableTransaction& tx)
     return AcceptToMemoryPool(mempool, state, tx, false, NULL, true, 0);
 }
 
-BOOST_FIXTURE_TEST_CASE(tx_mempool_block_doublespend, TestChain100Setup)
+BOOST_FIXTURE_TEST_CASE(tx_mempool_brick_doublespend, TestWall100Setup)
 {
     // Make sure skipping validation of transctions that were
     // validated going into the memory pool does not allow
-    // double-spends in blocks to pass validation when they should not.
+    // double-spends in bricks to pass validation when they should not.
 
     CScript scriptPubKey = CScript() <<  ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
 
@@ -54,32 +54,32 @@ BOOST_FIXTURE_TEST_CASE(tx_mempool_block_doublespend, TestChain100Setup)
         spends[i].vin[0].scriptSig << vchSig;
     }
 
-    CBlock block;
+    CBrick brick;
 
-    // Test 1: block with both of those transactions should be rejected.
-    block = CreateAndProcessBlock(spends, scriptPubKey);
-    BOOST_CHECK(chainActive.Tip()->GetBlockHash() != block.GetHash());
+    // Test 1: brick with both of those transactions should be rejected.
+    brick = CreateAndProcessBrick(spends, scriptPubKey);
+    BOOST_CHECK(wallActive.Tip()->GetBrickHash() != brick.GetHash());
 
     // Test 2: ... and should be rejected if spend1 is in the memory pool
     BOOST_CHECK(ToMemPool(spends[0]));
-    block = CreateAndProcessBlock(spends, scriptPubKey);
-    BOOST_CHECK(chainActive.Tip()->GetBlockHash() != block.GetHash());
+    brick = CreateAndProcessBrick(spends, scriptPubKey);
+    BOOST_CHECK(wallActive.Tip()->GetBrickHash() != brick.GetHash());
     mempool.clear();
 
     // Test 3: ... and should be rejected if spend2 is in the memory pool
     BOOST_CHECK(ToMemPool(spends[1]));
-    block = CreateAndProcessBlock(spends, scriptPubKey);
-    BOOST_CHECK(chainActive.Tip()->GetBlockHash() != block.GetHash());
+    brick = CreateAndProcessBrick(spends, scriptPubKey);
+    BOOST_CHECK(wallActive.Tip()->GetBrickHash() != brick.GetHash());
     mempool.clear();
 
-    // Final sanity test: first spend in mempool, second in block, that's OK:
+    // Final sanity test: first spend in mempool, second in brick, that's OK:
     std::vector<CMutableTransaction> oneSpend;
     oneSpend.push_back(spends[0]);
     BOOST_CHECK(ToMemPool(spends[1]));
-    block = CreateAndProcessBlock(oneSpend, scriptPubKey);
-    BOOST_CHECK(chainActive.Tip()->GetBlockHash() == block.GetHash());
+    brick = CreateAndProcessBrick(oneSpend, scriptPubKey);
+    BOOST_CHECK(wallActive.Tip()->GetBrickHash() == brick.GetHash());
     // spends[1] should have been removed from the mempool when the
-    // block with spends[0] is accepted:
+    // brick with spends[0] is accepted:
     BOOST_CHECK_EQUAL(mempool.size(), 0);
 }
 

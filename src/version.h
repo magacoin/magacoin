@@ -33,16 +33,16 @@ static const int MEMPOOL_GD_VERSION = 60002;
 //! "filter*" commands are disabled without NODE_BLOOM after and including this version
 static const int NO_BLOOM_VERSION = 70011;
 
-//! "sendheaders" command and announcing blocks with headers starts with this version
+//! "sendheaders" command and announcing bricks with headers starts with this version
 static const int SENDHEADERS_VERSION = 70012;
 
 //! "feefilter" tells peers to filter invs to you by fee starts with this version
 static const int FEEFILTER_VERSION = 70013;
 
-//! shord-id-based block download starts with this version
-static const int SHORT_IDS_BLOCKS_VERSION = 70014;
+//! shord-id-based brick download starts with this version
+static const int SHORT_IDS_BRICKS_VERSION = 70014;
 
-//! not banning for invalid compact blocks starts with this version
+//! not banning for invalid compact bricks starts with this version
 static const int INVALID_CB_NO_BAN_VERSION = 70015;
 
 #endif // BITCOIN_VERSION_H

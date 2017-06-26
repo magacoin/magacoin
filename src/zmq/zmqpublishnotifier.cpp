@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "chainparams.h"
+#include "wallparams.h"
 #include "zmqpublishnotifier.h"
 #include "main.h"
 #include "util.h"
@@ -10,9 +10,9 @@
 
 static std::multimap<std::string, CZMQAbstractPublishNotifier*> mapPublishNotifiers;
 
-static const char *MSG_HASHBLOCK = "hashblock";
+static const char *MSG_HASHBRICK = "hashbrick";
 static const char *MSG_HASHTX    = "hashtx";
-static const char *MSG_RAWBLOCK  = "rawblock";
+static const char *MSG_RAWBRICK  = "rawbrick";
 static const char *MSG_RAWTX     = "rawtx";
 
 // Internal function to send multipart message
@@ -141,14 +141,14 @@ bool CZMQAbstractPublishNotifier::SendMessage(const char *command, const void* d
     return true;
 }
 
-bool CZMQPublishHashBlockNotifier::NotifyBlock(const CBlockIndex *pindex)
+bool CZMQPublishHashBrickNotifier::NotifyBrick(const CBrickIndex *pindex)
 {
-    uint256 hash = pindex->GetBlockHash();
-    LogPrint("zmq", "zmq: Publish hashblock %s\n", hash.GetHex());
+    uint256 hash = pindex->GetBrickHash();
+    LogPrint("zmq", "zmq: Publish hashbrick %s\n", hash.GetHex());
     char data[32];
     for (unsigned int i = 0; i < 32; i++)
         data[31 - i] = hash.begin()[i];
-    return SendMessage(MSG_HASHBLOCK, data, 32);
+    return SendMessage(MSG_HASHBRICK, data, 32);
 }
 
 bool CZMQPublishHashTransactionNotifier::NotifyTransaction(const CTransaction &transaction)
@@ -161,25 +161,25 @@ bool CZMQPublishHashTransactionNotifier::NotifyTransaction(const CTransaction &t
     return SendMessage(MSG_HASHTX, data, 32);
 }
 
-bool CZMQPublishRawBlockNotifier::NotifyBlock(const CBlockIndex *pindex)
+bool CZMQPublishRawBrickNotifier::NotifyBrick(const CBrickIndex *pindex)
 {
-    LogPrint("zmq", "zmq: Publish rawblock %s\n", pindex->GetBlockHash().GetHex());
+    LogPrint("zmq", "zmq: Publish rawbrick %s\n", pindex->GetBrickHash().GetHex());
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION | RPCSerializationFlags());
     {
         LOCK(cs_main);
-        CBlock block;
-        if(!ReadBlockFromDisk(block, pindex, consensusParams))
+        CBrick brick;
+        if(!ReadBrickFromDisk(brick, pindex, consensusParams))
         {
-            zmqError("Can't read block from disk");
+            zmqError("Can't read brick from disk");
             return false;
         }
 
-        ss << block;
+        ss << brick;
     }
 
-    return SendMessage(MSG_RAWBLOCK, &(*ss.begin()), ss.size());
+    return SendMessage(MSG_RAWBRICK, &(*ss.begin()), ss.size());
 }
 
 bool CZMQPublishRawTransactionNotifier::NotifyTransaction(const CTransaction &transaction)

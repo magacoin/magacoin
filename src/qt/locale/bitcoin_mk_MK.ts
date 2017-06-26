@@ -134,20 +134,20 @@
         <translation>Отвори &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Повторно индексирање на блокови од дискот...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Испрати Litecoin на Litecoin адреса</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Испрати Magacoin на Magacoin адреса</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Потврди порака...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -178,7 +178,7 @@
         <translation>&amp;Помош</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Обработен %n блок од историјата на трансакции.</numerusform><numerusform>Обработени %n блокови од историјата на трансакции.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -435,8 +435,8 @@
         <translation>Број на конекции</translation>
     </message>
     <message>
-        <source>Block chain</source>
-        <translation>Block chain</translation>
+        <source>Brick wall</source>
+        <translation>Brick wall</translation>
     </message>
     <message>
         <source>Sent</source>
@@ -600,8 +600,8 @@
         <translation>Опции:</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>Warning</source>

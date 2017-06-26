@@ -20,7 +20,7 @@ Reader::Reader(SequentialFile* file, Reporter* reporter, bool checksum,
     : file_(file),
       reporter_(reporter),
       checksum_(checksum),
-      backing_store_(new char[kBlockSize]),
+      backing_store_(new char[kBrickSize]),
       buffer_(),
       eof_(false),
       last_record_offset_(0),
@@ -32,23 +32,23 @@ Reader::~Reader() {
   delete[] backing_store_;
 }
 
-bool Reader::SkipToInitialBlock() {
-  size_t offset_in_block = initial_offset_ % kBlockSize;
-  uint64_t block_start_location = initial_offset_ - offset_in_block;
+bool Reader::SkipToInitialBrick() {
+  size_t offset_in_brick = initial_offset_ % kBrickSize;
+  uint64_t brick_start_location = initial_offset_ - offset_in_brick;
 
-  // Don't search a block if we'd be in the trailer
-  if (offset_in_block > kBlockSize - 6) {
-    offset_in_block = 0;
-    block_start_location += kBlockSize;
+  // Don't search a brick if we'd be in the trailer
+  if (offset_in_brick > kBrickSize - 6) {
+    offset_in_brick = 0;
+    brick_start_location += kBrickSize;
   }
 
-  end_of_buffer_offset_ = block_start_location;
+  end_of_buffer_offset_ = brick_start_location;
 
-  // Skip to start of first block that can contain the initial record
-  if (block_start_location > 0) {
-    Status skip_status = file_->Skip(block_start_location);
+  // Skip to start of first brick that can contain the initial record
+  if (brick_start_location > 0) {
+    Status skip_status = file_->Skip(brick_start_location);
     if (!skip_status.ok()) {
-      ReportDrop(block_start_location, skip_status);
+      ReportDrop(brick_start_location, skip_status);
       return false;
     }
   }
@@ -58,7 +58,7 @@ bool Reader::SkipToInitialBlock() {
 
 bool Reader::ReadRecord(Slice* record, std::string* scratch) {
   if (last_record_offset_ < initial_offset_) {
-    if (!SkipToInitialBlock()) {
+    if (!SkipToInitialBrick()) {
       return false;
     }
   }
@@ -79,8 +79,8 @@ bool Reader::ReadRecord(Slice* record, std::string* scratch) {
         if (in_fragmented_record) {
           // Handle bug in earlier versions of log::Writer where
           // it could emit an empty kFirstType record at the tail end
-          // of a block followed by a kFullType or kFirstType record
-          // at the beginning of the next block.
+          // of a brick followed by a kFullType or kFirstType record
+          // at the beginning of the next brick.
           if (scratch->empty()) {
             in_fragmented_record = false;
           } else {
@@ -97,8 +97,8 @@ bool Reader::ReadRecord(Slice* record, std::string* scratch) {
         if (in_fragmented_record) {
           // Handle bug in earlier versions of log::Writer where
           // it could emit an empty kFirstType record at the tail end
-          // of a block followed by a kFullType or kFirstType record
-          // at the beginning of the next block.
+          // of a brick followed by a kFullType or kFirstType record
+          // at the beginning of the next brick.
           if (scratch->empty()) {
             in_fragmented_record = false;
           } else {
@@ -184,14 +184,14 @@ unsigned int Reader::ReadPhysicalRecord(Slice* result) {
       if (!eof_) {
         // Last read was a full read, so this is a trailer to skip
         buffer_.clear();
-        Status status = file_->Read(kBlockSize, &buffer_, backing_store_);
+        Status status = file_->Read(kBrickSize, &buffer_, backing_store_);
         end_of_buffer_offset_ += buffer_.size();
         if (!status.ok()) {
           buffer_.clear();
-          ReportDrop(kBlockSize, status);
+          ReportDrop(kBrickSize, status);
           eof_ = true;
           return kEof;
-        } else if (buffer_.size() < kBlockSize) {
+        } else if (buffer_.size() < kBrickSize) {
           eof_ = true;
         }
         continue;

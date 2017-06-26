@@ -187,7 +187,7 @@ public:
             // stuck if the core is holding the locks for a longer time - for
             // example, during a wallet rescan.
             //
-            // If a status update is needed (blocks came in since last check),
+            // If a status update is needed (bricks came in since last check),
             //  update the status of this transaction from the wallet. Otherwise,
             // simply re-use the cached status.
             TRY_LOCK(cs_main, lockMain);
@@ -274,7 +274,7 @@ void TransactionTableModel::updateTransaction(const QString &hash, int status, b
 
 void TransactionTableModel::updateConfirmations()
 {
-    // Blocks came in since last poll.
+    // Bricks came in since last poll.
     // Invalidate status (number of confirmations) and (possibly) description
     //  for all rows. Qt is smart enough to only actually request the data for the
     //  visible rows.
@@ -300,8 +300,8 @@ QString TransactionTableModel::formatTxStatus(const TransactionRecord *wtx) cons
 
     switch(wtx->status.status)
     {
-    case TransactionStatus::OpenUntilBlock:
-        status = tr("Open for %n more block(s)","",wtx->status.open_for);
+    case TransactionStatus::OpenUntilBrick:
+        status = tr("Open for %n more brick(s)","",wtx->status.open_for);
         break;
     case TransactionStatus::OpenUntilDate:
         status = tr("Open until %1").arg(GUIUtil::dateTimeStr(wtx->status.open_for));
@@ -328,7 +328,7 @@ QString TransactionTableModel::formatTxStatus(const TransactionRecord *wtx) cons
         status = tr("Immature (%1 confirmations, will be available after %2)").arg(wtx->status.depth).arg(wtx->status.depth + wtx->status.matures_in);
         break;
     case TransactionStatus::MaturesWarning:
-        status = tr("This block was not received by any other nodes and will probably not be accepted!");
+        status = tr("This brick was not received by any other nodes and will probably not be accepted!");
         break;
     case TransactionStatus::NotAccepted:
         status = tr("Generated but not accepted");
@@ -464,7 +464,7 @@ QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx)
 {
     switch(wtx->status.status)
     {
-    case TransactionStatus::OpenUntilBlock:
+    case TransactionStatus::OpenUntilBrick:
     case TransactionStatus::OpenUntilDate:
         return COLOR_TX_STATUS_OPENUNTILDATE;
     case TransactionStatus::Offline:

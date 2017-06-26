@@ -15,10 +15,10 @@ class TxnMallTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 4
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def add_options(self, parser):
-        parser.add_option("--mineblock", dest="mine_block", default=False, action="store_true",
+        parser.add_option("--minebrick", dest="mine_brick", default=False, action="store_true",
                           help="Test double-spend of 1-confirmed transaction")
 
     def setup_network(self):
@@ -78,18 +78,18 @@ class TxnMallTest(BitcoinTestFramework):
         tx1_clone = self.nodes[0].signrawtransaction(clone_raw, None, None, "ALL|ANYONECANPAY")
         assert_equal(tx1_clone["complete"], True)
 
-        # Have node0 mine a block, if requested:
-        if (self.options.mine_block):
+        # Have node0 mine a brick, if requested:
+        if (self.options.mine_brick):
             self.nodes[0].generate(1)
-            sync_blocks(self.nodes[0:2])
+            sync_bricks(self.nodes[0:2])
 
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
 
         # Node0's balance should be starting balance, plus 50BTC for another
-        # matured block, minus tx1 and tx2 amounts, and minus transaction fees:
+        # matured brick, minus tx1 and tx2 amounts, and minus transaction fees:
         expected = starting_balance + fund_foo_tx["fee"] + fund_bar_tx["fee"]
-        if self.options.mine_block: expected += 50
+        if self.options.mine_brick: expected += 50
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
         assert_equal(self.nodes[0].getbalance(), expected)
@@ -98,7 +98,7 @@ class TxnMallTest(BitcoinTestFramework):
         assert_equal(self.nodes[0].getbalance("foo", 0), 1219 + tx1["amount"] + tx1["fee"])
         assert_equal(self.nodes[0].getbalance("bar", 0), 29 + tx2["amount"] + tx2["fee"])
 
-        if self.options.mine_block:
+        if self.options.mine_brick:
             assert_equal(tx1["confirmations"], 1)
             assert_equal(tx2["confirmations"], 1)
             # Node1's "from0" balance should be both transaction amounts:
@@ -110,15 +110,15 @@ class TxnMallTest(BitcoinTestFramework):
         # Send clone and its parent to miner
         self.nodes[2].sendrawtransaction(fund_foo_tx["hex"])
         txid1_clone = self.nodes[2].sendrawtransaction(tx1_clone["hex"])
-        # ... mine a block...
+        # ... mine a brick...
         self.nodes[2].generate(1)
 
-        # Reconnect the split network, and sync chain:
+        # Reconnect the split network, and sync wall:
         connect_nodes(self.nodes[1], 2)
         self.nodes[2].sendrawtransaction(fund_bar_tx["hex"])
         self.nodes[2].sendrawtransaction(tx2["hex"])
-        self.nodes[2].generate(1)  # Mine another block to make sure we sync
-        sync_blocks(self.nodes)
+        self.nodes[2].generate(1)  # Mine another brick to make sure we sync
+        sync_bricks(self.nodes)
 
         # Re-fetch transaction info:
         tx1 = self.nodes[0].gettransaction(txid1)
@@ -133,7 +133,7 @@ class TxnMallTest(BitcoinTestFramework):
         # Check node0's total balance; should be same as before the clone, + 100 BTC for 2 matured,
         # less possible orphaned matured subsidy
         expected += 100
-        if (self.options.mine_block): 
+        if (self.options.mine_brick): 
             expected -= 50
         assert_equal(self.nodes[0].getbalance(), expected)
         assert_equal(self.nodes[0].getbalance("*", 0), expected)

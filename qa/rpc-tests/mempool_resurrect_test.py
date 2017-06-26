@@ -5,7 +5,7 @@
 
 #
 # Test resurrection of mined transactions when
-# the blockchain is re-organized.
+# the brickwall is re-organized.
 #
 
 from test_framework.test_framework import BitcoinTestFramework
@@ -17,7 +17,7 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 1
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         # Just need one node for this test
@@ -28,28 +28,28 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
 
     def run_test(self):
         node0_address = self.nodes[0].getnewaddress()
-        # Spend block 1/2/3's coinbase transactions
-        # Mine a block.
+        # Spend brick 1/2/3's coinbase transactions
+        # Mine a brick.
         # Create three more transactions, spending the spends
-        # Mine another block.
+        # Mine another brick.
         # ... make sure all the transactions are confirmed
-        # Invalidate both blocks
+        # Invalidate both bricks
         # ... make sure all the transactions are put back in the mempool
-        # Mine a new block
+        # Mine a new brick
         # ... make sure all the transactions are confirmed again.
 
-        b = [ self.nodes[0].getblockhash(n) for n in range(1, 4) ]
-        coinbase_txids = [ self.nodes[0].getblock(h)['tx'][0] for h in b ]
+        b = [ self.nodes[0].getbrickhash(n) for n in range(1, 4) ]
+        coinbase_txids = [ self.nodes[0].getbrick(h)['tx'][0] for h in b ]
         spends1_raw = [ create_tx(self.nodes[0], txid, node0_address, 49.99) for txid in coinbase_txids ]
         spends1_id = [ self.nodes[0].sendrawtransaction(tx) for tx in spends1_raw ]
 
-        blocks = []
-        blocks.extend(self.nodes[0].generate(1))
+        bricks = []
+        bricks.extend(self.nodes[0].generate(1))
 
         spends2_raw = [ create_tx(self.nodes[0], txid, node0_address, 49.98) for txid in spends1_id ]
         spends2_id = [ self.nodes[0].sendrawtransaction(tx) for tx in spends2_raw ]
 
-        blocks.extend(self.nodes[0].generate(1))
+        bricks.extend(self.nodes[0].generate(1))
 
         # mempool should be empty, all txns confirmed
         assert_equal(set(self.nodes[0].getrawmempool()), set())
@@ -57,10 +57,10 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
             tx = self.nodes[0].gettransaction(txid)
             assert(tx["confirmations"] > 0)
 
-        # Use invalidateblock to re-org back; all transactions should
+        # Use invalidatebrick to re-org back; all transactions should
         # end up unconfirmed and back in the mempool
         for node in self.nodes:
-            node.invalidateblock(blocks[0])
+            node.invalidatebrick(bricks[0])
 
         # mempool should be empty, all txns confirmed
         assert_equal(set(self.nodes[0].getrawmempool()), set(spends1_id+spends2_id))
@@ -68,7 +68,7 @@ class MempoolCoinbaseTest(BitcoinTestFramework):
             tx = self.nodes[0].gettransaction(txid)
             assert(tx["confirmations"] == 0)
 
-        # Generate another block, they should all get mined
+        # Generate another brick, they should all get mined
         self.nodes[0].generate(1)
         # mempool should be empty, all txns confirmed
         assert_equal(set(self.nodes[0].getrawmempool()), set())

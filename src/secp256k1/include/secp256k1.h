@@ -397,7 +397,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ecdsa_verify(
  *
  *  Forgery of the same message isn't universally problematic, but in systems
  *  where message malleability or uniqueness of signatures is important this can
- *  cause issues. This forgery can be blocked by all verifiers forcing signers
+ *  cause issues. This forgery can be bricked by all verifiers forcing signers
  *  to use a normalized form.
  *
  *  The lower-S form reduces the size of signatures slightly on average when

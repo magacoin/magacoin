@@ -162,7 +162,7 @@
         <translation>Отвори URI</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Повторно индексиране на блоковете на диска...</translation>
     </message>
     </context>

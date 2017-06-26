@@ -6,7 +6,7 @@
 from test_framework.test_framework import ComparisonTestFramework
 from test_framework.util import *
 from test_framework.mininode import CTransaction, NetworkThread
-from test_framework.blocktools import create_coinbase, create_block
+from test_framework.bricktools import create_coinbase, create_brick
 from test_framework.comptool import TestInstance, TestManager
 from test_framework.script import CScript, OP_1NEGATE, OP_CHECKLOCKTIMEVERIFY, OP_DROP
 from io import BytesIO
@@ -23,15 +23,15 @@ def cltv_invalidate(tx):
 '''
 This test is meant to exercise BIP65 (CHECKLOCKTIMEVERIFY)
 Connect to a single node.
-Mine 2 (version 3) blocks (save the coinbases for later).
-Generate 98 more version 3 blocks, verify the node accepts.
-Mine 749 version 4 blocks, verify the node accepts.
-Check that the new CLTV rules are not enforced on the 750th version 4 block.
-Check that the new CLTV rules are enforced on the 751st version 4 block.
-Mine 199 new version blocks.
-Mine 1 old-version block.
-Mine 1 new version block.
-Mine 1 old version block, see that the node rejects.
+Mine 2 (version 3) bricks (save the coinbases for later).
+Generate 98 more version 3 bricks, verify the node accepts.
+Mine 749 version 4 bricks, verify the node accepts.
+Check that the new CLTV rules are not enforced on the 750th version 4 brick.
+Check that the new CLTV rules are enforced on the 751st version 4 brick.
+Mine 199 new version bricks.
+Mine 1 old-version brick.
+Mine 1 new version brick.
+Mine 1 old version brick, see that the node rejects.
 '''
 
 class BIP65Test(ComparisonTestFramework):
@@ -41,9 +41,9 @@ class BIP65Test(ComparisonTestFramework):
         self.num_nodes = 1
 
     def setup_network(self):
-        # Must set the blockversion for this test
+        # Must set the brickversion for this test
         self.nodes = start_nodes(self.num_nodes, self.options.tmpdir,
-                                 extra_args=[['-debug', '-whitelist=127.0.0.1', '-blockversion=3']],
+                                 extra_args=[['-debug', '-whitelist=127.0.0.1', '-brickversion=3']],
                                  binary=[self.options.testbinary])
 
     def run_test(self):
@@ -53,7 +53,7 @@ class BIP65Test(ComparisonTestFramework):
         test.run()
 
     def create_transaction(self, node, coinbase, to_address, amount):
-        from_txid = node.getblock(coinbase)['tx'][0]
+        from_txid = node.getbrick(coinbase)['tx'][0]
         inputs = [{ "txid" : from_txid, "vout" : 0}]
         outputs = { to_address : amount }
         rawtx = node.createrawtransaction(inputs, outputs)
@@ -65,117 +65,117 @@ class BIP65Test(ComparisonTestFramework):
 
     def get_tests(self):
 
-        self.coinbase_blocks = self.nodes[0].generate(2)
-        height = 3  # height of the next block to build
-        self.tip = int("0x" + self.nodes[0].getbestblockhash(), 0)
+        self.coinbase_bricks = self.nodes[0].generate(2)
+        height = 3  # height of the next brick to build
+        self.tip = int("0x" + self.nodes[0].getbestbrickhash(), 0)
         self.nodeaddress = self.nodes[0].getnewaddress()
-        self.last_block_time = int(time.time())
+        self.last_brick_time = int(time.time())
 
-        ''' 98 more version 3 blocks '''
-        test_blocks = []
+        ''' 98 more version 3 bricks '''
+        test_bricks = []
         for i in range(98):
-            block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-            block.nVersion = 3
-            block.rehash()
-            block.solve()
-            test_blocks.append([block, True])
-            self.last_block_time += 1
-            self.tip = block.sha256
+            brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+            brick.nVersion = 3
+            brick.rehash()
+            brick.solve()
+            test_bricks.append([brick, True])
+            self.last_brick_time += 1
+            self.tip = brick.sha256
             height += 1
-        yield TestInstance(test_blocks, sync_every_block=False)
+        yield TestInstance(test_bricks, sync_every_brick=False)
 
-        ''' Mine 749 version 4 blocks '''
-        test_blocks = []
+        ''' Mine 749 version 4 bricks '''
+        test_bricks = []
         for i in range(749):
-            block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-            block.nVersion = 4
-            block.rehash()
-            block.solve()
-            test_blocks.append([block, True])
-            self.last_block_time += 1
-            self.tip = block.sha256
+            brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+            brick.nVersion = 4
+            brick.rehash()
+            brick.solve()
+            test_bricks.append([brick, True])
+            self.last_brick_time += 1
+            self.tip = brick.sha256
             height += 1
-        yield TestInstance(test_blocks, sync_every_block=False)
+        yield TestInstance(test_bricks, sync_every_brick=False)
 
         '''
         Check that the new CLTV rules are not enforced in the 750th
-        version 3 block.
+        version 3 brick.
         '''
         spendtx = self.create_transaction(self.nodes[0],
-                self.coinbase_blocks[0], self.nodeaddress, 1.0)
+                self.coinbase_bricks[0], self.nodeaddress, 1.0)
         cltv_invalidate(spendtx)
         spendtx.rehash()
 
-        block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-        block.nVersion = 4
-        block.vtx.append(spendtx)
-        block.hashMerkleRoot = block.calc_merkle_root()
-        block.rehash()
-        block.solve()
+        brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+        brick.nVersion = 4
+        brick.vtx.append(spendtx)
+        brick.hashMerkleRoot = brick.calc_merkle_root()
+        brick.rehash()
+        brick.solve()
 
-        self.last_block_time += 1
-        self.tip = block.sha256
+        self.last_brick_time += 1
+        self.tip = brick.sha256
         height += 1
-        yield TestInstance([[block, True]])
+        yield TestInstance([[brick, True]])
 
         '''
         Check that the new CLTV rules are enforced in the 751st version 4
-        block.
+        brick.
         '''
         spendtx = self.create_transaction(self.nodes[0],
-                self.coinbase_blocks[1], self.nodeaddress, 1.0)
+                self.coinbase_bricks[1], self.nodeaddress, 1.0)
         cltv_invalidate(spendtx)
         spendtx.rehash()
 
-        block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-        block.nVersion = 4
-        block.vtx.append(spendtx)
-        block.hashMerkleRoot = block.calc_merkle_root()
-        block.rehash()
-        block.solve()
-        self.last_block_time += 1
-        yield TestInstance([[block, False]])
+        brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+        brick.nVersion = 4
+        brick.vtx.append(spendtx)
+        brick.hashMerkleRoot = brick.calc_merkle_root()
+        brick.rehash()
+        brick.solve()
+        self.last_brick_time += 1
+        yield TestInstance([[brick, False]])
 
-        ''' Mine 199 new version blocks on last valid tip '''
-        test_blocks = []
+        ''' Mine 199 new version bricks on last valid tip '''
+        test_bricks = []
         for i in range(199):
-            block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-            block.nVersion = 4
-            block.rehash()
-            block.solve()
-            test_blocks.append([block, True])
-            self.last_block_time += 1
-            self.tip = block.sha256
+            brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+            brick.nVersion = 4
+            brick.rehash()
+            brick.solve()
+            test_bricks.append([brick, True])
+            self.last_brick_time += 1
+            self.tip = brick.sha256
             height += 1
-        yield TestInstance(test_blocks, sync_every_block=False)
+        yield TestInstance(test_bricks, sync_every_brick=False)
 
-        ''' Mine 1 old version block '''
-        block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-        block.nVersion = 3
-        block.rehash()
-        block.solve()
-        self.last_block_time += 1
-        self.tip = block.sha256
+        ''' Mine 1 old version brick '''
+        brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+        brick.nVersion = 3
+        brick.rehash()
+        brick.solve()
+        self.last_brick_time += 1
+        self.tip = brick.sha256
         height += 1
-        yield TestInstance([[block, True]])
+        yield TestInstance([[brick, True]])
 
-        ''' Mine 1 new version block '''
-        block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-        block.nVersion = 4
-        block.rehash()
-        block.solve()
-        self.last_block_time += 1
-        self.tip = block.sha256
+        ''' Mine 1 new version brick '''
+        brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+        brick.nVersion = 4
+        brick.rehash()
+        brick.solve()
+        self.last_brick_time += 1
+        self.tip = brick.sha256
         height += 1
-        yield TestInstance([[block, True]])
+        yield TestInstance([[brick, True]])
 
-        ''' Mine 1 old version block, should be invalid '''
-        block = create_block(self.tip, create_coinbase(height), self.last_block_time + 1)
-        block.nVersion = 3
-        block.rehash()
-        block.solve()
-        self.last_block_time += 1
-        yield TestInstance([[block, False]])
+        ''' Mine 1 old version brick, should be invalid '''
+        brick = create_brick(self.tip, create_coinbase(height), self.last_brick_time + 1)
+        brick.nVersion = 3
+        brick.rehash()
+        brick.solve()
+        self.last_brick_time += 1
+        yield TestInstance([[brick, False]])
 
 if __name__ == '__main__':
     BIP65Test().main()

@@ -10,12 +10,12 @@ gradually.
   (/contrib/devtools/README.md#clang-formatpy).
   - Braces on new lines for namespaces, classes, functions, methods.
   - Braces on the same line for everything else.
-  - 4 space indentation (no tabs) for every block except namespaces.
+  - 4 space indentation (no tabs) for every brick except namespaces.
   - No indentation for public/protected/private or for namespaces.
   - No extra spaces inside parenthesis; don't do ( this )
   - No space after function names; one space after if, for and while.
 
-Block style example:
+Brick style example:
 ```c++
 namespace foo
 {
@@ -41,7 +41,7 @@ class Class
 Doxygen comments
 -----------------
 
-To facilitate the generation of documentation, use doxygen-compatible comment blocks for functions, methods and fields.
+To facilitate the generation of documentation, use doxygen-compatible comment bricks for functions, methods and fields.
 
 For example, to describe a function use:
 ```c++
@@ -94,7 +94,7 @@ Not OK (used plenty in the current source, but not picked up):
 //
 ```
 
-A full list of comment syntaxes picked up by doxygen can be found at http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html,
+A full list of comment syntaxes picked up by doxygen can be found at http://www.stack.nl/~dimitri/doxygen/manual/docbricks.html,
 but if possible use one of the above styles.
 
 Development tips and tricks
@@ -118,16 +118,16 @@ to see it.
 
 **testnet and regtest modes**
 
-Run with the -testnet option to run with "play litecoins" on the test network, if you
+Run with the -testnet option to run with "play magacoins" on the test network, if you
 are testing multi-machine code that needs to operate across the internet.
 
 If you are testing something that can run on one machine, run with the -regtest option.
-In regression test mode, blocks can be created on-demand; see qa/rpc-tests/ for tests
+In regression test mode, bricks can be created on-demand; see qa/rpc-tests/ for tests
 that run in -regtest mode.
 
 **DEBUG_LOCKORDER**
 
-Litecoin Core is a multithreaded application, and deadlocks or other multithreading bugs
+Magacoin Core is a multithreaded application, and deadlocks or other multithreading bugs
 can be very difficult to track down. Compiling with -DDEBUG_LOCKORDER (configure
 CXXFLAGS="-DDEBUG_LOCKORDER -g") inserts run-time checks to keep track of which locks
 are held, and adds warnings to the debug.log file if inconsistencies are detected.
@@ -152,9 +152,9 @@ and its cs_KeyStore lock for example).
 Threads
 -------
 
-- ThreadScriptCheck : Verifies block scripts.
+- ThreadScriptCheck : Verifies brick scripts.
 
-- ThreadImport : Loads blocks from blk*.dat files or bootstrap.dat.
+- ThreadImport : Loads bricks from blk*.dat files or bootstrap.dat.
 
 - StartNode : Starts other threads.
 
@@ -176,7 +176,7 @@ Threads
 
 - ThreadRPCServer : Remote procedure call handler, listens on port 9332 for connections and services them.
 
-- LitecoinMiner : Generates litecoins (if wallet is enabled).
+- MagacoinMiner : Generates magacoins (if wallet is enabled).
 
 - Shutdown : Does an orderly shutdown of everything.
 
@@ -186,7 +186,7 @@ Ignoring IDE/editor files
 In closed-source environments in which everyone uses the same IDE it is common
 to add temporary files it produces to the project-wide `.gitignore` file.
 
-However, in open source software such as Litecoin Core, where everyone uses
+However, in open source software such as Magacoin Core, where everyone uses
 their own editors/IDE/tools, it is less common. Only you know what files your
 editor produces and this may change from version to version. The canonical way
 to do this is thus to create your local gitignore. Add this to `~/.gitconfig`:
@@ -216,9 +216,9 @@ Development guidelines
 ============================
 
 A few non-style-related recommendations for developers, as well as points to
-pay attention to for reviewers of Litecoin Core code.
+pay attention to for reviewers of Magacoin Core code.
 
-General Litecoin Core
+General Magacoin Core
 ----------------------
 
 - New features should be exposed on RPC first, then can be made available in the GUI
@@ -328,7 +328,7 @@ Strings and formatting
 
 - For `strprintf`, `LogPrint`, `LogPrintf` formatting characters don't need size specifiers
 
-  - *Rationale*: Litecoin Core uses tinyformat, which is type safe. Leave them out to avoid confusion
+  - *Rationale*: Magacoin Core uses tinyformat, which is type safe. Leave them out to avoid confusion
 
 Threads and synchronization
 ----------------------------
@@ -423,7 +423,7 @@ Git and github tips
 
         [remote "upstream-pull"]
                 fetch = +refs/pull/*:refs/remotes/upstream-pull/*
-                url = git@github.com:litecoin-project/litecoin.git
+                url = git@github.com:magacoin-project/magacoin.git
 
   This will add an `upstream-pull` remote to your git repository, which can be fetched using `git fetch --all`
   or `git fetch upstream-pull`. Afterwards, you can use `upstream-pull/NUMBER/head` in arguments to `git show`,

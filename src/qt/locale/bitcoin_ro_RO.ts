@@ -150,12 +150,12 @@
         <translation>Deschide &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Se reindexează blocurile pe disc...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Trimite monede către o adresă Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Trimite monede către o adresă Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -178,8 +178,8 @@
         <translation>&amp;Verifică mesaj...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -206,12 +206,12 @@
         <translation>Criptează cheile private ale portofelului dvs.</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Semnaţi mesaje cu adresa dvs. Litecoin pentru a dovedi că vă aparţin</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Semnaţi mesaje cu adresa dvs. Magacoin pentru a dovedi că vă aparţin</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verificaţi mesaje pentru a vă asigura că au fost semnate cu adresa Litecoin specificată</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verificaţi mesaje pentru a vă asigura că au fost semnate cu adresa Magacoin specificată</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -230,8 +230,8 @@
         <translation>Bara de unelte</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Cereţi plăţi (generează coduri QR şi litecoin-uri: URls)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Cereţi plăţi (generează coduri QR şi magacoin-uri: URls)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -242,23 +242,23 @@
         <translation>Arată lista de adrese pentru primire şi etichetele</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Deschidere litecoin: o adresa URI sau o cerere de plată</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Deschidere magacoin: o adresa URI sau o cerere de plată</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opţiuni linie de &amp;comandă</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n conexiune activă către reţeaua Litecoin</numerusform><numerusform>%n conexiuni active către reţeaua Litecoin</numerusform><numerusform>%n de conexiuni active către reţeaua Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n conexiune activă către reţeaua Magacoin</numerusform><numerusform>%n conexiuni active către reţeaua Magacoin</numerusform><numerusform>%n de conexiuni active către reţeaua Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Nici o sursă de bloc disponibilă...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>S-a procesat %n bloc din istoricul tranzacţiilor.</numerusform><numerusform>S-au procesat %n blocuri din istoricul tranzacţiilor.</numerusform><numerusform>S-au procesat %n de blocuri din istoricul tranzacţiilor.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -286,7 +286,7 @@
         <translation>%1 în urmă</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Ultimul bloc recepţionat a fost generat acum %1.</translation>
     </message>
     <message>
@@ -625,7 +625,7 @@
         <translation>Minimizează fereastra în locul părăsirii programului în momentul închiderii ferestrei. Cînd acestă opţiune e activă, aplicaţia se va opri doar în momentul selectării comenzii 'Închide aplicaţia' din menu.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>URL-uri terţe părţi (de exemplu, un explorator de bloc), care apar în tab-ul tranzacţiilor ca elemente de meniu contextual. %s în URL este înlocuit cu hash de tranzacţie. URL-urile multiple sînt separate prin bară verticală |.</translation>
     </message>
     <message>
@@ -673,16 +673,16 @@
         <translation>Cheltuire rest neconfirmat</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Deschide automat în router portul aferent clientului Litecoin. Funcţionează doar dacă routerul duportă UPnP şi e activat.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Deschide automat în router portul aferent clientului Magacoin. Funcţionează doar dacă routerul duportă UPnP şi e activat.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Mapare port folosind &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Conectare la reţeaua Litecoin printr-un proxy SOCKS.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Conectare la reţeaua Magacoin printr-un proxy SOCKS.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -742,7 +742,7 @@
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Alegeţi subdiviziunea folosită la afişarea interfeţei şi la trimiterea de litecoin.</translation>
+        <translation>Alegeţi subdiviziunea folosită la afişarea interfeţei şi la trimiterea de magacoin.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -782,7 +782,7 @@
     </message>
     <message>
         <source>The supplied proxy address is invalid.</source>
-        <translation>Adresa litecoin pe care aţi specificat-o nu este validă.</translation>
+        <translation>Adresa magacoin pe care aţi specificat-o nu este validă.</translation>
     </message>
 </context>
 <context>
@@ -792,8 +792,8 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Informaţiile afişate pot fi neactualizate. Portofelul dvs. se sincronizează automat cu reţeaua Litecoin după ce o conexiune este stabilită, dar acest proces nu a fost finalizat încă.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Informaţiile afişate pot fi neactualizate. Portofelul dvs. se sincronizează automat cu reţeaua Magacoin după ce o conexiune este stabilită, dar acest proces nu a fost finalizat încă.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -885,8 +885,8 @@
         <translation>Cantitate</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Introduceţi o adresă Litecoin (de exemplu %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Introduceţi o adresă Magacoin (de exemplu %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -963,11 +963,11 @@
         <translation>Numărul de conexiuni</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Lanţ de blocuri</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Numărul curent de blocuri</translation>
     </message>
     <message>
@@ -1007,7 +1007,7 @@
         <translation>Versiune</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>Bloc de început</translation>
     </message>
     <message>
@@ -1015,7 +1015,7 @@
         <translation>Headere Sincronizate</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Blocuri Sincronizate</translation>
     </message>
     <message>
@@ -1043,7 +1043,7 @@
         <translation>Timp ping</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Data ultimului bloc</translation>
     </message>
     <message>
@@ -1178,8 +1178,8 @@
         <translation>R&amp;efoloseşte o adresă de primire (nu este recomandat)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>Un mesaj opţional de ataşat la cererea de plată, care va fi afişat cînd cererea este deschisă. Notă: Acest mesaj nu va fi trimis cu plata către reţeaua Litecoin.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>Un mesaj opţional de ataşat la cererea de plată, care va fi afişat cînd cererea este deschisă. Notă: Acest mesaj nu va fi trimis cu plata către reţeaua Magacoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1402,8 +1402,8 @@
         <translation>Aceasta este o tranzacţie normală.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>Adresa litecoin către care se face plata</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>Adresa magacoin către care se face plata</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1430,8 +1430,8 @@
         <translation>Introduceţi eticheta pentru ca această adresa să fie introdusă în lista de adrese folosite</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>un mesaj a fost ataşat la litecoin: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua litecoin.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>un mesaj a fost ataşat la magacoin: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua magacoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1467,7 +1467,7 @@
         <translation>&amp;Semnează mesaj</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
+        <source>The Magacoin address to sign the message with</source>
         <translation>Adresa cu care semnaţi mesajul</translation>
     </message>
     <message>
@@ -1499,8 +1499,8 @@
         <translation>Copiază semnatura curentă în clipboard-ul sistemului</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Semnează mesajul pentru a dovedi ca deţineţi acestă adresă Litecoin</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Semnează mesajul pentru a dovedi ca deţineţi acestă adresă Magacoin</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1519,12 +1519,12 @@
         <translation>&amp;Verifică mesaj</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Introduceţi o adresă Litecoin</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Introduceţi o adresă Magacoin</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verificaţi mesajul pentru a vă asigura că a fost semnat cu adresa Litecoin specificată</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verificaţi mesajul pentru a vă asigura că a fost semnat cu adresa Magacoin specificată</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1612,8 +1612,8 @@
         <translation>Acceptă conexiuni din afară (implicit: 1 dacă nu se foloseşte -proxy sau -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Nucleul Litecoin</translation>
+        <source>Magacoin Core</source>
+        <translation>Nucleul Magacoin</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
@@ -1648,7 +1648,7 @@
         <translation>&lt;category&gt; poate fi:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Opţiuni creare bloc:</translation>
     </message>
     <message>
@@ -1660,7 +1660,7 @@
         <translation>Opţiuni conexiune:</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Bloc defect din baza de date detectat</translation>
     </message>
     <message>
@@ -1672,11 +1672,11 @@
         <translation>Nu încarcă portofelul şi dezactivează solicitările portofel RPC</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Doriţi să reconstruiţi baza de date blocuri acum?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Eroare la iniţializarea bazei de date de blocuri</translation>
     </message>
     <message>
@@ -1684,11 +1684,11 @@
         <translation>Eroare la iniţializarea mediului de bază de date a portofelului %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Eroare la încărcarea bazei de date de blocuri</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Eroare la deschiderea bazei de date de blocuri</translation>
     </message>
     <message>
@@ -1704,7 +1704,7 @@
         <translation>Import...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Incorect sau nici un bloc de geneza găsit. Directorul de retea greşit?</translation>
     </message>
     <message>
@@ -1724,7 +1724,7 @@
         <translation>Setează mărimea bazei de date cache în megaocteţi (%d la %d, implicit: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>Setaţi dimensiunea maximă a unui bloc în bytes (implicit: %d)</translation>
     </message>
     <message>
@@ -1736,7 +1736,7 @@
         <translation>Foloseşte mapare UPnP pentru asculatere port (implicit: %u)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Se verifică blocurile...</translation>
     </message>
     <message>
@@ -1868,7 +1868,7 @@
         <translation>Parola pentru conexiunile JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Execută comanda cînd cel mai bun bloc se modifică (%s în cmd este înlocuit cu hash-ul blocului)</translation>
     </message>
     <message>
@@ -1888,7 +1888,7 @@
         <translation>(implicit: %s)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>Cîte blocuri verifică la pornire (implicit: %u, 0 = toate)</translation>
     </message>
     <message>
@@ -1912,7 +1912,7 @@
         <translation>Fonduri insuficiente</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Încărcare index bloc...</translation>
     </message>
     <message>

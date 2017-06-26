@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "chainparams.h"
+#include "wallparams.h"
 #include "coins.h"
 #include "consensus/consensus.h"
 #include "consensus/merkle.h"
@@ -26,7 +26,7 @@ static
 struct {
     unsigned char extranonce;
     unsigned int nonce;
-} blockinfo[] = {
+} brickinfo[] = {
     {4, 0xa4ad9f65}, {2, 0x15cf2b27}, {1, 0x037620ac}, {1, 0x700d9c54},
     {2, 0xce79f74f}, {2, 0x52d9c194}, {1, 0x77bc3efc}, {2, 0xbb62c5e8},
     {2, 0x83ff997a}, {1, 0x48b984ee}, {1, 0xef925da0}, {2, 0x680d2979},
@@ -57,11 +57,11 @@ struct {
     {2, 0xbbccedc6}, {2, 0xfe38d0ef},
 };
 
-CBlockIndex CreateBlockIndex(int nHeight)
+CBrickIndex CreateBrickIndex(int nHeight)
 {
-    CBlockIndex index;
+    CBrickIndex index;
     index.nHeight = nHeight;
-    index.pprev = chainActive.Tip();
+    index.pprev = wallActive.Tip();
     return index;
 }
 
@@ -73,9 +73,9 @@ bool TestSequenceLocks(const CTransaction &tx, int flags)
 
 // Test suite for ancestor feerate transaction selection.
 // Implemented as an additional function, rather than a separate test case,
-// to allow reusing the blockchain created in CreateNewBlock_validity.
-// Note that this test assumes blockprioritysize is 0.
-void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey, std::vector<CTransaction *>& txFirst)
+// to allow reusing the brickwall created in CreateNewBrick_validity.
+// Note that this test assumes brickprioritysize is 0.
+void TestPackageSelection(const CWallParams& wallparams, CScript scriptPubKey, std::vector<CTransaction *>& txFirst)
 {
     // Test the ancestor feerate transaction selection.
     TestMemPoolEntryHelper entry;
@@ -105,10 +105,10 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     uint256 hashHighFeeTx = tx.GetHash();
     mempool.addUnchecked(hashHighFeeTx, entry.Fee(50000).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
 
-    CBlockTemplate *pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
-    BOOST_CHECK(pblocktemplate->block.vtx[1].GetHash() == hashParentTx);
-    BOOST_CHECK(pblocktemplate->block.vtx[2].GetHash() == hashHighFeeTx);
-    BOOST_CHECK(pblocktemplate->block.vtx[3].GetHash() == hashMediumFeeTx);
+    CBrickTemplate *pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey);
+    BOOST_CHECK(pbricktemplate->brick.vtx[1].GetHash() == hashParentTx);
+    BOOST_CHECK(pbricktemplate->brick.vtx[2].GetHash() == hashHighFeeTx);
+    BOOST_CHECK(pbricktemplate->brick.vtx[3].GetHash() == hashMediumFeeTx);
 
     // Test that a package below the min relay fee doesn't get included
     tx.vin[0].prevout.hash = hashHighFeeTx;
@@ -125,11 +125,11 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     tx.vout[0].nValue = 5000000000LL - 1000 - 50000 - feeToUse;
     uint256 hashLowFeeTx = tx.GetHash();
     mempool.addUnchecked(hashLowFeeTx, entry.Fee(feeToUse).FromTx(tx));
-    pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
+    pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey);
     // Verify that the free tx and the low fee tx didn't get selected
-    for (size_t i=0; i<pblocktemplate->block.vtx.size(); ++i) {
-        BOOST_CHECK(pblocktemplate->block.vtx[i].GetHash() != hashFreeTx);
-        BOOST_CHECK(pblocktemplate->block.vtx[i].GetHash() != hashLowFeeTx);
+    for (size_t i=0; i<pbricktemplate->brick.vtx.size(); ++i) {
+        BOOST_CHECK(pbricktemplate->brick.vtx[i].GetHash() != hashFreeTx);
+        BOOST_CHECK(pbricktemplate->brick.vtx[i].GetHash() != hashLowFeeTx);
     }
 
     // Test that packages above the min relay fee do get included, even if one
@@ -140,12 +140,12 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     tx.vout[0].nValue -= 2; // Now we should be just over the min relay fee
     hashLowFeeTx = tx.GetHash();
     mempool.addUnchecked(hashLowFeeTx, entry.Fee(feeToUse+2).FromTx(tx));
-    pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
-    BOOST_CHECK(pblocktemplate->block.vtx[4].GetHash() == hashFreeTx);
-    BOOST_CHECK(pblocktemplate->block.vtx[5].GetHash() == hashLowFeeTx);
+    pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey);
+    BOOST_CHECK(pbricktemplate->brick.vtx[4].GetHash() == hashFreeTx);
+    BOOST_CHECK(pbricktemplate->brick.vtx[5].GetHash() == hashLowFeeTx);
 
     // Test that transaction selection properly updates ancestor fee
-    // calculations as ancestor transactions get included in a block.
+    // calculations as ancestor transactions get included in a brick.
     // Add a 0-fee transaction that has 2 outputs.
     tx.vin[0].prevout.hash = txFirst[2]->GetHash();
     tx.vout.resize(2);
@@ -161,12 +161,12 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     tx.vout[0].nValue = 5000000000LL - 100000000 - feeToUse;
     uint256 hashLowFeeTx2 = tx.GetHash();
     mempool.addUnchecked(hashLowFeeTx2, entry.Fee(feeToUse).SpendsCoinbase(false).FromTx(tx));
-    pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
+    pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey);
 
     // Verify that this tx isn't selected.
-    for (size_t i=0; i<pblocktemplate->block.vtx.size(); ++i) {
-        BOOST_CHECK(pblocktemplate->block.vtx[i].GetHash() != hashFreeTx2);
-        BOOST_CHECK(pblocktemplate->block.vtx[i].GetHash() != hashLowFeeTx2);
+    for (size_t i=0; i<pbricktemplate->brick.vtx.size(); ++i) {
+        BOOST_CHECK(pbricktemplate->brick.vtx[i].GetHash() != hashFreeTx2);
+        BOOST_CHECK(pbricktemplate->brick.vtx[i].GetHash() != hashLowFeeTx2);
     }
 
     // This tx will be mineable, and should cause hashLowFeeTx2 to be selected
@@ -174,17 +174,17 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     tx.vin[0].prevout.n = 1;
     tx.vout[0].nValue = 100000000 - 100000; // 10k satoshi fee
     mempool.addUnchecked(tx.GetHash(), entry.Fee(100000).FromTx(tx));
-    pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey);
-    BOOST_CHECK(pblocktemplate->block.vtx[8].GetHash() == hashLowFeeTx2);
+    pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey);
+    BOOST_CHECK(pbricktemplate->brick.vtx[8].GetHash() == hashLowFeeTx2);
 }
 
-// NOTE: These tests rely on CreateNewBlock doing its own self-validation!
-BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
+// NOTE: These tests rely on CreateNewBrick doing its own self-validation!
+BOOST_AUTO_TEST_CASE(CreateNewBrick_validity)
 {
     // Note that by default, these tests run with size accounting enabled.
-    const CChainParams& chainparams = Params(CBaseChainParams::MAIN);
+    const CWallParams& wallparams = Params(CBaseWallParams::MAIN);
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
-    CBlockTemplate *pblocktemplate;
+    CBrickTemplate *pbricktemplate;
     CMutableTransaction tx,tx2;
     CScript script;
     uint256 hash;
@@ -196,56 +196,56 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     LOCK(cs_main);
     fCheckpointsEnabled = false;
 
-    // Simple block creation, nothing special yet:
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
+    // Simple brick creation, nothing special yet:
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
 
     // We can't make transactions until we have inputs
-    // Therefore, load 100 blocks :)
+    // Therefore, load 100 bricks :)
     int baseheight = 0;
     std::vector<CTransaction*>txFirst;
-    for (unsigned int i = 0; i < sizeof(blockinfo)/sizeof(*blockinfo); ++i)
+    for (unsigned int i = 0; i < sizeof(brickinfo)/sizeof(*brickinfo); ++i)
     {
-        CBlock *pblock = &pblocktemplate->block; // pointer for convenience
-        pblock->nVersion = 1;
-        pblock->nTime = chainActive.Tip()->GetMedianTimePast()+1;
-        CMutableTransaction txCoinbase(pblock->vtx[0]);
+        CBrick *pbrick = &pbricktemplate->brick; // pointer for convenience
+        pbrick->nVersion = 1;
+        pbrick->nTime = wallActive.Tip()->GetMedianTimePast()+1;
+        CMutableTransaction txCoinbase(pbrick->vtx[0]);
         txCoinbase.nVersion = 1;
         txCoinbase.vin[0].scriptSig = CScript();
-        txCoinbase.vin[0].scriptSig.push_back(blockinfo[i].extranonce);
-        txCoinbase.vin[0].scriptSig.push_back(chainActive.Height());
-        txCoinbase.vout.resize(1); // Ignore the (optional) segwit commitment added by CreateNewBlock (as the hardcoded nonces don't account for this)
+        txCoinbase.vin[0].scriptSig.push_back(brickinfo[i].extranonce);
+        txCoinbase.vin[0].scriptSig.push_back(wallActive.Height());
+        txCoinbase.vout.resize(1); // Ignore the (optional) segwit commitment added by CreateNewBrick (as the hardcoded nonces don't account for this)
         txCoinbase.vout[0].scriptPubKey = CScript();
-        pblock->vtx[0] = CTransaction(txCoinbase);
+        pbrick->vtx[0] = CTransaction(txCoinbase);
         if (txFirst.size() == 0)
-            baseheight = chainActive.Height();
+            baseheight = wallActive.Height();
         if (txFirst.size() < 4)
-            txFirst.push_back(new CTransaction(pblock->vtx[0]));
-        pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
-        pblock->nNonce = blockinfo[i].nonce;
+            txFirst.push_back(new CTransaction(pbrick->vtx[0]));
+        pbrick->hashMerkleRoot = BrickMerkleRoot(*pbrick);
+        pbrick->nNonce = brickinfo[i].nonce;
         CValidationState state;
-        BOOST_CHECK(ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL, false));
+        BOOST_CHECK(ProcessNewBrick(state, wallparams, NULL, pbrick, true, NULL, false));
         BOOST_CHECK(state.IsValid());
-        pblock->hashPrevBlock = pblock->GetHash();
+        pbrick->hashPrevBrick = pbrick->GetHash();
     }
-    delete pblocktemplate;
+    delete pbricktemplate;
 
-    // Just to make sure we can still make simple blocks
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
+    // Just to make sure we can still make simple bricks
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    delete pbricktemplate;
 
-    const CAmount BLOCKSUBSIDY = 50*COIN;
+    const CAmount BRICKSUBSIDY = 50*COIN;
     const CAmount LOWFEE = CENT;
     const CAmount HIGHFEE = COIN;
     const CAmount HIGHERFEE = 4*COIN;
 
-    // block sigops > limit: 1000 CHECKMULTISIG + 1
+    // brick sigops > limit: 1000 CHECKMULTISIG + 1
     tx.vin.resize(1);
     // NOTE: OP_NOP is used to force 20 SigOps for the CHECKMULTISIG
     tx.vin[0].scriptSig = CScript() << OP_0 << OP_0 << OP_0 << OP_NOP << OP_CHECKMULTISIG << OP_1;
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
     tx.vin[0].prevout.n = 0;
     tx.vout.resize(1);
-    tx.vout[0].nValue = BLOCKSUBSIDY;
+    tx.vout[0].nValue = BRICKSUBSIDY;
     for (unsigned int i = 0; i < 1001; ++i)
     {
         tx.vout[0].nValue -= LOWFEE;
@@ -255,11 +255,11 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         mempool.addUnchecked(hash, entry.Fee(LOWFEE).Time(GetTime()).SpendsCoinbase(spendsCoinbase).FromTx(tx));
         tx.vin[0].prevout.hash = hash;
     }
-    BOOST_CHECK_THROW(BlockAssembler(chainparams).CreateNewBlock(scriptPubKey), std::runtime_error);
+    BOOST_CHECK_THROW(BrickAssembler(wallparams).CreateNewBrick(scriptPubKey), std::runtime_error);
     mempool.clear();
 
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
-    tx.vout[0].nValue = BLOCKSUBSIDY;
+    tx.vout[0].nValue = BRICKSUBSIDY;
     for (unsigned int i = 0; i < 1001; ++i)
     {
         tx.vout[0].nValue -= LOWFEE;
@@ -269,11 +269,11 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         mempool.addUnchecked(hash, entry.Fee(LOWFEE).Time(GetTime()).SpendsCoinbase(spendsCoinbase).SigOpsCost(80).FromTx(tx));
         tx.vin[0].prevout.hash = hash;
     }
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    delete pbricktemplate;
     mempool.clear();
 
-    // block size > limit
+    // brick size > limit
     tx.vin[0].scriptSig = CScript();
     // 18 * (520char + DROP) + OP_1 = 9433 bytes
     std::vector<unsigned char> vchData(520);
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         tx.vin[0].scriptSig << vchData << OP_DROP;
     tx.vin[0].scriptSig << OP_1;
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
-    tx.vout[0].nValue = BLOCKSUBSIDY;
+    tx.vout[0].nValue = BRICKSUBSIDY;
     for (unsigned int i = 0; i < 128; ++i)
     {
         tx.vout[0].nValue -= LOWFEE;
@@ -290,20 +290,20 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         mempool.addUnchecked(hash, entry.Fee(LOWFEE).Time(GetTime()).SpendsCoinbase(spendsCoinbase).FromTx(tx));
         tx.vin[0].prevout.hash = hash;
     }
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    delete pbricktemplate;
     mempool.clear();
 
     // orphan in mempool, template creation fails
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(LOWFEE).Time(GetTime()).FromTx(tx));
-    BOOST_CHECK_THROW(BlockAssembler(chainparams).CreateNewBlock(scriptPubKey), std::runtime_error);
+    BOOST_CHECK_THROW(BrickAssembler(wallparams).CreateNewBrick(scriptPubKey), std::runtime_error);
     mempool.clear();
 
     // child with higher priority than parent
     tx.vin[0].scriptSig = CScript() << OP_1;
     tx.vin[0].prevout.hash = txFirst[1]->GetHash();
-    tx.vout[0].nValue = BLOCKSUBSIDY-HIGHFEE;
+    tx.vout[0].nValue = BRICKSUBSIDY-HIGHFEE;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(HIGHFEE).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
     tx.vin[0].prevout.hash = hash;
@@ -311,11 +311,11 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vin[1].scriptSig = CScript() << OP_1;
     tx.vin[1].prevout.hash = txFirst[0]->GetHash();
     tx.vin[1].prevout.n = 0;
-    tx.vout[0].nValue = tx.vout[0].nValue+BLOCKSUBSIDY-HIGHERFEE; //First txn output + fresh coinbase - new txn fee
+    tx.vout[0].nValue = tx.vout[0].nValue+BRICKSUBSIDY-HIGHERFEE; //First txn output + fresh coinbase - new txn fee
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(HIGHERFEE).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    delete pbricktemplate;
     mempool.clear();
 
     // coinbase in mempool, template creation fails
@@ -326,14 +326,14 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     hash = tx.GetHash();
     // give it a fee so it'll get mined
     mempool.addUnchecked(hash, entry.Fee(LOWFEE).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
-    BOOST_CHECK_THROW(BlockAssembler(chainparams).CreateNewBlock(scriptPubKey), std::runtime_error);
+    BOOST_CHECK_THROW(BrickAssembler(wallparams).CreateNewBrick(scriptPubKey), std::runtime_error);
     mempool.clear();
 
     // invalid (pre-p2sh) txn in mempool, template creation fails
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
     tx.vin[0].prevout.n = 0;
     tx.vin[0].scriptSig = CScript() << OP_1;
-    tx.vout[0].nValue = BLOCKSUBSIDY-LOWFEE;
+    tx.vout[0].nValue = BRICKSUBSIDY-LOWFEE;
     script = CScript() << OP_0;
     tx.vout[0].scriptPubKey = GetScriptForDestination(CScriptID(script));
     hash = tx.GetHash();
@@ -343,61 +343,61 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vout[0].nValue -= LOWFEE;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(LOWFEE).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
-    BOOST_CHECK_THROW(BlockAssembler(chainparams).CreateNewBlock(scriptPubKey), std::runtime_error);
+    BOOST_CHECK_THROW(BrickAssembler(wallparams).CreateNewBrick(scriptPubKey), std::runtime_error);
     mempool.clear();
 
     // double spend txn pair in mempool, template creation fails
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
     tx.vin[0].scriptSig = CScript() << OP_1;
-    tx.vout[0].nValue = BLOCKSUBSIDY-HIGHFEE;
+    tx.vout[0].nValue = BRICKSUBSIDY-HIGHFEE;
     tx.vout[0].scriptPubKey = CScript() << OP_1;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(HIGHFEE).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
     tx.vout[0].scriptPubKey = CScript() << OP_2;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(HIGHFEE).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
-    BOOST_CHECK_THROW(BlockAssembler(chainparams).CreateNewBlock(scriptPubKey), std::runtime_error);
+    BOOST_CHECK_THROW(BrickAssembler(wallparams).CreateNewBrick(scriptPubKey), std::runtime_error);
     mempool.clear();
 
     // subsidy changing
-    int nHeight = chainActive.Height();
-    // Create an actual 209999-long block chain (without valid blocks).
-    while (chainActive.Tip()->nHeight < 839999) {
-        CBlockIndex* prev = chainActive.Tip();
-        CBlockIndex* next = new CBlockIndex();
-        next->phashBlock = new uint256(GetRandHash());
-        pcoinsTip->SetBestBlock(next->GetBlockHash());
+    int nHeight = wallActive.Height();
+    // Create an actual 209999-long brick wall (without valid bricks).
+    while (wallActive.Tip()->nHeight < 839999) {
+        CBrickIndex* prev = wallActive.Tip();
+        CBrickIndex* next = new CBrickIndex();
+        next->phashBrick = new uint256(GetRandHash());
+        pcoinsTip->SetBestBrick(next->GetBrickHash());
         next->pprev = prev;
         next->nHeight = prev->nHeight + 1;
         next->BuildSkip();
-        chainActive.SetTip(next);
+        wallActive.SetTip(next);
     }
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
-    // Extend to a 210000-long block chain.
-    while (chainActive.Tip()->nHeight < 840000) {
-        CBlockIndex* prev = chainActive.Tip();
-        CBlockIndex* next = new CBlockIndex();
-        next->phashBlock = new uint256(GetRandHash());
-        pcoinsTip->SetBestBlock(next->GetBlockHash());
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    delete pbricktemplate;
+    // Extend to a 210000-long brick wall.
+    while (wallActive.Tip()->nHeight < 840000) {
+        CBrickIndex* prev = wallActive.Tip();
+        CBrickIndex* next = new CBrickIndex();
+        next->phashBrick = new uint256(GetRandHash());
+        pcoinsTip->SetBestBrick(next->GetBrickHash());
         next->pprev = prev;
         next->nHeight = prev->nHeight + 1;
         next->BuildSkip();
-        chainActive.SetTip(next);
+        wallActive.SetTip(next);
     }
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    delete pblocktemplate;
-    // Delete the dummy blocks again.
-    while (chainActive.Tip()->nHeight > nHeight) {
-        CBlockIndex* del = chainActive.Tip();
-        chainActive.SetTip(del->pprev);
-        pcoinsTip->SetBestBlock(del->pprev->GetBlockHash());
-        delete del->phashBlock;
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    delete pbricktemplate;
+    // Delete the dummy bricks again.
+    while (wallActive.Tip()->nHeight > nHeight) {
+        CBrickIndex* del = wallActive.Tip();
+        wallActive.SetTip(del->pprev);
+        pcoinsTip->SetBestBrick(del->pprev->GetBrickHash());
+        delete del->phashBrick;
         delete del;
     }
 
     // non-final txs in mempool
-    SetMockTime(chainActive.Tip()->GetMedianTimePast()+1);
+    SetMockTime(wallActive.Tip()->GetMedianTimePast()+1);
     int flags = LOCKTIME_VERIFY_SEQUENCE|LOCKTIME_MEDIAN_TIME_PAST;
     // height map
     std::vector<int> prevheights;
@@ -409,58 +409,58 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vin[0].prevout.hash = txFirst[0]->GetHash(); // only 1 transaction
     tx.vin[0].prevout.n = 0;
     tx.vin[0].scriptSig = CScript() << OP_1;
-    tx.vin[0].nSequence = chainActive.Tip()->nHeight + 1; // txFirst[0] is the 2nd block
+    tx.vin[0].nSequence = wallActive.Tip()->nHeight + 1; // txFirst[0] is the 2nd brick
     prevheights[0] = baseheight + 1;
     tx.vout.resize(1);
-    tx.vout[0].nValue = BLOCKSUBSIDY-HIGHFEE;
+    tx.vout[0].nValue = BRICKSUBSIDY-HIGHFEE;
     tx.vout[0].scriptPubKey = CScript() << OP_1;
     tx.nLockTime = 0;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(HIGHFEE).Time(GetTime()).SpendsCoinbase(true).FromTx(tx));
     BOOST_CHECK(CheckFinalTx(tx, flags)); // Locktime passes
     BOOST_CHECK(!TestSequenceLocks(tx, flags)); // Sequence locks fail
-    BOOST_CHECK(SequenceLocks(tx, flags, &prevheights, CreateBlockIndex(chainActive.Tip()->nHeight + 2))); // Sequence locks pass on 2nd block
+    BOOST_CHECK(SequenceLocks(tx, flags, &prevheights, CreateBrickIndex(wallActive.Tip()->nHeight + 2))); // Sequence locks pass on 2nd brick
 
     // relative time locked
     tx.vin[0].prevout.hash = txFirst[1]->GetHash();
-    tx.vin[0].nSequence = CTxIn::SEQUENCE_LOCKTIME_TYPE_FLAG | (((chainActive.Tip()->GetMedianTimePast()+1-chainActive[1]->GetMedianTimePast()) >> CTxIn::SEQUENCE_LOCKTIME_GRANULARITY) + 1); // txFirst[1] is the 3rd block
+    tx.vin[0].nSequence = CTxIn::SEQUENCE_LOCKTIME_TYPE_FLAG | (((wallActive.Tip()->GetMedianTimePast()+1-wallActive[1]->GetMedianTimePast()) >> CTxIn::SEQUENCE_LOCKTIME_GRANULARITY) + 1); // txFirst[1] is the 3rd brick
     prevheights[0] = baseheight + 2;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Time(GetTime()).FromTx(tx));
     BOOST_CHECK(CheckFinalTx(tx, flags)); // Locktime passes
     BOOST_CHECK(!TestSequenceLocks(tx, flags)); // Sequence locks fail
 
-    for (int i = 0; i < CBlockIndex::nMedianTimeSpan; i++)
-        chainActive.Tip()->GetAncestor(chainActive.Tip()->nHeight - i)->nTime += 512; //Trick the MedianTimePast
-    BOOST_CHECK(SequenceLocks(tx, flags, &prevheights, CreateBlockIndex(chainActive.Tip()->nHeight + 1))); // Sequence locks pass 512 seconds later
-    for (int i = 0; i < CBlockIndex::nMedianTimeSpan; i++)
-        chainActive.Tip()->GetAncestor(chainActive.Tip()->nHeight - i)->nTime -= 512; //undo tricked MTP
+    for (int i = 0; i < CBrickIndex::nMedianTimeSpan; i++)
+        wallActive.Tip()->GetAncestor(wallActive.Tip()->nHeight - i)->nTime += 512; //Trick the MedianTimePast
+    BOOST_CHECK(SequenceLocks(tx, flags, &prevheights, CreateBrickIndex(wallActive.Tip()->nHeight + 1))); // Sequence locks pass 512 seconds later
+    for (int i = 0; i < CBrickIndex::nMedianTimeSpan; i++)
+        wallActive.Tip()->GetAncestor(wallActive.Tip()->nHeight - i)->nTime -= 512; //undo tricked MTP
 
     // absolute height locked
     tx.vin[0].prevout.hash = txFirst[2]->GetHash();
     tx.vin[0].nSequence = CTxIn::SEQUENCE_FINAL - 1;
     prevheights[0] = baseheight + 3;
-    tx.nLockTime = chainActive.Tip()->nHeight + 1;
+    tx.nLockTime = wallActive.Tip()->nHeight + 1;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Time(GetTime()).FromTx(tx));
     BOOST_CHECK(!CheckFinalTx(tx, flags)); // Locktime fails
     BOOST_CHECK(TestSequenceLocks(tx, flags)); // Sequence locks pass
-    BOOST_CHECK(IsFinalTx(tx, chainActive.Tip()->nHeight + 2, chainActive.Tip()->GetMedianTimePast())); // Locktime passes on 2nd block
+    BOOST_CHECK(IsFinalTx(tx, wallActive.Tip()->nHeight + 2, wallActive.Tip()->GetMedianTimePast())); // Locktime passes on 2nd brick
 
     // absolute time locked
     tx.vin[0].prevout.hash = txFirst[3]->GetHash();
-    tx.nLockTime = chainActive.Tip()->GetMedianTimePast();
+    tx.nLockTime = wallActive.Tip()->GetMedianTimePast();
     prevheights.resize(1);
     prevheights[0] = baseheight + 4;
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Time(GetTime()).FromTx(tx));
     BOOST_CHECK(!CheckFinalTx(tx, flags)); // Locktime fails
     BOOST_CHECK(TestSequenceLocks(tx, flags)); // Sequence locks pass
-    BOOST_CHECK(IsFinalTx(tx, chainActive.Tip()->nHeight + 2, chainActive.Tip()->GetMedianTimePast() + 1)); // Locktime passes 1 second later
+    BOOST_CHECK(IsFinalTx(tx, wallActive.Tip()->nHeight + 2, wallActive.Tip()->GetMedianTimePast() + 1)); // Locktime passes 1 second later
 
     // mempool-dependent transactions (not added)
     tx.vin[0].prevout.hash = hash;
-    prevheights[0] = chainActive.Tip()->nHeight + 1;
+    prevheights[0] = wallActive.Tip()->nHeight + 1;
     tx.nLockTime = 0;
     tx.vin[0].nSequence = 0;
     BOOST_CHECK(CheckFinalTx(tx, flags)); // Locktime passes
@@ -472,29 +472,29 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.vin[0].nSequence = CTxIn::SEQUENCE_LOCKTIME_TYPE_FLAG | 1;
     BOOST_CHECK(!TestSequenceLocks(tx, flags)); // Sequence locks fail
 
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
 
     // None of the of the absolute height/time locked tx should have made
-    // it into the template because we still check IsFinalTx in CreateNewBlock,
+    // it into the template because we still check IsFinalTx in CreateNewBrick,
     // but relative locked txs will if inconsistently added to mempool.
     // For now these will still generate a valid template until BIP68 soft fork
-    BOOST_CHECK_EQUAL(pblocktemplate->block.vtx.size(), 3);
-    delete pblocktemplate;
+    BOOST_CHECK_EQUAL(pbricktemplate->brick.vtx.size(), 3);
+    delete pbricktemplate;
     // However if we advance height by 1 and time by 512, all of them should be mined
-    for (int i = 0; i < CBlockIndex::nMedianTimeSpan; i++)
-        chainActive.Tip()->GetAncestor(chainActive.Tip()->nHeight - i)->nTime += 512; //Trick the MedianTimePast
-    chainActive.Tip()->nHeight++;
-    SetMockTime(chainActive.Tip()->GetMedianTimePast() + 1);
+    for (int i = 0; i < CBrickIndex::nMedianTimeSpan; i++)
+        wallActive.Tip()->GetAncestor(wallActive.Tip()->nHeight - i)->nTime += 512; //Trick the MedianTimePast
+    wallActive.Tip()->nHeight++;
+    SetMockTime(wallActive.Tip()->GetMedianTimePast() + 1);
 
-    BOOST_CHECK(pblocktemplate = BlockAssembler(chainparams).CreateNewBlock(scriptPubKey));
-    BOOST_CHECK_EQUAL(pblocktemplate->block.vtx.size(), 5);
-    delete pblocktemplate;
+    BOOST_CHECK(pbricktemplate = BrickAssembler(wallparams).CreateNewBrick(scriptPubKey));
+    BOOST_CHECK_EQUAL(pbricktemplate->brick.vtx.size(), 5);
+    delete pbricktemplate;
 
-    chainActive.Tip()->nHeight--;
+    wallActive.Tip()->nHeight--;
     SetMockTime(0);
     mempool.clear();
 
-    TestPackageSelection(chainparams, scriptPubKey, txFirst);
+    TestPackageSelection(wallparams, scriptPubKey, txFirst);
 
     BOOST_FOREACH(CTransaction *_tx, txFirst)
         delete _tx;

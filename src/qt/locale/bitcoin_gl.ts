@@ -126,12 +126,12 @@
         <translation>Direccións para recibir</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Reindexando bloques no disco...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Enviar moedas a unha dirección Litecoin</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Enviar moedas a unha dirección Magacoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -154,8 +154,8 @@
         <translation>&amp;Verificar mensaxe...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -182,12 +182,12 @@
         <translation>Encriptar as claves privadas que pertencen ao teu moedeiro</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Asina mensaxes coas túas direccións Litecoin para probar que te pertencen</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Asina mensaxes coas túas direccións Magacoin para probar que te pertencen</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Verificar mensaxes para asegurar que foron asinados con direccións Litecoin dadas.</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Verificar mensaxes para asegurar que foron asinados con direccións Magacoin dadas.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -206,8 +206,8 @@
         <translation>Barra de ferramentas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Solicitar pagos (xenera códigos QR e litecoin: URIs)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Solicitar pagos (xenera códigos QR e magacoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -218,15 +218,15 @@
         <translation>Amosar a listaxe de etiquetas e direccións para recibir empregadas</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Abrir un litecoin: URI ou solicitude de pago</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Abrir un magacoin: URI ou solicitude de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opcións da liña de comandos</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Non hai orixe de bloques dispoñible...</translation>
     </message>
     <message>
@@ -234,7 +234,7 @@
         <translation>%1 detrás</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>O último bloque recibido foi xerado fai %1.</translation>
     </message>
     <message>
@@ -467,8 +467,8 @@
         <translation>Moedeiro</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abrir automáticamente o porto do cliente Litecoin no router. Esto so funciona se o teu router soporta UPnP e está habilitado.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Abrir automáticamente o porto do cliente Magacoin no router. Esto so funciona se o teu router soporta UPnP e está habilitado.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -546,8 +546,8 @@
         <translation>Formulario</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>A información amosada por estar desactualizada. O teu moedeiro sincronízase automáticamente coa rede Litecoin despois de que se estableza unha conexión, pero este proceso non está todavía rematado.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>A información amosada por estar desactualizada. O teu moedeiro sincronízase automáticamente coa rede Magacoin despois de que se estableza unha conexión, pero este proceso non está todavía rematado.</translation>
     </message>
     <message>
         <source>Your current spendable balance</source>
@@ -633,15 +633,15 @@
         <translation>Número de conexións</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Cadea de bloques</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Número actual de bloques</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Hora do último bloque</translation>
     </message>
     <message>
@@ -929,8 +929,8 @@
         <translation>Copiar a sinatura actual ao portapapeis do sistema</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Asina a mensaxe para probar que posees esta dirección Litecoin</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Asina a mensaxe para probar que posees esta dirección Magacoin</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -949,8 +949,8 @@
         <translation>&amp;Verificar Mensaxe</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Verificar a mensaxe para asegurar que foi asinada coa dirección Litecoin especificada</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Verificar a mensaxe para asegurar que foi asinada coa dirección Magacoin especificada</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1034,8 +1034,8 @@
         <translation>Aceptar conexións de fóra (por defecto: 1 se non -proxy ou -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Core de Litecoin</translation>
+        <source>Magacoin Core</source>
+        <translation>Core de Magacoin</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
@@ -1062,7 +1062,7 @@
         <translation>&lt;categoría&gt; pode ser:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Opcións de creación de bloque:</translation>
     </message>
     <message>
@@ -1070,15 +1070,15 @@
         <translation>Conectar so ao(s) nodo(s) especificado(s)</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Detectada base de datos de bloques corrupta.</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Queres reconstruír a base de datos de bloques agora?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Erro inicializando a base de datos de bloques</translation>
     </message>
     <message>
@@ -1086,11 +1086,11 @@
         <translation>Erro inicializando entorno de base de datos de moedeiro %s!</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Erro cargando base de datos do bloque</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Erro abrindo base de datos de bloques</translation>
     </message>
     <message>
@@ -1102,7 +1102,7 @@
         <translation>Fallou escoitar en calquera porto. Emprega -listen=0 se queres esto.</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Bloque genesis incorrecto o no existente. Datadir erróneo para a rede?</translation>
     </message>
     <message>
@@ -1118,7 +1118,7 @@
         <translation>Especificar arquivo do moedeiro (dentro do directorio de datos)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Verificando bloques...</translation>
     </message>
     <message>
@@ -1174,7 +1174,7 @@
         <translation>Contrasinal para conexións JSON-RPC</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Executar comando cando o mellor bloque cambie (%s no comando é sustituído polo hash do bloque)</translation>
     </message>
     <message>
@@ -1198,7 +1198,7 @@
         <translation>Fondos insuficientes</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Cargando índice de bloques...</translation>
     </message>
     <message>

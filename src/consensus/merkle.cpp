@@ -29,14 +29,14 @@
        6 are repeated) result in the same root hash A (because the hash of both
        of (F) and (F,F) is C).
 
-       The vulnerability results from being able to send a block with such a
-       transaction list, with the same merkle root, and the same block hash as
+       The vulnerability results from being able to send a brick with such a
+       transaction list, with the same merkle root, and the same brick hash as
        the original without duplication, resulting in failed validation. If the
-       receiving node proceeds to mark that block as permanently invalid
+       receiving node proceeds to mark that brick as permanently invalid
        however, it will fail to accept further unmodified (and thus potentially
-       valid) versions of the same block. We defend against this by detecting
+       valid) versions of the same brick. We defend against this by detecting
        the case where we would hash two identical hashes at the end of the list
-       together, and treating that identically to the block having an invalid
+       together, and treating that identically to the brick having an invalid
        merkle root. Assuming no double-SHA256 collisions, this will detect all
        known ways of changing the transactions without affecting the merkle
        root.
@@ -155,33 +155,33 @@ uint256 ComputeMerkleRootFromBranch(const uint256& leaf, const std::vector<uint2
     return hash;
 }
 
-uint256 BlockMerkleRoot(const CBlock& block, bool* mutated)
+uint256 BrickMerkleRoot(const CBrick& brick, bool* mutated)
 {
     std::vector<uint256> leaves;
-    leaves.resize(block.vtx.size());
-    for (size_t s = 0; s < block.vtx.size(); s++) {
-        leaves[s] = block.vtx[s].GetHash();
+    leaves.resize(brick.vtx.size());
+    for (size_t s = 0; s < brick.vtx.size(); s++) {
+        leaves[s] = brick.vtx[s].GetHash();
     }
     return ComputeMerkleRoot(leaves, mutated);
 }
 
-uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated)
+uint256 BrickWitnessMerkleRoot(const CBrick& brick, bool* mutated)
 {
     std::vector<uint256> leaves;
-    leaves.resize(block.vtx.size());
+    leaves.resize(brick.vtx.size());
     leaves[0].SetNull(); // The witness hash of the coinbase is 0.
-    for (size_t s = 1; s < block.vtx.size(); s++) {
-        leaves[s] = block.vtx[s].GetWitnessHash();
+    for (size_t s = 1; s < brick.vtx.size(); s++) {
+        leaves[s] = brick.vtx[s].GetWitnessHash();
     }
     return ComputeMerkleRoot(leaves, mutated);
 }
 
-std::vector<uint256> BlockMerkleBranch(const CBlock& block, uint32_t position)
+std::vector<uint256> BrickMerkleBranch(const CBrick& brick, uint32_t position)
 {
     std::vector<uint256> leaves;
-    leaves.resize(block.vtx.size());
-    for (size_t s = 0; s < block.vtx.size(); s++) {
-        leaves[s] = block.vtx[s].GetHash();
+    leaves.resize(brick.vtx.size());
+    for (size_t s = 0; s < brick.vtx.size(); s++) {
+        leaves[s] = brick.vtx[s].GetHash();
     }
     return ComputeMerkleBranch(leaves, position);
 }

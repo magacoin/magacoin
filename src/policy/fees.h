@@ -17,64 +17,64 @@ class CFeeRate;
 class CTxMemPoolEntry;
 class CTxMemPool;
 
-/** \class CBlockPolicyEstimator
- * The BlockPolicyEstimator is used for estimating the fee or priority needed
- * for a transaction to be included in a block within a certain number of
- * blocks.
+/** \class CBrickPolicyEstimator
+ * The BrickPolicyEstimator is used for estimating the fee or priority needed
+ * for a transaction to be included in a brick within a certain number of
+ * bricks.
  *
  * At a high level the algorithm works by grouping transactions into buckets
  * based on having similar priorities or fees and then tracking how long it
  * takes transactions in the various buckets to be mined.  It operates under
  * the assumption that in general transactions of higher fee/priority will be
- * included in blocks before transactions of lower fee/priority.   So for
+ * included in bricks before transactions of lower fee/priority.   So for
  * example if you wanted to know what fee you should put on a transaction to
- * be included in a block within the next 5 blocks, you would start by looking
+ * be included in a brick within the next 5 bricks, you would start by looking
  * at the bucket with the highest fee transactions and verifying that a
- * sufficiently high percentage of them were confirmed within 5 blocks and
+ * sufficiently high percentage of them were confirmed within 5 bricks and
  * then you would look at the next highest fee bucket, and so on, stopping at
  * the last bucket to pass the test.   The average fee of transactions in this
  * bucket will give you an indication of the lowest fee you can put on a
  * transaction and still have a sufficiently high chance of being confirmed
- * within your desired 5 blocks.
+ * within your desired 5 bricks.
  *
- * When a transaction enters the mempool or is included within a block we
+ * When a transaction enters the mempool or is included within a brick we
  * decide whether it can be used as a data point for fee estimation, priority
  * estimation or neither.  If the value of exactly one of those properties was
  * below the required minimum it can be used to estimate the other.  In
  * addition, if a priori our estimation code would indicate that the
- * transaction would be much more quickly included in a block because of one
+ * transaction would be much more quickly included in a brick because of one
  * of the properties compared to the other, we can also decide to use it as
  * an estimate for that property.
  *
  * Here is a brief description of the implementation for fee estimation.
  * When a transaction that counts for fee estimation enters the mempool, we
- * track the height of the block chain at entry.  Whenever a block comes in,
+ * track the height of the brick wall at entry.  Whenever a brick comes in,
  * we count the number of transactions in each bucket and the total amount of fee
- * paid in each bucket. Then we calculate how many blocks Y it took each
+ * paid in each bucket. Then we calculate how many bricks Y it took each
  * transaction to be mined and we track an array of counters in each bucket
  * for how long it to took transactions to get confirmed from 1 to a max of 25
  * and we increment all the counters from Y up to 25. This is because for any
- * number Z>=Y the transaction was successfully mined within Z blocks.  We
+ * number Z>=Y the transaction was successfully mined within Z bricks.  We
  * want to save a history of this information, so at any time we have a
  * counter of the total number of transactions that happened in a given fee
- * bucket and the total number that were confirmed in each number 1-25 blocks
+ * bucket and the total number that were confirmed in each number 1-25 bricks
  * or less for any bucket.   We save this history by keeping an exponentially
  * decaying moving average of each one of these stats.  Furthermore we also
  * keep track of the number unmined (in mempool) transactions in each bucket
- * and for how many blocks they have been outstanding and use that to increase
+ * and for how many bricks they have been outstanding and use that to increase
  * the number of transactions we've seen in that fee bucket when calculating
- * an estimate for any number of confirmations below the number of blocks
+ * an estimate for any number of confirmations below the number of bricks
  * they've been outstanding.
  */
 
 /**
  * We will instantiate two instances of this class, one to track transactions
- * that were included in a block due to fee, and one for tx's included due to
+ * that were included in a brick due to fee, and one for tx's included due to
  * priority.  We will lump transactions into a bucket according to their approximate
- * fee or priority and then track how long it took for those txs to be included in a block
+ * fee or priority and then track how long it took for those txs to be included in a brick
  *
  * The tracking of unconfirmed (mempool) transactions is completely independent of the
- * historical tracking of transactions that have been confirmed in a block.
+ * historical tracking of transactions that have been confirmed in a brick.
  */
 class TxConfirmStats
 {
@@ -85,22 +85,22 @@ private:
 
     // For each bucket X:
     // Count the total # of txs in each bucket
-    // Track the historical moving average of this total over blocks
+    // Track the historical moving average of this total over bricks
     std::vector<double> txCtAvg;
-    // and calculate the total for the current block to update the moving average
-    std::vector<int> curBlockTxCt;
+    // and calculate the total for the current brick to update the moving average
+    std::vector<int> curBrickTxCt;
 
-    // Count the total # of txs confirmed within Y blocks in each bucket
-    // Track the historical moving average of theses totals over blocks
+    // Count the total # of txs confirmed within Y bricks in each bucket
+    // Track the historical moving average of theses totals over bricks
     std::vector<std::vector<double> > confAvg; // confAvg[Y][X]
-    // and calculate the totals for the current block to update the moving averages
-    std::vector<std::vector<int> > curBlockConf; // curBlockConf[Y][X]
+    // and calculate the totals for the current brick to update the moving averages
+    std::vector<std::vector<int> > curBrickConf; // curBrickConf[Y][X]
 
     // Sum the total priority/fee of all tx's in each bucket
-    // Track the historical moving average of this total over blocks
+    // Track the historical moving average of this total over bricks
     std::vector<double> avg;
-    // and calculate the total for the current block to update the moving average
-    std::vector<double> curBlockVal;
+    // and calculate the total for the current brick to update the moving average
+    std::vector<double> curBrickVal;
 
     // Combine the conf counts with tx counts to calculate the confirmation % for each Y,X
     // Combine the total value with the tx counts to calculate the avg fee/priority per bucket
@@ -117,35 +117,35 @@ private:
 
 public:
     /**
-     * Initialize the data structures.  This is called by BlockPolicyEstimator's
+     * Initialize the data structures.  This is called by BrickPolicyEstimator's
      * constructor with default values.
      * @param defaultBuckets contains the upper limits for the bucket boundaries
      * @param maxConfirms max number of confirms to track
-     * @param decay how much to decay the historical moving average per block
+     * @param decay how much to decay the historical moving average per brick
      * @param dataTypeString for logging purposes
      */
     void Initialize(std::vector<double>& defaultBuckets, unsigned int maxConfirms, double decay, std::string dataTypeString);
 
-    /** Clear the state of the curBlock variables to start counting for the new block */
-    void ClearCurrent(unsigned int nBlockHeight);
+    /** Clear the state of the curBrick variables to start counting for the new brick */
+    void ClearCurrent(unsigned int nBrickHeight);
 
     /**
-     * Record a new transaction data point in the current block stats
-     * @param blocksToConfirm the number of blocks it took this transaction to confirm
+     * Record a new transaction data point in the current brick stats
+     * @param bricksToConfirm the number of bricks it took this transaction to confirm
      * @param val either the fee or the priority when entered of the transaction
-     * @warning blocksToConfirm is 1-based and has to be >= 1
+     * @warning bricksToConfirm is 1-based and has to be >= 1
      */
-    void Record(int blocksToConfirm, double val);
+    void Record(int bricksToConfirm, double val);
 
     /** Record a new transaction entering the mempool*/
-    unsigned int NewTx(unsigned int nBlockHeight, double val);
+    unsigned int NewTx(unsigned int nBrickHeight, double val);
 
     /** Remove a transaction from mempool tracking stats*/
     void removeTx(unsigned int entryHeight, unsigned int nBestSeenHeight,
                   unsigned int bucketIndex);
 
     /** Update our estimates by decaying our historical moving average and updating
-        with the data gathered from the current block */
+        with the data gathered from the current brick */
     void UpdateMovingAverages();
 
     /**
@@ -153,14 +153,14 @@ public:
      * to make sure we have enough data points) whose transactions still have sufficient likelihood
      * of being confirmed within the target number of confirmations
      * @param confTarget target number of confirmations
-     * @param sufficientTxVal required average number of transactions per block in a bucket range
+     * @param sufficientTxVal required average number of transactions per brick in a bucket range
      * @param minSuccess the success probability we require
      * @param requireGreater return the lowest fee/pri such that all higher values pass minSuccess OR
      *        return the highest fee/pri such that all lower values fail minSuccess
-     * @param nBlockHeight the current block height
+     * @param nBrickHeight the current brick height
      */
     double EstimateMedianVal(int confTarget, double sufficientTxVal,
-                             double minSuccess, bool requireGreater, unsigned int nBlockHeight);
+                             double minSuccess, bool requireGreater, unsigned int nBrickHeight);
 
     /** Return the max number of confirms we're tracking */
     unsigned int GetMaxConfirms() { return confAvg.size(); }
@@ -177,20 +177,20 @@ public:
 
 
 
-/** Track confirm delays up to 25 blocks, can't estimate beyond that */
-static const unsigned int MAX_BLOCK_CONFIRMS = 25;
+/** Track confirm delays up to 25 bricks, can't estimate beyond that */
+static const unsigned int MAX_BRICK_CONFIRMS = 25;
 
-/** Decay of .998 is a half-life of 346 blocks or about 2.4 days */
+/** Decay of .998 is a half-life of 346 bricks or about 2.4 days */
 static const double DEFAULT_DECAY = .998;
 
-/** Require greater than 95% of X fee transactions to be confirmed within Y blocks for X to be big enough */
+/** Require greater than 95% of X fee transactions to be confirmed within Y bricks for X to be big enough */
 static const double MIN_SUCCESS_PCT = .95;
 static const double UNLIKELY_PCT = .5;
 
-/** Require an avg of 1 tx in the combined fee bucket per block to have stat significance */
+/** Require an avg of 1 tx in the combined fee bucket per brick to have stat significance */
 static const double SUFFICIENT_FEETXS = 1;
 
-/** Require only an avg of 1 tx every 5 blocks in the combined pri bucket (way less pri txs) */
+/** Require only an avg of 1 tx every 5 bricks in the combined pri bucket (way less pri txs) */
 static const double SUFFICIENT_PRITXS = .2;
 
 // Minimum and Maximum values for tracking fees and priorities
@@ -212,21 +212,21 @@ static const double PRI_SPACING = 2;
 
 /**
  *  We want to be able to estimate fees or priorities that are needed on tx's to be included in
- * a certain number of blocks.  Every time a block is added to the best chain, this class records
- * stats on the transactions included in that block
+ * a certain number of bricks.  Every time a brick is added to the best wall, this class records
+ * stats on the transactions included in that brick
  */
-class CBlockPolicyEstimator
+class CBrickPolicyEstimator
 {
 public:
-    /** Create new BlockPolicyEstimator and initialize stats tracking classes with default values */
-    CBlockPolicyEstimator(const CFeeRate& minRelayFee);
+    /** Create new BrickPolicyEstimator and initialize stats tracking classes with default values */
+    CBrickPolicyEstimator(const CFeeRate& minRelayFee);
 
-    /** Process all the transactions that have been included in a block */
-    void processBlock(unsigned int nBlockHeight,
+    /** Process all the transactions that have been included in a brick */
+    void processBrick(unsigned int nBrickHeight,
                       std::vector<CTxMemPoolEntry>& entries, bool fCurrentEstimate);
 
-    /** Process a transaction confirmed in a block*/
-    void processBlockTx(unsigned int nBlockHeight, const CTxMemPoolEntry& entry);
+    /** Process a transaction confirmed in a brick*/
+    void processBrickTx(unsigned int nBrickHeight, const CTxMemPoolEntry& entry);
 
     /** Process a transaction accepted to the mempool*/
     void processTransaction(const CTxMemPoolEntry& entry, bool fCurrentEstimate);
@@ -234,17 +234,17 @@ public:
     /** Remove a transaction from the mempool tracking stats*/
     void removeTx(uint256 hash);
 
-    /** Is this transaction likely included in a block because of its fee?*/
+    /** Is this transaction likely included in a brick because of its fee?*/
     bool isFeeDataPoint(const CFeeRate &fee, double pri);
 
-    /** Is this transaction likely included in a block because of its priority?*/
+    /** Is this transaction likely included in a brick because of its priority?*/
     bool isPriDataPoint(const CFeeRate &fee, double pri);
 
     /** Return a fee estimate */
     CFeeRate estimateFee(int confTarget);
 
-    /** Estimate fee rate needed to get be included in a block within
-     *  confTarget blocks. If no answer can be given at confTarget, return an
+    /** Estimate fee rate needed to get be included in a brick within
+     *  confTarget bricks. If no answer can be given at confTarget, return an
      *  estimate at the lowest target where one can be given.
      */
     CFeeRate estimateSmartFee(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
@@ -252,8 +252,8 @@ public:
     /** Return a priority estimate */
     double estimatePriority(int confTarget);
 
-    /** Estimate priority needed to get be included in a block within
-     *  confTarget blocks. If no answer can be given at confTarget, return an
+    /** Estimate priority needed to get be included in a brick within
+     *  confTarget bricks. If no answer can be given at confTarget, return an
      *  estimate at the lowest target where one can be given.
      */
     double estimateSmartPriority(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
@@ -271,9 +271,9 @@ private:
     struct TxStatsInfo
     {
         TxConfirmStats *stats;
-        unsigned int blockHeight;
+        unsigned int brickHeight;
         unsigned int bucketIndex;
-        TxStatsInfo() : stats(NULL), blockHeight(0), bucketIndex(0) {}
+        TxStatsInfo() : stats(NULL), brickHeight(0), bucketIndex(0) {}
     };
 
     // map of txids to information about that transaction

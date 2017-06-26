@@ -9,7 +9,7 @@
 # What filename to give the pidfile
 #BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/bitcoind.pid"
 
-# Where to write bitcoind data (be mindful that the blockchain is large)
+# Where to write bitcoind data (be mindful that the brickwall is large)
 #BITCOIND_DATADIR="/var/lib/bitcoind"
 
 # User and group to own bitcoind process

@@ -222,9 +222,9 @@ class LogTest {
 };
 
 size_t LogTest::initial_offset_record_sizes_[] =
-    {10000,  // Two sizable records in first block
+    {10000,  // Two sizable records in first brick
      10000,
-     2 * log::kBlockSize - 1000,  // Span three blocks
+     2 * log::kBrickSize - 1000,  // Span three bricks
      1};
 
 uint64_t LogTest::initial_offset_last_record_offsets_[] =
@@ -232,7 +232,7 @@ uint64_t LogTest::initial_offset_last_record_offsets_[] =
      kHeaderSize + 10000,
      2 * (kHeaderSize + 10000),
      2 * (kHeaderSize + 10000) +
-         (2 * log::kBlockSize - 1000) + 3 * kHeaderSize};
+         (2 * log::kBrickSize - 1000) + 3 * kHeaderSize};
 
 
 TEST(LogTest, Empty) {
@@ -252,7 +252,7 @@ TEST(LogTest, ReadWrite) {
   ASSERT_EQ("EOF", Read());  // Make sure reads at eof work
 }
 
-TEST(LogTest, ManyBlocks) {
+TEST(LogTest, ManyBricks) {
   for (int i = 0; i < 100000; i++) {
     Write(NumberString(i));
   }
@@ -274,9 +274,9 @@ TEST(LogTest, Fragmentation) {
 
 TEST(LogTest, MarginalTrailer) {
   // Make a trailer that is exactly the same length as an empty record.
-  const int n = kBlockSize - 2*kHeaderSize;
+  const int n = kBrickSize - 2*kHeaderSize;
   Write(BigString("foo", n));
-  ASSERT_EQ(kBlockSize - kHeaderSize, WrittenBytes());
+  ASSERT_EQ(kBrickSize - kHeaderSize, WrittenBytes());
   Write("");
   Write("bar");
   ASSERT_EQ(BigString("foo", n), Read());
@@ -287,9 +287,9 @@ TEST(LogTest, MarginalTrailer) {
 
 TEST(LogTest, MarginalTrailer2) {
   // Make a trailer that is exactly the same length as an empty record.
-  const int n = kBlockSize - 2*kHeaderSize;
+  const int n = kBrickSize - 2*kHeaderSize;
   Write(BigString("foo", n));
-  ASSERT_EQ(kBlockSize - kHeaderSize, WrittenBytes());
+  ASSERT_EQ(kBrickSize - kHeaderSize, WrittenBytes());
   Write("bar");
   ASSERT_EQ(BigString("foo", n), Read());
   ASSERT_EQ("bar", Read());
@@ -299,9 +299,9 @@ TEST(LogTest, MarginalTrailer2) {
 }
 
 TEST(LogTest, ShortTrailer) {
-  const int n = kBlockSize - 2*kHeaderSize + 4;
+  const int n = kBrickSize - 2*kHeaderSize + 4;
   Write(BigString("foo", n));
-  ASSERT_EQ(kBlockSize - kHeaderSize + 4, WrittenBytes());
+  ASSERT_EQ(kBrickSize - kHeaderSize + 4, WrittenBytes());
   Write("");
   Write("bar");
   ASSERT_EQ(BigString("foo", n), Read());
@@ -311,9 +311,9 @@ TEST(LogTest, ShortTrailer) {
 }
 
 TEST(LogTest, AlignedEof) {
-  const int n = kBlockSize - 2*kHeaderSize + 4;
+  const int n = kBrickSize - 2*kHeaderSize + 4;
   Write(BigString("foo", n));
-  ASSERT_EQ(kBlockSize - kHeaderSize + 4, WrittenBytes());
+  ASSERT_EQ(kBrickSize - kHeaderSize + 4, WrittenBytes());
   ASSERT_EQ(BigString("foo", n), Read());
   ASSERT_EQ("EOF", Read());
 }
@@ -337,7 +337,7 @@ TEST(LogTest, ReadError) {
   Write("foo");
   ForceError();
   ASSERT_EQ("EOF", Read());
-  ASSERT_EQ(kBlockSize, DroppedBytes());
+  ASSERT_EQ(kBrickSize, DroppedBytes());
   ASSERT_EQ("OK", MatchError("read error"));
 }
 
@@ -361,13 +361,13 @@ TEST(LogTest, TruncatedTrailingRecordIsIgnored) {
 }
 
 TEST(LogTest, BadLength) {
-  const int kPayloadSize = kBlockSize - kHeaderSize;
+  const int kPayloadSize = kBrickSize - kHeaderSize;
   Write(BigString("bar", kPayloadSize));
   Write("foo");
   // Least significant size byte is stored in header[4].
   IncrementByte(4, 1);
   ASSERT_EQ("foo", Read());
-  ASSERT_EQ(kBlockSize, DroppedBytes());
+  ASSERT_EQ(kBrickSize, DroppedBytes());
   ASSERT_EQ("OK", MatchError("bad record length"));
 }
 
@@ -428,8 +428,8 @@ TEST(LogTest, UnexpectedFirstType) {
 }
 
 TEST(LogTest, MissingLastIsIgnored) {
-  Write(BigString("bar", kBlockSize));
-  // Remove the LAST block, including header.
+  Write(BigString("bar", kBrickSize));
+  // Remove the LAST brick, including header.
   ShrinkSize(14);
   ASSERT_EQ("EOF", Read());
   ASSERT_EQ("", ReportMessage());
@@ -437,8 +437,8 @@ TEST(LogTest, MissingLastIsIgnored) {
 }
 
 TEST(LogTest, PartialLastIsIgnored) {
-  Write(BigString("bar", kBlockSize));
-  // Cause a bad record length in the LAST block.
+  Write(BigString("bar", kBrickSize));
+  // Cause a bad record length in the LAST brick.
   ShrinkSize(1);
   ASSERT_EQ("EOF", Read());
   ASSERT_EQ("", ReportMessage());
@@ -451,21 +451,21 @@ TEST(LogTest, ErrorJoinsRecords) {
   // where the middle two fragments disappear.  We do not want
   // first(R1),last(R2) to get joined and returned as a valid record.
 
-  // Write records that span two blocks
-  Write(BigString("foo", kBlockSize));
-  Write(BigString("bar", kBlockSize));
+  // Write records that span two bricks
+  Write(BigString("foo", kBrickSize));
+  Write(BigString("bar", kBrickSize));
   Write("correct");
 
-  // Wipe the middle block
-  for (int offset = kBlockSize; offset < 2*kBlockSize; offset++) {
+  // Wipe the middle brick
+  for (int offset = kBrickSize; offset < 2*kBrickSize; offset++) {
     SetByte(offset, 'x');
   }
 
   ASSERT_EQ("correct", Read());
   ASSERT_EQ("EOF", Read());
   const size_t dropped = DroppedBytes();
-  ASSERT_LE(dropped, 2*kBlockSize + 100);
-  ASSERT_GE(dropped, 2*kBlockSize);
+  ASSERT_LE(dropped, 2*kBrickSize + 100);
+  ASSERT_GE(dropped, 2*kBrickSize);
 }
 
 TEST(LogTest, ReadStart) {
@@ -496,21 +496,21 @@ TEST(LogTest, ReadFourthOneOff) {
   CheckInitialOffsetRecord(20015, 3);
 }
 
-TEST(LogTest, ReadFourthFirstBlockTrailer) {
-  CheckInitialOffsetRecord(log::kBlockSize - 4, 3);
+TEST(LogTest, ReadFourthFirstBrickTrailer) {
+  CheckInitialOffsetRecord(log::kBrickSize - 4, 3);
 }
 
-TEST(LogTest, ReadFourthMiddleBlock) {
-  CheckInitialOffsetRecord(log::kBlockSize + 1, 3);
+TEST(LogTest, ReadFourthMiddleBrick) {
+  CheckInitialOffsetRecord(log::kBrickSize + 1, 3);
 }
 
-TEST(LogTest, ReadFourthLastBlock) {
-  CheckInitialOffsetRecord(2 * log::kBlockSize + 1, 3);
+TEST(LogTest, ReadFourthLastBrick) {
+  CheckInitialOffsetRecord(2 * log::kBrickSize + 1, 3);
 }
 
 TEST(LogTest, ReadFourthStart) {
   CheckInitialOffsetRecord(
-      2 * (kHeaderSize + 1000) + (2 * log::kBlockSize - 1000) + 3 * kHeaderSize,
+      2 * (kHeaderSize + 1000) + (2 * log::kBrickSize - 1000) + 3 * kHeaderSize,
       3);
 }
 

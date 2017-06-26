@@ -18,7 +18,7 @@
 static leveldb::Options GetOptions(size_t nCacheSize)
 {
     leveldb::Options options;
-    options.block_cache = leveldb::NewLRUCache(nCacheSize / 2);
+    options.brick_cache = leveldb::NewLRUCache(nCacheSize / 2);
     options.write_buffer_size = nCacheSize / 4; // up to two write buffers may be held in memory simultaneously
     options.filter_policy = leveldb::NewBloomFilterPolicy(10);
     options.compression = leveldb::kNoCompression;
@@ -82,8 +82,8 @@ CDBWrapper::~CDBWrapper()
     pdb = NULL;
     delete options.filter_policy;
     options.filter_policy = NULL;
-    delete options.block_cache;
-    options.block_cache = NULL;
+    delete options.brick_cache;
+    options.brick_cache = NULL;
     delete penv;
     options.env = NULL;
 }

@@ -8,12 +8,12 @@ from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 import re
 import time
-from test_framework.blocktools import create_block, create_coinbase
+from test_framework.bricktools import create_brick, create_coinbase
 
 '''
 Test version bits' warning system.
 
-Generate chains with block versions that appear to be signalling unknown
+Generate walls with brick versions that appear to be signalling unknown
 soft-forks, and test that warning alerts are generated.
 '''
 
@@ -22,7 +22,7 @@ VB_THRESHOLD = 108 # versionbits activation threshold for regtest
 VB_TOP_BITS = 0x20000000
 VB_UNKNOWN_BIT = 27 # Choose a bit unassigned to any deployment
 
-WARN_UNKNOWN_RULES_MINED = "Unknown block versions being mined! It's possible unknown rules are in effect"
+WARN_UNKNOWN_RULES_MINED = "Unknown brick versions being mined! It's possible unknown rules are in effect"
 WARN_UNKNOWN_RULES_ACTIVE = "unknown new rules activated (versionbit {})".format(VB_UNKNOWN_BIT)
 VB_PATTERN = re.compile("^Warning.*versionbit")
 
@@ -48,7 +48,7 @@ class TestNode(NodeConnCB):
     def on_pong(self, conn, message):
         self.last_pong = message
 
-    # Sync up with the node after delivery of a block
+    # Sync up with the node after delivery of a brick
     def sync_with_ping(self, timeout=30):
         self.connection.send_message(msg_ping(nonce=self.ping_counter))
         received_pong = False
@@ -66,7 +66,7 @@ class TestNode(NodeConnCB):
 class VersionBitsWarningTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 1
 
     def setup_network(self):
@@ -77,21 +77,21 @@ class VersionBitsWarningTest(BitcoinTestFramework):
         self.extra_args = [["-debug", "-logtimemicros=1", "-alertnotify=echo %s >> \"" + self.alert_filename + "\""]]
         self.nodes = start_nodes(self.num_nodes, self.options.tmpdir, self.extra_args)
 
-    # Send numblocks blocks via peer with nVersionToUse set.
-    def send_blocks_with_version(self, peer, numblocks, nVersionToUse):
-        tip = self.nodes[0].getbestblockhash()
-        height = self.nodes[0].getblockcount()
-        block_time = self.nodes[0].getblockheader(tip)["time"]+1
+    # Send numbricks bricks via peer with nVersionToUse set.
+    def send_bricks_with_version(self, peer, numbricks, nVersionToUse):
+        tip = self.nodes[0].getbestbrickhash()
+        height = self.nodes[0].getbrickcount()
+        brick_time = self.nodes[0].getbrickheader(tip)["time"]+1
         tip = int(tip, 16)
 
-        for _ in range(numblocks):
-            block = create_block(tip, create_coinbase(height+1), block_time)
-            block.nVersion = nVersionToUse
-            block.solve()
-            peer.send_message(msg_block(block))
-            block_time += 1
+        for _ in range(numbricks):
+            brick = create_brick(tip, create_coinbase(height+1), brick_time)
+            brick.nVersion = nVersionToUse
+            brick.solve()
+            peer.send_message(msg_brick(brick))
+            brick_time += 1
             height += 1
-            tip = block.sha256
+            tip = brick.sha256
         peer.sync_with_ping()
 
     def test_versionbits_in_alert_file(self):
@@ -112,15 +112,15 @@ class VersionBitsWarningTest(BitcoinTestFramework):
         # Test logic begins here
         test_node.wait_for_verack()
 
-        # 1. Have the node mine one period worth of blocks
+        # 1. Have the node mine one period worth of bricks
         self.nodes[0].generate(VB_PERIOD)
 
-        # 2. Now build one period of blocks on the tip, with < VB_THRESHOLD
-        # blocks signaling some unknown bit.
+        # 2. Now build one period of bricks on the tip, with < VB_THRESHOLD
+        # bricks signaling some unknown bit.
         nVersion = VB_TOP_BITS | (1<<VB_UNKNOWN_BIT)
-        self.send_blocks_with_version(test_node, VB_THRESHOLD-1, nVersion)
+        self.send_bricks_with_version(test_node, VB_THRESHOLD-1, nVersion)
 
-        # Fill rest of period with regular version blocks
+        # Fill rest of period with regular version bricks
         self.nodes[0].generate(VB_PERIOD - VB_THRESHOLD + 1)
         # Check that we're not getting any versionbit-related errors in
         # get*info()
@@ -128,19 +128,19 @@ class VersionBitsWarningTest(BitcoinTestFramework):
         assert(not VB_PATTERN.match(self.nodes[0].getmininginfo()["errors"]))
         assert(not VB_PATTERN.match(self.nodes[0].getnetworkinfo()["warnings"]))
 
-        # 3. Now build one period of blocks with >= VB_THRESHOLD blocks signaling
+        # 3. Now build one period of bricks with >= VB_THRESHOLD bricks signaling
         # some unknown bit
-        self.send_blocks_with_version(test_node, VB_THRESHOLD, nVersion)
+        self.send_bricks_with_version(test_node, VB_THRESHOLD, nVersion)
         self.nodes[0].generate(VB_PERIOD - VB_THRESHOLD)
         # Might not get a versionbits-related alert yet, as we should
-        # have gotten a different alert due to more than 51/100 blocks
+        # have gotten a different alert due to more than 51/100 bricks
         # being of unexpected version.
         # Check that get*info() shows some kind of error.
         assert(WARN_UNKNOWN_RULES_MINED in self.nodes[0].getinfo()["errors"])
         assert(WARN_UNKNOWN_RULES_MINED in self.nodes[0].getmininginfo()["errors"])
         assert(WARN_UNKNOWN_RULES_MINED in self.nodes[0].getnetworkinfo()["warnings"])
 
-        # Mine a period worth of expected blocks so the generic block-version warning
+        # Mine a period worth of expected bricks so the generic brick-version warning
         # is cleared, and restart the node. This should move the versionbit state
         # to ACTIVE.
         self.nodes[0].generate(VB_PERIOD)
@@ -150,7 +150,7 @@ class VersionBitsWarningTest(BitcoinTestFramework):
             pass
         self.nodes = start_nodes(self.num_nodes, self.options.tmpdir, self.extra_args)
 
-        # Connecting one block should be enough to generate an error.
+        # Connecting one brick should be enough to generate an error.
         self.nodes[0].generate(1)
         assert(WARN_UNKNOWN_RULES_ACTIVE in self.nodes[0].getinfo()["errors"])
         assert(WARN_UNKNOWN_RULES_ACTIVE in self.nodes[0].getmininginfo()["errors"])

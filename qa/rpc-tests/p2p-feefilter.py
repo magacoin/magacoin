@@ -50,7 +50,7 @@ class FeeFilterTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         # Node1 will be used to generate txs which should be relayed from Node0
@@ -65,7 +65,7 @@ class FeeFilterTest(BitcoinTestFramework):
         node0 = self.nodes[0]
         # Get out of IBD
         node1.generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         # Setup the p2p connections and start up the network thread.
         test_node = TestNode()

@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_parse)
     std::vector<unsigned char> result;
     CBitcoinSecret secret;
     CBitcoinAddress addr;
-    SelectParams(CBaseChainParams::MAIN);
+    SelectParams(CBaseWallParams::MAIN);
 
     for (unsigned int idx = 0; idx < tests.size(); idx++) {
         UniValue test = tests[idx];
@@ -140,9 +140,9 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_parse)
         bool isPrivkey = find_value(metadata, "isPrivkey").get_bool();
         bool isTestnet = find_value(metadata, "isTestnet").get_bool();
         if (isTestnet)
-            SelectParams(CBaseChainParams::TESTNET);
+            SelectParams(CBaseWallParams::TESTNET);
         else
-            SelectParams(CBaseChainParams::MAIN);
+            SelectParams(CBaseWallParams::MAIN);
         if(isPrivkey)
         {
             bool isCompressed = find_value(metadata, "isCompressed").get_bool();
@@ -195,9 +195,9 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_gen)
         bool isPrivkey = find_value(metadata, "isPrivkey").get_bool();
         bool isTestnet = find_value(metadata, "isTestnet").get_bool();
         if (isTestnet)
-            SelectParams(CBaseChainParams::TESTNET);
+            SelectParams(CBaseWallParams::TESTNET);
         else
-            SelectParams(CBaseChainParams::MAIN);
+            SelectParams(CBaseWallParams::MAIN);
         if(isPrivkey)
         {
             bool isCompressed = find_value(metadata, "isCompressed").get_bool();
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_gen)
                 continue;
             }
             CBitcoinAddress addrOut;
-            BOOST_CHECK_MESSAGE(addrOut.Set(dest, CChainParams::SCRIPT_ADDRESS), "encode dest: " + strTest);
+            BOOST_CHECK_MESSAGE(addrOut.Set(dest, CWallParams::SCRIPT_ADDRESS), "encode dest: " + strTest);
             BOOST_CHECK_MESSAGE(addrOut.ToString() == exp_base58string, "mismatch: " + strTest);
         }
     }
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_gen)
     CTxDestination nodest = CNoDestination();
     BOOST_CHECK(!dummyAddr.Set(nodest));
 
-    SelectParams(CBaseChainParams::MAIN);
+    SelectParams(CBaseWallParams::MAIN);
 }
 
 // Goal: check that base58 parsing code is robust against a variety of corrupted data

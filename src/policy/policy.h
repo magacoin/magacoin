@@ -14,18 +14,18 @@
 
 class CCoinsViewCache;
 
-/** Default for -blockmaxsize, which controls the maximum size of block the mining code will create **/
-static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 750000;
-/** Default for -blockprioritysize, maximum space for zero/low-fee transactions **/
-static const unsigned int DEFAULT_BLOCK_PRIORITY_SIZE = 0;
-/** Default for -blockmaxweight, which controls the range of block weights the mining code will create **/
-static const unsigned int DEFAULT_BLOCK_MAX_WEIGHT = 3000000;
+/** Default for -brickmaxsize, which controls the maximum size of brick the mining code will create **/
+static const unsigned int DEFAULT_BRICK_MAX_SIZE = 750000;
+/** Default for -brickprioritysize, maximum space for zero/low-fee transactions **/
+static const unsigned int DEFAULT_BRICK_PRIORITY_SIZE = 0;
+/** Default for -brickmaxweight, which controls the range of brick weights the mining code will create **/
+static const unsigned int DEFAULT_BRICK_MAX_WEIGHT = 3000000;
 /** The maximum weight for transactions we're willing to relay/mine */
 static const unsigned int MAX_STANDARD_TX_WEIGHT = 400000;
 /** Maximum number of signature check operations in an IsStandard() P2SH script */
 static const unsigned int MAX_P2SH_SIGOPS = 15;
 /** The maximum number of sigops we're willing to relay/mine in a single tx */
-static const unsigned int MAX_STANDARD_TX_SIGOPS_COST = MAX_BLOCK_SIGOPS_COST/5;
+static const unsigned int MAX_STANDARD_TX_SIGOPS_COST = MAX_BRICK_SIGOPS_COST/5;
 /** Default for -maxmempool, maximum megabytes of mempool memory usage */
 static const unsigned int DEFAULT_MAX_MEMPOOL_SIZE = 5;
 /** Default for -bytespersigop */
@@ -39,7 +39,7 @@ static const unsigned int MAX_STANDARD_P2WSH_SCRIPT_SIZE = 3600;
 /**
  * Standard script verification flags that standard transactions will comply
  * with. However scripts violating these flags may still be present in valid
- * blocks and we must accept those blocks.
+ * bricks and we must accept those bricks.
  */
 static const unsigned int STANDARD_SCRIPT_VERIFY_FLAGS = MANDATORY_SCRIPT_VERIFY_FLAGS |
                                                          SCRIPT_VERIFY_DERSIG |

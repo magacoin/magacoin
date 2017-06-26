@@ -50,7 +50,7 @@ TESTS = \
 	dbformat_test \
 	env_test \
 	filename_test \
-	filter_block_test \
+	filter_brick_test \
 	hash_test \
 	issue178_test \
 	issue200_test \
@@ -158,8 +158,8 @@ env_test: util/env_test.o $(LIBOBJECTS) $(TESTHARNESS)
 filename_test: db/filename_test.o $(LIBOBJECTS) $(TESTHARNESS)
 	$(CXX) $(LDFLAGS) db/filename_test.o $(LIBOBJECTS) $(TESTHARNESS) -o $@ $(LIBS)
 
-filter_block_test: table/filter_block_test.o $(LIBOBJECTS) $(TESTHARNESS)
-	$(CXX) $(LDFLAGS) table/filter_block_test.o $(LIBOBJECTS) $(TESTHARNESS) -o $@ $(LIBS)
+filter_brick_test: table/filter_brick_test.o $(LIBOBJECTS) $(TESTHARNESS)
+	$(CXX) $(LDFLAGS) table/filter_brick_test.o $(LIBOBJECTS) $(TESTHARNESS) -o $@ $(LIBS)
 
 hash_test: util/hash_test.o $(LIBOBJECTS) $(TESTHARNESS)
 	$(CXX) $(LDFLAGS) util/hash_test.o $(LIBOBJECTS) $(TESTHARNESS) -o $@ $(LIBS)

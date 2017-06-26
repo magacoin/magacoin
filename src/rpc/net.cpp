@@ -4,7 +4,7 @@
 
 #include "rpc/server.h"
 
-#include "chainparams.h"
+#include "wallparams.h"
 #include "clientversion.h"
 #include "main.h"
 #include "net.h"
@@ -103,12 +103,12 @@ UniValue getpeerinfo(const UniValue& params, bool fHelp)
             "    \"version\": v,              (numeric) The peer version, such as 7001\n"
             "    \"subver\": \"/Satoshi:0.8.5/\",  (string) The string version\n"
             "    \"inbound\": true|false,     (boolean) Inbound (true) or Outbound (false)\n"
-            "    \"startingheight\": n,       (numeric) The starting height (block) of the peer\n"
+            "    \"startingheight\": n,       (numeric) The starting height (brick) of the peer\n"
             "    \"banscore\": n,             (numeric) The ban score\n"
             "    \"synced_headers\": n,       (numeric) The last header we have in common with this peer\n"
-            "    \"synced_blocks\": n,        (numeric) The last block we have in common with this peer\n"
+            "    \"synced_bricks\": n,        (numeric) The last brick we have in common with this peer\n"
             "    \"inflight\": [\n"
-            "       n,                        (numeric) The heights of blocks we're currently asking from this peer\n"
+            "       n,                        (numeric) The heights of bricks we're currently asking from this peer\n"
             "       ...\n"
             "    ]\n"
             "    \"bytessent_per_msg\": {\n"
@@ -166,7 +166,7 @@ UniValue getpeerinfo(const UniValue& params, bool fHelp)
         if (fStateStats) {
             obj.push_back(Pair("banscore", statestats.nMisbehavior));
             obj.push_back(Pair("synced_headers", statestats.nSyncHeight));
-            obj.push_back(Pair("synced_blocks", statestats.nCommonHeight));
+            obj.push_back(Pair("synced_bricks", statestats.nCommonHeight));
             UniValue heights(UniValue::VARR);
             BOOST_FOREACH(int height, statestats.vHeightInFlight) {
                 heights.push_back(height);
@@ -284,7 +284,7 @@ UniValue getaddednodeinfo(const UniValue& params, bool fHelp)
             "    \"connected\" : true|false,          (boolean) If connected\n"
             "    \"addresses\" : [                    (list of objects) Only when connected = true\n"
             "       {\n"
-            "         \"address\" : \"192.168.0.201:9333\",  (string) The litecoin server IP and port we're connected to\n"
+            "         \"address\" : \"192.168.0.201:9333\",  (string) The magacoin server IP and port we're connected to\n"
             "         \"connected\" : \"outbound\"           (string) connection, inbound or outbound\n"
             "       }\n"
             "     ]\n"
@@ -350,7 +350,7 @@ UniValue getnettotals(const UniValue& params, bool fHelp)
             "    \"timeframe\": n,                         (numeric) Length of the measuring timeframe in seconds\n"
             "    \"target\": n,                            (numeric) Target in bytes\n"
             "    \"target_reached\": true|false,           (boolean) True if target is reached\n"
-            "    \"serve_historical_blocks\": true|false,  (boolean) True if serving historical blocks\n"
+            "    \"serve_historical_bricks\": true|false,  (boolean) True if serving historical bricks\n"
             "    \"bytes_left_in_cycle\": t,               (numeric) Bytes left in current time cycle\n"
             "    \"time_left_in_cycle\": t                 (numeric) Seconds left in current time cycle\n"
             "  }\n"
@@ -369,7 +369,7 @@ UniValue getnettotals(const UniValue& params, bool fHelp)
     outboundLimit.push_back(Pair("timeframe", CNode::GetMaxOutboundTimeframe()));
     outboundLimit.push_back(Pair("target", CNode::GetMaxOutboundTarget()));
     outboundLimit.push_back(Pair("target_reached", CNode::OutboundTargetReached(false)));
-    outboundLimit.push_back(Pair("serve_historical_blocks", !CNode::OutboundTargetReached(true)));
+    outboundLimit.push_back(Pair("serve_historical_bricks", !CNode::OutboundTargetReached(true)));
     outboundLimit.push_back(Pair("bytes_left_in_cycle", CNode::GetOutboundTargetBytesLeft()));
     outboundLimit.push_back(Pair("time_left_in_cycle", CNode::GetMaxOutboundTimeLeftInCycle()));
     obj.push_back(Pair("uploadtarget", outboundLimit));

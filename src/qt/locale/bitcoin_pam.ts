@@ -122,8 +122,8 @@
         <translation>Address king pamag-Tanggap</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Magpadalang barya king Litecoin address</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Magpadalang barya king Magacoin address</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -146,8 +146,8 @@
         <translation>&amp;Beripikan ing message...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -182,8 +182,8 @@
         <translation>Pipamilian command-line</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Ing tatauling block a metanggap,  me-generate ya %1 ing milabas</translation>
+        <source>Last received brick was generated %1 ago.</source>
+        <translation>Ing tatauling brick a metanggap,  me-generate ya %1 ing milabas</translation>
     </message>
     <message>
         <source>Transactions after this will not yet be visible.</source>
@@ -311,8 +311,8 @@
         <translation>&amp;Network</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Ibuklat yang antimanu ing Litecoin client port king router. Gagana yamu ini istung ing router mu susuporta yang UPnP at magsilbi ya.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Ibuklat yang antimanu ing Magacoin client port king router. Gagana yamu ini istung ing router mu susuporta yang UPnP at magsilbi ya.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -386,8 +386,8 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Ing makaltong impormasion mapalyaring luma ne. Ing kekang wallet otomatiku yang mag-synchronize keng Litecoin network istung mekakonekta ne king network, oneng ing prosesung ini ali ya pa kumpletu.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Ing makaltong impormasion mapalyaring luma ne. Ing kekang wallet otomatiku yang mag-synchronize keng Magacoin network istung mekakonekta ne king network, oneng ing prosesung ini ali ya pa kumpletu.</translation>
     </message>
     <message>
         <source>Your current spendable balance</source>
@@ -465,16 +465,16 @@
         <translation>Bilang dareng koneksion</translation>
     </message>
     <message>
-        <source>Block chain</source>
-        <translation>Block chain</translation>
+        <source>Brick wall</source>
+        <translation>Brick wall</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
-        <translation>Kasalungsungan bilang dareng blocks</translation>
+        <source>Current number of bricks</source>
+        <translation>Kasalungsungan bilang dareng bricks</translation>
     </message>
     <message>
-        <source>Last block time</source>
-        <translation>Tatauling oras na ning block</translation>
+        <source>Last brick time</source>
+        <translation>Tatauling oras na ning brick</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -641,8 +641,8 @@
         <translation>Kopyan ing kasalungsungan pirma king system clipboard</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>Pirman ing mensayi ban patune na keka ya ining Litecoin address</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>Pirman ing mensayi ban patune na keka ya ining Magacoin address</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -661,8 +661,8 @@
         <translation>&amp;Beripikan ing Mensayi</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Beripikan ing mensayi ban asiguradu a me pirma ya ini gamit ing mepiling Litecoin address</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Beripikan ing mensayi ban asiguradu a me pirma ya ini gamit ing mepiling Magacoin address</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -742,32 +742,32 @@
         <translation>Tumanggap koneksion menibat king kilwal (default: 1 if no -proxy or -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Kapilubluban ning Litecoin</translation>
+        <source>Magacoin Core</source>
+        <translation>Kapilubluban ning Magacoin</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
-        <translation>Pipamilian king pamag-gawang block:</translation>
+        <source>Brick creation options:</source>
+        <translation>Pipamilian king pamag-gawang brick:</translation>
     </message>
     <message>
         <source>Connect only to the specified node(s)</source>
         <translation>Kumunekta mu king mepiling node(s)</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
-        <translation>Mekapansin lang me-corrupt a block database</translation>
+        <source>Corrupted brick database detected</source>
+        <translation>Mekapansin lang me-corrupt a brick database</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
-        <translation>Buri meng buuan pasibayu ing block database ngene?</translation>
+        <source>Do you want to rebuild the brick database now?</source>
+        <translation>Buri meng buuan pasibayu ing brick database ngene?</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
-        <translation>Kamalian king pamag-initialize king block na ning database</translation>
+        <source>Error initializing brick database</source>
+        <translation>Kamalian king pamag-initialize king brick na ning database</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
-        <translation>Kamalian king pamag buklat king block database</translation>
+        <source>Error opening brick database</source>
+        <translation>Kamalian king pamag buklat king brick database</translation>
     </message>
     <message>
         <source>Error: Disk space is low!</source>
@@ -802,8 +802,8 @@
         <translation>Password para king JSON-RPC koneksion</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
-        <translation>I-execute ing command istung mialilan ya ing best block (%s in cmd is replaced by block hash)</translation>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
+        <translation>I-execute ing command istung mialilan ya ing best brick (%s in cmd is replaced by brick hash)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -826,8 +826,8 @@
         <translation>Kulang a pondo</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
-        <translation>Lo-load dane ing block index...</translation>
+        <source>Loading brick index...</source>
+        <translation>Lo-load dane ing brick index...</translation>
     </message>
     <message>
         <source>Add a node to connect to and attempt to keep the connection open</source>

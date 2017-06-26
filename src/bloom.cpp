@@ -137,7 +137,7 @@ bool CBloomFilter::IsRelevantAndUpdate(const CTransaction& tx)
 {
     bool fFound = false;
     // Match if the filter contains the hash of tx
-    //  for finding tx when they appear in a block
+    //  for finding tx when they appear in a brick
     if (isFull)
         return true;
     if (isEmpty)

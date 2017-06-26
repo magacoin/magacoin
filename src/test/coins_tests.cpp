@@ -20,7 +20,7 @@ namespace
 {
 class CCoinsViewTest : public CCoinsView
 {
-    uint256 hashBestBlock_;
+    uint256 hashBestBrick_;
     std::map<uint256, CCoins> map_;
 
 public:
@@ -44,9 +44,9 @@ public:
         return GetCoins(txid, coins);
     }
 
-    uint256 GetBestBlock() const { return hashBestBlock_; }
+    uint256 GetBestBrick() const { return hashBestBrick_; }
 
-    bool BatchWrite(CCoinsMap& mapCoins, const uint256& hashBlock)
+    bool BatchWrite(CCoinsMap& mapCoins, const uint256& hashBrick)
     {
         for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end(); ) {
             if (it->second.flags & CCoinsCacheEntry::DIRTY) {
@@ -59,8 +59,8 @@ public:
             }
             mapCoins.erase(it++);
         }
-        if (!hashBlock.IsNull())
-            hashBestBlock_ = hashBlock;
+        if (!hashBrick.IsNull())
+            hashBestBrick_ = hashBrick;
         return true;
     }
 };

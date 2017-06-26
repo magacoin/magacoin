@@ -6,13 +6,13 @@
 
 #include "leveldb/env.h"
 #include "port/port.h"
-#include "table/block.h"
+#include "table/brick.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
 
 namespace leveldb {
 
-void BlockHandle::EncodeTo(std::string* dst) const {
+void BrickHandle::EncodeTo(std::string* dst) const {
   // Sanity check that all fields have been set
   assert(offset_ != ~static_cast<uint64_t>(0));
   assert(size_ != ~static_cast<uint64_t>(0));
@@ -20,12 +20,12 @@ void BlockHandle::EncodeTo(std::string* dst) const {
   PutVarint64(dst, size_);
 }
 
-Status BlockHandle::DecodeFrom(Slice* input) {
+Status BrickHandle::DecodeFrom(Slice* input) {
   if (GetVarint64(input, &offset_) &&
       GetVarint64(input, &size_)) {
     return Status::OK();
   } else {
-    return Status::Corruption("bad block handle");
+    return Status::Corruption("bad brick handle");
   }
 }
 
@@ -35,7 +35,7 @@ void Footer::EncodeTo(std::string* dst) const {
 #endif
   metaindex_handle_.EncodeTo(dst);
   index_handle_.EncodeTo(dst);
-  dst->resize(2 * BlockHandle::kMaxEncodedLength);  // Padding
+  dst->resize(2 * BrickHandle::kMaxEncodedLength);  // Padding
   PutFixed32(dst, static_cast<uint32_t>(kTableMagicNumber & 0xffffffffu));
   PutFixed32(dst, static_cast<uint32_t>(kTableMagicNumber >> 32));
   assert(dst->size() == original_size + kEncodedLength);
@@ -63,37 +63,37 @@ Status Footer::DecodeFrom(Slice* input) {
   return result;
 }
 
-Status ReadBlock(RandomAccessFile* file,
+Status ReadBrick(RandomAccessFile* file,
                  const ReadOptions& options,
-                 const BlockHandle& handle,
-                 BlockContents* result) {
+                 const BrickHandle& handle,
+                 BrickContents* result) {
   result->data = Slice();
   result->cachable = false;
   result->heap_allocated = false;
 
-  // Read the block contents as well as the type/crc footer.
+  // Read the brick contents as well as the type/crc footer.
   // See table_builder.cc for the code that built this structure.
   size_t n = static_cast<size_t>(handle.size());
-  char* buf = new char[n + kBlockTrailerSize];
+  char* buf = new char[n + kBrickTrailerSize];
   Slice contents;
-  Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+  Status s = file->Read(handle.offset(), n + kBrickTrailerSize, &contents, buf);
   if (!s.ok()) {
     delete[] buf;
     return s;
   }
-  if (contents.size() != n + kBlockTrailerSize) {
+  if (contents.size() != n + kBrickTrailerSize) {
     delete[] buf;
-    return Status::Corruption("truncated block read");
+    return Status::Corruption("truncated brick read");
   }
 
-  // Check the crc of the type and the block contents
+  // Check the crc of the type and the brick contents
   const char* data = contents.data();    // Pointer to where Read put the data
   if (options.verify_checksums) {
     const uint32_t crc = crc32c::Unmask(DecodeFixed32(data + n + 1));
     const uint32_t actual = crc32c::Value(data, n + 1);
     if (actual != crc) {
       delete[] buf;
-      s = Status::Corruption("block checksum mismatch");
+      s = Status::Corruption("brick checksum mismatch");
       return s;
     }
   }
@@ -120,13 +120,13 @@ Status ReadBlock(RandomAccessFile* file,
       size_t ulength = 0;
       if (!port::Snappy_GetUncompressedLength(data, n, &ulength)) {
         delete[] buf;
-        return Status::Corruption("corrupted compressed block contents");
+        return Status::Corruption("corrupted compressed brick contents");
       }
       char* ubuf = new char[ulength];
       if (!port::Snappy_Uncompress(data, n, ubuf)) {
         delete[] buf;
         delete[] ubuf;
-        return Status::Corruption("corrupted compressed block contents");
+        return Status::Corruption("corrupted compressed brick contents");
       }
       delete[] buf;
       result->data = Slice(ubuf, ulength);
@@ -136,7 +136,7 @@ Status ReadBlock(RandomAccessFile* file,
     }
     default:
       delete[] buf;
-      return Status::Corruption("bad block type");
+      return Status::Corruption("bad brick type");
   }
 
   return Status::OK();

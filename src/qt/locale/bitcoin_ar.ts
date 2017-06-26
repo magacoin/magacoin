@@ -154,11 +154,11 @@
         <translation>افتح &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>إعادة الفهرسة الكتل على القرص ...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
+        <source>Send coins to a Magacoin address</source>
         <translation>ارسل عملات الى عنوان بيتكوين</translation>
     </message>
     <message>
@@ -182,8 +182,8 @@
         <translation>&amp;التحقق من الرسالة...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -210,12 +210,12 @@
         <translation>تشفير المفتاح الخاص بمحفظتك</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>وقَع الرسائل بواسطة ال: Litecoin الخاص بك لإثبات امتلاكك لهم</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>وقَع الرسائل بواسطة ال: Magacoin الخاص بك لإثبات امتلاكك لهم</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>تحقق من الرسائل للتأكد من أنَها وُقعت برسائل Litecoin محدَدة</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>تحقق من الرسائل للتأكد من أنَها وُقعت برسائل Magacoin محدَدة</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -234,7 +234,7 @@
         <translation>شريط أدوات علامات التبويب</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
         <translation>أطلب دفعات (يولد كودات الرمز المربع وبيت كوين: العناوين المعطاة)</translation>
     </message>
     <message>
@@ -246,27 +246,27 @@
         <translation>عرض قائمة عناوين الإستقبال المستخدمة والملصقات</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>فتح URI : Litecoin أو طلب دفع</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>فتح URI : Magacoin أو طلب دفع</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;خيارات سطر الأوامر</translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>ترتيب الفهرسة الكتل على القرص...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>معالجة الكتل على القرص...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>لا يوجد أي مصدر الكتلة</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>لم يتم معالجة أي كتلة سجل المعاملات</numerusform><numerusform>تم معالجة كتلة واحدة سجل المعاملات</numerusform><numerusform>تم معالجة كتلتين سجل المعاملات</numerusform><numerusform>تم معالجة %n كتل سجل المعاملات</numerusform><numerusform>تم معالجة %n كتلة سجل المعاملات</numerusform><numerusform>تم معالجة %n كتلة سجل المعاملات</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -278,7 +278,7 @@
         <translation>%1 و %2</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>تم توليد الكتلة المستقبلة الأخيرة منذ %1.</translation>
     </message>
     <message>
@@ -1014,8 +1014,8 @@
         <translation>هذا دفع اعتيادي</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>عنوان الLitecoin المرسل اليه الدفع</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>عنوان الMagacoin المرسل اليه الدفع</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1083,8 +1083,8 @@
         <translation>التوقيع</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>وقع الرسالة لتثبت انك تمتلك عنوان الLitecoin هذا</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>وقع الرسالة لتثبت انك تمتلك عنوان الMagacoin هذا</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1156,7 +1156,7 @@
         <translation>قبول الاتصالات من خارج</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
+        <source>Magacoin Core</source>
         <translation>جوهر البيت كوين</translation>
     </message>
     <message>
@@ -1220,7 +1220,7 @@
         <translation>اموال غير كافية</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>تحميل مؤشر الكتلة</translation>
     </message>
     <message>

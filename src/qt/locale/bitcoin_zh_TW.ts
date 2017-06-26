@@ -62,12 +62,12 @@
         <translation>收款位址</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>這些是你要付款過去的 Litecoin 位址。在付錢之前，務必要檢查金額和收款位址是否正確。</translation>
+        <source>These are your Magacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>這些是你要付款過去的 Magacoin 位址。在付錢之前，務必要檢查金額和收款位址是否正確。</translation>
     </message>
     <message>
-        <source>These are your Litecoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>這些是你用來收款的 Litecoin 位址。建議在每次交易時，都使用一個新的收款位址。</translation>
+        <source>These are your Magacoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>這些是你用來收款的 Magacoin 位址。建議在每次交易時，都使用一個新的收款位址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -168,8 +168,8 @@
         <translation>確認錢包加密</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR LITECOINS&lt;/b&gt;!</source>
-        <translation>警告: 如果把錢包加密後又忘記密碼，你就會從此&lt;b&gt;失去其中所有的 Litecoin 了&lt;/b&gt;！</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR MAGACOINS&lt;/b&gt;!</source>
+        <translation>警告: 如果把錢包加密後又忘記密碼，你就會從此&lt;b&gt;失去其中所有的 Magacoin 了&lt;/b&gt;！</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -180,7 +180,7 @@
         <translation>錢包已加密</translation>
     </message>
     <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your litecoins from being stolen by malware infecting your computer.</source>
+        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your magacoins from being stolen by malware infecting your computer.</source>
         <translation>%1 現在要關閉，好完成加密程序。請注意，加密錢包不能完全防止入侵你的電腦的惡意程式偷取錢幣。</translation>
     </message>
     <message>
@@ -318,12 +318,12 @@
         <translation>開啓 URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>正在為磁碟裡的區塊重建索引...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>付錢給一個 Litecoin 位址</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>付錢給一個 Magacoin 位址</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -346,8 +346,8 @@
         <translation>驗證訊息...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -374,12 +374,12 @@
         <translation>把錢包中的密鑰加密</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>用 Litecoin 位址簽署訊息來證明位址是你的</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>用 Magacoin 位址簽署訊息來證明位址是你的</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>驗證訊息是用來確定訊息是用指定的 Litecoin 位址簽署的</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>驗證訊息是用來確定訊息是用指定的 Magacoin 位址簽署的</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -398,8 +398,8 @@
         <translation>分頁工具列</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>要求付款(產生 QR Code 和 litecoin 付款協議的資源識別碼: URI)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>要求付款(產生 QR Code 和 magacoin 付款協議的資源識別碼: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -410,31 +410,31 @@
         <translation>顯示已使用過的收款位址和標記的清單</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>開啓 litecoin 協議的資源識別碼(URI)或付款要求</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>開啓 magacoin 協議的資源識別碼(URI)或付款要求</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>命令列選項</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n 個運作中的 Litecoin 網路連線</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n 個運作中的 Magacoin 網路連線</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>正在為磁碟裡的區塊建立索引...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>正在處理磁碟裡的區塊資料...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>沒有可用的區塊來源...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>已經處理了 %n 個區塊的交易紀錄。</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -462,7 +462,7 @@
         <translation>落後 %1</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>最近收到的區塊是在 %1 以前生出來的。</translation>
     </message>
     <message>
@@ -486,7 +486,7 @@
         <translation>最新狀態</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
         <translation>顯示 %1 的說明訊息，來取得可用命令列選項的列表</translation>
     </message>
     <message>
@@ -739,7 +739,7 @@
         <translation>每組輸入可能會誤差多或少 1 個位元組。</translation>
     </message>
     <message>
-        <source>Transactions with higher priority are more likely to get included into a block.</source>
+        <source>Transactions with higher priority are more likely to get included into a brick.</source>
         <translation>優先度較高的交易比較有可能被接受放進區塊中。</translation>
     </message>
     <message>
@@ -806,8 +806,8 @@
         <translation>編輯付款位址</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Litecoin address.</source>
-        <translation>輸入的位址 %1 並不是有效的 Litecoin 位址。</translation>
+        <source>The entered address "%1" is not a valid Magacoin address.</source>
+        <translation>輸入的位址 %1 並不是有效的 Magacoin 位址。</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -915,8 +915,8 @@
         <translation>因為這是程式第一次啓動，你可以選擇 %1 儲存資料的地方。</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>%1 會下載並儲存一份 Litecoin 區塊鏈的拷貝。至少有 %2GB 的資料會儲存到這個目錄中，並且還會持續增長。另外錢包資料也會儲存在這個目錄。</translation>
+        <source>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>%1 會下載並儲存一份 Magacoin 區塊鏈的拷貝。至少有 %2GB 的資料會儲存到這個目錄中，並且還會持續增長。另外錢包資料也會儲存在這個目錄。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1013,7 +1013,7 @@
         <translation>當視窗關閉時，把應用程式縮到最小，而不是結束。當勾選這個選項時，只能夠用選單中的結束來關掉應用程式。</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>在交易頁籤的情境選單出現的第三方網址連結(URL)，比如說區塊探索網站。網址中的 %s 會被取代為交易的雜湊值。可以用直線符號 | 來分隔多個連結。</translation>
     </message>
     <message>
@@ -1061,16 +1061,16 @@
         <translation>可以花還沒確認的零錢</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>自動在路由器上開放 Litecoin 的客戶端通訊埠。只有在你的路由器支援且開啓「通用即插即用」協定(UPnP)時才有作用。</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>自動在路由器上開放 Magacoin 的客戶端通訊埠。只有在你的路由器支援且開啓「通用即插即用」協定(UPnP)時才有作用。</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>用 &amp;UPnP 設定通訊埠對應</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>透過 SOCKS5 代理伺服器來連線到 Litecoin 網路。</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>透過 SOCKS5 代理伺服器來連線到 Magacoin 網路。</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1109,8 +1109,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>透過另外的 SOCKS5 代理伺服器來連線到 Litecoin 網路中的 Tor 隱藏服務。</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>透過另外的 SOCKS5 代理伺服器來連線到 Magacoin 網路中的 Tor 隱藏服務。</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -1208,8 +1208,8 @@
         <translation>表單</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>顯示的資訊可能是過期的。跟 Litecoin 網路的連線建立後，你的錢包會自動和網路同步，但是這個步驟還沒完成。</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>顯示的資訊可能是過期的。跟 Magacoin 網路的連線建立後，你的錢包會自動和網路同步，但是這個步驟還沒完成。</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1283,8 +1283,8 @@
         <translation>要求付款時發生錯誤</translation>
     </message>
     <message>
-        <source>Cannot start litecoin: click-to-pay handler</source>
-        <translation>沒辦法啟動 litecoin 協議的「按就付」處理器</translation>
+        <source>Cannot start magacoin: click-to-pay handler</source>
+        <translation>沒辦法啟動 magacoin 協議的「按就付」處理器</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1299,8 +1299,8 @@
         <translation>無效的付款位址 %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Litecoin address or malformed URI parameters.</source>
-        <translation>沒辦法解析 URI 位址！可能是因為 Litecoin 位址無效，或是 URI 參數格式錯誤。</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Magacoin address or malformed URI parameters.</source>
+        <translation>沒辦法解析 URI 位址！可能是因為 Magacoin 位址無效，或是 URI 參數格式錯誤。</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1389,8 +1389,8 @@
         <translation>金額</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>輸入 Litecoin 位址 (比如說 %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>輸入 Magacoin 位址 (比如說 %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1487,11 +1487,11 @@
         <translation>連線數</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>區塊鏈</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>目前區塊數</translation>
     </message>
     <message>
@@ -1539,7 +1539,7 @@
         <translation>版本</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>起始區塊</translation>
     </message>
     <message>
@@ -1547,7 +1547,7 @@
         <translation>已同步前導資料</translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>已同步區塊</translation>
     </message>
     <message>
@@ -1603,7 +1603,7 @@
         <translation>時間差</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>最近區塊時間</translation>
     </message>
     <message>
@@ -1754,8 +1754,8 @@
         <translation>重複使用現有的收款位址(不建議)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>附加在付款要求中的訊息，可以不填，打開要求內容時會顯示。注意: 這個訊息不會隨著付款送到 Litecoin 網路上。</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>附加在付款要求中的訊息，可以不填，打開要求內容時會顯示。注意: 這個訊息不會隨著付款送到 Magacoin 網路上。</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1987,7 +1987,7 @@
         <translation>總共最少</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
         <translation>當交易量少於區塊可容納的空間時，只付最低手續費不會有什麽問題。但是當交易量的需求成長到超過整體網路可以處理的量時，可能會造成一筆一直不會被確認的交易。</translation>
     </message>
     <message>
@@ -2003,7 +2003,7 @@
         <translation>自訂:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(手續費智慧演算法還沒準備好。通常都要等幾個區塊才行...)</translation>
     </message>
     <message>
@@ -2147,8 +2147,8 @@
         <translation>只付必要的手續費 %1</translation>
     </message>
     <message>
-        <source>Warning: Invalid Litecoin address</source>
-        <translation>警告: Litecoin 位址無效</translation>
+        <source>Warning: Invalid Magacoin address</source>
+        <translation>警告: Magacoin 位址無效</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2182,8 +2182,8 @@
         <translation>這是一筆正常的付款。</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
-        <translation>接收付款的 Litecoin 位址</translation>
+        <source>The Magacoin address to send the payment to</source>
+        <translation>接收付款的 Magacoin 位址</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2202,8 +2202,8 @@
         <translation>刪掉這個項目</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>手續費會從要付款出去的金額中扣掉。因此收款人會收到比輸入的金額還要少的 litecoin。如果有多個收款人的話，手續費會平均分配來扣除。</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>手續費會從要付款出去的金額中扣掉。因此收款人會收到比輸入的金額還要少的 magacoin。如果有多個收款人的話，手續費會平均分配來扣除。</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2226,8 +2226,8 @@
         <translation>請輸入這個位址的標記，來把它加進去已使用過位址的清單。</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>附加在 Litecoin 付款協議的資源識別碼(URI)中的訊息，會和交易內容一起存起來，給你自己做參考。注意: 這個訊息不會送到 Litecoin 網路上。</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>附加在 Magacoin 付款協議的資源識別碼(URI)中的訊息，會和交易內容一起存起來，給你自己做參考。注意: 這個訊息不會送到 Magacoin 網路上。</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2271,12 +2271,12 @@
         <translation>簽署訊息</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive litecoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive magacoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>你可以用自己的位址簽署訊息或合約，來證明你可以從該位址收款。但是請小心，不要簽署語意含糊不清，或隨機產生的內容，因為釣魚式詐騙可能會用騙你簽署的手法來冒充是你。只有在語句中的細節你都同意時才簽署。</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>用來簽署訊息的 Litecoin 位址</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>用來簽署訊息的 Magacoin 位址</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2307,8 +2307,8 @@
         <translation>複製目前的簽章到系統剪貼簿</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
-        <translation>簽署這個訊息來證明這個 Litecoin 位址是你的</translation>
+        <source>Sign the message to prove you own this Magacoin address</source>
+        <translation>簽署這個訊息來證明這個 Magacoin 位址是你的</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2331,12 +2331,12 @@
         <translation>請在下面輸入收款人的位址，訊息(請確定完整複製了所包含的換行，空格，跳位符號等等)，以及簽章，來驗證這個訊息。請小心，除了訊息內容以外，不要對簽章本身過度解讀，以避免被用「中間人攻擊法」詐騙。請注意，通過驗證的簽章只能證明簽章人確實可以從該位址收款，不能證明任何交易中的付款人身份！</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>簽署這個訊息的 Litecoin 位址</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>簽署這個訊息的 Magacoin 位址</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>驗證這個訊息來確定是用指定的 Litecoin 位址簽署的</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>驗證這個訊息來確定是用指定的 Magacoin 位址簽署的</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2416,7 +2416,7 @@
 <context>
     <name>TransactionDesc</name>
     <message numerus="yes">
-        <source>Open for %n more block(s)</source>
+        <source>Open for %n more brick(s)</source>
         <translation><numerusform>到下 %n 個區塊生出來前可修改</numerusform></translation>
     </message>
     <message>
@@ -2508,7 +2508,7 @@
         <translation>入帳</translation>
     </message>
     <message numerus="yes">
-        <source>matures in %n more block(s)</source>
+        <source>matures in %n more brick(s)</source>
         <translation><numerusform>再等 %n 個區塊生出來後成熟</numerusform></translation>
     </message>
     <message>
@@ -2556,7 +2556,7 @@
         <translation>商家</translation>
     </message>
     <message>
-        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <source>Generated coins must mature %1 bricks before they can be spent. When you generated this brick, it was broadcast to the network to be added to the brick wall. If it fails to get into the wall, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a brick within a few seconds of yours.</source>
         <translation>生產出來的錢要再等 %1 個區塊生出來後才成熟可以用。當區塊生產出來時會公布到網路上，來被加進區塊鏈。如果加失敗了，狀態就會變成「不被接受」，而且不能夠花。如果在你生產出區塊的幾秒鐘內，也有其他節點生產出來的話，就有可能會發生這種情形。</translation>
     </message>
     <message>
@@ -2610,7 +2610,7 @@
         <translation>標記:</translation>
     </message>
     <message numerus="yes">
-        <source>Open for %n more block(s)</source>
+        <source>Open for %n more brick(s)</source>
         <translation><numerusform>到下 %n 個區塊生出來前可修改</numerusform></translation>
     </message>
     <message>
@@ -2646,7 +2646,7 @@
         <translation>未成熟(確認 %1 次，會在 %2 次後可用)</translation>
     </message>
     <message>
-        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <source>This brick was not received by any other nodes and will probably not be accepted!</source>
         <translation>沒有其他節點收到這個區塊，也許它不會被接受！</translation>
     </message>
     <message>
@@ -2953,15 +2953,15 @@
         <translation>設定的修剪值小於最小需求的 %d 百萬位元組(MiB)。請指定大一點的數字。</translation>
     </message>
     <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole brickwall again in case of pruned node)</source>
         <translation>修剪模式：錢包的最後同步狀態是在被修剪掉的區塊資料中。你需要用 -reindex 參數執行(會重新下載整個區塊鏈)</translation>
     </message>
     <message>
-        <source>Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, &gt;%u = target size in MiB to use for block files)</source>
+        <source>Reduce storage requirements by pruning (deleting) old bricks. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire brickwall. (default: 0 = disable pruning bricks, &gt;%u = target size in MiB to use for brick files)</source>
         <translation>修剪(刪除)掉老舊區塊來減少需要的儲存空間。這種模式會關閉錢包功能，並且和 -txindex 及 -rescan 參數不相容。警告: 從這種模式還原會需要重新下載一整個區塊鏈。(預設值: 0 表示不修剪區塊，&gt;%u 表示為區塊檔案的目標大小，單位是百萬位元組 MiB)</translation>
     </message>
     <message>
-        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole brickwall again.</source>
         <translation>在修剪模式下沒辦法重新掃描區塊鏈。你需要配合使用 -reindex 參數來重新下載整個區塊鏈。</translation>
     </message>
     <message>
@@ -2973,7 +2973,7 @@
         <translation>交易付款時每千位元組(kB)的交易手續費(單位是 %s，預設值: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
+        <source>Pruning brickstore...</source>
         <translation>正在修剪區塊資料庫中...</translation>
     </message>
     <message>
@@ -2989,8 +2989,8 @@
         <translation>是否接受外來連線(預設值: 當沒有 -proxy 或 -connect 時為 1)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Litecoin Core</translation>
+        <source>Magacoin Core</source>
+        <translation>Magacoin Core</translation>
     </message>
     <message>
         <source>The %s developers</source>
@@ -3017,7 +3017,7 @@
         <translation>沒辦法鎖定資料目錄 %s。%s 可能已經在執行了。</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>清掉錢包裡的所有交易，並且在下次啟動時，使用 -rescan 來從區塊鏈中復原回來。</translation>
     </message>
     <message>
@@ -3061,7 +3061,7 @@
         <translation>設定指令碼驗證的執行緒數目 (%u 到 %d，0 表示程式自動決定，小於 0 表示保留處理器核心不用的數目，預設值: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>區塊資料庫中有來自未來的區塊。可能是你電腦的日期時間不對。如果確定電腦日期時間沒錯的話，就重建區塊資料庫看看。</translation>
     </message>
     <message>
@@ -3069,7 +3069,7 @@
         <translation>這是個還沒發表的測試版本 - 使用請自負風險 - 請不要用來開採或商業應用</translation>
     </message>
     <message>
-        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the brickwall</source>
         <translation>沒辦法將資料庫倒轉回分岔前的狀態。必須要重新下載區塊鍊。</translation>
     </message>
     <message>
@@ -3089,8 +3089,8 @@
         <translation>把來自指定網域或位址的節點放進白名單。這個選項可以設定多次。</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex-chainstate to change -txindex</source>
-        <translation>改變 -txindex 參數後，必須要用 -reindex-chainstate 參數來重建資料庫</translation>
+        <source>You need to rebuild the database using -reindex-wallstate to change -txindex</source>
+        <translation>改變 -txindex 參數後，必須要用 -reindex-wallstate 參數來重建資料庫</translation>
     </message>
     <message>
         <source>%s corrupt, salvage failed</source>
@@ -3113,7 +3113,7 @@
         <translation>啟動時嘗試從壞掉的錢包檔復原密鑰</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>區塊製造選項:</translation>
     </message>
     <message>
@@ -3137,7 +3137,7 @@
         <translation>版權所有 (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>發現區塊資料庫壞掉了</translation>
     </message>
     <message>
@@ -3149,11 +3149,11 @@
         <translation>不要載入錢包，並且拿掉錢包相關的 RPC 功能請求。</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>你想要現在重建區塊資料庫嗎？</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
         <translation>開啟傳送區塊雜湊值到目標 ZeroMQ 位址 &lt;address&gt; 去</translation>
     </message>
     <message>
@@ -3161,7 +3161,7 @@
         <translation>開啟傳送交易雜湊值到目標 ZeroMQ 位址 &lt;address&gt; 去</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
         <translation>開啟傳送區塊原始資料到目標 ZeroMQ 位址 &lt;address&gt; 去</translation>
     </message>
     <message>
@@ -3173,7 +3173,7 @@
         <translation>對交易暫存池啟用替代交易(預設值: %u)</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>初始化區塊資料庫時發生錯誤</translation>
     </message>
     <message>
@@ -3197,11 +3197,11 @@
         <translation>載入 %s 發生錯誤：不能對已存在的 HD 錢包停用 HD 功能。</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>載入區塊資料庫時發生錯誤</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>打開區塊資料庫時發生錯誤</translation>
     </message>
     <message>
@@ -3217,7 +3217,7 @@
         <translation>正在匯入中...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>創世區塊不正確或找不到。資料目錄錯了嗎？</translation>
     </message>
     <message>
@@ -3273,15 +3273,15 @@
         <translation>修剪模式和 -txindex 參數不相容。</translation>
     </message>
     <message>
-        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <source>Rebuild wall state and brick index from the blk*.dat files on disk</source>
         <translation>從磁碟裡的區塊檔 blk*.dat 重建區塊鏈狀態和區塊索引</translation>
     </message>
     <message>
-        <source>Rebuild chain state from the currently indexed blocks</source>
+        <source>Rebuild wall state from the currently indexed bricks</source>
         <translation>從目前已編索引的區塊資料重建區塊鏈狀態</translation>
     </message>
     <message>
-        <source>Rewinding blocks...</source>
+        <source>Rewinding bricks...</source>
         <translation>正在倒轉回區塊鏈之前的狀態...</translation>
     </message>
     <message>
@@ -3289,11 +3289,11 @@
         <translation>設定資料庫快取大小是多少百萬位元組(MB，範圍: %d 到 %d，預設值: %d)</translation>
     </message>
     <message>
-        <source>Set maximum BIP141 block weight (default: %d)</source>
+        <source>Set maximum BIP141 brick weight (default: %d)</source>
         <translation>設定 BIP141 區塊重量的最大值(預設值: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>設定區塊大小上限成多少位元組(預設值: %d)</translation>
     </message>
     <message>
@@ -3333,7 +3333,7 @@
         <translation>使用者代理註解(%s)中含有不安全的字元。</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>正在驗證區塊資料...</translation>
     </message>
     <message>
@@ -3393,7 +3393,7 @@
         <translation>強制轉發從白名點節點收到的交易，即使它們違反了本機的轉發準則(預設值: %d)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>當沒有設定 paytxfee 時，自動包含可以讓交易能在平均 n 個區塊內開始確認的手續費(預設值: %u)</translation>
     </message>
     <message>
@@ -3433,7 +3433,7 @@
         <translation>在白名單中的節點不會因為偵測到阻斷服務攻擊(DoS)而被停用。來自這些節點的交易也一定會被轉發，即使說交易本來就在記憶池裡了也一樣。適用於像是閘道伺服器。</translation>
     </message>
     <message>
-        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire brickwall</source>
         <translation>回到非修剪的模式需要用 -reindex 參數來重建資料庫。這會導致重新下載整個區塊鏈。</translation>
     </message>
     <message>
@@ -3457,7 +3457,7 @@
         <translation>讀取資料庫時發生錯誤，要關閉了。</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
         <translation>啟動時從其它來源的 blk000??.dat 檔匯入區塊</translation>
     </message>
     <message>
@@ -3493,7 +3493,7 @@
         <translation>因為系統的限制，將 -maxconnections 參數從 %d 降到了 %d</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
         <translation>啟動時重新掃描區塊鏈，來尋找錢包可能漏掉的交易。</translation>
     </message>
     <message>
@@ -3569,7 +3569,7 @@
         <translation>警告: 不明的交易規則被啟用了(versionbit %i)</translation>
     </message>
     <message>
-        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <source>Whether to operate in a bricks only mode (default: %u)</source>
         <translation>是否要用只要區塊模式運作(預設值: %u)</translation>
     </message>
     <message>
@@ -3585,7 +3585,7 @@
         <translation>JSON-RPC 連線密碼</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>當最新區塊改變時要執行的指令(指令中的 %s 會被取代成區塊雜湊值)</translation>
     </message>
     <message>
@@ -3617,8 +3617,8 @@
         <translation>當製造交易時，如果每千位元組(kB)的手續費比這個值(單位是 %s)低，就視為沒付手續費(預設值: %s)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>使用 -checkblocks 檢查區塊的仔細程度(0 到 4，預設值: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>使用 -checkbricks 檢查區塊的仔細程度(0 到 4，預設值: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -3633,7 +3633,7 @@
         <translation>輸出除錯資訊(預設值: %u, 不一定要指定 &lt;category&gt;)</translation>
     </message>
     <message>
-        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <source>Support filtering of bricks and transaction with bloom filters (default: %u)</source>
         <translation>支援用布倫過濾器來過濾區塊和交易(預設值: %u)</translation>
     </message>
     <message>
@@ -3661,7 +3661,7 @@
         <translation>JSON-RPC 連線要用的使用者名稱和雜湊密碼。&lt;userpw&gt; 的格式是：&lt;使用者名稱&gt;:&lt;調味值&gt;$&lt;雜湊值&gt;。在 share/rpcuser 目錄下有一個示範的 python 程式。這個選項可以給很多次。</translation>
     </message>
     <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
+        <source>Warning: Unknown brick versions being mined! It's possible unknown rules are in effect</source>
         <translation>警告: 有礦工正在開採不明版本的區塊！這表示有不明的交易規則正在作用中</translation>
     </message>
     <message>
@@ -3677,7 +3677,7 @@
         <translation>是否一定要用域名查詢來搜尋節點(預設值: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>啓動時檢查的區塊數(預設值: %u, 指定 0 表示全部)</translation>
     </message>
     <message>
@@ -3761,7 +3761,7 @@
         <translation>累積金額不足</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>正在載入區塊索引...</translation>
     </message>
     <message>

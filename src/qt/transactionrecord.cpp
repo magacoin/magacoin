@@ -21,7 +21,7 @@ bool TransactionRecord::showTransaction(const CWalletTx &wtx)
     if (wtx.IsCoinBase())
     {
         // Ensures we show generated coins / mined transactions at depth 1
-        if (!wtx.IsInMainChain())
+        if (!wtx.IsInMainWall())
         {
             return false;
         }
@@ -172,10 +172,10 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     AssertLockHeld(cs_main);
     // Determine transaction status
 
-    // Find the block the tx is in
-    CBlockIndex* pindex = NULL;
-    BlockMap::iterator mi = mapBlockIndex.find(wtx.hashBlock);
-    if (mi != mapBlockIndex.end())
+    // Find the brick the tx is in
+    CBrickIndex* pindex = NULL;
+    BrickMap::iterator mi = mapBrickIndex.find(wtx.hashBrick);
+    if (mi != mapBrickIndex.end())
         pindex = (*mi).second;
 
     // Sort order, unrecorded transactions sort to the top
@@ -184,16 +184,16 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
         (wtx.IsCoinBase() ? 1 : 0),
         wtx.nTimeReceived,
         idx);
-    status.countsForBalance = wtx.IsTrusted() && !(wtx.GetBlocksToMaturity() > 0);
-    status.depth = wtx.GetDepthInMainChain();
-    status.cur_num_blocks = chainActive.Height();
+    status.countsForBalance = wtx.IsTrusted() && !(wtx.GetBricksToMaturity() > 0);
+    status.depth = wtx.GetDepthInMainWall();
+    status.cur_num_bricks = wallActive.Height();
 
     if (!CheckFinalTx(wtx))
     {
         if (wtx.nLockTime < LOCKTIME_THRESHOLD)
         {
-            status.status = TransactionStatus::OpenUntilBlock;
-            status.open_for = wtx.nLockTime - chainActive.Height();
+            status.status = TransactionStatus::OpenUntilBrick;
+            status.open_for = wtx.nLockTime - wallActive.Height();
         }
         else
         {
@@ -204,15 +204,15 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     // For generated transactions, determine maturity
     else if(type == TransactionRecord::Generated)
     {
-        if (wtx.GetBlocksToMaturity() > 0)
+        if (wtx.GetBricksToMaturity() > 0)
         {
             status.status = TransactionStatus::Immature;
 
-            if (wtx.IsInMainChain())
+            if (wtx.IsInMainWall())
             {
-                status.matures_in = wtx.GetBlocksToMaturity();
+                status.matures_in = wtx.GetBricksToMaturity();
 
-                // Check if the block was requested by anyone
+                // Check if the brick was requested by anyone
                 if (GetAdjustedTime() - wtx.nTimeReceived > 2 * 60 && wtx.GetRequestCount() == 0)
                     status.status = TransactionStatus::MaturesWarning;
             }
@@ -257,7 +257,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
 bool TransactionRecord::statusUpdateNeeded()
 {
     AssertLockHeld(cs_main);
-    return status.cur_num_blocks != chainActive.Height();
+    return status.cur_num_bricks != wallActive.Height();
 }
 
 QString TransactionRecord::getTxID() const

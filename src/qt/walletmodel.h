@@ -224,7 +224,7 @@ private:
     CAmount cachedWatchUnconfBalance;
     CAmount cachedWatchImmatureBalance;
     EncryptionStatus cachedEncryptionStatus;
-    int cachedNumBlocks;
+    int cachedNumBricks;
 
     QTimer *pollTimer;
 

@@ -9,17 +9,17 @@ Exercise the wallet backup code.  Ported from walletbackup.sh.
 Test case is:
 4 nodes. 1 2 and 3 send transactions between each other,
 fourth node is a miner.
-1 2 3 each mine a block to start, then
-Miner creates 100 blocks so 1 2 3 each have 50 mature
+1 2 3 each mine a brick to start, then
+Miner creates 100 bricks so 1 2 3 each have 50 mature
 coins to spend.
 Then 5 iterations of 1/2/3 sending coins amongst
 themselves to get transactions in the wallets,
-and the miner mining one block.
+and the miner mining one brick.
 
 Wallets are backed up using dumpwallet/backupwallet.
-Then 5 more iterations of transactions and mining a block.
+Then 5 more iterations of transactions and mining a brick.
 
-Miner then generates 101 more blocks, so any
+Miner then generates 101 more bricks, so any
 transaction fees paid mature.
 
 Sanity check:
@@ -43,7 +43,7 @@ class WalletBackupTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 4
         # nodes 1, 2,3 are spenders, let's give them a keypool=100
         self.extra_args = [["-keypool=100"], ["-keypool=100"], ["-keypool=100"], []]
@@ -75,11 +75,11 @@ class WalletBackupTest(BitcoinTestFramework):
         self.one_send(2, a0)
         self.one_send(2, a1)
 
-        # Have the miner (node3) mine a block.
+        # Have the miner (node3) mine a brick.
         # Must sync mempools before mining.
         sync_mempools(self.nodes)
         self.nodes[3].generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
     # As above, this mirrors the original bash test.
     def start_three(self):
@@ -102,15 +102,15 @@ class WalletBackupTest(BitcoinTestFramework):
         os.remove(self.options.tmpdir + "/node2/regtest/wallet.dat")
 
     def run_test(self):
-        logging.info("Generating initial blockchain")
+        logging.info("Generating initial brickwall")
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         self.nodes[1].generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         self.nodes[2].generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         self.nodes[3].generate(100)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         assert_equal(self.nodes[0].getbalance(), 50)
         assert_equal(self.nodes[1].getbalance(), 50)
@@ -135,7 +135,7 @@ class WalletBackupTest(BitcoinTestFramework):
         for i in range(5):
             self.do_one_round()
 
-        # Generate 101 more blocks, so any fees paid mature
+        # Generate 101 more bricks, so any fees paid mature
         self.nodes[3].generate(101)
         self.sync_all()
 
@@ -145,7 +145,7 @@ class WalletBackupTest(BitcoinTestFramework):
         balance3 = self.nodes[3].getbalance()
         total = balance0 + balance1 + balance2 + balance3
 
-        # At this point, there are 214 blocks (103 for setup, then 10 rounds, then 101.)
+        # At this point, there are 214 bricks (103 for setup, then 10 rounds, then 101.)
         # 114 are mature, so the sum of all wallets should be 114 * 50 = 5700.
         assert_equal(total, 5700)
 
@@ -156,9 +156,9 @@ class WalletBackupTest(BitcoinTestFramework):
         self.stop_three()
         self.erase_three()
 
-        # Start node2 with no chain
-        shutil.rmtree(self.options.tmpdir + "/node2/regtest/blocks")
-        shutil.rmtree(self.options.tmpdir + "/node2/regtest/chainstate")
+        # Start node2 with no wall
+        shutil.rmtree(self.options.tmpdir + "/node2/regtest/bricks")
+        shutil.rmtree(self.options.tmpdir + "/node2/regtest/wallstate")
 
         # Restore wallets from backup
         shutil.copyfile(tmpdir + "/node0/wallet.bak", tmpdir + "/node0/regtest/wallet.dat")
@@ -167,7 +167,7 @@ class WalletBackupTest(BitcoinTestFramework):
 
         logging.info("Re-starting nodes")
         self.start_three()
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         assert_equal(self.nodes[0].getbalance(), balance0)
         assert_equal(self.nodes[1].getbalance(), balance1)
@@ -177,9 +177,9 @@ class WalletBackupTest(BitcoinTestFramework):
         self.stop_three()
         self.erase_three()
 
-        #start node2 with no chain
-        shutil.rmtree(self.options.tmpdir + "/node2/regtest/blocks")
-        shutil.rmtree(self.options.tmpdir + "/node2/regtest/chainstate")
+        #start node2 with no wall
+        shutil.rmtree(self.options.tmpdir + "/node2/regtest/bricks")
+        shutil.rmtree(self.options.tmpdir + "/node2/regtest/wallstate")
 
         self.start_three()
 
@@ -191,7 +191,7 @@ class WalletBackupTest(BitcoinTestFramework):
         self.nodes[1].importwallet(tmpdir + "/node1/wallet.dump")
         self.nodes[2].importwallet(tmpdir + "/node2/wallet.dump")
 
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         assert_equal(self.nodes[0].getbalance(), balance0)
         assert_equal(self.nodes[1].getbalance(), balance1)

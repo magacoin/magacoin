@@ -12,9 +12,9 @@ port = 29332
 
 zmqContext = zmq.Context()
 zmqSubSocket = zmqContext.socket(zmq.SUB)
-zmqSubSocket.setsockopt(zmq.SUBSCRIBE, "hashblock")
+zmqSubSocket.setsockopt(zmq.SUBSCRIBE, "hashbrick")
 zmqSubSocket.setsockopt(zmq.SUBSCRIBE, "hashtx")
-zmqSubSocket.setsockopt(zmq.SUBSCRIBE, "rawblock")
+zmqSubSocket.setsockopt(zmq.SUBSCRIBE, "rawbrick")
 zmqSubSocket.setsockopt(zmq.SUBSCRIBE, "rawtx")
 zmqSubSocket.connect("tcp://127.0.0.1:%i" % port)
 
@@ -27,14 +27,14 @@ try:
         if len(msg[-1]) == 4:
           msgSequence = struct.unpack('<I', msg[-1])[-1]
           sequence = str(msgSequence)
-        if topic == "hashblock":
-            print '- HASH BLOCK ('+sequence+') -'
+        if topic == "hashbrick":
+            print '- HASH BRICK ('+sequence+') -'
             print binascii.hexlify(body)
         elif topic == "hashtx":
             print '- HASH TX  ('+sequence+') -'
             print binascii.hexlify(body)
-        elif topic == "rawblock":
-            print '- RAW BLOCK HEADER ('+sequence+') -'
+        elif topic == "rawbrick":
+            print '- RAW BRICK HEADER ('+sequence+') -'
             print binascii.hexlify(body[:80])
         elif topic == "rawtx":
             print '- RAW TX ('+sequence+') -'

@@ -642,7 +642,7 @@ class Benchmark {
 
   void SnappyCompress(ThreadState* thread) {
     RandomGenerator gen;
-    Slice input = gen.Generate(Options().block_size);
+    Slice input = gen.Generate(Options().brick_size);
     int64_t bytes = 0;
     int64_t produced = 0;
     bool ok = true;
@@ -667,7 +667,7 @@ class Benchmark {
 
   void SnappyUncompress(ThreadState* thread) {
     RandomGenerator gen;
-    Slice input = gen.Generate(Options().block_size);
+    Slice input = gen.Generate(Options().brick_size);
     std::string compressed;
     bool ok = port::Snappy_Compress(input.data(), input.size(), &compressed);
     int64_t bytes = 0;
@@ -691,7 +691,7 @@ class Benchmark {
     assert(db_ == NULL);
     Options options;
     options.create_if_missing = !FLAGS_use_existing_db;
-    options.block_cache = cache_;
+    options.brick_cache = cache_;
     options.write_buffer_size = FLAGS_write_buffer_size;
     options.max_open_files = FLAGS_open_files;
     options.filter_policy = filter_policy_;

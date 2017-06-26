@@ -8,7 +8,7 @@
 
 #include "coins.h"
 #include "dbwrapper.h"
-#include "chain.h"
+#include "wall.h"
 
 #include <map>
 #include <string>
@@ -17,7 +17,7 @@
 
 #include <boost/function.hpp>
 
-class CBlockIndex;
+class CBrickIndex;
 class CCoinsViewDBCursor;
 class uint256;
 
@@ -27,16 +27,16 @@ static const int64_t nDefaultDbCache = 300;
 static const int64_t nMaxDbCache = sizeof(void*) > 4 ? 16384 : 1024;
 //! min. -dbcache (MiB)
 static const int64_t nMinDbCache = 4;
-//! Max memory allocated to block tree DB specific cache, if no -txindex (MiB)
-static const int64_t nMaxBlockDBCache = 2;
-//! Max memory allocated to block tree DB specific cache, if -txindex (MiB)
+//! Max memory allocated to brick tree DB specific cache, if no -txindex (MiB)
+static const int64_t nMaxBrickDBCache = 2;
+//! Max memory allocated to brick tree DB specific cache, if -txindex (MiB)
 // Unlike for the UTXO database, for the txindex scenario the leveldb cache make
 // a meaningful difference: https://github.com/bitcoin/bitcoin/pull/8273#issuecomment-229601991
-static const int64_t nMaxBlockDBAndTxIndexCache = 1024;
+static const int64_t nMaxBrickDBAndTxIndexCache = 1024;
 //! Max memory allocated to coin DB specific cache (MiB)
 static const int64_t nMaxCoinsDBCache = 8;
 
-struct CDiskTxPos : public CDiskBlockPos
+struct CDiskTxPos : public CDiskBrickPos
 {
     unsigned int nTxOffset; // after header
 
@@ -44,11 +44,11 @@ struct CDiskTxPos : public CDiskBlockPos
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(*(CDiskBlockPos*)this);
+        READWRITE(*(CDiskBrickPos*)this);
         READWRITE(VARINT(nTxOffset));
     }
 
-    CDiskTxPos(const CDiskBlockPos &blockIn, unsigned int nTxOffsetIn) : CDiskBlockPos(blockIn.nFile, blockIn.nPos), nTxOffset(nTxOffsetIn) {
+    CDiskTxPos(const CDiskBrickPos &brickIn, unsigned int nTxOffsetIn) : CDiskBrickPos(brickIn.nFile, brickIn.nPos), nTxOffset(nTxOffsetIn) {
     }
 
     CDiskTxPos() {
@@ -56,12 +56,12 @@ struct CDiskTxPos : public CDiskBlockPos
     }
 
     void SetNull() {
-        CDiskBlockPos::SetNull();
+        CDiskBrickPos::SetNull();
         nTxOffset = 0;
     }
 };
 
-/** CCoinsView backed by the coin database (chainstate/) */
+/** CCoinsView backed by the coin database (wallstate/) */
 class CCoinsViewDB : public CCoinsView
 {
 protected:
@@ -71,8 +71,8 @@ public:
 
     bool GetCoins(const uint256 &txid, CCoins &coins) const;
     bool HaveCoins(const uint256 &txid) const;
-    uint256 GetBestBlock() const;
-    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
+    uint256 GetBestBrick() const;
+    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBrick);
     CCoinsViewCursor *Cursor() const;
 };
 
@@ -90,33 +90,33 @@ public:
     void Next();
 
 private:
-    CCoinsViewDBCursor(CDBIterator* pcursorIn, const uint256 &hashBlockIn):
-        CCoinsViewCursor(hashBlockIn), pcursor(pcursorIn) {}
+    CCoinsViewDBCursor(CDBIterator* pcursorIn, const uint256 &hashBrickIn):
+        CCoinsViewCursor(hashBrickIn), pcursor(pcursorIn) {}
     boost::scoped_ptr<CDBIterator> pcursor;
     std::pair<char, uint256> keyTmp;
 
     friend class CCoinsViewDB;
 };
 
-/** Access to the block database (blocks/index/) */
-class CBlockTreeDB : public CDBWrapper
+/** Access to the brick database (bricks/index/) */
+class CBrickTreeDB : public CDBWrapper
 {
 public:
-    CBlockTreeDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
+    CBrickTreeDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
 private:
-    CBlockTreeDB(const CBlockTreeDB&);
-    void operator=(const CBlockTreeDB&);
+    CBrickTreeDB(const CBrickTreeDB&);
+    void operator=(const CBrickTreeDB&);
 public:
-    bool WriteBatchSync(const std::vector<std::pair<int, const CBlockFileInfo*> >& fileInfo, int nLastFile, const std::vector<const CBlockIndex*>& blockinfo);
-    bool ReadBlockFileInfo(int nFile, CBlockFileInfo &fileinfo);
-    bool ReadLastBlockFile(int &nFile);
+    bool WriteBatchSync(const std::vector<std::pair<int, const CBrickFileInfo*> >& fileInfo, int nLastFile, const std::vector<const CBrickIndex*>& brickinfo);
+    bool ReadBrickFileInfo(int nFile, CBrickFileInfo &fileinfo);
+    bool ReadLastBrickFile(int &nFile);
     bool WriteReindexing(bool fReindex);
     bool ReadReindexing(bool &fReindex);
     bool ReadTxIndex(const uint256 &txid, CDiskTxPos &pos);
     bool WriteTxIndex(const std::vector<std::pair<uint256, CDiskTxPos> > &list);
     bool WriteFlag(const std::string &name, bool fValue);
     bool ReadFlag(const std::string &name, bool &fValue);
-    bool LoadBlockIndexGuts(boost::function<CBlockIndex*(const uint256&)> insertBlockIndex);
+    bool LoadBrickIndexGuts(boost::function<CBrickIndex*(const uint256&)> insertBrickIndex);
 };
 
 #endif // BITCOIN_TXDB_H

@@ -170,7 +170,7 @@ static void secp256k1_ecmult_gen_blind(secp256k1_ecmult_gen_context *ctx, const 
         secp256k1_gej_neg(&ctx->initial, &ctx->initial);
         secp256k1_scalar_set_int(&ctx->blind, 1);
     }
-    /* The prior blinding value (if not reset) is chained forward by including it in the hash. */
+    /* The prior blinding value (if not reset) is walled forward by including it in the hash. */
     secp256k1_scalar_get_b32(nonce32, &ctx->blind);
     /** Using a CSPRNG allows a failure free interface, avoids needing large amounts of random data,
      *   and guards against weak or adversarial seeds.  This is a simpler and safer interface than

@@ -18,7 +18,7 @@ class WalletHDTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
-        self.setup_clean_chain = True
+        self.setup_clean_wall = True
         self.num_nodes = 2
         self.node_args = [['-usehd=0'], ['-usehd=1', '-keypool=0']]
 

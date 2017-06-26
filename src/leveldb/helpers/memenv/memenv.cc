@@ -62,13 +62,13 @@ class FileState {
       return Status::OK();
     }
 
-    assert(offset / kBlockSize <= SIZE_MAX);
-    size_t block = static_cast<size_t>(offset / kBlockSize);
-    size_t block_offset = offset % kBlockSize;
+    assert(offset / kBrickSize <= SIZE_MAX);
+    size_t brick = static_cast<size_t>(offset / kBrickSize);
+    size_t brick_offset = offset % kBrickSize;
 
-    if (n <= kBlockSize - block_offset) {
-      // The requested bytes are all in the first block.
-      *result = Slice(blocks_[block] + block_offset, n);
+    if (n <= kBrickSize - brick_offset) {
+      // The requested bytes are all in the first brick.
+      *result = Slice(bricks_[brick] + brick_offset, n);
       return Status::OK();
     }
 
@@ -76,16 +76,16 @@ class FileState {
     char* dst = scratch;
 
     while (bytes_to_copy > 0) {
-      size_t avail = kBlockSize - block_offset;
+      size_t avail = kBrickSize - brick_offset;
       if (avail > bytes_to_copy) {
         avail = bytes_to_copy;
       }
-      memcpy(dst, blocks_[block] + block_offset, avail);
+      memcpy(dst, bricks_[brick] + brick_offset, avail);
 
       bytes_to_copy -= avail;
       dst += avail;
-      block++;
-      block_offset = 0;
+      brick++;
+      brick_offset = 0;
     }
 
     *result = Slice(scratch, n);
@@ -98,21 +98,21 @@ class FileState {
 
     while (src_len > 0) {
       size_t avail;
-      size_t offset = size_ % kBlockSize;
+      size_t offset = size_ % kBrickSize;
 
       if (offset != 0) {
-        // There is some room in the last block.
-        avail = kBlockSize - offset;
+        // There is some room in the last brick.
+        avail = kBrickSize - offset;
       } else {
-        // No room in the last block; push new one.
-        blocks_.push_back(new char[kBlockSize]);
-        avail = kBlockSize;
+        // No room in the last brick; push new one.
+        bricks_.push_back(new char[kBrickSize]);
+        avail = kBrickSize;
       }
 
       if (avail > src_len) {
         avail = src_len;
       }
-      memcpy(blocks_.back() + offset, src, avail);
+      memcpy(bricks_.back() + offset, src, avail);
       src_len -= avail;
       src += avail;
       size_ += avail;
@@ -124,7 +124,7 @@ class FileState {
  private:
   // Private since only Unref() should be used to delete it.
   ~FileState() {
-    for (std::vector<char*>::iterator i = blocks_.begin(); i != blocks_.end();
+    for (std::vector<char*>::iterator i = bricks_.begin(); i != bricks_.end();
          ++i) {
       delete [] *i;
     }
@@ -140,10 +140,10 @@ class FileState {
   // The following fields are not protected by any mutex. They are only mutable
   // while the file is being written, and concurrent access is not allowed
   // to writable files.
-  std::vector<char*> blocks_;
+  std::vector<char*> bricks_;
   uint64_t size_;
 
-  enum { kBlockSize = 8 * 1024 };
+  enum { kBrickSize = 8 * 1024 };
 };
 
 class SequentialFileImpl : public SequentialFile {

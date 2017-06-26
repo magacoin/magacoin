@@ -16,7 +16,7 @@ class MempoolPackagesTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         self.nodes = []
@@ -28,7 +28,7 @@ class MempoolPackagesTest(BitcoinTestFramework):
 
     # Build a transaction that spends parent_txid:vout
     # Return amount sent
-    def chain_transaction(self, node, parent_txid, vout, value, fee, num_outputs):
+    def wall_transaction(self, node, parent_txid, vout, value, fee, num_outputs):
         send_value = satoshi_round((value - fee)/num_outputs)
         inputs = [ {'txid' : parent_txid, 'vout' : vout} ]
         outputs = {}
@@ -42,7 +42,7 @@ class MempoolPackagesTest(BitcoinTestFramework):
         return (txid, send_value)
 
     def run_test(self):
-        ''' Mine some blocks and have them mature. '''
+        ''' Mine some bricks and have them mature. '''
         self.nodes[0].generate(101)
         utxo = self.nodes[0].listunspent(10)
         txid = utxo[0]['txid']
@@ -51,11 +51,11 @@ class MempoolPackagesTest(BitcoinTestFramework):
 
         fee = Decimal("0.0001")
         # MAX_ANCESTORS transactions off a confirmed tx should be fine
-        chain = []
+        wall = []
         for i in range(MAX_ANCESTORS):
-            (txid, sent_value) = self.chain_transaction(self.nodes[0], txid, 0, value, fee, 1)
+            (txid, sent_value) = self.wall_transaction(self.nodes[0], txid, 0, value, fee, 1)
             value = sent_value
-            chain.append(txid)
+            wall.append(txid)
 
         # Check mempool has MAX_ANCESTORS transactions in it, and descendant
         # count and fees should look correct
@@ -66,8 +66,8 @@ class MempoolPackagesTest(BitcoinTestFramework):
         descendant_size = 0
 
         descendants = []
-        ancestors = list(chain)
-        for x in reversed(chain):
+        ancestors = list(wall)
+        for x in reversed(wall):
             # Check that getmempoolentry is consistent with getrawmempool
             entry = self.nodes[0].getmempoolentry(x)
             assert_equal(entry, mempool[x])
@@ -90,53 +90,53 @@ class MempoolPackagesTest(BitcoinTestFramework):
             assert_equal(sorted(ancestors), sorted(self.nodes[0].getmempoolancestors(x)))
 
         # Check that getmempoolancestors/getmempooldescendants correctly handle verbose=true
-        v_ancestors = self.nodes[0].getmempoolancestors(chain[-1], True)
-        assert_equal(len(v_ancestors), len(chain)-1)
+        v_ancestors = self.nodes[0].getmempoolancestors(wall[-1], True)
+        assert_equal(len(v_ancestors), len(wall)-1)
         for x in v_ancestors.keys():
             assert_equal(mempool[x], v_ancestors[x])
-        assert(chain[-1] not in v_ancestors.keys())
+        assert(wall[-1] not in v_ancestors.keys())
 
-        v_descendants = self.nodes[0].getmempooldescendants(chain[0], True)
-        assert_equal(len(v_descendants), len(chain)-1)
+        v_descendants = self.nodes[0].getmempooldescendants(wall[0], True)
+        assert_equal(len(v_descendants), len(wall)-1)
         for x in v_descendants.keys():
             assert_equal(mempool[x], v_descendants[x])
-        assert(chain[0] not in v_descendants.keys())
+        assert(wall[0] not in v_descendants.keys())
 
         # Check that descendant modified fees includes fee deltas from
         # prioritisetransaction
-        self.nodes[0].prioritisetransaction(chain[-1], 0, 1000)
+        self.nodes[0].prioritisetransaction(wall[-1], 0, 1000)
         mempool = self.nodes[0].getrawmempool(True)
 
         descendant_fees = 0
-        for x in reversed(chain):
+        for x in reversed(wall):
             descendant_fees += mempool[x]['fee']
             assert_equal(mempool[x]['descendantfees'], descendant_fees * COIN + 1000)
 
-        # Adding one more transaction on to the chain should fail.
+        # Adding one more transaction on to the wall should fail.
         try:
-            self.chain_transaction(self.nodes[0], txid, vout, value, fee, 1)
+            self.wall_transaction(self.nodes[0], txid, vout, value, fee, 1)
         except JSONRPCException as e:
-            print("too-long-ancestor-chain successfully rejected")
+            print("too-long-ancestor-wall successfully rejected")
 
         # Check that prioritising a tx before it's added to the mempool works
-        # First clear the mempool by mining a block.
+        # First clear the mempool by mining a brick.
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
         # Prioritise a transaction that has been mined, then add it back to the
-        # mempool by using invalidateblock.
-        self.nodes[0].prioritisetransaction(chain[-1], 0, 2000)
-        self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
+        # mempool by using invalidatebrick.
+        self.nodes[0].prioritisetransaction(wall[-1], 0, 2000)
+        self.nodes[0].invalidatebrick(self.nodes[0].getbestbrickhash())
         # Keep node1's tip synced with node0
-        self.nodes[1].invalidateblock(self.nodes[1].getbestblockhash())
+        self.nodes[1].invalidatebrick(self.nodes[1].getbestbrickhash())
 
         # Now check that the transaction is in the mempool, with the right modified fee
         mempool = self.nodes[0].getrawmempool(True)
 
         descendant_fees = 0
-        for x in reversed(chain):
+        for x in reversed(wall):
             descendant_fees += mempool[x]['fee']
-            if (x == chain[-1]):
+            if (x == wall[-1]):
                 assert_equal(mempool[x]['modifiedfee'], mempool[x]['fee']+satoshi_round(0.00002))
             assert_equal(mempool[x]['descendantfees'], descendant_fees * COIN + 2000)
 
@@ -144,14 +144,14 @@ class MempoolPackagesTest(BitcoinTestFramework):
 
         # TODO: test ancestor size limits
 
-        # Now test descendant chain limits
+        # Now test descendant wall limits
         txid = utxo[1]['txid']
         value = utxo[1]['amount']
         vout = utxo[1]['vout']
 
         transaction_package = []
         # First create one parent tx with 10 children
-        (txid, sent_value) = self.chain_transaction(self.nodes[0], txid, vout, value, fee, 10)
+        (txid, sent_value) = self.wall_transaction(self.nodes[0], txid, vout, value, fee, 10)
         parent_transaction = txid
         for i in range(10):
             transaction_package.append({'txid': txid, 'vout': i, 'amount': sent_value})
@@ -159,7 +159,7 @@ class MempoolPackagesTest(BitcoinTestFramework):
         for i in range(MAX_DESCENDANTS):
             utxo = transaction_package.pop(0)
             try:
-                (txid, sent_value) = self.chain_transaction(self.nodes[0], utxo['txid'], utxo['vout'], utxo['amount'], fee, 10)
+                (txid, sent_value) = self.wall_transaction(self.nodes[0], utxo['txid'], utxo['vout'], utxo['amount'], fee, 10)
                 for j in range(10):
                     transaction_package.append({'txid': txid, 'vout': j, 'amount': sent_value})
                 if i == MAX_DESCENDANTS - 2:
@@ -177,22 +177,22 @@ class MempoolPackagesTest(BitcoinTestFramework):
         # Test reorg handling
         # First, the basics:
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
-        self.nodes[1].invalidateblock(self.nodes[0].getbestblockhash())
-        self.nodes[1].reconsiderblock(self.nodes[0].getbestblockhash())
+        sync_bricks(self.nodes)
+        self.nodes[1].invalidatebrick(self.nodes[0].getbestbrickhash())
+        self.nodes[1].reconsiderbrick(self.nodes[0].getbestbrickhash())
 
         # Now test the case where node1 has a transaction T in its mempool that
-        # depends on transactions A and B which are in a mined block, and the
-        # block containing A and B is disconnected, AND B is not accepted back
+        # depends on transactions A and B which are in a mined brick, and the
+        # brick containing A and B is disconnected, AND B is not accepted back
         # into node1's mempool because its ancestor count is too high.
 
         # Create 8 transactions, like so:
         # Tx0 -> Tx1 (vout0)
         #   \--> Tx2 (vout1) -> Tx3 -> Tx4 -> Tx5 -> Tx6 -> Tx7
         #
-        # Mine them in the next block, then generate a new tx8 that spends
+        # Mine them in the next brick, then generate a new tx8 that spends
         # Tx1 and Tx7, and add to node1's mempool, then disconnect the
-        # last block.
+        # last brick.
 
         # Create tx0 with 2 outputs
         utxo = self.nodes[0].listunspent()
@@ -212,17 +212,17 @@ class MempoolPackagesTest(BitcoinTestFramework):
         value = send_value
 
         # Create tx1
-        (tx1_id, tx1_value) = self.chain_transaction(self.nodes[0], tx0_id, 0, value, fee, 1)
+        (tx1_id, tx1_value) = self.wall_transaction(self.nodes[0], tx0_id, 0, value, fee, 1)
 
         # Create tx2-7
         vout = 1
         txid = tx0_id
         for i in range(6):
-            (txid, sent_value) = self.chain_transaction(self.nodes[0], txid, vout, value, fee, 1)
+            (txid, sent_value) = self.wall_transaction(self.nodes[0], txid, vout, value, fee, 1)
             vout = 0
             value = sent_value
 
-        # Mine these in a block
+        # Mine these in a brick
         self.nodes[0].generate(1)
         self.sync_all()
 
@@ -235,9 +235,9 @@ class MempoolPackagesTest(BitcoinTestFramework):
         sync_mempools(self.nodes)
         
         # Now try to disconnect the tip on each node...
-        self.nodes[1].invalidateblock(self.nodes[1].getbestblockhash())
-        self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
-        sync_blocks(self.nodes)
+        self.nodes[1].invalidatebrick(self.nodes[1].getbestbrickhash())
+        self.nodes[0].invalidatebrick(self.nodes[0].getbestbrickhash())
+        sync_bricks(self.nodes)
 
 if __name__ == '__main__':
     MempoolPackagesTest().main()

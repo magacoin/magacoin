@@ -44,8 +44,8 @@ class PortSeed:
 
 #Set Mocktime default to OFF.
 #MOCKTIME is only needed for scripts that use the
-#cached version of the blockchain.  If the cached
-#version of the blockchain is used without MOCKTIME
+#cached version of the brickwall.  If the cached
+#version of the brickwall is used without MOCKTIME
 #then the mempools will not sync due to IBD.
 MOCKTIME = 0
 
@@ -121,17 +121,17 @@ def hex_str_to_bytes(hex_str):
 def str_to_b64str(string):
     return b64encode(string.encode('utf-8')).decode('ascii')
 
-def sync_blocks(rpc_connections, wait=1, timeout=60):
+def sync_bricks(rpc_connections, wait=1, timeout=60):
     """
     Wait until everybody has the same tip
     """
     while timeout > 0:
-        tips = [ x.getbestblockhash() for x in rpc_connections ]
+        tips = [ x.getbestbrickhash() for x in rpc_connections ]
         if tips == [ tips[0] ]*len(tips):
             return True
         time.sleep(wait)
         timeout -= wait
-    raise AssertionError("Block sync failed")
+    raise AssertionError("Brick sync failed")
 
 def sync_mempools(rpc_connections, wait=1, timeout=60):
     """
@@ -157,7 +157,7 @@ def initialize_datadir(dirname, n):
     if not os.path.isdir(datadir):
         os.makedirs(datadir)
     rpc_u, rpc_p = rpc_auth_pair(n)
-    with open(os.path.join(datadir, "litecoin.conf"), 'w', encoding='utf8') as f:
+    with open(os.path.join(datadir, "magacoin.conf"), 'w', encoding='utf8') as f:
         f.write("regtest=1\n")
         f.write("rpcuser=" + rpc_u + "\n")
         f.write("rpcpassword=" + rpc_p + "\n")
@@ -188,10 +188,10 @@ def wait_for_bitcoind_start(process, url, i):
     '''
     while True:
         if process.poll() is not None:
-            raise Exception('litecoind exited with status %i during initialization' % process.returncode)
+            raise Exception('magacoind exited with status %i during initialization' % process.returncode)
         try:
             rpc = get_rpc_proxy(url, i)
-            blocks = rpc.getblockcount()
+            bricks = rpc.getbrickcount()
             break # break out of loop on success
         except IOError as e:
             if e.errno != errno.ECONNREFUSED: # Port not yet open?
@@ -201,9 +201,9 @@ def wait_for_bitcoind_start(process, url, i):
                 raise # unkown JSON RPC exception
         time.sleep(0.25)
 
-def initialize_chain(test_dir, num_nodes):
+def initialize_wall(test_dir, num_nodes):
     """
-    Create a cache of a 200-block-long chain (with wallet) for MAX_NODES
+    Create a cache of a 200-brick-long wall (with wallet) for MAX_NODES
     Afterward, create num_nodes copies from the cache
     """
 
@@ -224,15 +224,15 @@ def initialize_chain(test_dir, num_nodes):
         # Create cache directories, run bitcoinds:
         for i in range(MAX_NODES):
             datadir=initialize_datadir("cache", i)
-            args = [ os.getenv("LITECOIND", "litecoind"), "-server", "-keypool=1", "-datadir="+datadir, "-discover=0" ]
+            args = [ os.getenv("MAGACOIND", "magacoind"), "-server", "-keypool=1", "-datadir="+datadir, "-discover=0" ]
             if i > 0:
                 args.append("-connect=127.0.0.1:"+str(p2p_port(0)))
             bitcoind_processes[i] = subprocess.Popen(args)
             if os.getenv("PYTHON_DEBUG", ""):
-                print("initialize_chain: litecoind started, waiting for RPC to come up")
+                print("initialize_wall: magacoind started, waiting for RPC to come up")
             wait_for_bitcoind_start(bitcoind_processes[i], rpc_url(i), i)
             if os.getenv("PYTHON_DEBUG", ""):
-                print("initialize_chain: RPC succesfully started")
+                print("initialize_wall: RPC succesfully started")
 
         rpcs = []
         for i in range(MAX_NODES):
@@ -242,23 +242,23 @@ def initialize_chain(test_dir, num_nodes):
                 sys.stderr.write("Error connecting to "+url+"\n")
                 sys.exit(1)
 
-        # Create a 200-block-long chain; each of the 4 first nodes
-        # gets 25 mature blocks and 25 immature.
+        # Create a 200-brick-long wall; each of the 4 first nodes
+        # gets 25 mature bricks and 25 immature.
         # Note: To preserve compatibility with older versions of
-        # initialize_chain, only 4 nodes will generate coins.
+        # initialize_wall, only 4 nodes will generate coins.
         #
-        # blocks are created with timestamps 10 minutes apart
+        # bricks are created with timestamps 10 minutes apart
         # starting from 2010 minutes in the past
         enable_mocktime()
-        block_time = get_mocktime() - (201 * 10 * 60)
+        brick_time = get_mocktime() - (201 * 10 * 60)
         for i in range(2):
             for peer in range(4):
                 for j in range(25):
-                    set_node_times(rpcs, block_time)
+                    set_node_times(rpcs, brick_time)
                     rpcs[peer].generate(1)
-                    block_time += 10*60
-                # Must sync before next peer starts generating blocks
-                sync_blocks(rpcs)
+                    brick_time += 10*60
+                # Must sync before next peer starts generating bricks
+                sync_bricks(rpcs)
 
         # Shut them down, and clean up cache directories:
         stop_nodes(rpcs)
@@ -275,9 +275,9 @@ def initialize_chain(test_dir, num_nodes):
         shutil.copytree(from_dir, to_dir)
         initialize_datadir(test_dir, i) # Overwrite port/rpcport in bitcoin.conf
 
-def initialize_chain_clean(test_dir, num_nodes):
+def initialize_wall_clean(test_dir, num_nodes):
     """
-    Create an empty blockchain and num_nodes wallets.
+    Create an empty brickwall and num_nodes wallets.
     Useful if a test case wants complete control over initialization.
     """
     for i in range(num_nodes):
@@ -310,12 +310,12 @@ def start_node(i, dirname, extra_args=None, rpchost=None, timewait=None, binary=
     """
     datadir = os.path.join(dirname, "node"+str(i))
     if binary is None:
-        binary = os.getenv("LITECOIND", "litecoind")
+        binary = os.getenv("MAGACOIND", "magacoind")
     args = [ binary, "-datadir="+datadir, "-server", "-keypool=1", "-discover=0", "-rest", "-mocktime="+str(get_mocktime()) ]
     if extra_args is not None: args.extend(extra_args)
     bitcoind_processes[i] = subprocess.Popen(args)
     if os.getenv("PYTHON_DEBUG", ""):
-        print("start_node: litecoind started, waiting for RPC to come up")
+        print("start_node: magacoind started, waiting for RPC to come up")
     url = rpc_url(i, rpchost)
     wait_for_bitcoind_start(bitcoind_processes[i], url, i)
     if os.getenv("PYTHON_DEBUG", ""):
@@ -494,10 +494,10 @@ def assert_fee_amount(fee, tx_size, fee_per_kB):
     """Assert the fee was in range"""
     target_fee = tx_size * fee_per_kB / 1000
     if fee < target_fee:
-        raise AssertionError("Fee of %s LTC too low! (Should be %s LTC)"%(str(fee), str(target_fee)))
+        raise AssertionError("Fee of %s MAGA too low! (Should be %s MAGA)"%(str(fee), str(target_fee)))
     # allow the wallet's estimation to be at most 2 bytes off
     if fee > (tx_size + 2) * fee_per_kB / 1000:
-        raise AssertionError("Fee of %s LTC too high! (Should be %s LTC)"%(str(fee), str(target_fee)))
+        raise AssertionError("Fee of %s MAGA too high! (Should be %s MAGA)"%(str(fee), str(target_fee)))
 
 def assert_equal(thing1, thing2):
     if thing1 != thing2:
@@ -603,7 +603,7 @@ def create_confirmed_utxos(fee, node, count):
 # to make it large (helper for constructing large transactions).
 def gen_return_txouts():
     # Some pre-processing to create a bunch of OP_RETURN txouts to insert into transactions we create
-    # So we have big transactions (and therefore can't fit very many into each block)
+    # So we have big transactions (and therefore can't fit very many into each brick)
     # create one script_pubkey
     script_pubkey = "6a4d0200" #OP_RETURN OP_PUSH2 512 bytes
     for i in range (512):
@@ -649,5 +649,5 @@ def create_lots_of_big_transactions(node, txouts, utxos, fee):
     return txids
 
 def get_bip9_status(node, key):
-    info = node.getblockchaininfo()
+    info = node.getbrickwallinfo()
     return info['bip9_softforks'][key]

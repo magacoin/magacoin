@@ -166,12 +166,12 @@
         <translation>Otvoriť &amp;URI...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk...</source>
+        <source>Reindexing bricks on disk...</source>
         <translation>Preindexúvam bloky na disku...</translation>
     </message>
     <message>
-        <source>Send coins to a Litecoin address</source>
-        <translation>Poslať litecoins na adresu</translation>
+        <source>Send coins to a Magacoin address</source>
+        <translation>Poslať magacoins na adresu</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -194,8 +194,8 @@
         <translation>O&amp;veriť správu...</translation>
     </message>
     <message>
-        <source>Litecoin</source>
-        <translation>Litecoin</translation>
+        <source>Magacoin</source>
+        <translation>Magacoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -222,12 +222,12 @@
         <translation>Zašifruj súkromné kľúče ktoré patria do vašej peňaženky</translation>
     </message>
     <message>
-        <source>Sign messages with your Litecoin addresses to prove you own them</source>
-        <translation>Podpísať správu s vašou adresou Litecoin aby ste preukázali že ju vlastníte</translation>
+        <source>Sign messages with your Magacoin addresses to prove you own them</source>
+        <translation>Podpísať správu s vašou adresou Magacoin aby ste preukázali že ju vlastníte</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Litecoin addresses</source>
-        <translation>Overiť či správa bola podpísaná uvedenou Litecoin adresou</translation>
+        <source>Verify messages to ensure they were signed with specified Magacoin addresses</source>
+        <translation>Overiť či správa bola podpísaná uvedenou Magacoin adresou</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -246,8 +246,8 @@
         <translation>Lišta záložiek</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and litecoin: URIs)</source>
-        <translation>Vyžiadať platby (vygeneruje QR kódy a litecoin: URI)</translation>
+        <source>Request payments (generates QR codes and magacoin: URIs)</source>
+        <translation>Vyžiadať platby (vygeneruje QR kódy a magacoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -258,31 +258,31 @@
         <translation>Zobraziť zoznam použitých prijímacích adries a ich popisov</translation>
     </message>
     <message>
-        <source>Open a litecoin: URI or payment request</source>
-        <translation>Otvoriť litecoin URI alebo výzvu k platbe</translation>
+        <source>Open a magacoin: URI or payment request</source>
+        <translation>Otvoriť magacoin URI alebo výzvu k platbe</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Možnosti príkazového riadku</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Litecoin network</source>
-        <translation><numerusform>%n aktívne pripojenie do siete Litecoin</numerusform><numerusform>%n aktívne pripojenia do siete Litecoin</numerusform><numerusform>%n aktívnych pripojení do siete Litecoin</numerusform></translation>
+        <source>%n active connection(s) to Magacoin network</source>
+        <translation><numerusform>%n aktívne pripojenie do siete Magacoin</numerusform><numerusform>%n aktívne pripojenia do siete Magacoin</numerusform><numerusform>%n aktívnych pripojení do siete Magacoin</numerusform></translation>
     </message>
     <message>
-        <source>Indexing blocks on disk...</source>
+        <source>Indexing bricks on disk...</source>
         <translation>Indexujem bloky na disku...</translation>
     </message>
     <message>
-        <source>Processing blocks on disk...</source>
+        <source>Processing bricks on disk...</source>
         <translation>Spracovávam bloky na disku...</translation>
     </message>
     <message>
-        <source>No block source available...</source>
+        <source>No brick source available...</source>
         <translation>Nedostupný zdroj blokov...</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
+        <source>Processed %n brick(s) of transaction history.</source>
         <translation><numerusform>Spracovaných %n blok transakčnej histórie.</numerusform><numerusform>Spracovaných %n bloky transakčnej histórie.</numerusform><numerusform>Spracovaných %n blokov transakčnej histórie.</numerusform></translation>
     </message>
     <message numerus="yes">
@@ -310,7 +310,7 @@
         <translation>%1 pozadu</translation>
     </message>
     <message>
-        <source>Last received block was generated %1 ago.</source>
+        <source>Last received brick was generated %1 ago.</source>
         <translation>Posledný prijatý blok bol vygenerovaný pred %1.</translation>
     </message>
     <message>
@@ -334,8 +334,8 @@
         <translation>Aktualizovaný</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Litecoin command-line options</source>
-        <translation>Ukáž %1 zoznam možných nastavení Litecoinu pomocou príkazového riadku</translation>
+        <source>Show the %1 help message to get a list with possible Magacoin command-line options</source>
+        <translation>Ukáž %1 zoznam možných nastavení Magacoinu pomocou príkazového riadku</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -591,8 +591,8 @@
         <translation>Keďže toto je prvé spustenie programu, môžete si vybrať, kam %1 bude ukladať vaše údaje.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Litecoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>%1 stiahne a uloží kópiu Litecoin block chain. Minimálne %2GB dát bude uložených v tejto zložke, a bude sa zväčšovať postupom času. Peňaženka bude taktiež uložená v tejto zložke.</translation>
+        <source>%1 will download and store a copy of the Magacoin brick wall. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>%1 stiahne a uloží kópiu Magacoin brick wall. Minimálne %2GB dát bude uložených v tejto zložke, a bude sa zväčšovať postupom času. Peňaženka bude taktiež uložená v tejto zložke.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -685,8 +685,8 @@
         <translation>Minimalizovať namiesto ukončenia aplikácie keď sa okno zavrie. Keď je zvolená táto možnosť, aplikácia sa zavrie len po zvolení Ukončiť v menu.</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>URL tretích strán (napr. prehliadač blockchain) ktoré sa zobrazujú v záložke transakcií ako položky kontextového menu. %s v URL je nahradené hash-om transakcie. Viaceré URL sú oddelené zvislou čiarou |.</translation>
+        <source>Third party URLs (e.g. a brick explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>URL tretích strán (napr. prehliadač brickwall) ktoré sa zobrazujú v záložke transakcií ako položky kontextového menu. %s v URL je nahradené hash-om transakcie. Viaceré URL sú oddelené zvislou čiarou |.</translation>
     </message>
     <message>
         <source>Third party transaction URLs</source>
@@ -733,16 +733,16 @@
         <translation>Minúť nepotvrdený výdavok</translation>
     </message>
     <message>
-        <source>Automatically open the Litecoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automaticky otvorit port pre Litecoin na routeri. Toto funguje len ak router podporuje UPnP a je táto podpora aktivovaná.</translation>
+        <source>Automatically open the Magacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automaticky otvorit port pre Magacoin na routeri. Toto funguje len ak router podporuje UPnP a je táto podpora aktivovaná.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Mapovať port pomocou &amp;UPnP</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a SOCKS5 proxy.</source>
-        <translation>Pripojiť do siete Litecoin cez proxy server SOCKS5.</translation>
+        <source>Connect to the Magacoin network through a SOCKS5 proxy.</source>
+        <translation>Pripojiť do siete Magacoin cez proxy server SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -781,8 +781,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the Litecoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Pripojiť k Litecoinovej sieti cez separované SOCKS5 proxy pre skrytú službu Tor.</translation>
+        <source>Connect to the Magacoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Pripojiť k Magacoinovej sieti cez separované SOCKS5 proxy pre skrytú službu Tor.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -830,7 +830,7 @@
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Zvoľte ako deliť litecoin pri zobrazovaní pri platbách a užívateľskom rozhraní.</translation>
+        <translation>Zvoľte ako deliť magacoin pri zobrazovaní pri platbách a užívateľskom rozhraní.</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -880,8 +880,8 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Litecoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Zobrazené informácie môžu byť neaktuálne. Vaša peňaženka sa automaticky synchronizuje so sieťou Litecoin po nadviazaní spojenia, ale tento proces ešte nie je ukončený.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Magacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Zobrazené informácie môžu byť neaktuálne. Vaša peňaženka sa automaticky synchronizuje so sieťou Magacoin po nadviazaní spojenia, ale tento proces ešte nie je ukončený.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -973,8 +973,8 @@
         <translation>Suma</translation>
     </message>
     <message>
-        <source>Enter a Litecoin address (e.g. %1)</source>
-        <translation>Zadajte litecoin adresu (napr. %1)</translation>
+        <source>Enter a Magacoin address (e.g. %1)</source>
+        <translation>Zadajte magacoin adresu (napr. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1055,11 +1055,11 @@
         <translation>Počet pripojení</translation>
     </message>
     <message>
-        <source>Block chain</source>
+        <source>Brick wall</source>
         <translation>Reťazec blokov</translation>
     </message>
     <message>
-        <source>Current number of blocks</source>
+        <source>Current number of bricks</source>
         <translation>Aktuálny počet blokov</translation>
     </message>
     <message>
@@ -1107,7 +1107,7 @@
         <translation>Verzia</translation>
     </message>
     <message>
-        <source>Starting Block</source>
+        <source>Starting Brick</source>
         <translation>Počiatočný Blok</translation>
     </message>
     <message>
@@ -1116,7 +1116,7 @@
 </translation>
     </message>
     <message>
-        <source>Synced Blocks</source>
+        <source>Synced Bricks</source>
         <translation>Synchronizované bloky</translation>
     </message>
     <message>
@@ -1172,7 +1172,7 @@
         <translation>Časový posun</translation>
     </message>
     <message>
-        <source>Last block time</source>
+        <source>Last brick time</source>
         <translation>Čas posledného bloku</translation>
     </message>
     <message>
@@ -1323,8 +1323,8 @@
         <translation>Znovu použiť jestvujúcu prijímaciu adresu (neodporúča sa)</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Litecoin network.</source>
-        <translation>Pridať voliteľnú správu k výzve na zaplatenie, ktorá sa zobrazí keď bude výzva otvorená. Poznámka: Správa nebude poslaná s platbou cez sieť Litecoin.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Magacoin network.</source>
+        <translation>Pridať voliteľnú správu k výzve na zaplatenie, ktorá sa zobrazí keď bude výzva otvorená. Poznámka: Správa nebude poslaná s platbou cez sieť Magacoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1401,7 +1401,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Poslať Litecoins</translation>
+        <translation>Poslať Magacoins</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -1484,7 +1484,7 @@
         <translation>spolu aspoň</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for litecoin transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the bricks. But be aware that this can end up in a never confirming transaction once there is more demand for magacoin transactions than the network can process.</source>
         <translation>Zaplatenie len minimálneho poplatku je v poriadku, pokiaľ existuje menej transakcií ako miesta v blokoch. Uvedomte si však, že ak bude vyšší dopyt po transakciách ako dokáže sieť spracovať, môže byť vaša transakcia odsúvaná a nepotvrdená donekonečna.</translation>
     </message>
     <message>
@@ -1500,7 +1500,7 @@
         <translation>Vlastný:</translation>
     </message>
     <message>
-        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <source>(Smart fee not initialized yet. This usually takes a few bricks...)</source>
         <translation>(Automatický poplatok ešte nebol aktivovaný. Toto zvyčajne trvá niekoľko blokov...)</translation>
     </message>
     <message>
@@ -1579,7 +1579,7 @@
         <translation>Toto je normálna platba.</translation>
     </message>
     <message>
-        <source>The Litecoin address to send the payment to</source>
+        <source>The Magacoin address to send the payment to</source>
         <translation>Zvoľte adresu kam poslať platbu</translation>
     </message>
     <message>
@@ -1599,8 +1599,8 @@
         <translation>Odstrániť túto položku</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less litecoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Poplatok sa odpočíta od čiastky, ktorú odosielate. Príjemca dostane menej litecoinov ako zadáte. Ak je vybraných viacero príjemcov, poplatok je rozdelený rovným dielom.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less magacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Poplatok sa odpočíta od čiastky, ktorú odosielate. Príjemca dostane menej magacoinov ako zadáte. Ak je vybraných viacero príjemcov, poplatok je rozdelený rovným dielom.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -1623,8 +1623,8 @@
         <translation>Vložte popis pre túto adresu aby sa uložila do zoznamu použitých adries</translation>
     </message>
     <message>
-        <source>A message that was attached to the litecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Litecoin network.</source>
-        <translation>Správa ktorá bola pripojená k litecoin: URI a ktorá bude uložená s transakcou pre Vaše potreby. Poznámka: Táto správa nebude poslaná cez sieť Litecoin.</translation>
+        <source>A message that was attached to the magacoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Magacoin network.</source>
+        <translation>Správa ktorá bola pripojená k magacoin: URI a ktorá bude uložená s transakcou pre Vaše potreby. Poznámka: Táto správa nebude poslaná cez sieť Magacoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1660,8 +1660,8 @@
         <translation>&amp;Podpísať Správu</translation>
     </message>
     <message>
-        <source>The Litecoin address to sign the message with</source>
-        <translation>Litecoin adresa pre podpísanie správy s</translation>
+        <source>The Magacoin address to sign the message with</source>
+        <translation>Magacoin adresa pre podpísanie správy s</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1692,7 +1692,7 @@
         <translation>Kopírovať práve zvolenú adresu do systémového klipbordu</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Litecoin address</source>
+        <source>Sign the message to prove you own this Magacoin address</source>
         <translation>Podpíšte správu aby ste dokázali že vlastníte túto adresu</translation>
     </message>
     <message>
@@ -1712,12 +1712,12 @@
         <translation>O&amp;veriť správu...</translation>
     </message>
     <message>
-        <source>The Litecoin address the message was signed with</source>
-        <translation>Adresa Litecoin, ktorou bola podpísaná správa</translation>
+        <source>The Magacoin address the message was signed with</source>
+        <translation>Adresa Magacoin, ktorou bola podpísaná správa</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Litecoin address</source>
-        <translation>Overím správy sa uistiť že bola podpísaná označenou Litecoin adresou</translation>
+        <source>Verify the message to ensure it was signed with the specified Magacoin address</source>
+        <translation>Overím správy sa uistiť že bola podpísaná označenou Magacoin adresou</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1817,8 +1817,8 @@
         <translation>Poplatok (za %s/kB) pridaný do tranzakcie, ktorú posielate (predvolené: %s)</translation>
     </message>
     <message>
-        <source>Pruning blockstore...</source>
-        <translation>Redukovanie blockstore...</translation>
+        <source>Pruning brickstore...</source>
+        <translation>Redukovanie brickstore...</translation>
     </message>
     <message>
         <source>Run in the background as a daemon and accept commands</source>
@@ -1833,8 +1833,8 @@
         <translation>Prijať spojenia zvonku (predvolené: 1 ak žiadne -proxy alebo -connect)</translation>
     </message>
     <message>
-        <source>Litecoin Core</source>
-        <translation>Jadro Litecoin</translation>
+        <source>Magacoin Core</source>
+        <translation>Jadro Magacoin</translation>
     </message>
     <message>
         <source>-fallbackfee is set very high! This is the transaction fee you may pay when fee estimates are not available.</source>
@@ -1849,7 +1849,7 @@
         <translation>Nemožné uzamknúť zložku %s. %s pravdepodobne už beží.</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <source>Delete all wallet transactions and only recover those parts of the brickwall through -rescan on startup</source>
         <translation>Vymazať všetky transakcie z peňaženky a pri spustení znova získať z reťazca blokov iba tie získané pomocou -rescan</translation>
     </message>
     <message>
@@ -1877,12 +1877,12 @@
         <translation>Nastaviť počeť vlákien overujúcich skripty (%u až %d, 0 = auto, &lt;0 = nechať toľkoto jadier voľných, prednastavené: %d)</translation>
     </message>
     <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <source>The brick database contains a brick which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the brick database if you are sure that your computer's date and time are correct</source>
         <translation>Databáza blokov obsahuje blok, ktorý vyzerá byť z budúcnosti. Toto môže byť spôsobené nesprávnym systémovým časom vášho počítača. Obnovujte databázu blokov len keď ste si istý, že systémový čas je nastavený správne.</translation>
     </message>
     <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation>Toto je pred-testovacia verzia - použitie je na vlastné riziko - nepoužívajte na tvorbu litecoin ani obchodovanie.</translation>
+        <translation>Toto je pred-testovacia verzia - použitie je na vlastné riziko - nepoužívajte na tvorbu magacoin ani obchodovanie.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -1911,7 +1911,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>&lt;category&gt; môže byť:</translation>
     </message>
     <message>
-        <source>Block creation options:</source>
+        <source>Brick creation options:</source>
         <translation>Voľby vytvorenia bloku:</translation>
     </message>
     <message>
@@ -1931,7 +1931,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Copyright (C) %i-%i</translation>
     </message>
     <message>
-        <source>Corrupted block database detected</source>
+        <source>Corrupted brick database detected</source>
         <translation>Zistená poškodená databáza blokov</translation>
     </message>
     <message>
@@ -1943,11 +1943,11 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Nenahrat peňaženku a zablokovať volania RPC.</translation>
     </message>
     <message>
-        <source>Do you want to rebuild the block database now?</source>
+        <source>Do you want to rebuild the brick database now?</source>
         <translation>Chcete znovu zostaviť databázu blokov?</translation>
     </message>
     <message>
-        <source>Enable publish hash block in &lt;address&gt;</source>
+        <source>Enable publish hash brick in &lt;address&gt;</source>
         <translation>Povoliť zverejneneie hash blokov pre &lt;address&gt;</translation>
     </message>
     <message>
@@ -1955,7 +1955,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Povoliť zverejnenie hash tranzakcií pre &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Enable publish raw block in &lt;address&gt;</source>
+        <source>Enable publish raw brick in &lt;address&gt;</source>
         <translation>Povoliť zverejnenie raw bloku pre &lt;address&gt;</translation>
     </message>
     <message>
@@ -1963,7 +1963,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Povoliť publikovať hrubý prevod v &lt;address&gt;</translation>
     </message>
     <message>
-        <source>Error initializing block database</source>
+        <source>Error initializing brick database</source>
         <translation>Chyba inicializácie databázy blokov</translation>
     </message>
     <message>
@@ -1983,11 +1983,11 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Chyba načítania %s: Peňaženka vyžaduje novšiu verziu %s</translation>
     </message>
     <message>
-        <source>Error loading block database</source>
+        <source>Error loading brick database</source>
         <translation>Chyba načítania databázy blokov</translation>
     </message>
     <message>
-        <source>Error opening block database</source>
+        <source>Error opening brick database</source>
         <translation>Chyba otvárania databázy blokov</translation>
     </message>
     <message>
@@ -2003,7 +2003,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Prebieha import ...</translation>
     </message>
     <message>
-        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <source>Incorrect or no genesis brick found. Wrong datadir for network?</source>
         <translation>Nesprávny alebo žiadny genesis blok nájdený. Nesprávny dátový priečinok alebo sieť?</translation>
     </message>
     <message>
@@ -2055,11 +2055,11 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Redukovanie je nekompatibilné s -txindex.</translation>
     </message>
     <message>
-        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <source>Rebuild wall state and brick index from the blk*.dat files on disk</source>
         <translation>Obnoviť stav reťazca a index blokov zo súborov blk*.dat na disku.</translation>
     </message>
     <message>
-        <source>Rebuild chain state from the currently indexed blocks</source>
+        <source>Rebuild wall state from the currently indexed bricks</source>
         <translation>Obnoviť stav reťazca z aktuálne indexovaných blokov.</translation>
     </message>
     <message>
@@ -2067,7 +2067,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Nastaviť veľkosť pomocnej pamäti databázy v megabajtoch (%d do %d, prednastavené: %d)</translation>
     </message>
     <message>
-        <source>Set maximum block size in bytes (default: %d)</source>
+        <source>Set maximum brick size in bytes (default: %d)</source>
         <translation>Nastaviť najväčšiu veľkosť bloku v bytoch (predvolené: %d)</translation>
     </message>
     <message>
@@ -2099,7 +2099,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Použiť UPnP pre mapovanie počúvajúceho portu (predvolené: %u)</translation>
     </message>
     <message>
-        <source>Verifying blocks...</source>
+        <source>Verifying bricks...</source>
         <translation>Overujem bloky...</translation>
     </message>
     <message>
@@ -2151,7 +2151,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Vykonať príkaz po prijatí patričného varovania alebo uvidíme veľmi dlhé rozdvojenie siete (%s v cmd je nahradené správou)</translation>
     </message>
     <message>
-        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n bricks (default: %u)</source>
         <translation>Ak nie je nastavené paytxfee, pridať dostatočný poplatok aby sa transakcia začala potvrdzovať priemerne v rámci bloku (predvolené: %u)</translation>
     </message>
     <message>
@@ -2203,7 +2203,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Chyba pri načítaní z databázy, ukončuje sa.</translation>
     </message>
     <message>
-        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <source>Imports bricks from external blk000??.dat file on startup</source>
         <translation>Importovať bloky z externého súboru blk000??.dat pri štarte</translation>
     </message>
     <message>
@@ -2235,7 +2235,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Možnosti servra RPC:</translation>
     </message>
     <message>
-        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <source>Rescan the brick wall for missing wallet transactions on startup</source>
         <translation>Pri spustení skontrolovať reťaz blokov pre chýbajúce transakcie peňaženky</translation>
     </message>
     <message>
@@ -2315,7 +2315,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Heslo pre JSON-rPC spojenia</translation>
     </message>
     <message>
-        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <source>Execute command when the best brick changes (%s in cmd is replaced by brick hash)</source>
         <translation>Vykonaj príkaz, ak zmeny v najlepšom bloku (%s v príkaze nahradí blok hash)</translation>
     </message>
     <message>
@@ -2331,8 +2331,8 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>(1 = zachovať metaúdaje tx napr. vlastníka účtu a informácie o platobných príkazoch, 2 = zahodiť metaúdaje tx)</translation>
     </message>
     <message>
-        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
-        <translation>Ako dôkladné je -checkblocks overenie blokov (0-4, predvolené: %u)</translation>
+        <source>How thorough the brick verification of -checkbricks is (0-4, default: %u)</source>
+        <translation>Ako dôkladné je -checkbricks overenie blokov (0-4, predvolené: %u)</translation>
     </message>
     <message>
         <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
@@ -2371,7 +2371,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Užívateľské hash meno a heslo pre JSON-RPC pripojenia. Pole &lt;userpw&gt; je vo formáte &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. Kanonický python skript je zahrnutý v share/rpcuser. Toto nastavenie môže byť špecifikované viac krát</translation>
     </message>
     <message>
-        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
+        <source>Warning: Unknown brick versions being mined! It's possible unknown rules are in effect</source>
         <translation>Varovanie: Neznáma verzia blokov sa doluje! Je možné, že neznáme pravidlá majú efekt</translation>
     </message>
     <message>
@@ -2387,7 +2387,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Vždy sa dotazovať adresy partnerských uzlov cez vyhľadávanie DNS (predvolené: %u)</translation>
     </message>
     <message>
-        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <source>How many bricks to check at startup (default: %u, 0 = all)</source>
         <translation>Koľko blokov overiť pri spustení (predvolené: %u, 0 = všetky)</translation>
     </message>
     <message>
@@ -2467,7 +2467,7 @@ The network does not appear to fully agree! Some miners appear to be experiencin
         <translation>Nedostatok prostriedkov</translation>
     </message>
     <message>
-        <source>Loading block index...</source>
+        <source>Loading brick index...</source>
         <translation>Načítavanie zoznamu blokov...</translation>
     </message>
     <message>

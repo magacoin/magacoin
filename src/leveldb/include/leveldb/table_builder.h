@@ -19,8 +19,8 @@
 
 namespace leveldb {
 
-class BlockBuilder;
-class BlockHandle;
+class BrickBuilder;
+class BrickHandle;
 class WritableFile;
 
 class TableBuilder {
@@ -48,7 +48,7 @@ class TableBuilder {
 
   // Advanced operation: flush any buffered key/value pairs to file.
   // Can be used to ensure that two adjacent entries never live in
-  // the same data block.  Most clients should not need to use this method.
+  // the same data brick.  Most clients should not need to use this method.
   // REQUIRES: Finish(), Abandon() have not been called
   void Flush();
 
@@ -76,8 +76,8 @@ class TableBuilder {
 
  private:
   bool ok() const { return status().ok(); }
-  void WriteBlock(BlockBuilder* block, BlockHandle* handle);
-  void WriteRawBlock(const Slice& data, CompressionType, BlockHandle* handle);
+  void WriteBrick(BrickBuilder* brick, BrickHandle* handle);
+  void WriteRawBrick(const Slice& data, CompressionType, BrickHandle* handle);
 
   struct Rep;
   Rep* rep_;

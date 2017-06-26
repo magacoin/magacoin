@@ -14,7 +14,7 @@
 #ifndef BITCOIN_BASE58_H
 #define BITCOIN_BASE58_H
 
-#include "chainparams.h"
+#include "wallparams.h"
 #include "key.h"
 #include "pubkey.h"
 #include "script/script.h"
@@ -104,10 +104,10 @@ public:
 class CBitcoinAddress : public CBase58Data {
 public:
     bool Set(const CKeyID &id);
-    bool Set(const CScriptID &id, CChainParams::Base58Type type=CChainParams::SCRIPT_ADDRESS2);
-    bool Set(const CTxDestination &dest, CChainParams::Base58Type type=CChainParams::SCRIPT_ADDRESS2);
+    bool Set(const CScriptID &id, CWallParams::Base58Type type=CWallParams::SCRIPT_ADDRESS2);
+    bool Set(const CTxDestination &dest, CWallParams::Base58Type type=CWallParams::SCRIPT_ADDRESS2);
     bool IsValid() const;
-    bool IsValid(const CChainParams &params) const;
+    bool IsValid(const CWallParams &params) const;
 
     CBitcoinAddress() {}
     CBitcoinAddress(const CTxDestination &dest) { Set(dest); }
@@ -135,7 +135,7 @@ public:
     CBitcoinSecret() {}
 };
 
-template<typename K, int Size, CChainParams::Base58Type Type> class CBitcoinExtKeyBase : public CBase58Data
+template<typename K, int Size, CWallParams::Base58Type Type> class CBitcoinExtKeyBase : public CBase58Data
 {
 public:
     void SetKey(const K &key) {
@@ -164,7 +164,7 @@ public:
     CBitcoinExtKeyBase() {}
 };
 
-typedef CBitcoinExtKeyBase<CExtKey, BIP32_EXTKEY_SIZE, CChainParams::EXT_SECRET_KEY> CBitcoinExtKey;
-typedef CBitcoinExtKeyBase<CExtPubKey, BIP32_EXTKEY_SIZE, CChainParams::EXT_PUBLIC_KEY> CBitcoinExtPubKey;
+typedef CBitcoinExtKeyBase<CExtKey, BIP32_EXTKEY_SIZE, CWallParams::EXT_SECRET_KEY> CBitcoinExtKey;
+typedef CBitcoinExtKeyBase<CExtPubKey, BIP32_EXTKEY_SIZE, CWallParams::EXT_PUBLIC_KEY> CBitcoinExtPubKey;
 
 #endif // BITCOIN_BASE58_H

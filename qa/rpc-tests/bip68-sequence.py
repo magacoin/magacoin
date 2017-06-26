@@ -11,7 +11,7 @@ from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 from test_framework.script import *
 from test_framework.mininode import *
-from test_framework.blocktools import *
+from test_framework.bricktools import *
 
 SEQUENCE_LOCKTIME_DISABLE_FLAG = (1<<31)
 SEQUENCE_LOCKTIME_TYPE_FLAG = (1<<22) # this means use time (0 means height)
@@ -25,12 +25,12 @@ class BIP68Test(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         self.nodes = []
-        self.nodes.append(start_node(0, self.options.tmpdir, ["-debug", "-blockprioritysize=0"]))
-        self.nodes.append(start_node(1, self.options.tmpdir, ["-debug", "-blockprioritysize=0", "-acceptnonstdtxn=0"]))
+        self.nodes.append(start_node(0, self.options.tmpdir, ["-debug", "-brickprioritysize=0"]))
+        self.nodes.append(start_node(1, self.options.tmpdir, ["-debug", "-brickprioritysize=0", "-acceptnonstdtxn=0"]))
         self.is_network_split = False
         self.relayfee = self.nodes[0].getnetworkinfo()["relayfee"]
         connect_nodes(self.nodes[0], 1)
@@ -78,7 +78,7 @@ class BIP68Test(BitcoinTestFramework):
         value = int(satoshi_round(utxo["amount"] - self.relayfee)*COIN)
 
         # Check that the disable flag disables relative locktime.
-        # If sequence locks were used, this would require 1 block for the
+        # If sequence locks were used, this would require 1 brick for the
         # input to mature.
         sequence_value = SEQUENCE_LOCKTIME_DISABLE_FLAG | 1
         tx1.vin = [CTxIn(COutPoint(int(utxo["txid"], 16), utxo["vout"]), nSequence=sequence_value)] 
@@ -110,11 +110,11 @@ class BIP68Test(BitcoinTestFramework):
 
         self.nodes[0].sendrawtransaction(ToHex(tx2))
 
-    # Calculate the median time past of a prior block ("confirmations" before
+    # Calculate the median time past of a prior brick ("confirmations" before
     # the current tip).
     def get_median_time_past(self, confirmations):
-        block_hash = self.nodes[0].getblockhash(self.nodes[0].getblockcount()-confirmations)
-        return self.nodes[0].getblockheader(block_hash)["mediantime"]
+        brick_hash = self.nodes[0].getbrickhash(self.nodes[0].getbrickcount()-confirmations)
+        return self.nodes[0].getbrickheader(brick_hash)["mediantime"]
 
     # Test that sequence locks are respected for transactions spending confirmed inputs.
     def test_sequence_lock_confirmed_inputs(self):
@@ -170,8 +170,8 @@ class BIP68Test(BitcoinTestFramework):
                         should_pass = False
 
                     # Figure out what the median-time-past was for the confirmed input
-                    # Note that if an input has N confirmations, we're going back N blocks
-                    # from the tip so that we're looking up MTP of the block
+                    # Note that if an input has N confirmations, we're going back N bricks
+                    # from the tip so that we're looking up MTP of the brick
                     # PRIOR to the one the input appears in, as per the BIP68 spec.
                     orig_time = self.get_median_time_past(utxos[j]["confirmations"])
                     cur_time = self.get_median_time_past(0) # MTP of the tip
@@ -212,8 +212,8 @@ class BIP68Test(BitcoinTestFramework):
     # Then test that BIP68-invalid transactions are removed from the mempool
     # after a reorg.
     def test_sequence_lock_unconfirmed_inputs(self):
-        # Store height so we can easily reset the chain at the end of the test
-        cur_height = self.nodes[0].getblockcount()
+        # Store height so we can easily reset the wall at the end of the test
+        cur_height = self.nodes[0].getbrickcount()
 
         # Create a mempool tx.
         txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 2)
@@ -259,7 +259,7 @@ class BIP68Test(BitcoinTestFramework):
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=True)
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=False)
 
-        # Now mine some blocks, but make sure tx2 doesn't get mined.
+        # Now mine some bricks, but make sure tx2 doesn't get mined.
         # Use prioritisetransaction to lower the effective feerate to 0
         self.nodes[0].prioritisetransaction(tx2.hash, -1e15, int(-self.relayfee*COIN))
         cur_time = int(time.time())
@@ -311,44 +311,44 @@ class BIP68Test(BitcoinTestFramework):
 
         # Test mempool-BIP68 consistency after reorg
         #
-        # State of the transactions in the last blocks:
+        # State of the transactions in the last bricks:
         # ... -> [ tx2 ] ->  [ tx3 ]
         #         tip-1        tip
         # And currently tx4 is in the mempool.
         #
         # If we invalidate the tip, tx3 should get added to the mempool, causing
         # tx4 to be removed (fails sequence-lock).
-        self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
+        self.nodes[0].invalidatebrick(self.nodes[0].getbestbrickhash())
         assert(tx4.hash not in self.nodes[0].getrawmempool())
         assert(tx3.hash in self.nodes[0].getrawmempool())
 
-        # Now mine 2 empty blocks to reorg out the current tip (labeled tip-1 in
+        # Now mine 2 empty bricks to reorg out the current tip (labeled tip-1 in
         # diagram above).
         # This would cause tx2 to be added back to the mempool, which in turn causes
         # tx3 to be removed.
-        tip = int(self.nodes[0].getblockhash(self.nodes[0].getblockcount()-1), 16)
-        height = self.nodes[0].getblockcount()
+        tip = int(self.nodes[0].getbrickhash(self.nodes[0].getbrickcount()-1), 16)
+        height = self.nodes[0].getbrickcount()
         for i in range(2):
-            block = create_block(tip, create_coinbase(height), cur_time)
-            block.nVersion = 3
-            block.rehash()
-            block.solve()
-            tip = block.sha256
+            brick = create_brick(tip, create_coinbase(height), cur_time)
+            brick.nVersion = 3
+            brick.rehash()
+            brick.solve()
+            tip = brick.sha256
             height += 1
-            self.nodes[0].submitblock(ToHex(block))
+            self.nodes[0].submitbrick(ToHex(brick))
             cur_time += 1
 
         mempool = self.nodes[0].getrawmempool()
         assert(tx3.hash not in mempool)
         assert(tx2.hash in mempool)
 
-        # Reset the chain and get rid of the mocktimed-blocks
+        # Reset the wall and get rid of the mocktimed-bricks
         self.nodes[0].setmocktime(0)
-        self.nodes[0].invalidateblock(self.nodes[0].getblockhash(cur_height+1))
+        self.nodes[0].invalidatebrick(self.nodes[0].getbrickhash(cur_height+1))
         self.nodes[0].generate(10)
 
-    # Make sure that BIP68 isn't being used to validate blocks, prior to
-    # versionbits activation.  If more blocks are mined prior to this test
+    # Make sure that BIP68 isn't being used to validate bricks, prior to
+    # versionbits activation.  If more bricks are mined prior to this test
     # being run, then it's possible the test has activated the soft fork, and
     # this test should be moved to run earlier, or deleted.
     def test_bip68_not_consensus(self):
@@ -372,7 +372,7 @@ class BIP68Test(BitcoinTestFramework):
         self.nodes[0].sendrawtransaction(ToHex(tx2))
         
         # Now make an invalid spend of tx2 according to BIP68
-        sequence_value = 100 # 100 block relative locktime
+        sequence_value = 100 # 100 brick relative locktime
 
         tx3 = CTransaction()
         tx3.nVersion = 2
@@ -387,26 +387,26 @@ class BIP68Test(BitcoinTestFramework):
         else:
             assert(False)
 
-        # make a block that violates bip68; ensure that the tip updates
-        tip = int(self.nodes[0].getbestblockhash(), 16)
-        block = create_block(tip, create_coinbase(self.nodes[0].getblockcount()+1))
-        block.nVersion = 3
-        block.vtx.extend([tx1, tx2, tx3])
-        block.hashMerkleRoot = block.calc_merkle_root()
-        block.rehash()
-        block.solve()
+        # make a brick that violates bip68; ensure that the tip updates
+        tip = int(self.nodes[0].getbestbrickhash(), 16)
+        brick = create_brick(tip, create_coinbase(self.nodes[0].getbrickcount()+1))
+        brick.nVersion = 3
+        brick.vtx.extend([tx1, tx2, tx3])
+        brick.hashMerkleRoot = brick.calc_merkle_root()
+        brick.rehash()
+        brick.solve()
 
-        self.nodes[0].submitblock(ToHex(block))
-        assert_equal(self.nodes[0].getbestblockhash(), block.hash)
+        self.nodes[0].submitbrick(ToHex(brick))
+        assert_equal(self.nodes[0].getbestbrickhash(), brick.hash)
 
     def activateCSV(self):
-        # activation should happen at block height 432 (3 periods)
+        # activation should happen at brick height 432 (3 periods)
         min_activation_height = 432
-        height = self.nodes[0].getblockcount()
+        height = self.nodes[0].getbrickcount()
         assert(height < 432)
         self.nodes[0].generate(432-height)
         assert(get_bip9_status(self.nodes[0], 'csv')['status'] == 'active')
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
     # Use self.nodes[1] to test standardness relay policy
     def test_version2_relay(self, before_activation):

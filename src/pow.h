@@ -10,14 +10,14 @@
 
 #include <stdint.h>
 
-class CBlockHeader;
-class CBlockIndex;
+class CBrickHeader;
+class CBrickIndex;
 class uint256;
 
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params&);
-unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params&);
+unsigned int GetNextWorkRequired(const CBrickIndex* pindexLast, const CBrickHeader *pbrick, const Consensus::Params&);
+unsigned int CalculateNextWorkRequired(const CBrickIndex* pindexLast, int64_t nFirstBrickTime, const Consensus::Params&);
 
-/** Check whether a block hash satisfies the proof-of-work requirement specified by nBits */
+/** Check whether a brick hash satisfies the proof-of-work requirement specified by nBits */
 bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&);
 
 #endif // BITCOIN_POW_H

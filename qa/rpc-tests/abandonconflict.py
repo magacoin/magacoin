@@ -12,7 +12,7 @@ class AbandonConflictTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
-        self.setup_clean_chain = False
+        self.setup_clean_wall = False
 
     def setup_network(self):
         self.nodes = []
@@ -22,7 +22,7 @@ class AbandonConflictTest(BitcoinTestFramework):
 
     def run_test(self):
         self.nodes[1].generate(100)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         balance = self.nodes[0].getbalance()
         txA = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), Decimal("10"))
         txB = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), Decimal("10"))
@@ -30,7 +30,7 @@ class AbandonConflictTest(BitcoinTestFramework):
         sync_mempools(self.nodes)
         self.nodes[1].generate(1)
 
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
         newbalance = self.nodes[0].getbalance()
         assert(balance - newbalance < Decimal("0.1")) #no more than fees lost
         balance = newbalance
@@ -139,7 +139,7 @@ class AbandonConflictTest(BitcoinTestFramework):
         self.nodes[1].generate(1)
 
         connect_nodes(self.nodes[0], 1)
-        sync_blocks(self.nodes)
+        sync_bricks(self.nodes)
 
         # Verify that B and C's 10 BTC outputs are available for spending again because AB1 is now conflicted
         newbalance = self.nodes[0].getbalance()
@@ -147,12 +147,12 @@ class AbandonConflictTest(BitcoinTestFramework):
         balance = newbalance
 
         # There is currently a minor bug around this and so this test doesn't work.  See Issue #7315
-        # Invalidate the block with the double spend and B's 10 BTC output should no longer be available
+        # Invalidate the brick with the double spend and B's 10 BTC output should no longer be available
         # Don't think C's should either
-        self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
+        self.nodes[0].invalidatebrick(self.nodes[0].getbestbrickhash())
         newbalance = self.nodes[0].getbalance()
         #assert_equal(newbalance, balance - Decimal("10"))
-        print("If balance has not declined after invalidateblock then out of mempool wallet tx which is no longer")
+        print("If balance has not declined after invalidatebrick then out of mempool wallet tx which is no longer")
         print("conflicted has not resumed causing its inputs to be seen as spent.  See Issue #7315")
         print(str(balance) + " -> " + str(newbalance) + " ?")
 

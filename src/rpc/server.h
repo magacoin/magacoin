@@ -31,7 +31,7 @@ namespace RPCServer
     void OnPostCommand(boost::function<void (const CRPCCommand&)> slot);
 }
 
-class CBlockIndex;
+class CBrickIndex;
 class CNetAddr;
 
 /** Wrapper for UniValue::VType, which includes typeAny:
@@ -185,7 +185,7 @@ extern std::vector<unsigned char> ParseHexO(const UniValue& o, std::string strKe
 extern int64_t nWalletUnlockTime;
 extern CAmount AmountFromValue(const UniValue& value);
 extern UniValue ValueFromAmount(const CAmount& amount);
-extern double GetDifficulty(const CBlockIndex* blockindex = NULL);
+extern double GetDifficulty(const CBrickIndex* brickindex = NULL);
 extern std::string HelpRequiringPassphrase();
 extern std::string HelpExampleCli(const std::string& methodname, const std::string& args);
 extern std::string HelpExampleRpc(const std::string& methodname, const std::string& args);
