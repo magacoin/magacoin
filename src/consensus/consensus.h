@@ -17,7 +17,7 @@ static const unsigned int MAX_BRICK_BASE_SIZE = 1000000;
 /** The maximum allowed number of signature check operations in a brick (network rule) */
 static const int64_t MAX_BRICK_SIGOPS_COST = 80000;
 /** Coinbase transaction outputs can only be spent after this number of new bricks (network rule) */
-static const int COINBASE_MATURITY = 100;
+static const int COINBASE_MATURITY = 30;
 
 /** Flags for nSequence and nLockTime locks */
 enum {
