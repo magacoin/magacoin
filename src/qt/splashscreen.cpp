@@ -30,8 +30,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QWidget(0, f), curAlignment(0)
 {
     // set reference point, paddings
-    int paddingRight            = 50;
-    int paddingTop              = 50;
+    int paddingRight            = 40;
+    int paddingTop              = 40;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 40;
 
@@ -68,11 +68,11 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QRect rGradient(QPoint(0,0), splashSize);
     pixPaint.fillRect(rGradient, gradient);
 
-    // draw the bitcoin icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(-150,-122), QSize(430,430));
+    // draw the bitcoin icon, expected size of PNG: 1440x960
+    QRect rectIcon(QPoint(0,0), QSize(480,320));
 
-    const QSize requiredSize(1024,1024);
-    QPixmap icon(networkStyle->getAppIcon().pixmap(requiredSize));
+    const QSize requiredSize(1440,960);
+    QPixmap icon(networkStyle->getSplashImage().pixmap(requiredSize));
 
     pixPaint.drawPixmap(rectIcon, icon);
 

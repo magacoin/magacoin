@@ -28,11 +28,13 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
 {
     // load pixmap
     QPixmap pixmap(":/icons/bitcoin");
+    QPixmap pixmap_splash(":/icons/bitcoin_splash");
 
     if(iconColorHueShift != 0 && iconColorSaturationReduction != 0)
     {
         // generate QImage from QPixmap
         QImage img = pixmap.toImage();
+        QImage img_splash = pixmap_splash.toImage();
 
         int h,s,l,a;
 
@@ -67,15 +69,51 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
             }
         }
 
+        h = s = l = a = 0;
+
+        // traverse though lines
+        for(int y=0;y<img_splash.height();y++)
+        {
+            QRgb *scL = reinterpret_cast< QRgb *>( img_splash.scanLine( y ) );
+
+            // loop through pixels
+            for(int x=0;x<img_splash.width();x++)
+            {
+                // preserve alpha because QColor::getHsl doesen't return the alpha value
+                a = qAlpha(scL[x]);
+                QColor col(scL[x]);
+
+                // get hue value
+                col.getHsl(&h,&s,&l);
+
+                // rotate color on RGB color circle
+                // 70° should end up with the typical "testnet" green
+                h+=iconColorHueShift;
+
+                // change saturation value
+                if(s>iconColorSaturationReduction)
+                {
+                    s -= iconColorSaturationReduction;
+                }
+                col.setHsl(h,s,l,a);
+
+                // set the pixel
+                scL[x] = col.rgba();
+            }
+        }
+
         //convert back to QPixmap
 #if QT_VERSION >= 0x040700
         pixmap.convertFromImage(img);
+        pixmap_splash.convertFromImage(img_splash);
 #else
         pixmap = QPixmap::fromImage(img);
+        pixmap_splash = QPixmap::fromImage(img_splash);
 #endif
     }
 
     appIcon             = QIcon(pixmap);
+    splashImage         = QIcon(pixmap_splash);
     trayAndWindowIcon   = QIcon(pixmap.scaled(QSize(256,256)));
 }
 
