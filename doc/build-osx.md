@@ -29,7 +29,7 @@ Build Magacoin Core
 
 1. Clone the magacoin source code and cd into `magacoin`
 
-        git clone https://github.com/magacoin-project/magacoin
+        git clone https://github.com/magacoin/magacoin
         cd magacoin
 
 2.  Build magacoin-core:

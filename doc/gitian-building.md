@@ -309,8 +309,8 @@ Clone the git repositories for magacoin and Gitian.
 
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
-git clone https://github.com/magacoin-project/magacoin
-git clone https://github.com/magacoin-project/gitian.sigs.ltc.git
+git clone https://github.com/magacoin/magacoin
+git clone https://github.com/magacoin/gitian.sigs.maga.git
 ```
 
 Setting up the Gitian image
@@ -365,7 +365,7 @@ Output from `gbuild` will look something like
     remote: Total 57959 (delta 0), reused 0 (delta 0), pack-reused 57958
     Receiving objects: 100% (57959/57959), 53.76 MiB | 484.00 KiB/s, done.
     Resolving deltas: 100% (41590/41590), done.
-    From https://github.com/magacoin-project/magacoin
+    From https://github.com/magacoin/magacoin
     ... (new tags, new branch etc)
     --- Building for trusty amd64 ---
     Stopping target if it is up
@@ -441,7 +441,7 @@ Then when building, override the remote URLs that gbuild would otherwise pull fr
 ```bash
 
 cd /some/root/path/
-git clone https://github.com/magacoin-project/magacoin-detached-sigs.git
+git clone https://github.com/magacoin/magacoin-detached-sigs.git
 
 BTCPATH=/some/root/path/magacoin
 SIGPATH=/some/root/path/magacoin-detached-sigs
@@ -458,7 +458,7 @@ and follow the steps in the build process as normal.
     gpg: skipped "laanwj": secret key not available
 
 When you execute `gsign` you will get an error from GPG, which can be ignored. Copy the resulting `.assert` files
-in `gitian.sigs.ltc` to your signing machine and do
+in `gitian.sigs.maga` to your signing machine and do
 
 ```bash
     gpg --detach-sign ${VERSION}-linux/${SIGNER}/magacoin-linux-build.assert
@@ -473,5 +473,5 @@ Uploading signatures
 ---------------------
 
 After building and signing you can push your signatures (both the `.assert` and `.assert.sig` files) to the
-[gitian.sigs.ltc](https://github.com/magacoin-project/gitian.sigs.ltc/) repository, or if that's not possible create a pull
+[gitian.sigs.maga](https://github.com/magacoin/gitian.sigs.maga/) repository, or if that's not possible create a pull
 request. You can also mail the files to thrasher (thrasher@addictionsoftware.com) and he will commit them.

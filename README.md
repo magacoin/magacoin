@@ -1,7 +1,7 @@
 Magacoin Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.org/magacoin-project/magacoin.svg?branch=master)](https://travis-ci.org/magacoin-project/magacoin)
+[![Build Status](https://travis-ci.org/magacoin/magacoin.svg?branch=master)](https://travis-ci.org/magacoin/magacoin)
 
 https://magacoin.org
 
@@ -27,7 +27,7 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/magacoin-project/magacoin/tags) are created
+completely stable. [Tags](https://github.com/magacoin/magacoin/tags) are created
 regularly to indicate new official, stable release versions of Magacoin Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).

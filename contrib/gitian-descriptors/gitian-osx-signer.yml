@@ -7,7 +7,7 @@ architectures:
 packages:
 - "faketime"
 remotes:
-- "url": "https://github.com/magacoin-project/magacoin-detached-sigs.git"
+- "url": "https://github.com/magacoin/magacoin-detached-sigs.git"
   "dir": "signature"
 files:
 - "magacoin-osx-unsigned.tar.gz"
