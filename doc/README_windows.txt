@@ -1,4 +1,4 @@
-Magacoin Core 0.13.2
+Magacoin Core 0.13.3.1
 =====================
 
 Intro
